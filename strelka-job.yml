@@ -1,0 +1,13 @@
+tumor_bam:
+    class: File
+    path: tumor.tiny.bam
+normal_bam:
+    class: File
+    path: normal.tiny.bam
+reference:
+    class: File
+    path: custom_reference/all_sequences.fa
+config:
+    class: File
+    path: strelka_config_bwa_default.ini
+cpu_count: 8
