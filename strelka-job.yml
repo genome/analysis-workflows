@@ -10,4 +10,3 @@ reference:
 config:
     class: File
     path: strelka_config_bwa_default.ini
-cpu_count: 8

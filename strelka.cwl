@@ -7,6 +7,8 @@ baseCommand: "/usr/bin/cwl_helper.sh"
 requirements:
     DockerRequirement:
         dockerPull: "mgibio/strelka-cwl:1.0.15"
+arguments:
+    - { valueFrom: $(runtime.cores), position: 5 }
 inputs:
     tumor_bam:
         type: File
@@ -27,10 +29,6 @@ inputs:
         type: File
         inputBinding:
             position: 4
-    cpu_count:
-        type: int
-        inputBinding:
-            position: 5
 outputs:
      all_indels:
          type: File
