@@ -7,6 +7,8 @@ baseCommand: "/usr/bin/cwl_helper.sh"
 requirements:
     DockerRequirement:
         dockerPull: "mgibio/strelka-cwl:1.0.15"
+    ResourceRequirement:
+        coresMin: 8
 arguments:
     - { valueFrom: $(runtime.cores), position: 5 }
 inputs:
