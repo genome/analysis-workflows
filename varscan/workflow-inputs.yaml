@@ -1,0 +1,9 @@
+reference:
+    class: File
+    path: ../custom_reference/all_sequences.fa
+tumor_bam:
+    class: File
+    path: ../tumor.tiny.bam
+normal_bam:
+    class: File
+    path: ../normal.tiny.bam
