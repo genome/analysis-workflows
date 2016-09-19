@@ -7,9 +7,8 @@ baseCommand: "somatic"
 requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/varscan:v2.4.2"
-    - class: InlineJavascriptRequirement
 arguments:
-    - { valueFrom: $(runtime.outdir + "/output") }
+    - { valueFrom: $(runtime.outdir)/output }
     - "--mpileup"
     - "1"
     - "--output-vcf"
