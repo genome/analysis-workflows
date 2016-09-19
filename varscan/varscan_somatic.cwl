@@ -3,21 +3,24 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "varscan v2.4.2 somatic"
-baseCommand: "somatic"
+baseCommand: "/usr/bin/cwl_helper.sh"
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/varscan:v2.4.2"
-arguments:
-    - { valueFrom: $(runtime.outdir)/output }
-    - "--mpileup"
-    - "1"
-    - "--output-vcf"
+      dockerPull: "mgibio/varscan-cwl:v2.4.2-samtools1.3.1"
 inputs:
-    mpileup:
+    tumor_bam:
         type: File
         inputBinding:
-            position: -1 #before arguments
-        streamable: true
+            position: 1
+    normal_bam:
+        type: File
+        inputBinding:
+            position: 2
+    reference:
+        type: File
+        inputBinding:
+            position: 3
+        secondaryFiles: .fai
 outputs:
     snvs:
         type: File

@@ -55,18 +55,12 @@ outputs:
         type: File
         outputSource: process_somatic_indels/loh
 steps:
-    mpileup:
-        run: samtools_mpileup.cwl
+    somatic:
+        run: varscan_somatic.cwl
         in:
             reference: reference
             normal_bam: normal_bam
             tumor_bam: tumor_bam
-        out:
-            [mpileup]
-    somatic:
-        run: varscan_somatic.cwl
-        in:
-            mpileup: mpileup/mpileup
         out:
             [snvs, indels]
     process_somatic_snvs:
