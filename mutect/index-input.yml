@@ -1,0 +1,3 @@
+vcf:
+    class: File
+    path: ../output.vcf.gz
