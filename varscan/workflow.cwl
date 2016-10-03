@@ -68,7 +68,7 @@ steps:
         out:
             [merged_vcf]
     index_snvs:
-        run: index.cwl
+        run: ../detect_variants/index.cwl
         in:
             vcf: merge_snvs/merged_vcf
         out:
@@ -81,7 +81,7 @@ steps:
         out:
             [merged_vcf]
     index_indels:
-        run: index.cwl
+        run: ../detect_variants/index.cwl
         in:
             vcf: merge_indels/merged_vcf
         out:
@@ -93,7 +93,7 @@ steps:
         out:
             [merged_vcf]
     index:
-        run: index.cwl
+        run: ../detect_variants/index.cwl
         in:
             vcf: merge/merged_vcf
         out:

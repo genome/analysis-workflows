@@ -19,7 +19,7 @@ steps:
         out:
             [bgzipped_file]
     index:
-        run: index.cwl
+        run: ../detect_variants/index.cwl
         in:
             vcf: bgzip/bgzipped_file
         out:
