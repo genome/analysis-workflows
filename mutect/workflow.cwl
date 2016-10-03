@@ -22,7 +22,8 @@ inputs:
 outputs:
     merged_vcf:
         type: File
-        outputSource: merge/merged_vcf
+        outputSource: index/indexed_vcf
+        secondaryFiles: .tbi
 steps:
     mutect_and_index:
         scatter: interval_list
@@ -40,4 +41,10 @@ steps:
             vcfs: [mutect_and_index/vcf]
         out:
             [merged_vcf]
+    index:
+        run: index.cwl
+        in:
+            vcf: [merge/merged/vcf]
+        out:
+            [indexed_vcf]
 
