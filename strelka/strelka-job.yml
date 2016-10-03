@@ -1,12 +1,12 @@
 tumor_bam:
     class: File
-    path: tumor.tiny.bam
+    path: ../tumor.tiny.bam
 normal_bam:
     class: File
-    path: normal.tiny.bam
+    path: ../normal.tiny.bam
 reference:
     class: File
-    path: custom_reference/all_sequences.fa
+    path: ../custom_reference/all_sequences.fa
 config:
     class: File
     path: strelka_config_bwa_default.ini
