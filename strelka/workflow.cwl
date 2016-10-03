@@ -20,7 +20,7 @@ inputs:
     config:
         type: File
 outputs:
-    vcf:
+    merged_vcf:
         type: File
         outputSource: index/indexed_vcf
         secondaryFiles: .tbi

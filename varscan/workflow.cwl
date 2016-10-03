@@ -23,7 +23,7 @@ outputs:
         type: File
         outputSource: index_indels/indexed_vcf
         secondaryFiles: .tbi
-    vcf:
+    merged_vcf:
         type: File
         outputSource: index/indexed_vcf
         secondaryFile: .tbi
