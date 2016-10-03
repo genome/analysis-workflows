@@ -5,6 +5,7 @@ class: Workflow
 label: "Varscan Workflow"
 requirements:
     - class: SubworkflowFeatureRequirement
+    - class: MultipleInputFeatureRequirement
 inputs:
     reference:
         type: File
@@ -22,6 +23,10 @@ outputs:
         type: File
         outputSource: index_indels/indexed_vcf
         secondaryFiles: .tbi
+    vcf:
+        type: File
+        outputSource: index/indexed_vcf
+        secondaryFile: .tbi
 steps:
     varscan:
         run: varscan.cwl
@@ -81,4 +86,15 @@ steps:
             vcf: merge_indels/merged_vcf
         out:
             [indexed_vcf]
-
+    merge:
+        run: merge.cwl
+        in:
+            vcfs: [index_snvs/indexed_vcf, index_indels/indexed_vcf]
+        out:
+            [merged_vcf]
+    index:
+        run: index.cwl
+        in:
+            vcf: merge/merged_vcf
+        out:
+            [indexed_vcf]
