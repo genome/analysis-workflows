@@ -42,7 +42,7 @@ steps:
         out:
             [processed_vcf]
     merge:
-        run: merge.cwl
+        run: ../detect_variants/merge.cwl
         in:
             vcfs: [process/processed_vcf]
         out:

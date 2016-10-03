@@ -36,7 +36,7 @@ steps:
         out:
             [vcf]
     merge:
-        run: merge.cwl
+        run: ../detect_variants/merge.cwl
         in:
             vcfs: [mutect_and_index/vcf]
         out:
@@ -44,7 +44,7 @@ steps:
     index:
         run: ../detect_variants/index.cwl
         in:
-            vcf: [merge/merged/vcf]
+            vcf: [merge/merged_vcf]
         out:
             [indexed_vcf]
 

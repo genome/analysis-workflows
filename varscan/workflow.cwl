@@ -87,7 +87,7 @@ steps:
         out:
             [indexed_vcf]
     merge:
-        run: merge.cwl
+        run: ../detect_variants/merge.cwl
         in:
             vcfs: [index_snvs/indexed_vcf, index_indels/indexed_vcf]
         out:
