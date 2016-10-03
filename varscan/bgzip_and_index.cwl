@@ -13,7 +13,7 @@ outputs:
         secondaryFiles: .tbi
 steps:
     bgzip:
-        run: bgzip.cwl
+        run: ../detect_variants/bgzip.cwl
         in:
             file: vcf
         out:
