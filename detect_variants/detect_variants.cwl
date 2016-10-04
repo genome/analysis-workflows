@@ -62,18 +62,18 @@ steps:
     filter:
         run: fp_filter.cwl
         in:
-            vcf: [combine/combined_vcf]
+            vcf: combine/combined_vcf
         out:
             [filtered_vcf]
     bgzip:
         run: bgzip.cwl
         in:
-            file: [filter/filtered_vcf]
+            file: filter/filtered_vcf
         out:
             [bgzipped_file]
     index:
         run: index.cwl
         in:
-            vcf: [bgzip/bgzipped_file]
+            vcf: bgzip/bgzipped_file
         out:
             [indexed_vcf]
