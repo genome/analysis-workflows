@@ -26,7 +26,7 @@ outputs:
     merged_vcf:
         type: File
         outputSource: index/indexed_vcf
-        secondaryFile: .tbi
+        secondaryFiles: .tbi
 steps:
     varscan:
         run: varscan.cwl
