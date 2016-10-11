@@ -65,6 +65,7 @@ steps:
         in:
             vcf: bgzip_and_index_snvs/indexed_vcf
             filtered_vcf: bgzip_and_index_hc_snvs/indexed_vcf
+            reference: reference
         out:
             [merged_vcf]
     index_snvs:
@@ -78,6 +79,7 @@ steps:
         in:
             vcf: bgzip_and_index_indels/indexed_vcf
             filtered_vcf: bgzip_and_index_hc_indels/indexed_vcf
+            reference: reference
         out:
             [merged_vcf]
     index_indels:
