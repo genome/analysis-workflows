@@ -54,6 +54,7 @@ steps:
     combine:
         run: combine_variants.cwl
         in:
+            reference: reference
             mutect_vcf: mutect/merged_vcf
             strelka_vcf: strelka/merged_vcf
             varscan_vcf: varscan/merged_vcf
@@ -62,6 +63,8 @@ steps:
     filter:
         run: fp_filter.cwl
         in:
+            reference: reference
+            bam: tumor_bam
             vcf: combine/combined_vcf
         out:
             [filtered_vcf]
