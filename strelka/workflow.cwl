@@ -2,49 +2,57 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "mutect parallel workflow"
+label: "strelka workflow"
 requirements:
     - class: ScatterFeatureRequirement
-    - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
+    - class: MultipleInputFeatureRequirement
 inputs:
-    reference:
-        type: File
-        secondaryFiles: [".fai", "^.dict"]
     tumor_bam:
         type: File
         secondaryFiles: .bai
     normal_bam:
         type: File
         secondaryFiles: .bai
-    interval_list:
-        type: File[]
+    reference:
+        type: File
+        secondaryFiles: .fai
+    config:
+        type: File
 outputs:
     merged_vcf:
         type: File
         outputSource: index/indexed_vcf
         secondaryFiles: .tbi
 steps:
-    mutect_and_index:
-        scatter: interval_list
-        run: mutect_and_index.cwl
+    strelka:
+        run: strelka.cwl
         in:
-            reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            interval_list: interval_list
+            reference: reference
+            config: config
         out:
-            [vcf]
+            [all_indels, all_snvs]
+    process:
+        scatter: vcf
+        run: process_vcf.cwl
+        in:
+            vcf: [strelka/all_snvs, strelka/all_indels]
+        out:
+            [processed_vcf]
     merge:
         run: ../detect_variants/merge.cwl
         in:
-            vcfs: [mutect_and_index/vcf]
+            vcfs: [process/processed_vcf]
         out:
             [merged_vcf]
     index:
         run: ../detect_variants/index.cwl
         in:
-            vcf: [merge/merged_vcf]
+            vcf: merge/merged_vcf
         out:
             [indexed_vcf]
+
+
 

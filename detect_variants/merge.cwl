@@ -13,7 +13,7 @@ arguments:
     - "--output-type"
     - "z"
     - "-o"
-    - { valueFrom: $(runtime.outdir)/merged.vcf }
+    - { valueFrom: $(runtime.outdir)/merged.vcf.gz }
 inputs:
     vcfs:
         type: File[]
@@ -24,4 +24,4 @@ outputs:
     merged_vcf:
         type: File
         outputBinding:
-            glob: "merged.vcf"
+            glob: "merged.vcf.gz"
