@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Ensembl Variant Effect Predictor"
-baseCommand: ["perl", "/usr/bin/variant_effect_predictor.pl"]
+baseCommand: ["/usr/bin/perl", "/usr/bin/variant_effect_predictor.pl"]
 
 requirements:
     - class: DockerRequirement
