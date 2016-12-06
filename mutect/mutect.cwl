@@ -33,6 +33,18 @@ inputs:
         inputBinding:
             prefix: "-L"
             position: 4
+    dbsnp_vcf:
+        type: File?
+        inputBinding:
+            prefix: "--dbsnp"
+            position: 5
+        secondaryFiles: .idx
+    cosmic_vcf:
+        type: File?
+        inputBinding:
+            prefix: "--cosmic"
+            position: 6
+        secondaryFiles: .idx
 outputs:
     vcf:
         type: File

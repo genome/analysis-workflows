@@ -19,6 +19,12 @@ inputs:
         type: File[]
     strelka_config:
         type: File
+    dbsnp_vcf:
+        type: File?
+        secondaryFiles: .idx
+    cosmic_vcf:
+        type: File?
+        secondaryFiles: .idx
 outputs:
     final_vcf:
         type: File
@@ -32,6 +38,8 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             interval_list: interval_list
+            dbsnp_vcf: dbsnp_vcf
+            cosmic_vcf: cosmic_vcf
         out:
             [merged_vcf]
     strelka:
