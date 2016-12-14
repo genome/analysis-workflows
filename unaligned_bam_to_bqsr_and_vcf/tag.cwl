@@ -7,7 +7,7 @@ baseCommand: "/usr/local/bin/samblaster"
 arguments:
     ["-a",
     "--addMateTags",
-    "-o", { valueFrom: $(runtime.outdir)/MergedTagged.sam }]
+    "-o", { valueFrom: $(runtime.outdir)/Tagged.sam }]
 requirements:
     - class: DockerRequirement
       dockerPull: "registry.gsc.wustl.edu/genome/samblaster-0.1.23:1"
@@ -21,4 +21,4 @@ outputs:
     tagged_sam:
         type: File
         outputBinding:
-            glob: "MergedTagged.sam"
+            glob: "Tagged.sam"

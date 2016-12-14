@@ -30,10 +30,10 @@ steps:
             readgroup: readgroups
             reference: reference
         out:
-            [tagged_sam]
+            [tagged_bam]
     merge:
         run: merge.cwl
         in:
-            bams: [align/tagged_sam]
+            bams: [align/tagged_bam]
         out:
             [merged_bam]

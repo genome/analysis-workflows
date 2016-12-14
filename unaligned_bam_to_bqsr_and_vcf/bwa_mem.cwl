@@ -11,7 +11,7 @@ arguments:
 requirements:
     - class: DockerRequirement
       dockerPull: "registry.gsc.wustl.edu/genome/bwa-0.7.15:1"
-stdout: 'refAlign.bam'
+stdout: 'refAlign.sam'
 inputs:
     readgroup:
         type: string
@@ -32,5 +32,5 @@ inputs:
         inputBinding:
             position: 4
 outputs:
-    aligned_bam:
+    aligned_sam:
         type: stdout

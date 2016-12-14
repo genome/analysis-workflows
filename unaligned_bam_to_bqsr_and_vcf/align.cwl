@@ -16,9 +16,9 @@ inputs:
     readgroup:
         type: string
 outputs:
-    tagged_sam:
+    tagged_bam:
         type: File
-        outputSource: tag/tagged_sam
+        outputSource: sam_to_bam/bam
 steps:
     revert_to_fastq:
         run: revert_to_fastq.cwl
@@ -34,11 +34,11 @@ steps:
             fastq: revert_to_fastq/fastq
             fastq2: revert_to_fastq/second_end_fastq
         out:
-            [aligned_bam]
+            [aligned_sam]
     tag:
         run: tag.cwl
         in:
-            sam: bwa_mem/aligned_bam
+            sam: bwa_mem/aligned_sam
         out:
             [tagged_sam]
 
