@@ -41,6 +41,7 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             config: strelka_config
+            interval_list: interval_list
         out:
             [merged_vcf]
     varscan:

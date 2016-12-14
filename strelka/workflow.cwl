@@ -19,10 +19,12 @@ inputs:
         secondaryFiles: .fai
     config:
         type: File
+    interval_list:
+        type: File
 outputs:
     merged_vcf:
         type: File
-        outputSource: index/indexed_vcf
+        outputSource: index_filtered/indexed_vcf
         secondaryFiles: .tbi
 steps:
     strelka:
@@ -47,10 +49,24 @@ steps:
             vcfs: [process/processed_vcf]
         out:
             [merged_vcf]
-    index:
+    index_full:
         run: ../detect_variants/index.cwl
         in:
             vcf: merge/merged_vcf
+        out:
+            [indexed_vcf]
+    region_filter:
+        run: ../detect_variants/select_variants.cwl
+        in:
+            reference: reference
+            vcf: index_full/indexed_vcf
+            interval_list: interval_list
+        out:
+            [filtered_vcf]
+    index_filtered:
+        run: ../detect_variants/index.cwl
+        in:
+            vcf: region_filter/filtered_vcf
         out:
             [indexed_vcf]
 

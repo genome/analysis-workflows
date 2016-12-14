@@ -10,3 +10,6 @@ reference:
 config:
     class: File
     path: strelka_config_bwa_default.ini
+interval_list:
+    class: File
+    path: ../custom_reference/all_sequences.interval_list
