@@ -49,6 +49,7 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
+            interval_list: interval_list
         out:
             [merged_vcf]
     combine:

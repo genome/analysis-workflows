@@ -14,6 +14,8 @@ inputs:
         type: File
     normal_bam:
         type: File
+    interval_list:
+        type: File
 outputs:
     snvs:
         type: File
@@ -28,12 +30,19 @@ outputs:
         outputSource: index/indexed_vcf
         secondaryFiles: .tbi
 steps:
+    intervals_to_bed:
+        run: intervals_to_bed.cwl
+        in:
+            interval_list: interval_list
+        out:
+            [interval_bed]
     varscan:
         run: varscan.cwl
         in:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
+            roi_bed: intervals_to_bed/interval_bed
         out:
             [somatic_snvs, somatic_indels, somatic_hc_snvs, somatic_hc_indels]
     bgzip_and_index_snvs:
