@@ -1,0 +1,29 @@
+#!/usr/bin/env cwl-runner
+
+cwlVersion: v1.0
+class: CommandLineTool
+label: 'sort BAM by name'
+baseCommand: ["/usr/local/bin/sambamba", "sort"]
+arguments: 
+    ["-t", "8",
+    "-m", "18G",
+    "-o", { valueFrom: $(runtime.outdir)/MarkedSorted.bam }]
+requirements:
+    - class: DockerRequirement
+      dockerPull: "registry.gsc.wustl.edu/genome/sambamba-0.6.4:1"
+inputs:
+    bam:
+        type: File
+        inputBinding:
+            position: 1
+    tmpdir:
+        type: string
+        inputBinding:
+            prefix: "--tmpdir="
+            position: 2
+outputs:
+    sorted_bam:
+        type: File
+        outputBinding:
+            glob: "MarkedSorted.bam"
+        secondaryFiles: [.bai]
