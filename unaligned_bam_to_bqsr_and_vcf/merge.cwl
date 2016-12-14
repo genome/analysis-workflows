@@ -12,7 +12,6 @@ inputs:
     bams:
         type: File[]
         inputBinding:
-            itemSeparator: " "
             position: 1
 outputs:
     merged_bam:
