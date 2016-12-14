@@ -41,4 +41,9 @@ steps:
             sam: bwa_mem/aligned_sam
         out:
             [tagged_sam]
-
+    sam_to_bam:
+        run: sam_to_bam.cwl
+        in:
+            sam: tag/tagged_sam
+        out:
+            [bam]
