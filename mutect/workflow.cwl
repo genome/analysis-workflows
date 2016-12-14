@@ -18,13 +18,22 @@ inputs:
         type: File
         secondaryFiles: .bai
     interval_list:
-        type: File[]
+        type: File
+    scatter_count:
+        type: int
+        default: 50
 outputs:
     merged_vcf:
         type: File
         outputSource: index/indexed_vcf
         secondaryFiles: .tbi
 steps:
+    split_interval_list:
+        run: split_interval_list.cwl
+        in:
+            interval_list: interval_list
+            scatter_count: scatter_count
+        out: [split_interval_lists]
     mutect_and_index:
         scatter: interval_list
         run: mutect_and_index.cwl
@@ -32,7 +41,7 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            interval_list: interval_list
+            interval_list: split_interval_list/split_interval_lists
         out:
             [vcf]
     merge:

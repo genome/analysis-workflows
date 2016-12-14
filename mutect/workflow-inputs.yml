@@ -8,9 +8,5 @@ normal_bam:
     class: File
     path: ../normal.tiny.bam
 interval_list:
-    - class: File
-      path: 1.interval_list
-    - class: File
-      path: 2.interval_list
-    - class: File
-      path: 3.interval_list
+    class: File
+    path: ../custom_reference/all_sequences.interval_list

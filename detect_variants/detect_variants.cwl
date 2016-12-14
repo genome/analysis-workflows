@@ -16,7 +16,7 @@ inputs:
         type: File
         secondaryFiles: .bai
     interval_list:
-        type: File[]
+        type: File
     strelka_config:
         type: File
 outputs:
