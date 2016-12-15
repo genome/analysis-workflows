@@ -10,7 +10,6 @@ arguments:
     "-SQQ", "10",
     "-SQQ", "20",
     "-SQQ", "30",
-    "-SQQ", "40",
     "-nct", "8"]
 requirements:
     - class: DockerRequirement
