@@ -14,7 +14,7 @@ arguments:
     "--disable_indel_quals"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "registry.gsc.wustl.edu/genome/gatk-3.5:1"
+      dockerPull: "registry.gsc.wustl.edu/genome/gatk-3.6:1"
 inputs:
     reference:
         type: File
