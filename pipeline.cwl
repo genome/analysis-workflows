@@ -17,25 +17,22 @@ inputs:
          type: File[]
     tumor_readgroups:
           type: string[]
-    alignment_dbsnp:
-        type: File
-        secondaryFiles: [.tbi]
     mills:
         type: File
         secondaryFiles: [.tbi]
     known_indels:
         type: File
         secondaryFiles: [.tbi]
+    dbsnp:
+        type: File
+        secondaryFiles: [.tbi]
     interval_list:
         type: File
     strelka_config:
         type: File
-    dv_dbsnp_vcf:
-        type: File?
-        secondaryFiles: .idx
     cosmic_vcf:
         type: File?
-        secondaryFiles: .idx
+        secondaryFiles: .tbi
 outputs:
     final_vcf:
         type: File
@@ -48,7 +45,7 @@ steps:
             bams: normal_bams
             readgroups: normal_readgroups
             reference: reference
-            dbsnp: alignment_dbsnp
+            dbsnp: dbsnp
             mills: mills
             known_indels: known_indels
         out:
@@ -59,7 +56,7 @@ steps:
             bams: tumor_bams
             readgroups: tumor_readgroups
             reference: reference
-            dbsnp: alignment_dbsnp
+            dbsnp: dbsnp
             mills: mills
             known_indels: known_indels
         out:
@@ -72,7 +69,7 @@ steps:
             normal_bam: align_normal/final_bam
             interval_list: interval_list
             strelka_config: strelka_config
-            dbsnp_vcf: dv_dbsnp_vcf
+            dbsnp_vcf: dbsnp
             cosmic_vcf: cosmic_vcf
         out:
             [final_vcf]
