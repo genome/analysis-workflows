@@ -8,7 +8,7 @@ requirements:
 inputs:
     reference:
         type: File
-        secondaryFiles: [.fai, .bwt, .sa, .ann, .amb, .pac, ^.dict]
+        secondaryFiles: [.fai, .bwt, .sa, .ann, .amb, .pac, ^.dict, .alt]
     normal_bams:
          type: File[]
     normal_readgroups:
