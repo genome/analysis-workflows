@@ -18,10 +18,10 @@ inputs:
         type: File
     dbsnp_vcf:
         type: File?
-        secondaryFiles: .idx
+        secondaryFiles: .tbi
     cosmic_vcf:
         type: File?
-        secondaryFiles: .idx
+        secondaryFiles: .tbi
 outputs:
     vcf:
         type: File
