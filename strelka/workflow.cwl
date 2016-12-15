@@ -17,10 +17,10 @@ inputs:
     reference:
         type: File
         secondaryFiles: .fai
-    config:
-        type: File
     interval_list:
         type: File
+    exome_mode:
+        type: boolean
 outputs:
     merged_vcf:
         type: File
@@ -33,7 +33,7 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             reference: reference
-            config: config
+            exome_mode: exome_mode
         out:
             [all_indels, all_snvs]
     process:

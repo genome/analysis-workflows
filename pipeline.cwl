@@ -28,8 +28,8 @@ inputs:
         secondaryFiles: [.tbi]
     interval_list:
         type: File
-    strelka_config:
-        type: File
+    strelka_exome_mode:
+        type: boolean
     cosmic_vcf:
         type: File?
         secondaryFiles: .tbi
@@ -68,7 +68,7 @@ steps:
             tumor_bam: align_tumor/final_bam
             normal_bam: align_normal/final_bam
             interval_list: interval_list
-            strelka_config: strelka_config
+            strelka_exome_mode: strelka_exome_mode
             dbsnp_vcf: dbsnp
             cosmic_vcf: cosmic_vcf
         out:
