@@ -10,7 +10,8 @@ arguments:
     "-SQQ", "10",
     "-SQQ", "20",
     "-SQQ", "30",
-    "-nct", "8"]
+    "-nct", "8",
+    "--disable_indel_quals"]
 requirements:
     - class: DockerRequirement
       dockerPull: "registry.gsc.wustl.edu/genome/gatk-3.5:1"
