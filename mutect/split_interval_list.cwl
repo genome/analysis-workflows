@@ -2,11 +2,25 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: ['/usr/bin/perl', '-MFile::Copy', '-e',
-"system('/usr/bin/java', '-jar', '/usr/picard/picard.jar', 'IntervalListTools', @ARGV); my $i = 1; for(glob('*/scattered.interval_list')) { File::Copy::move($_, qq{$i.interval_list}); $i++ }"]
+baseCommand: ['/usr/bin/perl', 'helper.pl']
 requirements:
     - class: DockerRequirement
       dockerPull: "registry.gsc.wustl.edu/genome/picard-2.4.1-r:2"
+    - class: InitialWorkDirRequirement
+      listing:
+          - entryname: 'helper.pl'
+            entry: |
+                use File::Copy;
+
+                system('/usr/bin/java', '-jar', '/usr/picard/picard.jar', 'IntervalListTools', @ARGV);
+
+                my $i = 1;
+                for(glob('*/scattered.interval_list')) {
+                    #create unique names and relocate all the scattered intervals to a single directory
+                    File::Copy::move($_, qq{$i.interval_list});
+                    $i++
+                }
+
 arguments:
     [{ valueFrom: OUTPUT=$(runtime.outdir) }]
 inputs:
