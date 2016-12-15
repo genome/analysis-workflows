@@ -2,21 +2,22 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "run bwa_mem"
-baseCommand: ["/usr/local/bin/bwa", "mem"]
-arguments: 
-    ["-K", "10000000",
-    "-t", "8",
-    "-Y"]
+label: "align with bwa_mem and tag"
+
+baseCommand: ["/bin/bash", "helper.sh"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "registry.gsc.wustl.edu/genome/bwa-0.7.15:1"
-stdout: 'refAlign.sam'
+      dockerPull: "registry.gsc.wustl.edu/genome/tagged-alignment:2"
+    - class: InitialWorkDirRequirement
+      listing:
+          - entryname: 'helper.sh'
+            entry: |
+                /usr/local/bin/bwa mem -K 100000000 -t 8 -Y -R "$1" $2 $3 $4 | /usr/local/bin/samblaster -a --addMateTags | /usr/local/bin/samtools view -b -S /dev/stdin
+stdout: "refAlign.bam"
 inputs:
     readgroup:
         type: string
         inputBinding:
-            prefix: "-R"
             position: 1
     reference:
         type: File
@@ -32,5 +33,5 @@ inputs:
         inputBinding:
             position: 4
 outputs:
-    aligned_sam:
-        type: stdout
+    aligned_bam:
+            type: stdout
