@@ -9,7 +9,6 @@ arguments:
     "ASSUME_SORT_ORDER=", "queryname",
     "METRICS_FILE=", "mark_dups_metrics.txt",
     "QUIET=", "true",
-    "COMPRESSION_LEVEL=", "0",
     "VALIDATION_STRINGENCY=", "LENIENT"]
 requirements:
     - class: DockerRequirement
