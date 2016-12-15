@@ -12,7 +12,7 @@ inputs:
         type: File
     reference:
         type: File
-        secondaryFiles: [.fai, .bwt, .sa, .ann, .amb, .pac]
+        secondaryFiles: [.fai, .bwt, .sa, .ann, .amb, .pac, .alt]
     readgroup:
         type: string
 outputs:

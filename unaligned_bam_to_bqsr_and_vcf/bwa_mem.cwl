@@ -22,7 +22,7 @@ inputs:
         type: File
         inputBinding:
             position: 2
-        secondaryFiles: [.fai, .bwt, .sa, .ann, .amb, .pac]
+        secondaryFiles: [.fai, .bwt, .sa, .ann, .amb, .pac, .alt]
     fastq:
         type: File
         inputBinding:

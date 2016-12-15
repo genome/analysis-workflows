@@ -15,7 +15,7 @@ inputs:
         type: string[]
     reference:
         type: File
-        secondaryFiles: [.fai, .bwt, .sa, .ann, .amb, .pac, ^.dict]
+        secondaryFiles: [.fai, .bwt, .sa, .ann, .amb, .pac, ^.dict, .alt]
     dbsnp:
         type: File
         secondaryFiles: [.tbi]
