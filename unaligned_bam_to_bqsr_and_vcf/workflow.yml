@@ -5,7 +5,6 @@ bams:
     - {class: File, path: ../input_A.bam}
     - {class: File, path: ../input_Z.bam}
 readgroups: ['@RG\tID:A\tPL:Illumina\tSM:test-sample-1', '@RG\tID:Z\tPL:Illumina\tSM:test-sample-1']
-tmpdir: "/tmp/"
 dbsnp:
     class: File
     path: ../Homo_sapiens_assembly38.dbsnp138.vcf.gz

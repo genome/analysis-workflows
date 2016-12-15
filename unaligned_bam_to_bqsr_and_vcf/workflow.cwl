@@ -16,8 +16,6 @@ inputs:
     reference:
         type: File
         secondaryFiles: [.fai, .bwt, .sa, .ann, .amb, .pac, ^.dict]
-    tmpdir:
-        type: string
     dbsnp:
         type: File
         secondaryFiles: [.tbi]
@@ -53,7 +51,6 @@ steps:
         run: name_sort.cwl
         in:
             bam: merge/merged_bam
-            tmpdir: tmpdir
         out:
             [name_sorted_bam]
     mark_duplicates:
@@ -66,7 +63,6 @@ steps:
         run: sort.cwl
         in:
             bam: mark_duplicates/duplicate_marked_bam
-            tmpdir: tmpdir
         out:
             [sorted_bam]
     bqsr:

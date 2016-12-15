@@ -17,11 +17,6 @@ inputs:
         type: File
         inputBinding:
             position: 1
-    tmpdir:
-        type: string
-        inputBinding:
-            prefix: "--tmpdir="
-            position: 2
 outputs:
     name_sorted_bam:
         type: File
