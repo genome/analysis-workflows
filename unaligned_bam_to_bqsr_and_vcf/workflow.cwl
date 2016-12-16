@@ -53,23 +53,17 @@ steps:
             bam: merge/merged_bam
         out:
             [name_sorted_bam]
-    mark_duplicates:
-        run: mark_duplicates.cwl
+    mark_duplicates_and_sort:
+        run: mark_duplicates_and_sort.cwl
         in:
             bam: name_sort/name_sorted_bam
-        out:
-            [duplicate_marked_bam]
-    sort:
-        run: sort.cwl
-        in:
-            bam: mark_duplicates/duplicate_marked_bam
         out:
             [sorted_bam]
     bqsr:
         run: bqsr.cwl
         in:
             reference: reference
-            bam: sort/sorted_bam
+            bam: mark_duplicates_and_sort/sorted_bam
             known_sites: [dbsnp, mills, known_indels]
         out:
             [bqsr_table]
@@ -77,7 +71,7 @@ steps:
         run: apply_bqsr.cwl
         in:
             reference: reference
-            bam: sort/sorted_bam
+            bam: mark_duplicates_and_sort/sorted_bam
             bqsr_table: bqsr/bqsr_table
         out:
             [bqsr_bam]
