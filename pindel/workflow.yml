@@ -1,0 +1,12 @@
+reference:
+    class: File
+    path: 10.fa
+tumor_bam:
+    class: File
+    path: tumor.bam
+normal_bam:
+    class: File
+    path: normal.bam
+interval_list:
+    class: File
+    path: region.bed
