@@ -35,7 +35,7 @@ outputs:
         secondaryFiles: .tbi
 steps:
     split_interval_list:
-        run: split_interval_list.cwl
+        run: ../detect_variants/split_interval_list.cwl
         in:
             interval_list: interval_list
             scatter_count: scatter_count
