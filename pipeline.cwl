@@ -40,7 +40,7 @@ outputs:
         secondaryFile: .tbi
 steps:
     align_normal:
-        run: unaligned_bam_to_bqsr_and_vcf/workflow.cwl
+        run: unaligned_bam_to_bqsr/workflow.cwl
         in:
             bams: normal_bams
             readgroups: normal_readgroups
@@ -51,7 +51,7 @@ steps:
         out:
             [final_bam]
     align_tumor:
-        run: unaligned_bam_to_bqsr_and_vcf/workflow.cwl
+        run: unaligned_bam_to_bqsr/workflow.cwl
         in:
             bams: tumor_bams
             readgroups: tumor_readgroups
