@@ -11,8 +11,8 @@ requirements:
       listing:
           - entryname: 'pindel.config'
             entry: |
-                $(inputs.normal_bam.path) 400    normal
-                $(inputs.tumor_bam.path)  400    tumor
+                $(inputs.normal_bam.path) $(inputs.insert_size)    NORMAL
+                $(inputs.tumor_bam.path)  $(inputs.insert_size)    TUMOR
 arguments:
     ["-w", "10",
      "-o", "all"]
@@ -34,6 +34,9 @@ inputs:
         inputBinding:
             prefix: "-j"
             position: 2
+    insert_size:
+        type: int
+        default: 400
 outputs:
     deletions:
         type: File
