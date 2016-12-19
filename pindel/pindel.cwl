@@ -28,7 +28,7 @@ inputs:
         inputBinding:
             prefix: "-f"
             position: 1
-        secondaryFiles: [".fai", "^.dict"]
+        secondaryFiles: [".fai"]
     interval_list:
         type: File
         inputBinding:

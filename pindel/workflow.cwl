@@ -9,7 +9,7 @@ requirements:
 inputs:
     reference:
         type: File
-        secondaryFiles: [".fai", "^.dict"]
+        secondaryFiles: [".fai"]
     tumor_bam:
         type: File
         secondaryFiles: .bai

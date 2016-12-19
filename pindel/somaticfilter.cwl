@@ -23,7 +23,7 @@ requirements:
 inputs:
     reference:
         type: File
-        secondaryFiles: [".fai", "^.dict"]
+        secondaryFiles: [".fai"]
     pindel_output_summary:
         type: File
 outputs:
