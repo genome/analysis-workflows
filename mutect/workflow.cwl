@@ -22,6 +22,12 @@ inputs:
     scatter_count:
         type: int
         default: 50
+    dbsnp_vcf:
+        type: File?
+        secondaryFiles: .tbi
+    cosmic_vcf:
+        type: File?
+        secondaryFiles: .tbi
 outputs:
     merged_vcf:
         type: File
@@ -42,6 +48,8 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             interval_list: split_interval_list/split_interval_lists
+            dbsnp_vcf: dbsnp_vcf
+            cosmic_vcf: cosmic_vcf
         out:
             [vcf]
     merge:

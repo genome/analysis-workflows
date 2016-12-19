@@ -16,6 +16,12 @@ inputs:
         secondaryFiles: .bai
     interval_list:
         type: File
+    dbsnp_vcf:
+        type: File?
+        secondaryFiles: .tbi
+    cosmic_vcf:
+        type: File?
+        secondaryFiles: .tbi
 outputs:
     vcf:
         type: File
@@ -28,6 +34,8 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             interval_list: interval_list
+            dbsnp_vcf: dbsnp_vcf
+            cosmic_vcf: cosmic_vcf
         out:
             [vcf]
     index:
