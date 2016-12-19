@@ -16,7 +16,7 @@ inputs:
         type: File
         secondaryFiles: .bai
     interval_list:
-        type: File[]
+        type: File
     strelka_config:
         type: File
     dbsnp_vcf:
@@ -49,6 +49,7 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             config: strelka_config
+            interval_list: interval_list
         out:
             [merged_vcf]
     varscan:
@@ -57,6 +58,7 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
+            interval_list: interval_list
         out:
             [merged_vcf]
     combine:

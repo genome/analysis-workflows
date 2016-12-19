@@ -11,6 +11,8 @@ inputs:
         type: File
     normal_bam:
         type: File
+    roi_bed:
+        type: File?
 outputs:
     snvs:
         type: File
@@ -61,6 +63,7 @@ steps:
             reference: reference
             normal_bam: normal_bam
             tumor_bam: tumor_bam
+            roi_bed: roi_bed
         out:
             [snvs, indels]
     process_somatic_snvs:

@@ -21,6 +21,10 @@ inputs:
         inputBinding:
             position: 3
         secondaryFiles: .fai
+    roi_bed:
+        type: File?
+        inputBinding:
+            position: 4
 outputs:
     snvs:
         type: File

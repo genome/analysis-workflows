@@ -7,3 +7,6 @@ tumor_bam:
 normal_bam:
     class: File
     path: ../normal.tiny.bam
+interval_list:
+    class: File
+    path: ../custom_reference/all_sequences.interval_list
