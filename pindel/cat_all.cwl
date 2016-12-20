@@ -5,13 +5,13 @@ baseCommand: ['/bin/cat']
 requirements:
     - class: DockerRequirement
       dockerPull: "ubuntu:xenial"
-stdout: "all_interval_pindel.head"
+stdout: "all_interval_pindel.out"
 inputs:
-    all_interval_pindel_heads:
+    interval_pindel_outs:
         type: File[]
         inputBinding:
             position: 1 
 outputs:
-    all_interval_pindel_head:
+    all_interval_pindel_out:
         type: stdout
 

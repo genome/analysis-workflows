@@ -1,17 +1,17 @@
 #! /usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: ['/bin/grep', 'ChrID']
+baseCommand: ['/bin/sed', '/^\@/d']
 requirements:
     - class: DockerRequirement
       dockerPull: "ubuntu:xenial"
-stdout: "all_interval_pindel.head"
+stdout: "interval_list.bed"
 inputs:
-    pindel_output:
+    interval_list:
         type: File
         inputBinding:
             position: 1
 outputs:
-    pindel_head:
+    interval_bed:
         type: stdout
 

@@ -4,6 +4,7 @@ cwlVersion: v1.0
 class: Workflow
 label: "pindel parallel workflow"
 requirements:
+    - class: ScatterFeatureRequirement
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
 inputs:
@@ -37,9 +38,9 @@ steps:
             scatter_count: scatter_count
         out:
             [split_interval_lists]
-    pindel_cat_grep:
+    pindel_cat:
         scatter: interval_list
-        run: pindel_cat_grep.cwl
+        run: pindel_cat.cwl
         in:
             reference: reference
             tumor_bam: tumor_bam
@@ -47,28 +48,34 @@ steps:
             interval_list: split_interval_list/split_interval_lists
             insert_size: insert_size
         out:
-            [per_interval_pindel_head]
-    cat_head:
-        run: cat_head.cwl
+            [per_interval_pindel_out]
+    cat_all:
+        run: cat_all.cwl
         in:
-            interval_pindel_heads: [pindel_cat_grep/per_interval_pindel_head]
+            interval_pindel_outs: [pindel_cat/per_interval_pindel_out]
         out:
-            [all_interval_pindel_head]
+            [all_interval_pindel_out]
+    grep:
+        run: grep.cwl
+        in: 
+           pindel_output: cat_all/all_interval_pindel_out
+        out:
+           [pindel_head] 
     somaticfilter:
         run: somaticfilter.cwl
         in:
             reference: reference
-            pindel_output_summary: cat_head/all_interval_pindel_head
+            pindel_output_summary: grep/pindel_head
         out: 
             [vcf]
     bgzip:
-        run: ../bgzip.cwl
+        run: ../detect_variants/bgzip.cwl
         in: 
             file: somaticfilter/vcf
         out:
             [bgzipped_file]
     index:
-        run: ../index.cwl
+        run: ../detect_variants/index.cwl
         in:
             vcf: bgzip/bgzipped_file
         out:
