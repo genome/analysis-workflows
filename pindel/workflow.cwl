@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "pindel workflow"
+label: "pindel parallel workflow"
 requirements:
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
@@ -18,39 +18,47 @@ inputs:
         secondaryFiles: .bai
     interval_list:
         type: File
+    scatter_count:
+        type: int
+        default: 50
+    insert_size:
+        type: int
+        default: 400
 outputs:
     merged_vcf:
         type: File
         outputSource: index/indexed_vcf
         secondaryFiles: .tbi
 steps:
-    pindel:
-        run: pindel.cwl
+    split_interval_list:
+        run: ../detect_variants/split_interval_list.cwl
+        in:
+            interval_list: interval_list
+            scatter_count: scatter_count
+        out:
+            [split_interval_lists]
+    pindel_cat_grep:
+        scatter: interval_list
+        run: pindel_cat_grep.cwl
         in:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            interval_list: interval_list
+            interval_list: split_interval_list/split_interval_lists
+            insert_size: insert_size
         out:
-            [deletions, insertions]
-    cat:
-        run: cat.cwl
+            [per_interval_pindel_head]
+    cat_head:
+        run: cat_head.cwl
         in:
-            deletion_out: pindel/deletions
-            insertion_out: pindel/insertions
+            interval_pindel_heads: [pindel_cat_grep/per_interval_pindel_head]
         out:
-            [pindel_out]
-    grep:
-        run: grep.cwl
-        in: 
-            pindel_output: cat/pindel_out
-        out:
-            [pindel_output_summary]
+            [all_interval_pindel_head]
     somaticfilter:
         run: somaticfilter.cwl
         in:
             reference: reference
-            pindel_output_summary: grep/pindel_output_summary
+            pindel_output_summary: cat_head/all_interval_pindel_head
         out: 
             [vcf]
     bgzip:

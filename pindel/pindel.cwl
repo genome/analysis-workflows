@@ -15,6 +15,7 @@ requirements:
                 $(inputs.tumor_bam.path)  $(inputs.insert_size)    TUMOR
 arguments:
     ["-w", "10",
+     "-T", "4",
      "-o", "all"]
 inputs:
     tumor_bam:
@@ -46,3 +47,15 @@ outputs:
         type: File
         outputBinding:
             glob: "all_SI"
+    tandems:
+        type: File
+        outputBinding:
+            glob: "all_TD"
+    long_insertions:
+        type: File
+        outputBinding:
+            glob: "all_LI"
+    inversions:
+        type: File
+        outputBinding:
+            glob: "all_INV"
