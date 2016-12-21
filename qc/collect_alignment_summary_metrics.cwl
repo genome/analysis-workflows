@@ -14,10 +14,12 @@ inputs:
         type: File
         inputBinding:
             prefix: "INPUT="
+        secondaryFiles: [.bai]
     reference:
         type: File
         inputBinding:
             prefix: "REFERENCE_SEQUENCE="
+        secondaryFiles: [.fai]
 outputs:
     alignment_summary_metrics:
         type: File

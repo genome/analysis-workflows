@@ -15,6 +15,7 @@ inputs:
         type: File
         inputBinding:
             prefix: "I="
+        secondaryFiles: [.bai]
 outputs:
     insert_size_metrics:
         type: File

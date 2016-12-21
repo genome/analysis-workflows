@@ -14,6 +14,7 @@ inputs:
         type: File
         inputBinding:
             prefix: "I="
+        secondaryFiles: [.bai]
     reference:
         type: File
         inputBinding:
