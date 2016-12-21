@@ -31,6 +31,9 @@ outputs:
     hs_metrics:
         type: File
         outputSource: collect_hs_metrics/hs_metrics
+    flagstats:
+        type: File
+        outputSource: samtools_flagstat/flagstats
     verify_bam_id_metrics:
         type: File
         outputSource: verify_bam_id/verify_bam_id_metrics
@@ -60,6 +63,11 @@ steps:
             target_intervals: target_intervals
         out:
             [hs_metrics]
+    samtools_flagstat:
+        run: samtools_flagstat.cwl
+        in:
+            bam: bam
+        out: [flagstats]
     select_variants:
         run: ../detect_variants/select_variants.cwl
         in:
