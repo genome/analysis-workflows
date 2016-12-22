@@ -16,8 +16,6 @@ inputs:
         type: File
     target_intervals:
         type: File
-    roi_intervals:
-        type: File
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -73,7 +71,7 @@ steps:
         in:
             reference: reference
             vcf: omni_vcf
-            interval_list: roi_intervals
+            interval_list: target_intervals
         out:
             [filtered_vcf]
     verify_bam_id:
