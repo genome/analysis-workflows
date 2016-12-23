@@ -2,35 +2,43 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "strelka 1.0.15"
-baseCommand: "/usr/bin/cwl_helper.sh"
+label: "strelka 2.7.1"
+baseCommand: "/usr/bin/docker_helper.pl"
 requirements:
     DockerRequirement:
-        dockerPull: "mgibio/strelka-cwl:1.0.15"
+        dockerPull: "mgibio/strelka-cwl:2.7.1"
     ResourceRequirement:
         coresMin: 8
 arguments:
-    - { valueFrom: $(runtime.cores), position: 5 }
+    [ { valueFrom: $(runtime.cores), position: 1 },
+      { valueFrom: $(runtime.outdir), position: 2 }]
 inputs:
     tumor_bam:
         type: File
         inputBinding:
-            position: 1
+            prefix: '--tumorBam='
+            separate: false
+            position: 3
         secondaryFiles: .bai
     normal_bam:
         type: File
         inputBinding:
-            position: 2
+            prefix: '--normalBam='
+            separate: false
+            position: 4
         secondaryFiles: .bai
     reference:
         type: File
         inputBinding:
-            position: 3
+            prefix: '--referenceFasta='
+            separate: false
+            position: 5
         secondaryFiles: .fai
-    config:
-        type: File
+    exome_mode:
+        type: boolean
         inputBinding:
-            position: 4
+            prefix: '--exome'
+            position: 6
 outputs:
      all_indels:
          type: File

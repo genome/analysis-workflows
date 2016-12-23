@@ -17,14 +17,14 @@ inputs:
         secondaryFiles: .bai
     interval_list:
         type: File
-    strelka_config:
-        type: File
     dbsnp_vcf:
         type: File?
         secondaryFiles: .tbi
     cosmic_vcf:
         type: File?
         secondaryFiles: .tbi
+    strelka_exome_mode:
+        type: boolean
 outputs:
     final_vcf:
         type: File
@@ -48,8 +48,8 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            config: strelka_config
             interval_list: interval_list
+            exome_mode: strelka_exome_mode
         out:
             [merged_vcf]
     varscan:
