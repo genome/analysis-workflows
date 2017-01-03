@@ -9,7 +9,7 @@ requirements:
       dockerPull: "dbmi/gatk-docker:latest@sha256:7e7d7911d51b0109cd1db1b5ac824287c7af013da29fe28022289ff62940f0be" #GATK 3.6 at a specific container revision
 arguments:
     ["-genotypeMergeOptions", "PRIORITIZE",
-     "--rod_priority_list", "mutect,varscan,strelka",
+     "--rod_priority_list", "mutect,varscan,strelka,pindel",
      "-o", { valueFrom: $(runtime.outdir)/combined.vcf }]
 inputs:
     reference:
@@ -35,6 +35,12 @@ inputs:
         inputBinding:
             prefix: "--variant:strelka"
             position: 4
+        secondaryFiles: .tbi
+    pindel_vcf:
+        type: File
+        inputBinding:
+            prefix: "--variant:pindel"
+            position: 5
         secondaryFiles: .tbi
 outputs:
     combined_vcf:
