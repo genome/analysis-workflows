@@ -1,0 +1,13 @@
+reference:
+    class: File
+    path: all_sequences.fa
+tumor_bam:
+    class: File
+    path: tumor.bam
+normal_bam:
+    class: File
+    path: normal.bam
+interval_list:
+    class: File
+    path: region.interval_list
+chromosome_list: ["10", "21", "22"]
