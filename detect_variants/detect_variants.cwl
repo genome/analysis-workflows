@@ -11,18 +11,18 @@ inputs:
         secondaryFiles: [".fai", "^.dict"]
     tumor_bam:
         type: File
-        secondaryFiles: .bai
+        secondaryFiles: [".bai"]
     normal_bam:
         type: File
-        secondaryFiles: .bai
+        secondaryFiles: [".bai"]
     interval_list:
         type: File
     dbsnp_vcf:
         type: File?
-        secondaryFiles: .tbi
+        secondaryFiles: [".tbi"]
     cosmic_vcf:
         type: File?
-        secondaryFiles: .tbi
+        secondaryFiles: [".tbi"]
     strelka_exome_mode:
         type: boolean
     pindel_chromosome_list:
@@ -36,7 +36,7 @@ outputs:
     final_vcf:
         type: File
         outputSource: index/indexed_vcf
-        secondaryFiles: .tbi
+        secondaryFiles: [".tbi"]
 steps:
     mutect:
         run: ../mutect/workflow.cwl

@@ -13,10 +13,10 @@ inputs:
         secondaryFiles: [".fai"]
     tumor_bam:
         type: File
-        secondaryFiles: .bai
+        secondaryFiles: [".bai"]
     normal_bam:
         type: File
-        secondaryFiles: .bai
+        secondaryFiles: [".bai"]
     interval_list:
         type: File
     chromosome_list:
@@ -30,7 +30,7 @@ outputs:
     merged_vcf:
         type: File
         outputSource: index_filtered/indexed_vcf
-        secondaryFiles: .tbi
+        secondaryFiles: [".tbi"]
 steps:
     pindel_cat:
         scatter: chromosome
