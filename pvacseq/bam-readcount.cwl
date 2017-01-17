@@ -104,7 +104,10 @@ requirements:
                 my ($list_fh, $list_name) = File::Temp::tempfile();
                 generate_region_list($hash, $list_fh);
                 $list_fh->close();
-                `/usr/bin/bam-readcount -f $ref_fasta -l $list_name -w 0 -b 20 $optional_param $bam_file > $output_file`
+                `/usr/bin/bam-readcount -f $ref_fasta -l $list_name -w 0 -b 20 $optional_param $bam_file > $output_file`;
+                if (-z $output_file) {
+                    unlink $output_file;
+                }
             }
 
             sub generate_region_list {
