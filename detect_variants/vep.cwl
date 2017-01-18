@@ -18,6 +18,7 @@ arguments:
     "--symbol",
     "--term", "SO",
     "--flag_pick",
+    "--maf_exac",
     "-o", { valueFrom: $(runtime.outdir)/annotated.vcf }]
 inputs:
     vcf:
