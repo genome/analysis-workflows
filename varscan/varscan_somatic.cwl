@@ -20,7 +20,7 @@ inputs:
         type: File
         inputBinding:
             position: 3
-        secondaryFiles: .fai
+        secondaryFiles: [.fai]
     roi_bed:
         type: File?
         inputBinding:
