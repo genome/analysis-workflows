@@ -7,6 +7,8 @@ baseCommand: ["/usr/bin/pindel", "-i", "pindel.config"]
 requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/pindel-cwl:v0.2.5b8"
+    - class: ResourceRequirement
+      ramMin: 16000
     - class: InitialWorkDirRequirement
       listing:
           - entryname: 'pindel.config'
