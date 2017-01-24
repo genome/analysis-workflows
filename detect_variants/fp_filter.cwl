@@ -16,13 +16,13 @@ inputs:
         inputBinding:
             prefix: "--reference"
             position: 1
-        secondaryFiles: .fai
+        secondaryFiles: [.fai]
     bam:
         type: File
         inputBinding:
             prefix: "--bam-file"
             position: 2
-        secondaryFiles: .bai
+        secondaryFiles: [.bai]
     vcf:
         type: File
         inputBinding:

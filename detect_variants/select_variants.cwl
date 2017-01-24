@@ -21,7 +21,7 @@ inputs:
         inputBinding:
             prefix: "--variant"
             position: 2
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
     interval_list:
         type: File
         inputBinding:

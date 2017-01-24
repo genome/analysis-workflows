@@ -6,7 +6,7 @@ label: "varscan somatic workflow"
 inputs:
     reference:
         type: File
-        secondaryFiles: .fai
+        secondaryFiles: [.fai]
     tumor_bam:
         type: File
     normal_bam:

@@ -23,19 +23,19 @@ inputs:
         inputBinding:
             prefix: "--variant:mutect"
             position: 2
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
     varscan_vcf:
         type: File
         inputBinding:
             prefix: "--variant:varscan"
             position: 3
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
     strelka_vcf:
         type: File
         inputBinding:
             prefix: "--variant:strelka"
             position: 4
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
 outputs:
     combined_vcf:
         type: File

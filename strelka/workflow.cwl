@@ -10,13 +10,13 @@ requirements:
 inputs:
     tumor_bam:
         type: File
-        secondaryFiles: .bai
+        secondaryFiles: [.bai]
     normal_bam:
         type: File
-        secondaryFiles: .bai
+        secondaryFiles: [.bai]
     reference:
         type: File
-        secondaryFiles: .fai
+        secondaryFiles: [.fai]
     interval_list:
         type: File
     exome_mode:
@@ -25,7 +25,7 @@ outputs:
     merged_vcf:
         type: File
         outputSource: index_filtered/indexed_vcf
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
 steps:
     strelka:
         run: strelka.cwl

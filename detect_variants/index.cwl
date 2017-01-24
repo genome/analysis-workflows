@@ -21,7 +21,7 @@ inputs:
 outputs:
     indexed_vcf:
         type: File
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
         outputBinding:
             glob: $(inputs.vcf.basename)
 

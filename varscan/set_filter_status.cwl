@@ -17,13 +17,13 @@ inputs:
         inputBinding:
             prefix: "--variant"
             position: 2
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
     filtered_vcf:
         type: File
         inputBinding:
             prefix: "--mask"
             position: 3
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
     reference:
         type: File
         inputBinding:

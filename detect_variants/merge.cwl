@@ -19,7 +19,7 @@ inputs:
         type: File[]
         inputBinding:
             position: 1
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
 outputs:
     merged_vcf:
         type: File

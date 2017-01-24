@@ -10,7 +10,7 @@ outputs:
     processed_vcf:
         type: File
         outputSource: index/indexed_vcf
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
 steps:
     add_gt:
         run: add_gt.cwl

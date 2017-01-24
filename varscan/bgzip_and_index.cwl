@@ -10,7 +10,7 @@ outputs:
     indexed_vcf:
         type: File
         outputSource: index/indexed_vcf
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
 steps:
     bgzip:
         run: ../detect_variants/bgzip.cwl
