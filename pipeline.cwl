@@ -32,12 +32,12 @@ inputs:
         type: boolean
     cosmic_vcf:
         type: File?
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
 outputs:
     final_vcf:
         type: File
         outputSource: detect_variants/final_vcf
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
 steps:
     align_normal:
         run: unaligned_bam_to_bqsr/workflow.cwl
