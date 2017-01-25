@@ -18,6 +18,7 @@ arguments:
     "--symbol",
     "--term", "SO",
     "--flag_pick",
+    "--maf_exac",
     "-o", { valueFrom: $(runtime.outdir)/annotated.vcf }]
 inputs:
     vcf:
@@ -30,6 +31,11 @@ inputs:
         inputBinding:
             prefix: "--dir"
             position: 2
+    synonyms_file:
+        type: File?
+        inputBinding:
+            prefix: "--synonyms"
+            position: 3
 outputs:
     annotated_vcf:
         type: File
