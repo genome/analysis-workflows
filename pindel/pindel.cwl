@@ -9,6 +9,7 @@ requirements:
       dockerPull: "mgibio/pindel-cwl:v0.2.5b8"
     - class: ResourceRequirement
       ramMin: 16000
+      coresMin: 4
     - class: InitialWorkDirRequirement
       listing:
           - entryname: 'pindel.config'
