@@ -10,4 +10,3 @@ normal_bam:
 interval_list:
     class: File
     path: region.interval_list
-chromosome_list: ["10", "21", "22"]
