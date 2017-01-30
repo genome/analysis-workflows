@@ -19,10 +19,6 @@ inputs:
         secondaryFiles: [".bai"]
     interval_list:
         type: File
-    chromosome_list:
-        type:
-            type: array
-            items: string
     insert_size:
         type: int
         default: 400
@@ -32,6 +28,12 @@ outputs:
         outputSource: index_filtered/indexed_vcf
         secondaryFiles: [".tbi"]
 steps:
+    get_chromosome_list:
+        run: get_chromosome_list.cwl
+        in: 
+            interval_list: interval_list
+        out:
+            [chromosome_list]
     pindel_cat:
         scatter: chromosome
         run: pindel_cat.cwl
@@ -39,7 +41,7 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            chromosome: chromosome_list
+            chromosome: [get_chromosome_list/chromosome_list]
             insert_size: insert_size
         out:
             [per_chromosome_pindel_out]

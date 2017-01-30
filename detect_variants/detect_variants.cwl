@@ -25,10 +25,6 @@ inputs:
         secondaryFiles: [.tbi]
     strelka_exome_mode:
         type: boolean
-    pindel_chromosome_list:
-        type:
-            type: array
-            items: string
     pindel_insert_size:
         type: int
         default: 400
@@ -75,7 +71,6 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             interval_list: interval_list
-            chromosome_list: pindel_chromosome_list
             insert_size: pindel_insert_size
         out:
             [merged_vcf]
