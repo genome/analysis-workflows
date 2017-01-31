@@ -39,4 +39,4 @@ outputs:
         type: File
         outputBinding:
             glob: "Final.bam"
-        secondaryFiles: [".bai"]
+        secondaryFiles: [.bai]
