@@ -13,7 +13,7 @@ inputs:
         type: File
         inputBinding:
             position: 1
-        secondaryFiles: [.bai]
+        secondaryFiles: [^.bai]
 outputs:
     flagstats:
         type: stdout

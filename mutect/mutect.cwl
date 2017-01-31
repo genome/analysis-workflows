@@ -21,13 +21,13 @@ inputs:
         inputBinding:
             prefix: "-I:tumor"
             position: 2
-        secondaryFiles: [.bai]
+        secondaryFiles: [^.bai]
     normal_bam:
         type: File
         inputBinding:
             prefix: "-I:normal"
             position: 3
-        secondaryFiles: [.bai]
+        secondaryFiles: [^.bai]
     interval_list:
         type: File
         inputBinding:

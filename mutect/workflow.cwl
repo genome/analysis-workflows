@@ -13,10 +13,10 @@ inputs:
         secondaryFiles: [".fai", "^.dict"]
     tumor_bam:
         type: File
-        secondaryFiles: [.bai]
+        secondaryFiles: [^.bai]
     normal_bam:
         type: File
-        secondaryFiles: [.bai]
+        secondaryFiles: [^.bai]
     interval_list:
         type: File
     scatter_count:
