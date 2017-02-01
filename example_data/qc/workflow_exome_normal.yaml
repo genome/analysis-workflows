@@ -1,0 +1,17 @@
+#!/usr/bin/env cwl-runner
+cwl:tool: workflow_exome.cwl
+reference:
+  class: File
+  path: keep:591f8a4326389d97bbbb01ddd1bcd606+8203/GRCh38_full_analysis_set_plus_decoy_hla.fa
+bait_intervals:
+  class: File
+  path: keep:d8abfaae11ae3416b6bb95f72671d133+205/xgen-exome-research-panel-probes.interval_list
+target_intervals:
+  class: File
+  path: keep:d8abfaae11ae3416b6bb95f72671d133+205/xgen-exome-research-panel-targets.interval_list
+omni_vcf:
+  class: File
+  path: keep:d41d8cd98f00b204e9800998ecf8427e+0/omni25-ld-pruned-20000-2000-0.5-annotated.wchr.sites_only.b38.autosomes_only.vcf.gz
+bam: 
+  class: File
+  path: keep:a32c5bdfa7879dbc555b095b7f1624bf+3117/Final.bam
