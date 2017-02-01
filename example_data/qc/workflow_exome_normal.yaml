@@ -11,7 +11,7 @@ target_intervals:
   path: keep:d8abfaae11ae3416b6bb95f72671d133+205/xgen-exome-research-panel-targets.interval_list
 omni_vcf:
   class: File
-  path: keep:d41d8cd98f00b204e9800998ecf8427e+0/omni25-ld-pruned-20000-2000-0.5-annotated.wchr.sites_only.b38.autosomes_only.vcf.gz
+  path: keep:874df92638cf01d59b18f42959082d1c+276/omni25-ld-pruned-20000-2000-0.5-annotated.wchr.sites_only.b38.autosomes_only.vcf.gz
 bam: 
   class: File
   path: keep:a32c5bdfa7879dbc555b095b7f1624bf+3117/Final.bam
