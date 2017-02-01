@@ -8,7 +8,7 @@ requirements:
 inputs:
     bam:
         type: File
-        secondaryFiles: [.bai]
+        secondaryFiles: [^.bai]
     reference:
         type: File
         secondaryFiles: [.fai]

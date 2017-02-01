@@ -16,7 +16,7 @@ inputs:
         type: File
         inputBinding:
             prefix: "INPUT="
-        secondaryFiles: [.bai]
+        secondaryFiles: [^.bai]
     reference:
         type: File
         inputBinding:
