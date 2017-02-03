@@ -61,6 +61,13 @@ steps:
             interval_list: interval_list
         out:
             [merged_vcf]
+    pindel:
+        run: ../pindel/workflow.cwl
+        in:
+            reference: reference
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
+            interval_list: interval_list
     combine:
         run: combine_variants.cwl
         in:
@@ -68,6 +75,7 @@ steps:
             mutect_vcf: mutect/merged_vcf
             strelka_vcf: strelka/merged_vcf
             varscan_vcf: varscan/merged_vcf
+            pindel_vcf: pindel/merged_vcf
         out:
             [combined_vcf]
     filter:
