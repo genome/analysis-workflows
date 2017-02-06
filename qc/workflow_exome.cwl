@@ -19,6 +19,8 @@ inputs:
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
+    collect_hs_metrics_per_target_coverage:
+        type: boolean?
 outputs:
     insert_size_metrics:
         type: File
@@ -29,6 +31,9 @@ outputs:
     hs_metrics:
         type: File
         outputSource: collect_hs_metrics/hs_metrics
+    per_target_coverage_metrics:
+        type: File?
+        outputSource: collect_hs_metrics/per_target_coverage_metrics
     flagstats:
         type: File
         outputSource: samtools_flagstat/flagstats
@@ -59,8 +64,9 @@ steps:
             reference: reference
             bait_intervals: bait_intervals
             target_intervals: target_intervals
+            per_target_coverage: collect_hs_metrics_per_target_coverage
         out:
-            [hs_metrics]
+            [hs_metrics, per_target_coverage_metrics]
     samtools_flagstat:
         run: samtools_flagstat.cwl
         in:
