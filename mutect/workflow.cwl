@@ -13,10 +13,10 @@ inputs:
         secondaryFiles: [".fai", "^.dict"]
     tumor_bam:
         type: File
-        secondaryFiles: .bai
+        secondaryFiles: [^.bai]
     normal_bam:
         type: File
-        secondaryFiles: .bai
+        secondaryFiles: [^.bai]
     interval_list:
         type: File
     scatter_count:
@@ -24,15 +24,15 @@ inputs:
         default: 50
     dbsnp_vcf:
         type: File?
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
     cosmic_vcf:
         type: File?
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
 outputs:
     merged_vcf:
         type: File
         outputSource: index/indexed_vcf
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
 steps:
     split_interval_list:
         run: ../detect_variants/split_interval_list.cwl

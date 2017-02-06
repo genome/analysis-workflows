@@ -9,7 +9,7 @@ requirements:
 inputs:
     reference:
         type: File
-        secondaryFiles: .fai
+        secondaryFiles: [.fai]
     tumor_bam:
         type: File
     normal_bam:
@@ -20,15 +20,15 @@ outputs:
     snvs:
         type: File
         outputSource: index_snvs/indexed_vcf
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
     indels:
         type: File
         outputSource: index_indels/indexed_vcf
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
     merged_vcf:
         type: File
         outputSource: index/indexed_vcf
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
 steps:
     intervals_to_bed:
         run: intervals_to_bed.cwl

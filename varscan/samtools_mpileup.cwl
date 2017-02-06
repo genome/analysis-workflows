@@ -15,7 +15,7 @@ inputs:
         inputBinding:
             prefix: "-f"
             position: 2
-        secondaryFiles: .fai
+        secondaryFiles: [.fai]
     normal_bam:
         type: File
         inputBinding:

@@ -10,18 +10,18 @@ inputs:
         secondaryFiles: [".fai", "^.dict"]
     tumor_bam:
         type: File
-        secondaryFiles: .bai
+        secondaryFiles: [^.bai]
     normal_bam:
         type: File
-        secondaryFiles: .bai
+        secondaryFiles: [^.bai]
     interval_list:
         type: File
     dbsnp_vcf:
         type: File?
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
     cosmic_vcf:
         type: File?
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
 outputs:
     vcf:
         type: File

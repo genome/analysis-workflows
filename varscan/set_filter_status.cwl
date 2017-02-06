@@ -6,7 +6,7 @@ label: "create filtered VCF"
 baseCommand: ["/usr/local/bin/jdk1.8.0_45/bin/java", "-jar", "/usr/local/bin/GATK3.6/GenomeAnalysisTK.jar", "-T", "VariantFiltration"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "dbmi/gatk-docker:latest@sha256:7e7d7911d51b0109cd1db1b5ac824287c7af013da29fe28022289ff62940f0be" #GATK 3.6 at a specific container revision
+      dockerPull: "dbmi/gatk-docker:v1" #GATK 3.6 at a specific container revision
 arguments:
     ["--maskName", "processSomatic",
     "--filterNotInMask",
@@ -17,13 +17,13 @@ inputs:
         inputBinding:
             prefix: "--variant"
             position: 2
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
     filtered_vcf:
         type: File
         inputBinding:
             prefix: "--mask"
             position: 3
-        secondaryFiles: .tbi
+        secondaryFiles: [.tbi]
     reference:
         type: File
         inputBinding:

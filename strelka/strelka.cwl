@@ -19,21 +19,21 @@ inputs:
             prefix: '--tumorBam='
             separate: false
             position: 3
-        secondaryFiles: .bai
+        secondaryFiles: [^.bai]
     normal_bam:
         type: File
         inputBinding:
             prefix: '--normalBam='
             separate: false
             position: 4
-        secondaryFiles: .bai
+        secondaryFiles: [^.bai]
     reference:
         type: File
         inputBinding:
             prefix: '--referenceFasta='
             separate: false
             position: 5
-        secondaryFiles: .fai
+        secondaryFiles: [.fai]
     exome_mode:
         type: boolean
         inputBinding:

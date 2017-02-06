@@ -10,6 +10,7 @@ requirements:
       dockerPull: "registry.gsc.wustl.edu/genome/sort-mark-duplicates:2"
     - class: ResourceRequirement
       coresMin: 8
+      ramMin: 18000
     - class: InitialWorkDirRequirement
       listing:
           - entryname: 'helper.sh'

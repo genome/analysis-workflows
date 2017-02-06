@@ -29,7 +29,7 @@ outputs:
     final_bam:
         type: File
         outputSource: apply_bqsr/bqsr_bam
-        secondaryFiles: [.bai]
+        secondaryFiles: [^.bai]
 steps:
     align:
         scatter: [bam, readgroup]
