@@ -30,8 +30,16 @@ inputs:
         type: File
         inputBinding:
             prefix: "TARGET_INTERVALS="
+    per_target_coverage:
+        type: boolean?
+        inputBinding:
+            prefix: "PER_TARGET_COVERAGE=PerTargetCoverage.txt"
 outputs:
     hs_metrics:
         type: File
         outputBinding:
             glob: "HsMetrics.txt"
+    per_target_coverage_metrics:
+        type: File?
+        outputBinding:
+            glob: "PerTargetCoverage.txt"
