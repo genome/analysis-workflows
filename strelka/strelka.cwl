@@ -43,18 +43,18 @@ outputs:
      all_indels:
          type: File
          outputBinding:
-             glob: "output/results/all.somatic.indels.vcf"
+             glob: "results/all.somatic.indels.vcf"
      all_snvs:
          type: File
          outputBinding:
-             glob: "output/results/all.somatic.snvs.vcf"
+             glob: "results/all.somatic.snvs.vcf"
      passed_indels:
          type: File
          outputBinding:
-             glob: "output/results/passed.somatic.indels.vcf"
+             glob: "results/passed.somatic.indels.vcf"
      passed_snvs:
          type: File
          outputBinding:
-             glob: "output/results/passed.somatic.snvs.vcf"
+             glob: "results/passed.somatic.snvs.vcf"
 
 
