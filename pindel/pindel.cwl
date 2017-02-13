@@ -23,10 +23,10 @@ arguments:
 inputs:
     tumor_bam:
         type: File
-        secondaryFiles: [".bai"]
+        secondaryFiles: ["^.bai"]
     normal_bam:
-        type: File     
-        secondaryFiles: [".bai"]
+        type: File
+        secondaryFiles: ["^.bai"]
     reference:
         type: File
         inputBinding:
