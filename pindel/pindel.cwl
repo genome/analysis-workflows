@@ -25,7 +25,7 @@ inputs:
         type: File
         secondaryFiles: ["^.bai"]
     normal_bam:
-        type: File     
+        type: File
         secondaryFiles: ["^.bai"]
     reference:
         type: File
