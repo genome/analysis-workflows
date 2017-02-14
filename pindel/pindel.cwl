@@ -12,10 +12,14 @@ requirements:
       coresMin: 4
     - class: InitialWorkDirRequirement
       listing:
+          - entryname: tumor.bam
+            entry: $(inputs.tumor_bam)
+          - entryname: normal.bam
+            entry: $(inputs.normal_bam)
           - entryname: 'pindel.config'
             entry: |
-                $(inputs.normal_bam.path) $(inputs.insert_size)    NORMAL
-                $(inputs.tumor_bam.path)  $(inputs.insert_size)    TUMOR
+                normal.bam $(inputs.insert_size)    NORMAL
+                tumor.bam  $(inputs.insert_size)    TUMOR
 arguments:
     ["-w", "20",
      "-T", "4",
