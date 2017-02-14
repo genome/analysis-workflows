@@ -11,9 +11,11 @@ requirements:
       ramMin: 16000
     - class: InitialWorkDirRequirement
       listing:
+          - entryname: pindel_output_summary
+            entry: $(inputs.pindel_output_summary)
           - entryname: 'filter.config'
             entry: |
-                input=$(inputs.pindel_output_summary.path)
+                input=pindel_output_summary
                 vaf=0.1
                 cov=20
                 hom=6
