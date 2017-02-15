@@ -32,7 +32,7 @@ inputs:
 outputs:
     bam:
         type: File
-        outputSource: alignment/bqsr_bam
+        outputSource: alignment/final_bam
     insert_size_metrics:
         type: File
         outputSource: qc/insert_size_metrics
@@ -64,11 +64,11 @@ steps:
             mills: mills
             known_indels: known_indels
             dbsnp: dbsnp
-        out: [bqsr_bam]
+        out: [final_bam]
     qc:
         run: qc/workflow_exome.cwl
         in:
-            bam: alignment/bqsr_bam
+            bam: alignment/final_bam
             reference: reference
             bait_intervals: bait_intervals
             target_intervals: target_intervals
