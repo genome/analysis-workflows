@@ -40,21 +40,12 @@ inputs:
             prefix: '--exome'
             position: 6
 outputs:
-     all_indels:
+     indels:
          type: File
          outputBinding:
-             glob: "results/all.somatic.indels.vcf"
-     all_snvs:
+             glob: "results/variants/somatic.indels.vcf.gz"
+     snvs:
          type: File
          outputBinding:
-             glob: "results/all.somatic.snvs.vcf"
-     passed_indels:
-         type: File
-         outputBinding:
-             glob: "results/passed.somatic.indels.vcf"
-     passed_snvs:
-         type: File
-         outputBinding:
-             glob: "results/passed.somatic.snvs.vcf"
-
+             glob: "results/variants/somatic.snvs.vcf.gz"
 

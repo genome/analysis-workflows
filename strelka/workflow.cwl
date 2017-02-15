@@ -35,12 +35,12 @@ steps:
             reference: reference
             exome_mode: exome_mode
         out:
-            [all_indels, all_snvs]
+            [indels, snvs]
     process:
         scatter: vcf
         run: process_vcf.cwl
         in:
-            vcf: [strelka/all_snvs, strelka/all_indels]
+            vcf: [strelka/snvs, strelka/indels]
         out:
             [processed_vcf]
     merge:
