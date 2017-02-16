@@ -9,7 +9,6 @@ requirements:
       dockerPull: "mgibio/pindel-cwl:v0.2.5b8"
     - class: ResourceRequirement
       ramMin: 16000
-      coresMin: 4
     - class: InitialWorkDirRequirement
       listing:
           - entryname: tumor.bam
@@ -26,7 +25,6 @@ requirements:
                 tumor.bam  $(inputs.insert_size)    TUMOR
 arguments:
     ["-w", "20",
-     "-T", "4",
      "-o", "all"]
 inputs:
     tumor_bam:
