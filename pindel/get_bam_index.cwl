@@ -3,10 +3,10 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "samtools index"
-baseCommand: ["index"]
+baseCommand: ["/usr/local/bin/samtools", "index"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/samtools:1.3.1"
+      dockerPull: "registry.gsc.wustl.edu/genome/samtools-1.3.1-2:2"
 arguments:
     - position: 2
       valueFrom: $(runtime.outdir)/$(inputs.bam.basename).bai
