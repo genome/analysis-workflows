@@ -16,6 +16,10 @@ requirements:
             entry: $(inputs.tumor_bam)
           - entryname: normal.bam
             entry: $(inputs.normal_bam)
+          - entryname: tumor.bam.bai
+            entry: $(inputs.tumor_bam_index)
+          - entryname: normal.bam.bai
+            entry: $(inputs.normal_bam_index)
           - entryname: 'pindel.config'
             entry: |
                 normal.bam $(inputs.insert_size)    NORMAL
@@ -27,10 +31,12 @@ arguments:
 inputs:
     tumor_bam:
         type: File
-        secondaryFiles: ["^.bai"]
     normal_bam:
         type: File
-        secondaryFiles: ["^.bai"]
+    tumor_bam_index:
+        type: File
+    normal_bam_index:
+        type: File
     reference:
         type: File
         inputBinding:
