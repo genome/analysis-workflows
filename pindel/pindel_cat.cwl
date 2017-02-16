@@ -10,10 +10,12 @@ inputs:
         secondaryFiles: [".fai"]
     tumor_bam:
         type: File
-        secondaryFiles: ["^.bai"]
     normal_bam:
         type: File
-        secondaryFiles: ["^.bai"]
+    tumor_bam_index:
+        type: File
+    normal_bam_index:
+        type: File
     chromosome:
         type: string
     insert_size:
@@ -30,6 +32,8 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
+            tumor_bam_index: tumor_bam_index
+            normal_bam_index: normal_bam_index
             insert_size: insert_size
             chromosome: chromosome
         out:
