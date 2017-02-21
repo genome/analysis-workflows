@@ -23,7 +23,7 @@ inputs:
             position: 2
         secondaryFiles: [^.bai]
     normal_bam:
-        type: File
+        type: File?
         inputBinding:
             prefix: "-I:normal"
             position: 3
@@ -45,6 +45,11 @@ inputs:
             prefix: "--cosmic"
             position: 6
         secondaryFiles: [.tbi]
+    artifact_detection_mode:
+        type: boolean?
+        inputBinding:
+            prefix: "--artifact_detection_mode"
+            position: 7 
 outputs:
     vcf:
         type: File

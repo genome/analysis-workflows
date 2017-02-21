@@ -12,7 +12,7 @@ inputs:
         type: File
         secondaryFiles: [^.bai]
     normal_bam:
-        type: File
+        type: File?
         secondaryFiles: [^.bai]
     interval_list:
         type: File
@@ -22,6 +22,9 @@ inputs:
     cosmic_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    artifact_detection_mode:
+        type: boolean?
+
 outputs:
     vcf:
         type: File
@@ -36,6 +39,7 @@ steps:
             interval_list: interval_list
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
+            artifact_detection_mode: artifact_detection_mode
         out:
             [vcf]
     index:
