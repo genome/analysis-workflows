@@ -4,9 +4,6 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "mutect2 (GATK 3.6)"
 baseCommand: ["/usr/local/bin/jdk1.8.0_45/bin/java", "-jar", "/usr/local/bin/GATK3.6/GenomeAnalysisTK.jar", "-T", "MuTect2"]
-hints:
-    arv:RuntimeContraints:
-        keep_cache: 4096
 requirements:
     - class: DockerRequirement
       dockerPull: "dbmi/gatk-docker:v1" #Instead of specific GATK 3.6 commit hash, since Arvados has issues with specific commit hashes
