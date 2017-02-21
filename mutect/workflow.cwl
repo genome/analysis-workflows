@@ -42,9 +42,9 @@ steps:
             interval_list: interval_list
             scatter_count: scatter_count
         out: [split_interval_lists]
-    mutect_and_index:
+    mutect:
         scatter: interval_list
-        run: mutect_and_index.cwl
+        run: mutect.cwl
         in:
             reference: reference
             tumor_bam: tumor_bam
@@ -58,7 +58,7 @@ steps:
     merge:
         run: ../detect_variants/merge.cwl
         in:
-            vcfs: [mutect_and_index/vcf]
+            vcfs: [mutect/vcf]
         out:
             [merged_vcf]
     index:
