@@ -55,3 +55,4 @@ outputs:
         type: File
         outputBinding:
             glob: "output.vcf.gz"
+        secondaryFiles: [.tbi]
