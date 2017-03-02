@@ -1,0 +1,34 @@
+#!/usr/bin/env cwl-runner
+cwl:tool: exome_pipeline.cwl
+reference:
+  class: File
+  path: keep:4c17b521ed51e5f1c1674b013fd27440+6314/GRCh38_full_analysis_set_plus_decoy_hla.fa
+mills:
+  class: File
+  path: keep:7fa8aa517bce9a727a3605e4501d2d8c+210/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
+known_indels:
+  class: File
+  path: keep:8a5778de12b1ba61647cf4bb5a914a61+200/Homo_sapiens_assembly38.known_indels.vcf.gz
+dbsnp:
+  class: File
+  path: keep:e5a7c6ae9cb50d016f190a7f73bd0c50+1160/Homo_sapiens_assembly38.dbsnp138.vcf.gz
+target_intervals:
+  class: File
+  path: keep:2d2a8f6b2ebc1027990734e252432935+205/xgen-exome-research-panel-targets.interval_list
+bait_intervals:
+  class: File
+  path: keep:2d2a8f6b2ebc1027990734e252432935+205/xgen-exome-research-panel-probes.interval_list
+omni_vcf:
+  class: File
+  path: keep:1c83c4649fe65c7929e2e5e1d92f8340+276/omni25-ld-pruned-20000-2000-0.5-annotated.wchr.sites_only.b38.autosomes_only.vcf.gz
+bams:
+  -
+    class: File
+    path: keep:30788754620d8cedd26e97db5635f421+1979/gerald_H7HY2CCXX_4_TGACCACG.bam
+  -
+    class: File
+    path: keep:e9bfde07dfbc77e635ac2aa999830f0a+2063/gerald_H7HY2CCXX_3_TGACCACG.bam
+readgroups:
+  - "@RG\tID:2895499399\tPL:ILLUMINA\tPU:H7HY2CCXX-TGACCACG.4\tLB:H_NJ-HCC1395-HCC1395_BL-lg21-lib1\tSM:H_NJ-HCC1395-HCC1395_BL"
+  - "@RG\tID:2895499331\tPL:ILLUMINA\tPU:H7HY2CCXX-TGACCACG.3\tLB:H_NJ-HCC1395-HCC1395_BL-lg21-lib1\tSM:H_NJ-HCC1395-HCC1395_BL"
+
