@@ -1,0 +1,3 @@
+interval_list:
+  class: File
+  path: tiny.interval_list
