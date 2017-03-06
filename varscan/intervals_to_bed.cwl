@@ -11,7 +11,7 @@ requirements:
             entry: |
                 use feature qw(say);
 
-                for my $line (<STDIN>) {
+                for my $line (<>) {
                     chomp $line;
 
                     next if substr($line,0,1) eq '@'; #skip header lines
@@ -20,11 +20,12 @@ requirements:
                     say(join("\\t", $chrom, $start-1, $stop));
                 }
 
-stdin: $(inputs.interval_list.path)
 stdout: "interval_list.bed"
 inputs:
     interval_list:
         type: File
+        inputBinding:
+            position: 1
 outputs:
     interval_bed:
         type: stdout
