@@ -3,27 +3,16 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "pindel v0.2.5b8"
-baseCommand: ["/usr/bin/pindel", "-i", "pindel.config"]
+arguments: [
+    "echo", $(inputs.normal_bam.path), "\t", $(inputs.insert_size), "\tNORMAL", { valueFrom: " > ", shellQuote: false }, "pindel.config",
+    { valueFrom: " && ", shellQuote: false },
+    "echo", $(inputs.tumor_bam.path), "\t", $(inputs.insert_size), "\tTUMOR", { valueFrom: " >> ", shellQuote: false }, "pindel.config",
+    { valueFrom: " && ", shellQuote: false },
+    "/usr/bin/pindel", "-i", "pindel.config", "-w", "20", "-o", "all"
+]
 requirements:
     - class: ResourceRequirement
       ramMin: 16000
-    - class: InitialWorkDirRequirement
-      listing:
-          - entryname: tumor.bam
-            entry: $(inputs.tumor_bam)
-          - entryname: normal.bam
-            entry: $(inputs.normal_bam)
-          - entryname: tumor.bam.bai
-            entry: $(inputs.tumor_bam_index)
-          - entryname: normal.bam.bai
-            entry: $(inputs.normal_bam_index)
-          - entryname: 'pindel.config'
-            entry: |
-                normal.bam $(inputs.insert_size)    NORMAL
-                tumor.bam  $(inputs.insert_size)    TUMOR
-arguments:
-    ["-w", "20",
-     "-o", "all"]
 inputs:
     tumor_bam:
         type: File

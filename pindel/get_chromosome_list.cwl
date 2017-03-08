@@ -1,14 +1,11 @@
 #! /usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: ['/bin/bash', 'helper.sh']
+baseCommand: [
+    "bash", "-c", "/bin/grep -v '^@' $1 | /usr/bin/cut -f 1 | /usr/bin/sort | /usr/bin/uniq", "--"
+]
 requirements:
     - class: InlineJavascriptRequirement
-    - class: InitialWorkDirRequirement
-      listing:
-          - entryname: 'helper.sh'
-            entry: |
-                /bin/grep -v '^@' $1 | /usr/bin/cut -f 1 | /usr/bin/sort | /usr/bin/uniq
 stdout: "chromosome.list"
 inputs:
     interval_list:

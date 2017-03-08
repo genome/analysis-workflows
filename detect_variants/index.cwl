@@ -3,12 +3,13 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "vcf index"
-baseCommand: "/usr/bin/tabix"
-arguments: ["-p", "vcf"]
+arguments: [
+    "ln", "-s", $(inputs.vcf.path), "$(runtime.outdir)/$(inputs.vcf.basename)",
+    { valueFrom: " && ", shellQuote: false },
+    "/usr/bin/tabix", "-p", "vcf"
+]
 requirements:
-    - class: InitialWorkDirRequirement
-      listing:
-          - $(inputs.vcf)
+    - class: ShellCommandRequirement
 inputs:
     vcf:
         type: File
