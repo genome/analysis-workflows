@@ -4,8 +4,6 @@ class: CommandLineTool
 baseCommand: ['/bin/bash', 'helper.sh']
 requirements:
     - class: InlineJavascriptRequirement
-    - class: DockerRequirement
-      dockerPull: "ubuntu:xenial"
     - class: InitialWorkDirRequirement
       listing:
           - entryname: 'helper.sh'

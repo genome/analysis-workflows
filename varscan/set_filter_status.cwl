@@ -4,9 +4,6 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "create filtered VCF"
 baseCommand: ["/usr/local/bin/jdk1.8.0_45/bin/java", "-jar", "/usr/local/bin/GATK3.6/GenomeAnalysisTK.jar", "-T", "VariantFiltration"]
-requirements:
-    - class: DockerRequirement
-      dockerPull: "dbmi/gatk-docker:v1" #GATK 3.6 at a specific container revision
 arguments:
     ["--maskName", "processSomatic",
     "--filterNotInMask",

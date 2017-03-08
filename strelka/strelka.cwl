@@ -5,8 +5,6 @@ class: CommandLineTool
 label: "strelka 2.7.1"
 baseCommand: "/usr/bin/docker_helper.pl"
 requirements:
-    DockerRequirement:
-        dockerPull: "mgibio/strelka-cwl:2.7.1"
     ResourceRequirement:
         coresMin: 8
 arguments:

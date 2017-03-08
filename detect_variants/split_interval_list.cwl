@@ -4,8 +4,6 @@ cwlVersion: v1.0
 class: CommandLineTool
 baseCommand: ['/usr/bin/perl', 'helper.pl']
 requirements:
-    - class: DockerRequirement
-      dockerPull: "registry.gsc.wustl.edu/genome/picard-2.4.1-r:2"
     - class: InitialWorkDirRequirement
       listing:
           - entryname: 'helper.pl'

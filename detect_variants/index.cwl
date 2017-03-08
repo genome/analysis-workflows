@@ -6,8 +6,6 @@ label: "vcf index"
 baseCommand: "/usr/bin/tabix"
 arguments: ["-p", "vcf"]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "mgibio/tabix-cwl:1.3.1"
     - class: InitialWorkDirRequirement
       listing:
           - $(inputs.vcf)

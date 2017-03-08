@@ -5,8 +5,6 @@ class: CommandLineTool
 label: "pindel somatic filter v1"
 baseCommand: ["/usr/bin/perl", "/usr/bin/somatic_indelfilter.pl", "filter.config"]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "mgibio/pindelsomaticfilter-cwl:v1"
     - class: ResourceRequirement
       ramMin: 16000
     - class: InitialWorkDirRequirement

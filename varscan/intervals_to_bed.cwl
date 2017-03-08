@@ -3,8 +3,6 @@ cwlVersion: v1.0
 class: CommandLineTool
 baseCommand: ['/usr/bin/perl', 'helper.pl']
 requirements:
-    - class: DockerRequirement
-      dockerPull: "ubuntu:xenial"
     - class: InitialWorkDirRequirement
       listing:
           - entryname: 'helper.pl'

@@ -5,8 +5,6 @@ class: CommandLineTool
 label: "varscan v2.4.2 processSomatic"
 baseCommand: ["java", "-jar", "/opt/varscan/VarScan.jar", "processSomatic"]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "mgibio/varscan-cwl:v2.4.2-samtools1.3.1"
     - class: InitialWorkDirRequirement
       listing:
         - $(inputs.variants)
