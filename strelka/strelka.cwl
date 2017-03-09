@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "strelka 2.7.1"
-baseCommand: "/usr/bin/docker_helper.pl"
+baseCommand: "/usr/bin/strelka_helper.pl"
 requirements:
     ResourceRequirement:
         coresMin: 8

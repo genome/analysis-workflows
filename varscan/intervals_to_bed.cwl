@@ -1,7 +1,7 @@
 #!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: ['/usr/bin/perl', 'intervals_to_bed.pl']
+baseCommand: ['/usr/bin/perl', '/usr/bin/intervals_to_bed.pl']
 stdout: "interval_list.bed"
 inputs:
     interval_list:

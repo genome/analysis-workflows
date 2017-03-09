@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "varscan v2.4.2 somatic"
-baseCommand: "/usr/bin/cwl_helper.sh"
+baseCommand: "/usr/bin/varscan_helper.sh"
 inputs:
     tumor_bam:
         type: File

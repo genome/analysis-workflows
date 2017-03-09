@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: ['/usr/bin/perl', 'split_interval_list_helper.pl']
+baseCommand: ['/usr/bin/perl', '/usr/bin/split_interval_list_helper.pl']
 arguments:
     [{ valueFrom: OUTPUT=$(runtime.outdir) }]
 inputs:
