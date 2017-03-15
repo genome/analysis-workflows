@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "vcf merge"
-baseCommand: ["/usr/bin/bcftools", "concat"]
+baseCommand: ["/opt/bcftools/bin/bcftools", "concat"]
 arguments:
     - "--allow-overlaps"
     - "--remove-duplicates"

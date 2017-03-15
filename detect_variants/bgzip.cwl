@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "bgzip VCF"
-baseCommand: ["/opt/samtools/bin/bgzip"]
+baseCommand: ["/opt/htslib/bin/bgzip"]
 stdout: $(inputs.file.basename).gz
 arguments:
     ["-c"]

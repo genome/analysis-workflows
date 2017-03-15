@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "samtools index"
-baseCommand: ["/usr/local/bin/samtools", "index"]
+baseCommand: ["/opt/samtools/bin/samtools", "index"]
 arguments:
     - position: 2
       valueFrom: $(runtime.outdir)/$(inputs.bam.basename).bai
