@@ -53,16 +53,16 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            tumor_bam_index: [get_tumor_bam_index/bam_index]
-            normal_bam_index: [get_normal_bam_index/bam_index]
-            chromosome: [get_chromosome_list/chromosome_list]
+            tumor_bam_index: get_tumor_bam_index/bam_index
+            normal_bam_index: get_normal_bam_index/bam_index
+            chromosome: get_chromosome_list/chromosome_list
             insert_size: insert_size
         out:
             [per_chromosome_pindel_out]
     cat_all:
         run: cat_all.cwl
         in:
-            chromosome_pindel_outs: [pindel_cat/per_chromosome_pindel_out]
+            chromosome_pindel_outs: pindel_cat/per_chromosome_pindel_out
         out:
             [all_chromosome_pindel_out]
     grep:

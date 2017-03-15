@@ -46,7 +46,7 @@ steps:
     merge:
         run: ../detect_variants/merge.cwl
         in:
-            vcfs: [process/processed_vcf]
+            vcfs: process/processed_vcf
         out:
             [merged_vcf]
     index_full:

@@ -58,13 +58,13 @@ steps:
     merge:
         run: ../detect_variants/merge.cwl
         in:
-            vcfs: [mutect/vcf]
+            vcfs: mutect/vcf
         out:
             [merged_vcf]
     index:
         run: ../detect_variants/index.cwl
         in:
-            vcf: [merge/merged_vcf]
+            vcf: merge/merged_vcf
         out:
             [indexed_vcf]
 
