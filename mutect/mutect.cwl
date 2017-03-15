@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "mutect2 (GATK 3.6)"
-baseCommand: ["/usr/local/bin/jdk1.8.0_45/bin/java", "-jar", "/usr/local/bin/GATK3.6/GenomeAnalysisTK.jar", "-T", "MuTect2"]
+baseCommand: ["/usr/bin/java", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "MuTect2"]
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/output.vcf.gz }]
 inputs:
