@@ -20,7 +20,7 @@ inputs:
     interval_list:
         type: File
     scatter_count:
-        type: int
+        type: int?
         default: 50
     dbsnp_vcf:
         type: File?
