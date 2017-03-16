@@ -4,7 +4,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "vcf index"
 arguments: [
-    "ln", "-s", $(inputs.vcf.path), "$(runtime.outdir)/$(inputs.vcf.basename)",
+    "cp", $(inputs.vcf.path), "$(runtime.outdir)/$(inputs.vcf.basename)",
     { valueFrom: " && ", shellQuote: false },
     "/usr/bin/tabix", "-p", "vcf"
 ]
