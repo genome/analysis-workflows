@@ -20,8 +20,7 @@ inputs:
     interval_list:
         type: File
     scatter_count:
-        type: int?
-        default: 50
+        type: int
     dbsnp_vcf:
         type: File?
         secondaryFiles: [.tbi]
@@ -29,7 +28,7 @@ inputs:
         type: File?
         secondaryFiles: [.tbi]
     artifact_detection_mode:
-        type: boolean?
+        type: boolean
 outputs:
     merged_vcf:
         type: File
