@@ -4,6 +4,8 @@ cwlVersion: v1.0
 
 class: Workflow
 label: "Per-chromosome pindel"
+requirements:
+    - class: MultipleInputFeatureRequirement
 inputs:
     reference:
         type: File
