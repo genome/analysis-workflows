@@ -4,11 +4,8 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "pindel v0.2.5b8"
 arguments: [
-    "echo", $(inputs.normal_bam.path), "\t", $(inputs.insert_size), "\tNORMAL", { valueFrom: " > ", shellQuote: false }, "pindel.config",
-    { valueFrom: " && ", shellQuote: false },
-    "echo", $(inputs.tumor_bam.path), "\t", $(inputs.insert_size), "\tTUMOR", { valueFrom: " >> ", shellQuote: false }, "pindel.config",
-    { valueFrom: " && ", shellQuote: false },
-    "/usr/bin/pindel", "-i", "pindel.config", "-w", "20", "-o", "all"
+    "/usr/bin/perl", "/usr/bin/pindel_helper.pl",
+    $(inputs.normal_bam.path), $(inputs.tumor_bam.path), $(inputs.insert_size)
 ]
 requirements:
     - class: ResourceRequirement
