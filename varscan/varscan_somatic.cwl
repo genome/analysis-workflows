@@ -4,6 +4,9 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "varscan v2.4.2 somatic"
 baseCommand: "/usr/bin/varscan_helper.sh"
+requirements:
+    - class: ResourceRequirement
+      ramMin: 12000
 inputs:
     tumor_bam:
         type: File

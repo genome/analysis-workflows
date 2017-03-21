@@ -7,6 +7,7 @@ baseCommand: ["/usr/bin/perl", "/usr/bin/strelka_helper.pl"]
 requirements:
     ResourceRequirement:
         coresMin: 8
+        ramMin: 4000
 arguments:
     [ { valueFrom: $(runtime.cores), position: 1 },
       { valueFrom: $(runtime.outdir), position: 2 }]
