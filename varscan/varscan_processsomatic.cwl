@@ -4,7 +4,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "varscan v2.4.2 processSomatic"
 arguments: [
-    "ln", "-s", $(inputs.variants.path), "$(runtime.outdir)/$(inputs.variants.basename)",
+    "cp", $(inputs.variants.path), "$(runtime.outdir)/$(inputs.variants.basename)",
     { valueFrom: " && ", shellQuote: false },
     "java", "-jar", "/opt/varscan/VarScan.jar", "processSomatic"
 ]
