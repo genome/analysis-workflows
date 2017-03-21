@@ -4,6 +4,9 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "mutect2 (GATK 3.6)"
 baseCommand: ["/usr/bin/java", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "MuTect2"]
+requirements:
+    - class: ResourceRequirement
+      ramMin: 20000
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/output.vcf.gz }]
 inputs:
