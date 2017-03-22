@@ -2,9 +2,6 @@
 cwlVersion: v1.0
 class: CommandLineTool
 baseCommand: ['/bin/cat']
-requirements:
-    - class: DockerRequirement
-      dockerPull: "ubuntu:xenial"
 stdout: "all_chromosome_pindel.out"
 inputs:
     chromosome_pindel_outs:

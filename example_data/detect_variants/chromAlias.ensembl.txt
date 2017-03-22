@@ -1,0 +1,1 @@
+22	chr22	ensembl

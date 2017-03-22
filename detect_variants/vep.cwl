@@ -5,9 +5,6 @@ class: CommandLineTool
 label: "Ensembl Variant Effect Predictor"
 baseCommand: ["/usr/bin/perl", "/usr/bin/variant_effect_predictor.pl"]
 
-requirements:
-    - class: DockerRequirement
-      dockerPull: "mgibio/vep-cwl:v86"
 arguments:
     ["--cache",
     "--offline",

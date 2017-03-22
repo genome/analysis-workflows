@@ -3,10 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "SelectVariants (GATK 3.6)"
-baseCommand: ["/usr/local/bin/jdk1.8.0_45/bin/java", "-jar", "/usr/local/bin/GATK3.6/GenomeAnalysisTK.jar", "-T", "SelectVariants"]
-requirements:
-    - class: DockerRequirement
-      dockerPull: "dbmi/gatk-docker:v1" #GATK 3.6 at a specific container revision
+baseCommand: ["/usr/bin/java", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "SelectVariants"]
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/output.vcf.gz }]
 inputs:

@@ -3,13 +3,13 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "varscan v2.4.2 processSomatic"
-baseCommand: ["java", "-jar", "/opt/varscan/VarScan.jar", "processSomatic"]
+arguments: [
+    "cp", $(inputs.variants.path), "$(runtime.outdir)/$(inputs.variants.basename)",
+    { valueFrom: " && ", shellQuote: false },
+    "java", "-jar", "/opt/varscan/VarScan.jar", "processSomatic"
+]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "mgibio/varscan-cwl:v2.4.2-samtools1.3.1"
-    - class: InitialWorkDirRequirement
-      listing:
-        - $(inputs.variants)
+    - class: ShellCommandRequirement
 inputs:
     variants:
         type: File

@@ -28,18 +28,6 @@ outputs:
         outputSource: index_filtered/indexed_vcf
         secondaryFiles: [".tbi"]
 steps:
-    get_tumor_bam_index:
-        run: get_bam_index.cwl
-        in:
-            bam: tumor_bam
-        out:
-            [bam_index]
-    get_normal_bam_index:
-        run: get_bam_index.cwl
-        in:
-            bam: normal_bam
-        out:
-            [bam_index]
     get_chromosome_list:
         run: get_chromosome_list.cwl
         in: 
@@ -53,16 +41,14 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            tumor_bam_index: [get_tumor_bam_index/bam_index]
-            normal_bam_index: [get_normal_bam_index/bam_index]
-            chromosome: [get_chromosome_list/chromosome_list]
+            chromosome: get_chromosome_list/chromosome_list
             insert_size: insert_size
         out:
             [per_chromosome_pindel_out]
     cat_all:
         run: cat_all.cwl
         in:
-            chromosome_pindel_outs: [pindel_cat/per_chromosome_pindel_out]
+            chromosome_pindel_outs: pindel_cat/per_chromosome_pindel_out
         out:
             [all_chromosome_pindel_out]
     grep:

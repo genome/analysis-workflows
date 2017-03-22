@@ -21,7 +21,6 @@ inputs:
         type: File
     scatter_count:
         type: int
-        default: 50
     dbsnp_vcf:
         type: File?
         secondaryFiles: [.tbi]
@@ -29,7 +28,7 @@ inputs:
         type: File?
         secondaryFiles: [.tbi]
     artifact_detection_mode:
-        type: boolean?
+        type: boolean
 outputs:
     merged_vcf:
         type: File
@@ -58,13 +57,13 @@ steps:
     merge:
         run: ../detect_variants/merge.cwl
         in:
-            vcfs: [mutect/vcf]
+            vcfs: mutect/vcf
         out:
             [merged_vcf]
     index:
         run: ../detect_variants/index.cwl
         in:
-            vcf: [merge/merged_vcf]
+            vcf: merge/merged_vcf
         out:
             [indexed_vcf]
 

@@ -3,38 +3,20 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "pindel v0.2.5b8"
-baseCommand: ["/usr/bin/pindel", "-i", "pindel.config"]
+arguments: [
+    "/usr/bin/perl", "/usr/bin/pindel_helper.pl",
+    $(inputs.normal_bam.path), $(inputs.tumor_bam.path), $(inputs.insert_size)
+]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "mgibio/pindel-cwl:v0.2.5b8"
     - class: ResourceRequirement
       ramMin: 16000
-    - class: InitialWorkDirRequirement
-      listing:
-          - entryname: tumor.bam
-            entry: $(inputs.tumor_bam)
-          - entryname: normal.bam
-            entry: $(inputs.normal_bam)
-          - entryname: tumor.bam.bai
-            entry: $(inputs.tumor_bam_index)
-          - entryname: normal.bam.bai
-            entry: $(inputs.normal_bam_index)
-          - entryname: 'pindel.config'
-            entry: |
-                normal.bam $(inputs.insert_size)    NORMAL
-                tumor.bam  $(inputs.insert_size)    TUMOR
-arguments:
-    ["-w", "20",
-     "-o", "all"]
 inputs:
     tumor_bam:
         type: File
+        secondaryFiles: ["^.bai"]
     normal_bam:
         type: File
-    tumor_bam_index:
-        type: File
-    normal_bam_index:
-        type: File
+        secondaryFiles: ["^.bai"]
     reference:
         type: File
         inputBinding:

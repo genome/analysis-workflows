@@ -25,6 +25,10 @@ inputs:
         secondaryFiles: [.tbi]
     strelka_exome_mode:
         type: boolean
+    mutect_scatter_count:
+        type: int?
+    mutect_artifact_detection_mode:
+        type: boolean?
     pindel_insert_size:
         type: int
         default: 400
@@ -43,6 +47,8 @@ steps:
             interval_list: interval_list
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
+            scatter_count: mutect_scatter_count
+            artifact_detection_mode: mutect_artifact_detection_mode
         out:
             [merged_vcf]
     strelka:

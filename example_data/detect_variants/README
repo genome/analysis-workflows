@@ -1,0 +1,6 @@
+# The largest files are compressed with bgzip or CRAM format
+## To use these files, you must decompress these files like so
+
+gunzip GRCh38_full_analysis_set_plus_decoy_hla.fa.gz
+samtools view -b -o H_NJ-HCC1395-HCC1395_exome.bam H_NJ-HCC1395-HCC1395_exome.cram
+samtools view -b -o H_NJ-HCC1395-HCC1395_BL_exome.bam H_NJ-HCC1395-HCC1395_BL_exome.cram

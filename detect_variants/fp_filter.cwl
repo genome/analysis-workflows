@@ -3,10 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "False Positive filter"
-baseCommand: ["/usr/bin/fpfilter.pl"]
-requirements:
-    - class: DockerRequirement
-      dockerPull: "mgibio/fpfilter-cwl:v1"
+baseCommand: ["/usr/bin/perl", "/usr/bin/fpfilter.pl"]
 arguments:
     ["--sample", "TUMOR",
     "--output", { valueFrom: $(runtime.outdir)/filtered.vcf }]
