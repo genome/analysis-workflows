@@ -1,0 +1,9 @@
+vcf:
+    class: File
+    path: /gscmnt/gc2764/cad/ssiebert/toil_test/inputs/exome.merged.fpfilter.pass.vcf.gz
+cache_dir:
+    class: File
+    path: /gscmnt/gc2764/cad/ssiebert/toil_test/inputs/vep_cache_location.txt
+synonyms_file:
+    class: File
+    path: /gscmnt/gc2764/cad/ssiebert/toil_test/inputs/chromAlias.ensembl.txt
