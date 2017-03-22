@@ -3,9 +3,12 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "SelectVariants (GATK 3.6)"
-baseCommand: ["/usr/bin/java", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "SelectVariants"]
+baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "SelectVariants"]
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/output.vcf.gz }]
+requirements:
+    - class: ResourceRequirement
+      ramMin: 4000
 inputs:
     reference:
         type: File
