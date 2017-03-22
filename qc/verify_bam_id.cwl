@@ -7,8 +7,8 @@ baseCommand: "/usr/local/bin/verifyBamID"
 arguments:
     ["--out", { valueFrom: $(runtime.outdir)/VerifyBamId }]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "registry.gsc.wustl.edu/genome/lims-verifybamid:1"
+    - class: ResourceRequirement
+      ramMin: 4000
 inputs:
     vcf:
         type: File
