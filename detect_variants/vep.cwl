@@ -4,7 +4,8 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Ensembl Variant Effect Predictor"
 baseCommand: ["/usr/bin/perl", "/usr/bin/variant_effect_predictor.pl"]
-
+requirements:
+    - class: ShellCommandRequirement
 arguments:
     ["--cache",
     "--offline",
@@ -16,7 +17,12 @@ arguments:
     "--term", "SO",
     "--flag_pick",
     "--maf_exac",
-    "-o", { valueFrom: $(runtime.outdir)/annotated.vcf }]
+    "-o", { valueFrom: $(runtime.outdir)/annotated.vcf },
+    "--dir",
+    { valueFrom: "`", shellQuote: false },
+    { valueFrom: "cat", shellQuote: false },
+    { valueFrom: $(inputs.cache_dir), shellQuote: false },
+    { valueFrom: "`", shellQuote: false }]
 inputs:
     vcf:
         type: File
@@ -24,15 +30,12 @@ inputs:
             prefix: "-i"
             position: 1
     cache_dir:
-        type: Directory
-        inputBinding:
-            prefix: "--dir"
-            position: 2
+        type: File
     synonyms_file:
         type: File?
         inputBinding:
             prefix: "--synonyms"
-            position: 3
+            position: 2
 outputs:
     annotated_vcf:
         type: File

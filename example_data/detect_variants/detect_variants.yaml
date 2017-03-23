@@ -19,3 +19,9 @@ tumor_bam:
   class: File
   path: H_NJ-HCC1395-HCC1395_exome.bam
 strelka_exome_mode: true
+vep_cache_dir:
+  class: File
+  path: vep_cache_location.txt
+synonyms_file:
+  class: File
+  path: chromAlias.ensembl.txt
