@@ -1,6 +1,13 @@
 # The largest files are compressed with bgzip or CRAM format
 ## To use these files, you must decompress these files like so
 
-gunzip GRCh38_full_analysis_set_plus_decoy_hla.fa.gz
-samtools view -b -o H_NJ-HCC1395-HCC1395_exome.bam H_NJ-HCC1395-HCC1395_exome.cram
-samtools view -b -o H_NJ-HCC1395-HCC1395_BL_exome.bam H_NJ-HCC1395-HCC1395_BL_exome.cram
+gunzip -c GRCh38_full_analysis_set_plus_decoy_hla.fa.gz > GRCh38_full_analysis_set_plus_decoy_hla.fa
+/opt/samtools/bin/samtools view -b -o H_NJ-HCC1395-HCC1395_exome.bam H_NJ-HCC1395-HCC1395_exome.cram
+/opt/samtools/bin/samtools view -b -o H_NJ-HCC1395-HCC1395_BL_exome.bam H_NJ-HCC1395-HCC1395_BL_exome.cram
+touch H_NJ-HCC1395-HCC1395_exome.bai
+touch H_NJ-HCC1395-HCC1395_BL_exome.bai
+
+# Before committing any changes to git you will want to run the following from this directory
+rm GRCh38_full_analysis_set_plus_decoy_hla.fa
+rm H_NJ-HCC1395-HCC1395_BL_exome.bam
+rm H_NJ-HCC1395-HCC1395_exome.bam

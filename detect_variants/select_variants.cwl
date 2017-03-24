@@ -7,8 +7,12 @@ baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/GenomeAnalysisTK.jar", "-
 requirements:
     - class: ResourceRequirement
       ramMin: 6000
+
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/output.vcf.gz }]
+requirements:
+    - class: ResourceRequirement
+      ramMin: 4000
 inputs:
     reference:
         type: File
