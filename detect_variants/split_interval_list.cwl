@@ -3,6 +3,9 @@
 cwlVersion: v1.0
 class: CommandLineTool
 baseCommand: ['/usr/bin/perl', '/usr/bin/split_interval_list_helper.pl']
+requirements:
+    - class: ResourceRequirement
+      ramMin: 6000
 arguments:
     [{ valueFrom: OUTPUT=$(runtime.outdir) }]
 inputs:

@@ -3,7 +3,10 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "create filtered VCF"
-baseCommand: ["/usr/bin/java", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "VariantFiltration"]
+baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "VariantFiltration"]
+requirements:
+    - class: ResourceRequirement
+      ramMin: 6000
 arguments:
     ["--maskName", "processSomatic",
     "--filterNotInMask",
