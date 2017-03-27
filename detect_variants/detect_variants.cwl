@@ -32,6 +32,9 @@ inputs:
     pindel_insert_size:
         type: int
         default: 400
+    docm_vcf:
+         type: File
+         secondaryFiles: [.tbi]
     vep_cache_dir:
         type: File
     synonyms_file:
@@ -102,10 +105,39 @@ steps:
             vcf: combine/combined_vcf
         out:
             [filtered_vcf]
+    bgzip:
+        run: bgzip.cwl
+        in:
+            file: filter/filtered_vcf
+        out:
+            [bgzipped_file]
+    index:
+        run: index.cwl
+        in:
+            vcf: bgzip/bgzipped_file
+        out:
+            [indexed_vcf]
+    docm:
+        run: ../docm/workflow.cwl
+        in:
+            reference: reference
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
+            docm_vcf: docm_vcf
+        out:
+            [merged_vcf]
+    combine_docm:
+        run: combine_docm.cwl
+        in: 
+            reference: reference
+            filter_vcf: index/indexed_vcf
+            docm_vcf: docm/merged_vcf
+        out:
+            [combine_docm_vcf]
     annotate_variants:
         run: vep.cwl
         in:
-            vcf: filter/filtered_vcf
+            vcf: combine_docm/combined_docm_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
         out:
