@@ -1,9 +1,11 @@
 #!/usr/bin/env cwl-runner
 
 cwlVersion: v1.0
-
 class: Workflow
 label: "Detect Docm variants"
+requirements:
+    - class: MultipleInputFeatureRequirement
+    - class: SubworkflowFeatureRequirement
 inputs:
     reference:
         type: File
