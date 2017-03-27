@@ -17,13 +17,13 @@ inputs:
             prefix: "-R"
             position: 1
         secondaryFiles: [.fai, ^.dict]
-    tumor_bam:
+    normal_bam:
         type: File
         inputBinding:
             prefix: "-I"
             position: 2
         secondaryFiles: [^.bai]
-    normal_bam:
+    tumor_bam:
         type: File
         inputBinding:
             prefix: "-I"
