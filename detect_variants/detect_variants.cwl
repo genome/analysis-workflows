@@ -137,7 +137,7 @@ steps:
     annotate_variants:
         run: vep.cwl
         in:
-            vcf: combine_docm/combined_docm_vcf
+            vcf: combine_docm/combine_docm_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
         out:
