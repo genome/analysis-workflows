@@ -3,10 +3,10 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "HaplotypeCaller (GATK 3.6)"
-baseCommand: ["/usr/local/bin/jdk1.8.0_45/bin/java", "-jar", "/usr/local/bin/GATK3.6/GenomeAnalysisTK.jar", "-T", "HaplotypeCaller"]
+baseCommand: ["/usr/bin/java", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "HaplotypeCaller"]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "dbmi/gatk-docker:v1" #GATK 3.6 at a specific container revision
+    - class: ResourceRequirement
+      ramMin: 8000
 arguments:
     ["-gt_mode", "GENOTYPE_GIVEN_ALLELES",
     "-o", { valueFrom: $(runtime.outdir)/docm_out.vcf }]
