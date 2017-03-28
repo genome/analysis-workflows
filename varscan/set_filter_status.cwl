@@ -7,6 +7,7 @@ baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/GenomeAnalysisTK.jar", "-
 requirements:
     - class: ResourceRequirement
       ramMin: 6000
+      tmpdirMin: 25000
 arguments:
     ["--maskName", "processSomatic",
     "--filterNotInMask",
