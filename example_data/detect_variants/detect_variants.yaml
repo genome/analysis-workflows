@@ -12,12 +12,12 @@ dbsnp_vcf:
 cosmic_vcf:
   class: File
   path: Cosmic_v79.dictsorted.vcf.gz
-normal_bam: 
+normal_cram: 
   class: File
-  path: H_NJ-HCC1395-HCC1395_BL_exome.bam
-tumor_bam:
+  path: H_NJ-HCC1395-HCC1395_BL_exome.cram
+tumor_cram:
   class: File
-  path: H_NJ-HCC1395-HCC1395_exome.bam
+  path: H_NJ-HCC1395-HCC1395_exome.cram
 strelka_exome_mode: true
 vep_cache_dir:
   class: File

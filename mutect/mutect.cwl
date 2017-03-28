@@ -17,18 +17,18 @@ inputs:
             prefix: "-R"
             position: 1
         secondaryFiles: [".fai", "^.dict"]
-    tumor_bam:
+    tumor_cram:
         type: File
         inputBinding:
             prefix: "-I:tumor"
             position: 2
-        secondaryFiles: [^.bai]
-    normal_bam:
+        secondaryFiles: [^.crai]
+    normal_cram:
         type: File?
         inputBinding:
             prefix: "-I:normal"
             position: 3
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     interval_list:
         type: File
         inputBinding:

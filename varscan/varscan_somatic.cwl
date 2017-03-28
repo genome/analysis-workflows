@@ -8,14 +8,16 @@ requirements:
     - class: ResourceRequirement
       ramMin: 12000
 inputs:
-    tumor_bam:
+    tumor_cram:
         type: File
         inputBinding:
             position: 1
-    normal_bam:
+        secondaryFiles: [^.crai]
+    normal_cram:
         type: File
         inputBinding:
             position: 2
+        secondaryFiles: [^.crai]
     reference:
         type: File
         inputBinding:

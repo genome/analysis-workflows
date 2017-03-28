@@ -5,19 +5,19 @@ class: CommandLineTool
 label: "pindel v0.2.5b8"
 arguments: [
     "/usr/bin/perl", "/usr/bin/pindel_helper.pl",
-    $(inputs.normal_bam.path), $(inputs.tumor_bam.path), $(inputs.insert_size)
+    $(inputs.normal_cram.path), $(inputs.tumor_cram.path), $(inputs.insert_size)
 ]
 requirements:
     - class: ResourceRequirement
       ramMin: 16000
       tmpdirMin: 100000
 inputs:
-    tumor_bam:
+    tumor_cram:
         type: File
-        secondaryFiles: ["^.bai"]
-    normal_bam:
+        secondaryFiles: ["^.crai"]
+    normal_cram:
         type: File
-        secondaryFiles: ["^.bai"]
+        secondaryFiles: ["^.crai"]
     reference:
         type: File
         inputBinding:
