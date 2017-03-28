@@ -10,6 +10,7 @@ arguments: [
 requirements:
     - class: ResourceRequirement
       ramMin: 16000
+      tmpdirMin: 100000
 inputs:
     tumor_bam:
         type: File

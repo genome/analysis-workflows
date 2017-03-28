@@ -7,7 +7,7 @@ baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK.jar", "-
 requirements:
     - class: ResourceRequirement
       ramMin: 8000
-
+      tmpdirMin: 25000
 arguments:
     ["-genotypeMergeOptions", "PRIORITIZE",
      "--rod_priority_list", "mutect,varscan,strelka,pindel",
