@@ -1,5 +1,4 @@
 #!/usr/bin/env cwl-runner
-cwl:tool: detect_variants.cwl
 reference:
   class: File
   path: GRCh38_full_analysis_set_plus_decoy_hla.fa
@@ -25,3 +24,6 @@ vep_cache_dir:
 synonyms_file:
   class: File
   path: chromAlias.ensembl.txt
+docm_vcf:
+  class: File
+  path: DoCM.hs37_011117_sanitized_sort_new_LiftOver_hg19ToHg38.vcf.gz
