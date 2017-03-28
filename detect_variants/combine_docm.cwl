@@ -10,42 +10,30 @@ requirements:
 
 arguments:
     ["-genotypeMergeOptions", "PRIORITIZE",
-     "--rod_priority_list", "mutect,varscan,strelka,pindel",
-     "-o", { valueFrom: $(runtime.outdir)/combined.vcf }]
+     "--rod_priority_list", "filtered,docm",
+     "-o", { valueFrom: $(runtime.outdir)/combine_docm.vcf }]
 inputs:
     reference:
         type: File
         inputBinding:
             prefix: "-R"
             position: 1
-        secondaryFiles: [".fai", "^.dict"]
-    mutect_vcf:
+        secondaryFiles: [.fai, ^.dict]
+    filtered_vcf:
         type: File
         inputBinding:
-            prefix: "--variant:mutect"
+            prefix: "--variant:filtered"
             position: 2
         secondaryFiles: [.tbi]
-    varscan_vcf:
+    docm_vcf:
         type: File
         inputBinding:
-            prefix: "--variant:varscan"
+            prefix: "--variant:docm"
             position: 3
         secondaryFiles: [.tbi]
-    strelka_vcf:
-        type: File
-        inputBinding:
-            prefix: "--variant:strelka"
-            position: 4
-        secondaryFiles: [.tbi]
-    pindel_vcf:
-        type: File
-        inputBinding:
-            prefix: "--variant:pindel"
-            position: 5
-        secondaryFiles: [.tbi]
 outputs:
-    combined_vcf:
+    combine_docm_vcf:
         type: File
         outputBinding:
-            glob: "combined.vcf"
+            glob: "combine_docm.vcf"
 

@@ -10,9 +10,7 @@ requirements:
 
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/output.vcf.gz }]
-requirements:
-    - class: ResourceRequirement
-      ramMin: 4000
+
 inputs:
     reference:
         type: File
