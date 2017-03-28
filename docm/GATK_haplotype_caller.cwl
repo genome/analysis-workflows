@@ -17,18 +17,18 @@ inputs:
             prefix: "-R"
             position: 1
         secondaryFiles: [.fai, ^.dict]
-    normal_bam:
+    normal_cram:
         type: File
         inputBinding:
             prefix: "-I"
             position: 2
-        secondaryFiles: [^.bai]
-    tumor_bam:
+        secondaryFiles: [^.crai]
+    tumor_cram:
         type: File
         inputBinding:
             prefix: "-I"
             position: 3
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     docm_vcf:
         type: File
         inputBinding:

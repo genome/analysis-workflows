@@ -10,12 +10,12 @@ inputs:
     reference:
         type: File
         secondaryFiles: [.fai]
-    tumor_bam:
+    tumor_cram:
         type: File
-        secondaryFiles: [^.bai]
-    normal_bam:
+        secondaryFiles: [^.crai]
+    normal_cram:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -29,8 +29,8 @@ steps:
         run: GATK_haplotype_caller.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             docm_vcf: docm_vcf
             interval_file: docm_vcf
         out:
