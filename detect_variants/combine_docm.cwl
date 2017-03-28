@@ -3,7 +3,11 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "CombineVariants (GATK 3.6)"
-baseCommand: ["/usr/bin/java", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "CombineVariants"]
+baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "CombineVariants"]
+requirements:
+    - class: ResourceRequirement
+      ramMin: 8000
+
 arguments:
     ["-genotypeMergeOptions", "PRIORITIZE",
      "--rod_priority_list", "filtered,docm",
