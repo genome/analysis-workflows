@@ -105,16 +105,16 @@ steps:
             vcf: combine/combined_vcf
         out:
             [filtered_vcf]
-    bgzip:
+    fp_bgzip:
         run: bgzip.cwl
         in:
             file: filter/filtered_vcf
         out:
             [bgzipped_file]
-    index:
+    fp_index:
         run: index.cwl
         in:
-            vcf: bgzip/bgzipped_file
+            vcf: fp_bgzip/bgzipped_file
         out:
             [indexed_vcf]
     docm:
@@ -130,7 +130,7 @@ steps:
         run: combine_docm.cwl
         in: 
             reference: reference
-            filter_vcf: index/indexed_vcf
+            filter_vcf: fp_index/indexed_vcf
             docm_vcf: docm/merged_vcf
         out:
             [combine_docm_vcf]
