@@ -7,6 +7,7 @@ baseCommand: ["/usr/bin/java", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "MuTec
 requirements:
     - class: ResourceRequirement
       ramMin: 20000
+      tmpdirMin: 100000
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/output.vcf.gz }]
 inputs:
