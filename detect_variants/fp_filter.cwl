@@ -7,7 +7,7 @@ baseCommand: ["/usr/bin/perl", "/usr/bin/fpfilter.pl"]
 requirements:
     - class: ResourceRequirement
       ramMin: 6000
-      tmpdirMin: 10000
+      tmpdirMin: 25000
 arguments:
     ["--sample", "TUMOR",
     "--output", { valueFrom: $(runtime.outdir)/filtered.vcf }]
