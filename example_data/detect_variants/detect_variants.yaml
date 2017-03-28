@@ -18,6 +18,7 @@ tumor_cram:
   class: File
   path: H_NJ-HCC1395-HCC1395_exome.cram
 strelka_exome_mode: true
+mutect_scatter_count: 50
 vep_cache_dir:
   class: File
   path: vep_cache_location.txt
