@@ -1,13 +1,13 @@
 #!/usr/bin/env cwl-runner
 reference:
   class: File
-  path: GRCh38_full_analysis_set_plus_decoy_hla.fa
+  path: ../detect_variants/GRCh38_full_analysis_set_plus_decoy_hla.fa
 normal_cram: 
   class: File
-  path: H_NJ-HCC1395-HCC1395_BL_exome.cram
+  path: ../detect_variants/H_NJ-HCC1395-HCC1395_BL_exome.cram
 tumor_cram:
   class: File
-  path: H_NJ-HCC1395-HCC1395_exome.cram
+  path: ../detect_variants/H_NJ-HCC1395-HCC1395_exome.cram
 docm_vcf:
   class: File
-  path: DoCM.hs37_011117_sanitized_sort_new_LiftOver_hg19ToHg38.vcf.gz
+  path: ../detect_variants/DoCM.hs37_011117_sanitized_sort_new_LiftOver_hg19ToHg38.vcf.gz
