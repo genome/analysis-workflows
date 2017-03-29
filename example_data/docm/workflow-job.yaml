@@ -10,4 +10,4 @@ tumor_cram:
   path: ../detect_variants/H_NJ-HCC1395-HCC1395_exome.cram
 docm_vcf:
   class: File
-  path: ../detect_variants/DoCM.hs37_011117_sanitized_sort_new_LiftOver_hg19ToHg38.vcf.gz
+  path: ../detect_variants/DoCM.hs37_011117_sanitized_sort_new_LiftOver_hg19ToHg38.chr22.vcf.gz
