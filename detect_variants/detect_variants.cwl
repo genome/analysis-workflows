@@ -11,10 +11,10 @@ inputs:
         secondaryFiles: [".fai", "^.dict"]
     tumor_cram:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.crai,.crai]
     normal_cram:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.crai,.crai]
     interval_list:
         type: File
     dbsnp_vcf:

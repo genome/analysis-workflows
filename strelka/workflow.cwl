@@ -10,10 +10,10 @@ requirements:
 inputs:
     tumor_cram:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [.crai]
     normal_cram:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [.crai]
     reference:
         type: File
         secondaryFiles: [.fai]
