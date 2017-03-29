@@ -9,7 +9,7 @@ requirements:
 inputs:
     reference:
         type: File
-        secondaryFiles: [.fai]
+        secondaryFiles: [.fai,^.dict]
     tumor_cram:
         type: File
         secondaryFiles: [^.crai]
