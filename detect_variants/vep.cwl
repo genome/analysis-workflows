@@ -62,3 +62,7 @@ outputs:
         type: File
         outputBinding:
             glob: "annotated.vcf"
+    vep_summary:
+        type: File
+        outputBinding:
+            glob: "annotated.vcf_summary.html"

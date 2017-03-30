@@ -61,6 +61,9 @@ outputs:
     final_tsv:
         type: File
         outputSource: variants_to_table/variants_tsv
+    vep_summary:
+        type: File
+        outputSource: annotate_variants/vep_summary
 steps:
     mutect:
         run: ../mutect/workflow.cwl
@@ -169,7 +172,7 @@ steps:
             coding_only: coding_only
             local_cache: local_cache
         out:
-            [annotated_vcf]
+            [annotated_vcf, vep_summary]
     bgzip:
         run: bgzip.cwl
         in:
