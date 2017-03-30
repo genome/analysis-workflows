@@ -39,6 +39,8 @@ inputs:
         type: File
     synonyms_file:
         type: File?
+    coding_only:
+        type: boolean?
     hard_filter_vcf:
         type: boolean?
         default: true
@@ -161,6 +163,7 @@ steps:
             vcf: combine_docm/combine_docm_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
+            coding_only: coding_only
         out:
             [annotated_vcf]
     bgzip:

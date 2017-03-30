@@ -39,6 +39,12 @@ inputs:
         inputBinding:
             prefix: "--synonyms"
             position: 2
+    coding_only:
+        type: boolean
+        inputBinding:
+            prefix: "--coding_only"
+            position: 3
+        default: false
 outputs:
     annotated_vcf:
         type: File
