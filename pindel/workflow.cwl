@@ -11,12 +11,12 @@ inputs:
     reference:
         type: File
         secondaryFiles: [".fai"]
-    tumor_bam:
+    tumor_cram:
         type: File
-        secondaryFiles: ["^.bai"]
-    normal_bam:
+        secondaryFiles: ["^.crai"]
+    normal_cram:
         type: File
-        secondaryFiles: ["^.bai"]
+        secondaryFiles: ["^.crai"]
     interval_list:
         type: File
     insert_size:
@@ -39,8 +39,8 @@ steps:
         run: pindel_cat.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             chromosome: get_chromosome_list/chromosome_list
             insert_size: insert_size
         out:

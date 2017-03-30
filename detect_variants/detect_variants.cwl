@@ -9,12 +9,12 @@ inputs:
     reference:
         type: File
         secondaryFiles: [".fai", "^.dict"]
-    tumor_bam:
+    tumor_cram:
         type: File
-        secondaryFiles: [^.bai]
-    normal_bam:
+        secondaryFiles: [^.crai,.crai]
+    normal_cram:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai,.crai]
     interval_list:
         type: File
     dbsnp_vcf:
@@ -49,8 +49,8 @@ steps:
         run: ../mutect/workflow.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             interval_list: interval_list
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
@@ -62,8 +62,8 @@ steps:
         run: ../strelka/workflow.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             interval_list: interval_list
             exome_mode: strelka_exome_mode
         out:
@@ -72,8 +72,8 @@ steps:
         run: ../varscan/workflow.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             interval_list: interval_list
         out:
             [merged_vcf]
@@ -81,8 +81,8 @@ steps:
         run: ../pindel/workflow.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             interval_list: interval_list
             insert_size: pindel_insert_size
         out:
@@ -98,10 +98,10 @@ steps:
         out:
             [combined_vcf]
     filter:
-        run: fp_filter.cwl
+        run: ../fp_filter/workflow.cwl
         in:
             reference: reference
-            bam: tumor_bam
+            cram: tumor_cram
             vcf: combine/combined_vcf
         out:
             [filtered_vcf]
@@ -121,9 +121,10 @@ steps:
         run: ../docm/workflow.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             docm_vcf: docm_vcf
+            interval_list: interval_list
         out:
             [merged_vcf]
     combine_docm:

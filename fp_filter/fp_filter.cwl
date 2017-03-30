@@ -23,7 +23,6 @@ inputs:
         inputBinding:
             prefix: "--bam-file"
             position: 2
-        secondaryFiles: [^.bai]
     vcf:
         type: File
         inputBinding:

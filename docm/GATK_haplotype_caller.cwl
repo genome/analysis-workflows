@@ -17,30 +17,29 @@ inputs:
             prefix: "-R"
             position: 1
         secondaryFiles: [.fai, ^.dict]
-    normal_bam:
+    normal_cram:
         type: File
         inputBinding:
             prefix: "-I"
             position: 2
-        secondaryFiles: [^.bai]
-    tumor_bam:
+        secondaryFiles: [^.crai]
+    tumor_cram:
         type: File
         inputBinding:
             prefix: "-I"
             position: 3
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     docm_vcf:
         type: File
         inputBinding:
             prefix: "--alleles"
             position: 4
         secondaryFiles: [.tbi]
-    interval_file:
+    interval_list:
         type: File
         inputBinding:
             prefix: "-L"
             position: 5
-        secondaryFiles: [.tbi]
 outputs:
     docm_out:
         type: File

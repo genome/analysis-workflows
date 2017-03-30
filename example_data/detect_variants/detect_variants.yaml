@@ -1,5 +1,4 @@
 #!/usr/bin/env cwl-runner
-cwl:tool: detect_variants.cwl
 reference:
   class: File
   path: GRCh38_full_analysis_set_plus_decoy_hla.fa
@@ -12,16 +11,20 @@ dbsnp_vcf:
 cosmic_vcf:
   class: File
   path: Cosmic_v79.dictsorted.vcf.gz
-normal_bam: 
+normal_cram: 
   class: File
-  path: H_NJ-HCC1395-HCC1395_BL_exome.bam
-tumor_bam:
+  path: H_NJ-HCC1395-HCC1395_BL_exome.cram
+tumor_cram:
   class: File
-  path: H_NJ-HCC1395-HCC1395_exome.bam
+  path: H_NJ-HCC1395-HCC1395_exome.cram
 strelka_exome_mode: true
+mutect_scatter_count: 50
 vep_cache_dir:
   class: File
   path: vep_cache_location.txt
 synonyms_file:
   class: File
   path: chromAlias.ensembl.txt
+docm_vcf:
+  class: File
+  path: DoCM.hs37_011117_sanitized_sort_new_LiftOver_hg19ToHg38.chr22.vcf.gz
