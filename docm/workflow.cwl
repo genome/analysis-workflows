@@ -19,6 +19,8 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+    interval_file:
+        type: File
 outputs:
     merged_vcf:
         type: File
@@ -32,7 +34,7 @@ steps:
             tumor_cram: tumor_cram
             normal_cram: normal_cram
             docm_vcf: docm_vcf
-            interval_file: docm_vcf
+            interval_file: interval_file
         out:
             [docm_out]
     docm_filter:
