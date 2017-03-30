@@ -39,7 +39,7 @@ inputs:
         type: File
     synonyms_file:
         type: File?
-    hard_filtered_vcf:
+    hard_filter_vcf:
         type: boolean?
         default: true
 outputs:
@@ -125,7 +125,7 @@ steps:
         in:
             reference: reference
             vcf: fp_index/indexed_vcf
-            exclude_filtered: hard_filtered_vcf
+            exclude_filtered: hard_filter_vcf
         out:
             [filtered_vcf]
     docm:
