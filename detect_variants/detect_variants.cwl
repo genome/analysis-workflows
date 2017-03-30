@@ -41,6 +41,7 @@ inputs:
         type: File?
     hard_filtered_vcf:
         type: boolean?
+        default: true
 outputs:
     final_vcf:
         type: File
