@@ -40,7 +40,6 @@ inputs:
         inputBinding:
             prefix: "-L"
             position: 5
-        secondaryFiles: [.tbi]
 outputs:
     docm_out:
         type: File

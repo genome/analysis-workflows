@@ -11,3 +11,6 @@ tumor_cram:
 docm_vcf:
   class: File
   path: ../detect_variants/DoCM.hs37_011117_sanitized_sort_new_LiftOver_hg19ToHg38.chr22.vcf.gz
+interval_file:
+  class: File
+  path: ../detect_variants/xgen-exome-research-panel-targets.interval_list
