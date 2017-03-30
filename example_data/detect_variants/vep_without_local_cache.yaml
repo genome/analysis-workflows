@@ -7,4 +7,4 @@ cache_dir:
 synonyms_file:
     class: File
     path: chromAlias.ensembl.txt
-local_cache: true
+local_cache: false

@@ -6,20 +6,18 @@ label: "Ensembl Variant Effect Predictor"
 baseCommand: ["/usr/bin/perl", "/usr/bin/variant_effect_predictor.pl"]
 requirements:
     - class: ShellCommandRequirement
+    - class: InlineJavascriptRequirement
     - class: ResourceRequirement
       ramMin: 32000
       tmpdirMin: 25000
 arguments:
-    ["--cache",
-    "--offline",
-    "--format", "vcf",
+    ["--format", "vcf",
     "--vcf",
     "--plugin", "Downstream",
     "--plugin", "Wildtype",
     "--symbol",
     "--term", "SO",
     "--flag_pick",
-    "--maf_exac",
     "-o", { valueFrom: $(runtime.outdir)/annotated.vcf },
     "--dir",
     { valueFrom: "`", shellQuote: false },
@@ -45,6 +43,20 @@ inputs:
             prefix: "--coding_only"
             position: 3
         default: false
+    local_cache:
+        type: boolean
+        inputBinding:
+            valueFrom: |
+                ${
+                    if (inputs.local_cache) {
+                        return ["--offline", "--cache", "--maf_exac"]
+                    }
+                    else {
+                        return "--database"
+                    }
+                }
+            position: 4
+        default: true
 outputs:
     annotated_vcf:
         type: File
