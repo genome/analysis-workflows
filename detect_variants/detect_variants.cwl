@@ -39,6 +39,9 @@ inputs:
         type: File
     synonyms_file:
         type: File?
+    hard_filter_vcf:
+        type: boolean?
+        default: true
 outputs:
     final_vcf:
         type: File
@@ -117,6 +120,14 @@ steps:
             vcf: fp_bgzip/bgzipped_file
         out:
             [indexed_vcf]
+    hard_filter:
+        run: select_variants.cwl
+        in:
+            reference: reference
+            vcf: fp_index/indexed_vcf
+            exclude_filtered: hard_filter_vcf
+        out:
+            [filtered_vcf]
     docm:
         run: ../docm/workflow.cwl
         in:
@@ -131,7 +142,7 @@ steps:
         run: combine_docm.cwl
         in: 
             reference: reference
-            filtered_vcf: fp_index/indexed_vcf
+            filtered_vcf: hard_filter/filtered_vcf
             docm_vcf: docm/merged_vcf
         out:
             [combine_docm_vcf]
