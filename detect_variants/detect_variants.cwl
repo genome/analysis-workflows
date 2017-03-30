@@ -42,11 +42,20 @@ inputs:
     hard_filter_vcf:
         type: boolean?
         default: true
+    variants_to_table_fields:
+        type: string[]?
+        default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
+    variants_to_table_genotype_fields:
+        type: string[]?
+        default: [GT,AD]
 outputs:
     final_vcf:
         type: File
         outputSource: index/indexed_vcf
         secondaryFiles: [.tbi]
+    final_tsv:
+        type: File
+        outputSource: variants_to_table/variants_tsv
 steps:
     mutect:
         run: ../mutect/workflow.cwl
@@ -166,3 +175,12 @@ steps:
             vcf: bgzip/bgzipped_file
         out:
             [indexed_vcf]
+    variants_to_table:
+        run: variants_to_table.cwl
+        in:
+            reference: reference
+            vcf: index/indexed_vcf
+            fields: variants_to_table_fields
+            genotype_fields: variants_to_table_genotype_fields
+        out:
+            [variants_tsv]
