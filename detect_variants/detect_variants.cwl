@@ -131,7 +131,7 @@ steps:
         run: combine_docm.cwl
         in: 
             reference: reference
-            filter_vcf: fp_index/indexed_vcf
+            filtered_vcf: fp_index/indexed_vcf
             docm_vcf: docm/merged_vcf
         out:
             [combine_docm_vcf]
