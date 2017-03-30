@@ -28,3 +28,4 @@ synonyms_file:
 docm_vcf:
   class: File
   path: DoCM.hs37_011117_sanitized_sort_new_LiftOver_hg19ToHg38.chr22.vcf.gz
+hard_filtered_vcf: true

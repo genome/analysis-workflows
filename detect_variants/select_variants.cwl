@@ -24,10 +24,15 @@ inputs:
             position: 2
         secondaryFiles: [.tbi]
     interval_list:
-        type: File
+        type: File?
         inputBinding:
             prefix: "-L"
             position: 3
+    exclude_filtered:
+        type: boolean?
+        inputBinding:
+            prefix: "--excludeFiltered"
+            position: 4
 outputs:
     filtered_vcf:
         type: File
