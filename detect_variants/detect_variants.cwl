@@ -124,6 +124,7 @@ steps:
             tumor_cram: tumor_cram
             normal_cram: normal_cram
             docm_vcf: docm_vcf
+            interval_list: interval_list
         out:
             [merged_vcf]
     combine_docm:

@@ -35,7 +35,7 @@ inputs:
             prefix: "--alleles"
             position: 4
         secondaryFiles: [.tbi]
-    interval_file:
+    interval_list:
         type: File
         inputBinding:
             prefix: "-L"
