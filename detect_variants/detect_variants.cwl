@@ -36,9 +36,11 @@ inputs:
          type: File
          secondaryFiles: [.tbi]
     vep_cache_dir:
-        type: File
+        type: string?
     synonyms_file:
         type: File?
+    coding_only:
+        type: boolean?
     hard_filter_vcf:
         type: boolean?
         default: true
@@ -56,6 +58,9 @@ outputs:
     final_tsv:
         type: File
         outputSource: variants_to_table/variants_tsv
+    vep_summary:
+        type: File
+        outputSource: annotate_variants/vep_summary
 steps:
     mutect:
         run: ../mutect/workflow.cwl
@@ -161,8 +166,9 @@ steps:
             vcf: combine_docm/combine_docm_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
+            coding_only: coding_only
         out:
-            [annotated_vcf]
+            [annotated_vcf, vep_summary]
     bgzip:
         run: bgzip.cwl
         in:
