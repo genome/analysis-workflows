@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Ensembl Variant Effect Predictor"
-baseCommand: ["/usr/bin/perl", "/usr/bin/variant_effect_predictor.pl"]
+baseCommand: ["/usr/bin/perl", "-I", "/opt/lib/perl/VEP/Plugins", "/usr/bin/variant_effect_predictor.pl"]
 requirements:
     - class: ShellCommandRequirement
     - class: InlineJavascriptRequirement
@@ -18,12 +18,7 @@ arguments:
     "--symbol",
     "--term", "SO",
     "--flag_pick",
-    "-o", { valueFrom: $(runtime.outdir)/annotated.vcf },
-    "--dir",
-    { valueFrom: "`", shellQuote: false },
-    { valueFrom: "cat", shellQuote: false },
-    { valueFrom: $(inputs.cache_dir), shellQuote: false },
-    { valueFrom: "`", shellQuote: false }]
+    "-o", { valueFrom: $(runtime.outdir)/annotated.vcf }]
 inputs:
     vcf:
         type: File
@@ -31,7 +26,18 @@ inputs:
             prefix: "-i"
             position: 1
     cache_dir:
-        type: File
+        type: string?
+        inputBinding:
+            valueFrom: |
+                ${
+                    if (inputs.cache_dir) {
+                        return ["--offline", "--cache", "--maf_exac", "--dir", inputs.cache_dir ]
+                    }
+                    else {
+                        return "--database"
+                    }
+                }
+            position: 4
     synonyms_file:
         type: File?
         inputBinding:
@@ -43,20 +49,6 @@ inputs:
             prefix: "--coding_only"
             position: 3
         default: false
-    local_cache:
-        type: boolean
-        inputBinding:
-            valueFrom: |
-                ${
-                    if (inputs.local_cache) {
-                        return ["--offline", "--cache", "--maf_exac"]
-                    }
-                    else {
-                        return "--database"
-                    }
-                }
-            position: 4
-        default: true
 outputs:
     annotated_vcf:
         type: File

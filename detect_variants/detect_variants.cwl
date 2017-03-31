@@ -36,14 +36,11 @@ inputs:
          type: File
          secondaryFiles: [.tbi]
     vep_cache_dir:
-        type: File
+        type: string?
     synonyms_file:
         type: File?
     coding_only:
         type: boolean?
-    local_cache:
-        type: boolean?
-        default: true
     hard_filter_vcf:
         type: boolean?
         default: true
@@ -170,7 +167,6 @@ steps:
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: coding_only
-            local_cache: local_cache
         out:
             [annotated_vcf, vep_summary]
     bgzip:

@@ -1,10 +1,6 @@
 vcf:
     class: File
     path: exome.merged.fpfilter.pass.vcf.gz
-cache_dir:
-    class: File
-    path: vep_cache_location.txt
 synonyms_file:
     class: File
     path: chromAlias.ensembl.txt
-local_cache: false
