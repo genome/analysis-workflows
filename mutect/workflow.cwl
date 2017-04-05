@@ -32,7 +32,7 @@ inputs:
 outputs:
     merged_vcf:
         type: File
-        outputSource: index/indexed_vcf
+        outputSource: fp_index/indexed_vcf
         secondaryFiles: [.tbi]
 steps:
     split_interval_list:
@@ -60,10 +60,24 @@ steps:
             vcfs: mutect/vcf
         out:
             [merged_vcf]
-    index:
-        run: ../detect_variants/index.cwl
+    filter:
+        run: ../fp_filter/workflow.cwl
         in:
+            reference: reference
+            cram: tumor_cram
             vcf: merge/merged_vcf
+        out:
+            [filtered_vcf]
+    fp_bgzip:
+        run: bgzip.cwl
+        in:
+            file: filter/filtered_vcf
+        out:
+            [bgzipped_file]
+    fp_index:
+        run: index.cwl
+        in:
+            vcf: fp_bgzip/bgzipped_file
         out:
             [indexed_vcf]
 
