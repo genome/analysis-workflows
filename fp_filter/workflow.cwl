@@ -62,7 +62,8 @@ steps:
         in:
             reference: reference
             vcf: fp_index/indexed_vcf
-            exclude_filtered: hard_filter_vcf
+            exclude_filtered: 
+                default: "hard_filter_vcf"
             output_vcf_basename: 
                 valueFrom: $(inputs.output_vcf_basename)_filtered
         out:
