@@ -58,7 +58,7 @@ steps:
         out:
             [indexed_vcf]
     hard_filter:
-        run: select_variants.cwl
+        run: ../detect_variants/select_variants.cwl
         in:
             reference: reference
             vcf: fp_index/indexed_vcf
