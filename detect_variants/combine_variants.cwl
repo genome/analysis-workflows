@@ -10,7 +10,7 @@ requirements:
       tmpdirMin: 25000
 arguments:
     ["-genotypeMergeOptions", "PRIORITIZE",
-     "--rod_priority_list", "mutect,varscan,strelka,pindel",
+     "--rod_priority_list", "mutect,varscan,strelka,pindel,docm",
      "-o", { valueFrom: $(runtime.outdir)/combined.vcf }]
 inputs:
     reference:
