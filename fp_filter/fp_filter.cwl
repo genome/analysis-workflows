@@ -10,6 +10,8 @@ requirements:
       tmpdirMin: 25000
 arguments:
     ["--sample", "TUMOR",
+    "--bam-readcount", "/usr/bin/bam-readcount",
+    "--samtools", "/opt/samtools/bin/samtools",
     "--output", { valueFrom: $(runtime.outdir)/filtered.vcf }]
 inputs:
     reference:
