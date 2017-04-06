@@ -3,6 +3,8 @@
 cwlVersion: v1.0
 class: Workflow
 label: "fp_filter workflow"
+requirements:
+    - class: InlineJavascriptRequirement
 inputs:
     cram:
         type: File
@@ -39,7 +41,8 @@ steps:
             reference: reference
             bam: cram_to_bam/bam
             vcf: vcf
-            output_vcf_basename: ${inputs.output_vcf_basename)_unfiltered
+            output_vcf_basename: 
+                valueFrom: ${inputs.output_vcf_basename)_unfiltered
         out:
             [filtered_vcf]
     fp_bgzip:
@@ -60,7 +63,8 @@ steps:
             reference: reference
             vcf: fp_index/indexed_vcf
             exclude_filtered: hard_filter_vcf
-            output_vcf_basename: $(inputs.output_vcf_basename)_filtered
+            output_vcf_basename: 
+                valueFrom: $(inputs.output_vcf_basename)_filtered
         out:
             [filtered_vcf]
 
