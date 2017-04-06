@@ -40,10 +40,10 @@ steps:
             reference: reference
             tumor_cram: normal_crams
             interval_list: interval_list
+            scatter_count: scatter_count
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
             artifact_detection_mode: artifact_detection_mode
-            scatter_count: scatter_count
         out:
             [merged_vcf]
     combine:
