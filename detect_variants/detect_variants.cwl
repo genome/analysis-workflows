@@ -129,7 +129,7 @@ steps:
         run: select_variants.cwl
         in:
             reference: reference
-            vcf: combined/combined_vcf
+            vcf: combine/combined_vcf
             exclude_filtered: hard_filter_vcf
         out:
             [filtered_vcf]
