@@ -7,6 +7,7 @@ requirements:
     - class: ScatterFeatureRequirement
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     reference:
         type: File
@@ -39,6 +40,8 @@ steps:
         in:
             reference: reference
             tumor_cram: normal_crams
+            normal_cram:
+                valueFrom: null
             interval_list: interval_list
             scatter_count: scatter_count
             dbsnp_vcf: dbsnp_vcf
