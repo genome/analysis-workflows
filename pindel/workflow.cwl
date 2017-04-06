@@ -96,4 +96,4 @@ steps:
             vcf: region_filter/filtered_vcf
             output_vcf_basename: pindel
         out:
-            [filtered_vcf]
+            [unfiltered_vcf, filtered_vcf]

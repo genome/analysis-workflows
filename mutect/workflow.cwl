@@ -72,6 +72,6 @@ steps:
             vcf: merge/merged_vcf
             output_vcf_basename: mutect
         out:
-            [filtered_vcf]
+            [unfiltered_vcf, filtered_vcf]
 
 
