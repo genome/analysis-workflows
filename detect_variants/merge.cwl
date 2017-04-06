@@ -10,15 +10,18 @@ arguments:
     - "--output-type"
     - "z"
     - "-o"
-    - { valueFrom: $(runtime.outdir)/merged.vcf.gz }
+    - { valueFrom: $(runtime.outdir)/$(inputs.merged_vcf_basename).vcf.gz }
 inputs:
     vcfs:
         type: File[]
         inputBinding:
             position: 1
         secondaryFiles: [.tbi]
+    merged_vcf_basename:
+        type: string?
+        default: 'merged'
 outputs:
     merged_vcf:
         type: File
         outputBinding:
-            glob: "merged.vcf.gz"
+            glob: $(inputs.merged_vcf_basename).vcf.gz
