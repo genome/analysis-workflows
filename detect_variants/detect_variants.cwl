@@ -53,42 +53,42 @@ inputs:
 outputs:
     mutect_unfiltered_vcf:
         type: File
-        outputSource mutect/unfiltered_vcf
+        outputSource: mutect/unfiltered_vcf
         secondaryFiles: [.tbi]
     mutect_filtered_vcf:
         type: File
-        outputSource mutect/filtered_vcf
+        outputSource: mutect/filtered_vcf
         secondaryFiles: [.tbi]
     strelka_unfiltered_vcf:
         type: File
-        outputSource strelka/unfiltered_vcf
+        outputSource: strelka/unfiltered_vcf
         secondaryFiles: [.tbi]
     strelka_filtered_vcf:
         type: File
-        outputSource strelka/filtered_vcf
+        outputSource: strelka/filtered_vcf
         secondaryFiles: [.tbi]
     varscan_unfiltered_vcf:
         type: File
-        outputSource varscan/unfiltered_vcf
+        outputSource: varscan/unfiltered_vcf
         secondaryFiles: [.tbi]
     varscan_filtered_vcf:
         type: File
-        outputSource varscan/filtered_vcf
+        outputSource: varscan/filtered_vcf
         secondaryFiles: [.tbi]
     pindel_unfiltered_vcf:
         type: File
-        outputSource pindel/unfiltered_vcf
+        outputSource: pindel/unfiltered_vcf
         secondaryFiles: [.tbi]
     pindel_filtered_vcf:
         type: File
-        outputSource pindel/filtered_vcf
+        outputSource: pindel/filtered_vcf
         secondaryFiles: [.tbi]
     docm_unfiltered_vcf:
         type: File
-        outputSource docm/unfiltered_vcf
+        outputSource: docm/unfiltered_vcf
     docm_filtered_vcf:
         type: File
-        outputSource docm/filtered_vcf
+        outputSource: docm/filtered_vcf
         secondaryFiles: [.tbi]
     final_vcf:
         type: File
