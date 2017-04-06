@@ -13,13 +13,18 @@ inputs:
     vcf:
         type: File
         secondaryFiles: [.tbi]
-    filtered_vcf_basename:
+    output_vcf_basename:
         type: string?
-        default: filtered
+        default: fpfilter
 outputs:
+    unfiltered_vcf:
+        type: File
+        outputSource: fp_index/indexed_vcf
+        secondaryFiles: [.tbi]
     filtered_vcf:
         type: File
         outputSource: hard_filter/filtered_vcf
+        secondaryFiles: [.tbi]
 steps:
     cram_to_bam:
         run: cram_to_bam.cwl
@@ -34,6 +39,7 @@ steps:
             reference: reference
             bam: cram_to_bam/bam
             vcf: vcf
+            output_vcf_basename: ${inputs.output_vcf_basename)_unfiltered
         out:
             [filtered_vcf]
     fp_bgzip:
@@ -54,7 +60,7 @@ steps:
             reference: reference
             vcf: fp_index/indexed_vcf
             exclude_filtered: hard_filter_vcf
-            output_vcf_basename: filtered_vcf_basename
+            output_vcf_basename: $(inputs.output_vcf_basename)_filtered
         out:
             [filtered_vcf]
 
