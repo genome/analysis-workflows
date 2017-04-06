@@ -21,7 +21,10 @@ inputs:
     interval_list:
         type: File
 outputs:
-    merged_vcf:
+    unfiltered_vcf:
+        type: File
+        outputSource: GATK_haplotype_caller/docm_out
+    filtered_vcf:
         type: File
         outputSource: index/indexed_vcf
         secondaryFiles: [.tbi]
