@@ -27,10 +27,14 @@ inputs:
             prefix: "-L"
             position: 2
     normal_vcfs:
-        type: File[]
-        inputBinding:
-            prefix: "-V"
+        type:
+            type: array
+            items: File
+            inputBinding:
+                prefix: "-V"
         secondaryFiles: [".tbi"]
+        inputBinding:
+            position: 3
 outputs:
     combined_vcf:
         type: File
