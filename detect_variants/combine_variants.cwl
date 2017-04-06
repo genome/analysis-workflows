@@ -43,6 +43,12 @@ inputs:
             prefix: "--variant:pindel"
             position: 5
         secondaryFiles: [.tbi]
+    docm_vcf:
+        type: File
+        inputBinding:
+            prefix: "--variant:docm"
+            position: 6
+        secondaryFiles: [.tbi]
 outputs:
     combined_vcf:
         type: File

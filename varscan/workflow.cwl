@@ -29,7 +29,7 @@ outputs:
         secondaryFiles: [.tbi]
     merged_vcf:
         type: File
-        outputSource: index/indexed_vcf
+        outputSource: fp_index/indexed_vcf
         secondaryFiles: [.tbi]
 steps:
     intervals_to_bed:
@@ -105,9 +105,23 @@ steps:
             vcfs: [index_snvs/indexed_vcf, index_indels/indexed_vcf]
         out:
             [merged_vcf]
-    index:
+    filter:
+        run: ../fp_filter/workflow.cwl
+        in:
+            reference: reference
+            cram: tumor_cram
+            vcf: merge/merged_vcf
+        out:
+            [filtered_vcf]
+    fp_bgzip:
+        run: ../detect_variants/bgzip.cwl
+        in:
+            file: filter/filtered_vcf
+        out:
+            [bgzipped_file]
+    fp_index:
         run: ../detect_variants/index.cwl
         in:
-            vcf: merge/merged_vcf
+            vcf: fp_bgzip/bgzipped_file
         out:
             [indexed_vcf]

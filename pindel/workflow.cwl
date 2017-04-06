@@ -25,7 +25,7 @@ inputs:
 outputs:
     merged_vcf:
         type: File
-        outputSource: index_filtered/indexed_vcf
+        outputSource: fp_index/indexed_vcf
         secondaryFiles: [".tbi"]
 steps:
     get_chromosome_list:
@@ -84,9 +84,23 @@ steps:
             interval_list: interval_list
         out:
             [filtered_vcf]
-    index_filtered:
+    filter:
+        run: ../fp_filter/workflow.cwl
+        in:
+            reference: reference
+            cram: tumor_cram
+            vcf: region_filter/filtered_vcf
+        out:
+            [filtered_vcf]
+    fp_bgzip:
+        run: ../detect_variants/bgzip.cwl
+        in:
+            file: filter/filtered_vcf
+        out:
+            [bgzipped_file]
+    fp_index:
         run: ../detect_variants/index.cwl
         in:
-            vcf: region_filter/filtered_vcf
+            vcf: fp_bgzip/bgzipped_file
         out:
             [indexed_vcf]

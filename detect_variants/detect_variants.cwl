@@ -104,44 +104,6 @@ steps:
             insert_size: pindel_insert_size
         out:
             [merged_vcf]
-    combine:
-        run: combine_variants.cwl
-        in:
-            reference: reference
-            mutect_vcf: mutect/merged_vcf
-            strelka_vcf: strelka/merged_vcf
-            varscan_vcf: varscan/merged_vcf
-            pindel_vcf: pindel/merged_vcf
-        out:
-            [combined_vcf]
-    filter:
-        run: ../fp_filter/workflow.cwl
-        in:
-            reference: reference
-            cram: tumor_cram
-            vcf: combine/combined_vcf
-        out:
-            [filtered_vcf]
-    fp_bgzip:
-        run: bgzip.cwl
-        in:
-            file: filter/filtered_vcf
-        out:
-            [bgzipped_file]
-    fp_index:
-        run: index.cwl
-        in:
-            vcf: fp_bgzip/bgzipped_file
-        out:
-            [indexed_vcf]
-    hard_filter:
-        run: select_variants.cwl
-        in:
-            reference: reference
-            vcf: fp_index/indexed_vcf
-            exclude_filtered: hard_filter_vcf
-        out:
-            [filtered_vcf]
     docm:
         run: ../docm/workflow.cwl
         in:
@@ -152,18 +114,29 @@ steps:
             interval_list: interval_list
         out:
             [merged_vcf]
-    combine_docm:
-        run: combine_docm.cwl
-        in: 
+    combine:
+        run: combine_variants.cwl
+        in:
             reference: reference
-            filtered_vcf: hard_filter/filtered_vcf
+            mutect_vcf: mutect/merged_vcf
+            strelka_vcf: strelka/merged_vcf
+            varscan_vcf: varscan/merged_vcf
+            pindel_vcf: pindel/merged_vcf
             docm_vcf: docm/merged_vcf
         out:
-            [combine_docm_vcf]
+            [combined_vcf]
+    hard_filter:
+        run: select_variants.cwl
+        in:
+            reference: reference
+            vcf: combine/combined_vcf
+            exclude_filtered: hard_filter_vcf
+        out:
+            [filtered_vcf]
     annotate_variants:
         run: vep.cwl
         in:
-            vcf: combine_docm/combine_docm_vcf
+            vcf: hard_filter/filtered_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: coding_only
