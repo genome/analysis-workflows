@@ -70,7 +70,7 @@ steps:
             reference: reference
             cram: tumor_cram
             vcf: merge/merged_vcf
-            output_vcf_basename: mutect
+            output_vcf_basename: "mutect"
         out:
             [unfiltered_vcf, filtered_vcf]
 
