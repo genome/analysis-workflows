@@ -69,13 +69,13 @@ steps:
         out:
             [filtered_vcf]
     fp_bgzip:
-        run: bgzip.cwl
+        run: ../detect_variants/bgzip.cwl
         in:
             file: filter/filtered_vcf
         out:
             [bgzipped_file]
     fp_index:
-        run: index.cwl
+        run: ../detect_variants/index.cwl
         in:
             vcf: fp_bgzip/bgzipped_file
         out:
