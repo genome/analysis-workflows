@@ -22,9 +22,13 @@ inputs:
     exome_mode:
         type: boolean
 outputs:
-    merged_vcf:
+    unfiltered_vcf:
         type: File
-        outputSource: fp_index/indexed_vcf
+        outputSource: filter/unfiltered_vcf
+        secondaryFiles: [.tbi]
+    filtered_vcf:
+        type: File
+        outputSource: filter/filtered_vcf
         secondaryFiles: [.tbi]
 steps:
     strelka:
@@ -69,20 +73,9 @@ steps:
             reference: reference
             cram: tumor_cram
             vcf: region_filter/filtered_vcf
+            output_vcf_basename: strelka
         out:
             [filtered_vcf]
-    fp_bgzip:
-        run: ../detect_variants/bgzip.cwl
-        in:
-            file: filter/filtered_vcf
-        out:
-            [bgzipped_file]
-    fp_index:
-        run: ../detect_variants/index.cwl
-        in:
-            vcf: fp_bgzip/bgzipped_file
-        out:
-            [indexed_vcf]
 
 
 
