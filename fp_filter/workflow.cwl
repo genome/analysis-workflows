@@ -41,7 +41,7 @@ steps:
             bam: cram_to_bam/bam
             vcf: vcf
             output_vcf_basename: 
-                valueFrom: $(inputs.output_vcf_basename)_unfiltered
+                valueFrom: $(inputs.output_vcf_basename + "_unfiltered")
         out:
             [filtered_vcf]
     fp_bgzip:
@@ -64,7 +64,7 @@ steps:
             exclude_filtered: 
                 default: true
             output_vcf_basename: 
-                valueFrom: $(inputs.output_vcf_basename)_filtered
+                valueFrom: $(inputs.output_vcf_basename + "_filtered")
         out:
             [filtered_vcf]
 
