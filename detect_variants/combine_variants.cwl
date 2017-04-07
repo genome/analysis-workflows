@@ -11,7 +11,7 @@ requirements:
 arguments:
     ["-genotypeMergeOptions", "PRIORITIZE",
      "--rod_priority_list", "mutect,varscan,strelka,pindel",
-     "-o", { valueFrom: $(runtime.outdir)/combined.vcf }]
+     "-o", { valueFrom: $(runtime.outdir)/combined.vcf.gz }]
 inputs:
     reference:
         type: File
@@ -47,5 +47,5 @@ outputs:
     combined_vcf:
         type: File
         outputBinding:
-            glob: "combined.vcf"
+            glob: "combined.vcf.gz"
 
