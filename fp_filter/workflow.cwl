@@ -16,8 +16,7 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     output_vcf_basename:
-        type: string?
-        default: fpfilter
+        type: string
 outputs:
     unfiltered_vcf:
         type: File
@@ -63,7 +62,7 @@ steps:
             reference: reference
             vcf: fp_index/indexed_vcf
             exclude_filtered: 
-                default: "hard_filter_vcf"
+                default: true
             output_vcf_basename: 
                 valueFrom: $(inputs.output_vcf_basename)_filtered
         out:

@@ -31,8 +31,7 @@ inputs:
             prefix: "--vcf-file"
             position: 3
     output_vcf_basename:
-        type: string?
-        default: fpfilter
+        type: string
 outputs:
     filtered_vcf:
         type: File
