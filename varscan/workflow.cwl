@@ -6,6 +6,7 @@ label: "Varscan Workflow"
 requirements:
     - class: SubworkflowFeatureRequirement
     - class: MultipleInputFeatureRequirement
+    - class: InlineJavascriptRequirement
 inputs:
     reference:
         type: File
@@ -108,6 +109,6 @@ steps:
             cram: tumor_cram
             vcf: merge/merged_vcf
             output_vcf_basename: 
-                default: "varscan"
+                valueFrom: "varscan"
         out:
             [unfiltered_vcf, filtered_vcf]

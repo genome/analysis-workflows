@@ -7,6 +7,7 @@ requirements:
     - class: ScatterFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: MultipleInputFeatureRequirement
+    - class: InlineJavascriptRequirement
 inputs:
     tumor_cram:
         type: File
@@ -74,7 +75,7 @@ steps:
             cram: tumor_cram
             vcf: region_filter/filtered_vcf
             output_vcf_basename: 
-                default: "strelka"
+                valueFrom: "strelka"
         out:
             [unfiltered_vcf, filtered_vcf]
 

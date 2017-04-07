@@ -7,6 +7,7 @@ requirements:
     - class: ScatterFeatureRequirement
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
+    - class: InlineJavascriptRequirement
 inputs:
     reference:
         type: File
@@ -95,6 +96,6 @@ steps:
             cram: tumor_cram
             vcf: region_filter/filtered_vcf
             output_vcf_basename: 
-                default: "pindel"
+                valueFrom: "pindel"
         out:
             [unfiltered_vcf, filtered_vcf]
