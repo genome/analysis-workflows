@@ -1,4 +1,4 @@
-#!/usr/bin/env cwl-runner
+ll#!/usr/bin/env cwl-runner
 
 cwlVersion: v1.0
 class: CommandLineTool
@@ -34,8 +34,7 @@ inputs:
             prefix: "--excludeFiltered"
             position: 4
     output_vcf_basename:
-        type: string?
-        default: output
+        type: string
 outputs:
     filtered_vcf:
         type: File
