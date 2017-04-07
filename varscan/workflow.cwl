@@ -10,10 +10,12 @@ inputs:
     reference:
         type: File
         secondaryFiles: [.fai]
-    tumor_bam:
+    tumor_cram:
         type: File
-    normal_bam:
+        secondaryFiles: [^.crai]
+    normal_cram:
         type: File
+        secondaryFiles: [^.crai]
     interval_list:
         type: File
 outputs:
@@ -40,8 +42,8 @@ steps:
         run: varscan.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             roi_bed: intervals_to_bed/interval_bed
         out:
             [somatic_snvs, somatic_indels, somatic_hc_snvs, somatic_hc_indels]
