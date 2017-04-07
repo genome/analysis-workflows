@@ -41,9 +41,6 @@ inputs:
         type: File?
     coding_only:
         type: boolean?
-    hard_filter_vcf:
-        type: boolean?
-        default: true
     variants_to_table_fields:
         type: string[]?
         default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
