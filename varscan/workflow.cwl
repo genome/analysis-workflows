@@ -108,7 +108,7 @@ steps:
             reference: reference
             cram: tumor_cram
             vcf: merge/merged_vcf
-            output_vcf_basename: 
+            variant_caller: 
                 valueFrom: "varscan"
         out:
             [unfiltered_vcf, filtered_vcf]

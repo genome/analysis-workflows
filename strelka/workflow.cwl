@@ -74,7 +74,7 @@ steps:
             reference: reference
             cram: tumor_cram
             vcf: region_filter/filtered_vcf
-            output_vcf_basename: 
+            variant_caller: 
                 valueFrom: "strelka"
         out:
             [unfiltered_vcf, filtered_vcf]
