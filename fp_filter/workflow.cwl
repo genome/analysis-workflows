@@ -15,8 +15,8 @@ inputs:
     vcf:
         type: File
         secondaryFiles: [.tbi]
-    output_vcf_basename:
-        type: string
+    variant_caller:
+        string?
 outputs:
     unfiltered_vcf:
         type: File
@@ -40,8 +40,9 @@ steps:
             reference: reference
             bam: cram_to_bam/bam
             vcf: vcf
+            variant_caller: variant_caller
             output_vcf_basename: 
-                valueFrom: $(inputs.output_vcf_basename + "_unfiltered")
+                valueFrom: $(inputs.variant_caller)_unfiltered
         out:
             [filtered_vcf]
     fp_bgzip:
@@ -63,8 +64,9 @@ steps:
             vcf: fp_index/indexed_vcf
             exclude_filtered: 
                 default: true
+            variant_caller: variant_caller
             output_vcf_basename: 
-                valueFrom: $(inputs.output_vcf_basename + "_filtered")
+                valueFrom: $(inputs.variant_caller)_filtered
         out:
             [filtered_vcf]
 
