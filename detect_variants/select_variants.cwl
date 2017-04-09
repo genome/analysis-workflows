@@ -41,5 +41,6 @@ inputs:
 outputs:
     filtered_vcf:
         type: File
+        secondaryFiles: [.tbi]
         outputBinding:
             glob: $(inputs.output_vcf_basename).vcf.gz
