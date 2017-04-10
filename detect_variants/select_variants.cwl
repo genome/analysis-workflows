@@ -33,8 +33,6 @@ inputs:
         inputBinding:
             prefix: "--excludeFiltered"
             position: 4
-    variant_caller:
-        type: string?
     output_vcf_basename:
         type: string?
         default: select_variants

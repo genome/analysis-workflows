@@ -30,8 +30,6 @@ inputs:
         inputBinding:
             prefix: "--vcf-file"
             position: 3
-    variant_caller:
-        type: string?
     output_vcf_basename:
         type: string?
         default: fpfilter
