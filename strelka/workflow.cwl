@@ -7,7 +7,7 @@ requirements:
     - class: ScatterFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: MultipleInputFeatureRequirement
-    - class: InlineJavascriptRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     tumor_cram:
         type: File

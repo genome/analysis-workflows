@@ -7,7 +7,7 @@ requirements:
     - class: ScatterFeatureRequirement
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
-    - class: InlineJavascriptRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     reference:
         type: File

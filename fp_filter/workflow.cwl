@@ -3,8 +3,6 @@
 cwlVersion: v1.0
 class: Workflow
 label: "fp_filter workflow"
-requirements:
-    - class: InlineJavascriptRequirement
 inputs:
     cram:
         type: File
@@ -16,7 +14,7 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     variant_caller:
-        string?
+        string
 outputs:
     unfiltered_vcf:
         type: File
@@ -40,9 +38,9 @@ steps:
             reference: reference
             bam: cram_to_bam/bam
             vcf: vcf
-            variant_caller: variant_caller
-            output_vcf_basename: 
-                valueFrom: $(inputs.variant_caller)_unfiltered
+            output_vcf_basename:
+                source: variant_caller
+                valueFrom: $(self)_unfiltered
         out:
             [filtered_vcf]
     fp_bgzip:
@@ -64,9 +62,9 @@ steps:
             vcf: fp_index/indexed_vcf
             exclude_filtered: 
                 default: true
-            variant_caller: variant_caller
-            output_vcf_basename: 
-                valueFrom: $(inputs.variant_caller)_filtered
+            output_vcf_basename:
+                source: variant_caller
+                valueFrom: $(self)_filtered
         out:
             [filtered_vcf]
 

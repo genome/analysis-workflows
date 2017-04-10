@@ -6,7 +6,7 @@ label: "Varscan Workflow"
 requirements:
     - class: SubworkflowFeatureRequirement
     - class: MultipleInputFeatureRequirement
-    - class: InlineJavascriptRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     reference:
         type: File
