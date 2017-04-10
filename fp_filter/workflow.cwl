@@ -40,7 +40,7 @@ steps:
             vcf: vcf
             output_vcf_basename:
                 source: variant_caller
-                valueFrom: $(self)_unfiltered
+                valueFrom: $(self)_full
         out:
             [filtered_vcf]
     fp_bgzip:
