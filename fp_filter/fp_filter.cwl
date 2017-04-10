@@ -12,7 +12,7 @@ arguments:
     ["--sample", "TUMOR",
     "--bam-readcount", "/usr/bin/bam-readcount",
     "--samtools", "/opt/samtools/bin/samtools",
-    "--output", { valueFrom: $(runtime.outdir)/filtered.vcf }]
+    "--output", { valueFrom: $(runtime.outdir)/$(inputs.output_vcf_basename).vcf }]
 inputs:
     reference:
         type: File
@@ -30,9 +30,12 @@ inputs:
         inputBinding:
             prefix: "--vcf-file"
             position: 3
+    output_vcf_basename:
+        type: string?
+        default: fpfilter
 outputs:
     filtered_vcf:
         type: File
         outputBinding:
-            glob: "filtered.vcf"
+            glob: $(inputs.output_vcf_basename).vcf
 

@@ -41,9 +41,6 @@ inputs:
         type: File?
     coding_only:
         type: boolean?
-    hard_filter_vcf:
-        type: boolean?
-        default: true
     variants_to_table_fields:
         type: string[]?
         default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
@@ -51,6 +48,45 @@ inputs:
         type: string[]?
         default: [GT,AD]
 outputs:
+    mutect_unfiltered_vcf:
+        type: File
+        outputSource: mutect/unfiltered_vcf
+        secondaryFiles: [.tbi]
+    mutect_filtered_vcf:
+        type: File
+        outputSource: mutect/filtered_vcf
+        secondaryFiles: [.tbi]
+    strelka_unfiltered_vcf:
+        type: File
+        outputSource: strelka/unfiltered_vcf
+        secondaryFiles: [.tbi]
+    strelka_filtered_vcf:
+        type: File
+        outputSource: strelka/filtered_vcf
+        secondaryFiles: [.tbi]
+    varscan_unfiltered_vcf:
+        type: File
+        outputSource: varscan/unfiltered_vcf
+        secondaryFiles: [.tbi]
+    varscan_filtered_vcf:
+        type: File
+        outputSource: varscan/filtered_vcf
+        secondaryFiles: [.tbi]
+    pindel_unfiltered_vcf:
+        type: File
+        outputSource: pindel/unfiltered_vcf
+        secondaryFiles: [.tbi]
+    pindel_filtered_vcf:
+        type: File
+        outputSource: pindel/filtered_vcf
+        secondaryFiles: [.tbi]
+    docm_unfiltered_vcf:
+        type: File
+        outputSource: docm/unfiltered_vcf
+    docm_filtered_vcf:
+        type: File
+        outputSource: docm/filtered_vcf
+        secondaryFiles: [.tbi]
     final_vcf:
         type: File
         outputSource: index/indexed_vcf
@@ -74,7 +110,7 @@ steps:
             scatter_count: mutect_scatter_count
             artifact_detection_mode: mutect_artifact_detection_mode
         out:
-            [merged_vcf]
+            [unfiltered_vcf, filtered_vcf]
     strelka:
         run: ../strelka/workflow.cwl
         in:
@@ -84,7 +120,7 @@ steps:
             interval_list: interval_list
             exome_mode: strelka_exome_mode
         out:
-            [merged_vcf]
+            [unfiltered_vcf, filtered_vcf]
     varscan:
         run: ../varscan/workflow.cwl
         in:
@@ -93,7 +129,7 @@ steps:
             normal_cram: normal_cram
             interval_list: interval_list
         out:
-            [merged_vcf]
+            [unfiltered_vcf, filtered_vcf]
     pindel:
         run: ../pindel/workflow.cwl
         in:
@@ -103,7 +139,7 @@ steps:
             interval_list: interval_list
             insert_size: pindel_insert_size
         out:
-            [merged_vcf]
+            [unfiltered_vcf, filtered_vcf]
     docm:
         run: ../docm/workflow.cwl
         in:
@@ -113,30 +149,22 @@ steps:
             docm_vcf: docm_vcf
             interval_list: interval_list
         out:
-            [merged_vcf]
+            [unfiltered_vcf, filtered_vcf]
     combine:
         run: combine_variants.cwl
         in:
             reference: reference
-            mutect_vcf: mutect/merged_vcf
-            strelka_vcf: strelka/merged_vcf
-            varscan_vcf: varscan/merged_vcf
-            pindel_vcf: pindel/merged_vcf
-            docm_vcf: docm/merged_vcf
+            mutect_vcf: mutect/filtered_vcf
+            strelka_vcf: strelka/filtered_vcf
+            varscan_vcf: varscan/filtered_vcf
+            pindel_vcf: pindel/filtered_vcf
+            docm_vcf: docm/filtered_vcf
         out:
             [combined_vcf]
-    hard_filter:
-        run: select_variants.cwl
-        in:
-            reference: reference
-            vcf: combine/combined_vcf
-            exclude_filtered: hard_filter_vcf
-        out:
-            [filtered_vcf]
     annotate_variants:
         run: vep.cwl
         in:
-            vcf: hard_filter/filtered_vcf
+            vcf: combine/combined_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: coding_only

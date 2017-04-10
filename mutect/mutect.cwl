@@ -9,7 +9,7 @@ requirements:
       ramMin: 20000
       tmpdirMin: 100000
 arguments:
-    ["-o", { valueFrom: $(runtime.outdir)/output.vcf.gz }]
+    ["-o", { valueFrom: $(runtime.outdir)/mutect.vcf.gz }]
 inputs:
     reference:
         type: File
@@ -55,5 +55,5 @@ outputs:
     vcf:
         type: File
         outputBinding:
-            glob: "output.vcf.gz"
+            glob: "mutect.vcf.gz"
         secondaryFiles: [.tbi]

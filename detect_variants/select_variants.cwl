@@ -9,7 +9,7 @@ requirements:
       ramMin: 6000
       tmpdirMin: 25000
 arguments:
-    ["-o", { valueFrom: $(runtime.outdir)/output.vcf.gz }]
+    ["-o", { valueFrom: $(runtime.outdir)/$(inputs.output_vcf_basename).vcf.gz }]
 inputs:
     reference:
         type: File
@@ -33,8 +33,12 @@ inputs:
         inputBinding:
             prefix: "--excludeFiltered"
             position: 4
+    output_vcf_basename:
+        type: string?
+        default: select_variants
 outputs:
     filtered_vcf:
         type: File
+        secondaryFiles: [.tbi]
         outputBinding:
-            glob: "output.vcf.gz"
+            glob: $(inputs.output_vcf_basename).vcf.gz
