@@ -44,6 +44,8 @@ steps:
             cosmic_vcf: cosmic_vcf
             artifact_detection_mode:
                 default: true
+            panel_of_normals_vcf:
+                default: null
         out:
             [merged_vcf]
     combine:

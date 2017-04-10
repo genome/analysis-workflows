@@ -29,6 +29,9 @@ inputs:
         secondaryFiles: [.tbi]
     artifact_detection_mode:
         type: boolean
+    panel_of_normals_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
 outputs:
     merged_vcf:
         type: File
@@ -52,6 +55,7 @@ steps:
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
             artifact_detection_mode: artifact_detection_mode
+            panel_of_normals_vcf: panel_of_normals_vcf
         out:
             [vcf]
     merge:

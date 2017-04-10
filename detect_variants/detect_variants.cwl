@@ -23,6 +23,9 @@ inputs:
     cosmic_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    panel_of_normals_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
     strelka_exome_mode:
         type: boolean
     mutect_scatter_count:
@@ -73,6 +76,7 @@ steps:
             cosmic_vcf: cosmic_vcf
             scatter_count: mutect_scatter_count
             artifact_detection_mode: mutect_artifact_detection_mode
+            panel_of_normals_vcf: panel_of_normals_vcf
         out:
             [merged_vcf]
     strelka:
