@@ -36,7 +36,7 @@ outputs:
 steps:
     mutect:
         scatter: tumor_cram
-        run: workflow.cwl
+        run: ../mutect/workflow.cwl
         in:
             reference: reference
             tumor_cram: normal_crams
@@ -50,7 +50,7 @@ steps:
         out:
             [merged_vcf]
     combine:
-        run: combine_pon.cwl
+        run: combine_variants.cwl
         in:
             reference: reference
             interval_list: interval_list
