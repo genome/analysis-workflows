@@ -24,9 +24,6 @@ inputs:
     cosmic_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    artifact_detection_mode:
-        type: boolean
-        default: true
 outputs:
     pon_vcf:
         type: File
@@ -45,7 +42,8 @@ steps:
             scatter_count: scatter_count
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
-            artifact_detection_mode: artifact_detection_mode
+            artifact_detection_mode:
+                default: true
         out:
             [merged_vcf]
     combine:
