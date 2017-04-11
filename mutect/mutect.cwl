@@ -51,6 +51,12 @@ inputs:
         inputBinding:
             prefix: "--artifact_detection_mode"
             position: 7 
+    panel_of_normals_vcf:
+        type: File?
+        inputBinding:
+            prefix: "-PON"
+            position: 8
+        secondaryFiles: [.tbi]
 outputs:
     vcf:
         type: File
