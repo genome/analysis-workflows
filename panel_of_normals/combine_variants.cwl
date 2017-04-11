@@ -2,14 +2,16 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "CombineVariants (GATK 3.6)"
-baseCommand: ["/usr/local/bin/jdk1.8.0_45/bin/java", "-jar", "/usr/local/bin/GATK3.6/GenomeAnalysisTK.jar", "-T", "CombineVariants"]
+label: "CombineVariants for Panel of Normals"
+baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "CombineVariants"]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "dbmi/gatk-docker:v1" #GATK 3.6 at a specific container revision
+    - class: ResourceRequirement
+      ramMin: 8000
+      tmpdirMin: 25000
 arguments:
-    ["-setKey", "null",
-     "--filteredAreUncalled", 
+    ["-minN", "2",
+     "--setKey", "null",
+     "--filteredAreUncalled",
      "--filteredrecordsmergetype", "KEEP_IF_ANY_UNFILTERED",
      "-o", { valueFrom: $(runtime.outdir)/panel_of_normals.vcf.gz }]
 inputs:
@@ -19,28 +21,23 @@ inputs:
             prefix: "-R"
             position: 1
         secondaryFiles: [".fai", "^.dict"]
-    vcfs:
-        type: 
-            type: array
-            items: File
-        inputBinding:
-            prefix: "--variant"
-            position: 2
-        secondaryFiles: [.tbi]
-    minimumN:
-        type: int
-        inputBinding:
-            prefix: "--minimumN"
-            position: 3
     interval_list:
         type: File?
         inputBinding:
             prefix: "-L"
-            position: 4
+            position: 2
+    normal_vcfs:
+        type:
+            type: array
+            items: File
+            inputBinding:
+                prefix: "-V"
+        secondaryFiles: [".tbi"]
+        inputBinding:
+            position: 3
 outputs:
     combined_vcf:
         type: File
         outputBinding:
             glob: "panel_of_normals.vcf.gz"
-        secondaryFiles: [.tbi]
 
