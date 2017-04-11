@@ -8,7 +8,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 8000
 arguments:
-    ["-o", { valueFrom: $(runtime.outdir)/normalized.vcf.gz }]
+    ["--splitMultiallelics",
+     "-o", { valueFrom: $(runtime.outdir)/normalized.vcf.gz }]
 inputs:
     reference:
         type: File
