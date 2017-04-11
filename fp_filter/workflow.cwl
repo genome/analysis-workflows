@@ -32,12 +32,19 @@ steps:
             reference: reference
         out:
             [bam]
+    normalize_variants:
+        run: normalize_variants.cwl
+        in:
+            reference: reference
+            vcf: vcf
+        out:
+            [normalized_vcf]
     fp_filter:
         run: fp_filter.cwl
         in:
             reference: reference
             bam: cram_to_bam/bam
-            vcf: vcf
+            vcf: normalize_variants/normalized_vcf
             output_vcf_basename:
                 source: variant_caller
                 valueFrom: $(self)_full
