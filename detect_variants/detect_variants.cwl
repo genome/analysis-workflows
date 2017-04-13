@@ -9,12 +9,12 @@ inputs:
     reference:
         type: File
         secondaryFiles: [".fai", "^.dict"]
-    tumor_bam:
+    tumor_cram:
         type: File
-        secondaryFiles: [^.bai]
-    normal_bam:
+        secondaryFiles: [^.crai,.crai]
+    normal_cram:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai,.crai]
     interval_list:
         type: File
     dbsnp_vcf:
@@ -25,32 +25,62 @@ inputs:
         secondaryFiles: [.tbi]
     strelka_exome_mode:
         type: boolean
+    mutect_scatter_count:
+        type: int?
+    mutect_artifact_detection_mode:
+        type: boolean?
     pindel_insert_size:
         type: int
         default: 400
+    docm_vcf:
+         type: File
+         secondaryFiles: [.tbi]
+    vep_cache_dir:
+        type: string?
+    synonyms_file:
+        type: File?
+    coding_only:
+        type: boolean?
+    hard_filter_vcf:
+        type: boolean?
+        default: true
+    variants_to_table_fields:
+        type: string[]?
+        default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
+    variants_to_table_genotype_fields:
+        type: string[]?
+        default: [GT,AD]
 outputs:
     final_vcf:
         type: File
         outputSource: index/indexed_vcf
         secondaryFiles: [.tbi]
+    final_tsv:
+        type: File
+        outputSource: variants_to_table/variants_tsv
+    vep_summary:
+        type: File
+        outputSource: annotate_variants/vep_summary
 steps:
     mutect:
         run: ../mutect/workflow.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             interval_list: interval_list
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
+            scatter_count: mutect_scatter_count
+            artifact_detection_mode: mutect_artifact_detection_mode
         out:
             [merged_vcf]
     strelka:
         run: ../strelka/workflow.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             interval_list: interval_list
             exome_mode: strelka_exome_mode
         out:
@@ -59,8 +89,8 @@ steps:
         run: ../varscan/workflow.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             interval_list: interval_list
         out:
             [merged_vcf]
@@ -68,8 +98,8 @@ steps:
         run: ../pindel/workflow.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             interval_list: interval_list
             insert_size: pindel_insert_size
         out:
@@ -85,17 +115,64 @@ steps:
         out:
             [combined_vcf]
     filter:
-        run: fp_filter.cwl
+        run: ../fp_filter/workflow.cwl
         in:
             reference: reference
-            bam: tumor_bam
+            cram: tumor_cram
             vcf: combine/combined_vcf
         out:
             [filtered_vcf]
-    bgzip:
+    fp_bgzip:
         run: bgzip.cwl
         in:
             file: filter/filtered_vcf
+        out:
+            [bgzipped_file]
+    fp_index:
+        run: index.cwl
+        in:
+            vcf: fp_bgzip/bgzipped_file
+        out:
+            [indexed_vcf]
+    hard_filter:
+        run: select_variants.cwl
+        in:
+            reference: reference
+            vcf: fp_index/indexed_vcf
+            exclude_filtered: hard_filter_vcf
+        out:
+            [filtered_vcf]
+    docm:
+        run: ../docm/workflow.cwl
+        in:
+            reference: reference
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
+            docm_vcf: docm_vcf
+            interval_list: interval_list
+        out:
+            [merged_vcf]
+    combine_docm:
+        run: combine_docm.cwl
+        in: 
+            reference: reference
+            filtered_vcf: hard_filter/filtered_vcf
+            docm_vcf: docm/merged_vcf
+        out:
+            [combine_docm_vcf]
+    annotate_variants:
+        run: vep.cwl
+        in:
+            vcf: combine_docm/combine_docm_vcf
+            cache_dir: vep_cache_dir
+            synonyms_file: synonyms_file
+            coding_only: coding_only
+        out:
+            [annotated_vcf, vep_summary]
+    bgzip:
+        run: bgzip.cwl
+        in:
+            file: annotate_variants/annotated_vcf
         out:
             [bgzipped_file]
     index:
@@ -104,3 +181,12 @@ steps:
             vcf: bgzip/bgzipped_file
         out:
             [indexed_vcf]
+    variants_to_table:
+        run: variants_to_table.cwl
+        in:
+            reference: reference
+            vcf: index/indexed_vcf
+            fields: variants_to_table_fields
+            genotype_fields: variants_to_table_genotype_fields
+        out:
+            [variants_tsv]

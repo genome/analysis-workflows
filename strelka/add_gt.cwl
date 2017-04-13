@@ -5,8 +5,6 @@ class: CommandLineTool
 label: "add GT tags"
 baseCommand: "/bin/zcat"
 requirements:
-    - class: DockerRequirement
-      dockerPull: "ubuntu:xenial"
     - class: ShellCommandRequirement
 arguments:
     - valueFrom: $(inputs.vcf.path)
