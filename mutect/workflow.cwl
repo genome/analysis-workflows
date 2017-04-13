@@ -11,17 +11,16 @@ inputs:
     reference:
         type: File
         secondaryFiles: [".fai", "^.dict"]
-    tumor_bam:
+    tumor_cram:
         type: File
-        secondaryFiles: [^.bai]
-    normal_bam:
+        secondaryFiles: [^.crai]
+    normal_cram:
         type: File?
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     interval_list:
         type: File
     scatter_count:
         type: int
-        default: 50
     dbsnp_vcf:
         type: File?
         secondaryFiles: [.tbi]
@@ -29,7 +28,7 @@ inputs:
         type: File?
         secondaryFiles: [.tbi]
     artifact_detection_mode:
-        type: boolean?
+        type: boolean
 outputs:
     merged_vcf:
         type: File
@@ -47,8 +46,8 @@ steps:
         run: mutect.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             interval_list: split_interval_list/split_interval_lists
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
@@ -58,13 +57,13 @@ steps:
     merge:
         run: ../detect_variants/merge.cwl
         in:
-            vcfs: [mutect/vcf]
+            vcfs: mutect/vcf
         out:
             [merged_vcf]
     index:
         run: ../detect_variants/index.cwl
         in:
-            vcf: [merge/merged_vcf]
+            vcf: merge/merged_vcf
         out:
             [indexed_vcf]
 

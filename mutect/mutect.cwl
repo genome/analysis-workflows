@@ -3,10 +3,11 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "mutect2 (GATK 3.6)"
-baseCommand: ["/usr/local/bin/jdk1.8.0_45/bin/java", "-jar", "/usr/local/bin/GATK3.6/GenomeAnalysisTK.jar", "-T", "MuTect2"]
+baseCommand: ["/usr/bin/java", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "MuTect2"]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "dbmi/gatk-docker:v1" #Instead of specific GATK 3.6 commit hash, since Arvados has issues with specific commit hashes
+    - class: ResourceRequirement
+      ramMin: 20000
+      tmpdirMin: 100000
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/output.vcf.gz }]
 inputs:
@@ -16,18 +17,18 @@ inputs:
             prefix: "-R"
             position: 1
         secondaryFiles: [".fai", "^.dict"]
-    tumor_bam:
+    tumor_cram:
         type: File
         inputBinding:
             prefix: "-I:tumor"
             position: 2
-        secondaryFiles: [^.bai]
-    normal_bam:
+        secondaryFiles: [^.crai]
+    normal_cram:
         type: File?
         inputBinding:
             prefix: "-I:normal"
             position: 3
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     interval_list:
         type: File
         inputBinding:
