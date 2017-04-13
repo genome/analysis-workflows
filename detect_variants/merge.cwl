@@ -3,10 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "vcf merge"
-baseCommand: ["/usr/bin/bcftools", "concat"]
-requirements:
-    - class: DockerRequirement
-      dockerPull: "mgibio/bcftools-cwl:1.3.1"
+baseCommand: ["/opt/bcftools/bin/bcftools", "concat"]
 arguments:
     - "--allow-overlaps"
     - "--remove-duplicates"

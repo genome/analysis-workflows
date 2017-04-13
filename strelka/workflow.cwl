@@ -8,12 +8,12 @@ requirements:
     - class: SubworkflowFeatureRequirement
     - class: MultipleInputFeatureRequirement
 inputs:
-    tumor_bam:
+    tumor_cram:
         type: File
-        secondaryFiles: [^.bai]
-    normal_bam:
+        secondaryFiles: [.crai]
+    normal_cram:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [.crai]
     reference:
         type: File
         secondaryFiles: [.fai]
@@ -30,8 +30,8 @@ steps:
     strelka:
         run: strelka.cwl
         in:
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             reference: reference
             exome_mode: exome_mode
         out:
@@ -46,7 +46,7 @@ steps:
     merge:
         run: ../detect_variants/merge.cwl
         in:
-            vcfs: [process/processed_vcf]
+            vcfs: process/processed_vcf
         out:
             [merged_vcf]
     index_full:

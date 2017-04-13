@@ -3,14 +3,13 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "vcf index"
-baseCommand: "/usr/bin/tabix"
-arguments: ["-p", "vcf"]
+arguments: [
+    "cp", $(inputs.vcf.path), "$(runtime.outdir)/$(inputs.vcf.basename)",
+    { valueFrom: " && ", shellQuote: false },
+    "/usr/bin/tabix", "-p", "vcf"
+]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "mgibio/tabix-cwl:1.3.1"
-    - class: InitialWorkDirRequirement
-      listing:
-          - $(inputs.vcf)
+    - class: ShellCommandRequirement
 inputs:
     vcf:
         type: File

@@ -3,10 +3,11 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "CombineVariants (GATK 3.6)"
-baseCommand: ["/usr/local/bin/jdk1.8.0_45/bin/java", "-jar", "/usr/local/bin/GATK3.6/GenomeAnalysisTK.jar", "-T", "CombineVariants"]
+baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "CombineVariants"]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "dbmi/gatk-docker:v1" #GATK 3.6 at a specific container revision
+    - class: ResourceRequirement
+      ramMin: 8000
+      tmpdirMin: 25000
 arguments:
     ["-genotypeMergeOptions", "PRIORITIZE",
      "--rod_priority_list", "mutect,varscan,strelka,pindel",
