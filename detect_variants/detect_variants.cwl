@@ -28,6 +28,10 @@ inputs:
     pindel_insert_size:
         type: int
         default: 400
+    vep_cache_dir:
+        type: Directory
+    synonyms_file:
+        type: File?
 outputs:
     final_vcf:
         type: File
@@ -92,10 +96,18 @@ steps:
             vcf: combine/combined_vcf
         out:
             [filtered_vcf]
+    annotate_variants:
+        run: vep.cwl
+        in:
+            vcf: filter/filtered_vcf
+            cache_dir: vep_cache_dir
+            synonyms_file: synonyms_file
+        out:
+            [annotated_vcf]
     bgzip:
         run: bgzip.cwl
         in:
-            file: filter/filtered_vcf
+            file: annotate_variants/annotated_vcf
         out:
             [bgzipped_file]
     index:
