@@ -1,0 +1,27 @@
+#!/usr/bin/env cwl-runner
+cwl:tool: detect_variants.cwl
+reference:
+  class: File
+  path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/GRCh38_full_analysis_set_plus_decoy_hla.fa
+interval_list:
+  class: File
+  path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/xgen-exome-research-panel-targets.interval_list
+dbsnp_vcf:
+  class: File
+  path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/Homo_sapiens_assembly38.dbsnp138.vcf.gz
+cosmic_vcf:
+  class: File
+  path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/Cosmic_v79.dictsorted.vcf.gz
+normal_bam: 
+  class: File
+  path: /gscmnt/gc2764/cad/HCC1395/arvados/alignments/H_NJ-HCC1395-HCC1395_BL_exome.bam
+tumor_bam:
+  class: File
+  path: /gscmnt/gc2764/cad/HCC1395/arvados/alignments/H_NJ-HCC1395-HCC1395_exome.bam
+strelka_exome_mode: true
+vep_cache_dir:
+  class: Directory
+  path: /gscmnt/gc2764/cad/HCC1395/arvados/software/VEP_cache
+synonyms_file:
+  class: File
+  path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/chromAlias.ensembl.txt
