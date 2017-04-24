@@ -100,6 +100,12 @@ outputs:
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
+    snv_bam_readcount:
+        type: File
+        outputSource: bam_readcount/snv_bam_readcount
+    indel_bam_readcount:
+        type: File
+        outputSource: bam_readcount/indel_bam_readcount
 steps:
     mutect:
         run: ../mutect/workflow.cwl
@@ -174,6 +180,29 @@ steps:
             coding_only: coding_only
         out:
             [annotated_vcf, vep_summary]
+    cram_to_bam:
+        run: ../fp_filter/cram_to_bam.cwl
+        in:
+            cram: tumor_cram
+            reference: reference
+        out:
+            [bam]
+    index_bam:
+        run: index_bam.cwl
+        in:
+            bam: cram_to_bam/bam
+        out:
+            [indexed_bam]
+    bam_readcount:
+        run: ../pvacseq/bam_readcount.cwl
+        in:
+            vcf: combine/combined_vcf
+            sample:
+                default: 'TUMOR'
+            reference_fasta: reference
+            bam: index_bam/indexed_bam
+        out:
+            [snv_bam_readcount, indel_bam_readcount]
     bgzip:
         run: bgzip.cwl
         in:
