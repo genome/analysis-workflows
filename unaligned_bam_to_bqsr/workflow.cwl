@@ -44,7 +44,7 @@ steps:
     merge:
         run: merge.cwl
         in:
-            bams: [align/tagged_bam]
+            bams: align/tagged_bam
         out:
             [merged_bam]
     name_sort:
