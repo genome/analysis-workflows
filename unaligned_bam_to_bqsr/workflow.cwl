@@ -26,10 +26,9 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
 outputs:
-    final_bam:
+    final_cram:
         type: File
-        outputSource: apply_bqsr/bqsr_bam
-        secondaryFiles: [^.bai]
+        outputSource: bam_to_cram/cram
 steps:
     align:
         scatter: [bam, readgroup]
@@ -75,3 +74,10 @@ steps:
             bqsr_table: bqsr/bqsr_table
         out:
             [bqsr_bam]
+    bam_to_cram:
+        run: bam_to_cram.cwl
+        in:
+            reference: reference
+            bam: apply_bqsr/bqsr_bam
+        out:
+            [cram]
