@@ -69,12 +69,18 @@ steps:
             vcfs: mutect/vcf
         out:
             [merged_vcf]
+    index:
+        run: ../detect_variants/index.cwl
+        in:
+            vcf: merge/merged_vcf
+        out:
+            [indexed_vcf]
     filter:
         run: ../fp_filter/workflow.cwl
         in:
             reference: reference
             cram: tumor_cram
-            vcf: merge/merged_vcf
+            vcf: index/indexed_vcf
             variant_caller: 
                 valueFrom: "mutect"
         out:

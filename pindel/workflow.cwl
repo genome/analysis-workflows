@@ -89,12 +89,24 @@ steps:
             interval_list: interval_list
         out:
             [filtered_vcf]
+    remove_end_tags:
+        run: remove_end_tags.cwl
+        in:
+            vcf: region_filter/filtered_vcf
+        out:
+            [processed_vcf]
+    reindex:
+        run: ../detect_variants/index.cwl
+        in:
+            vcf: remove_end_tags/processed_vcf
+        out:
+            [indexed_vcf]
     filter:
         run: ../fp_filter/workflow.cwl
         in:
             reference: reference
             cram: tumor_cram
-            vcf: region_filter/filtered_vcf
+            vcf: reindex/indexed_vcf
             variant_caller: 
                 valueFrom: "pindel"
         out:
