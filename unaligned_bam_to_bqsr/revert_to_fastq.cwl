@@ -3,15 +3,14 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: 'revert to fastq'
-baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/usr/picard/picard.jar", "SamToFastq"]
+baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/opt/picard/picard.jar", "SamToFastq"]
 arguments:
     ["FASTQ=", { valueFrom: $(runtime.outdir)/revert_to_fastq.rFastq1 },
     "SECOND_END_FASTQ=", { valueFrom: $(runtime.outdir)/revert_to_fastq.rFastq2 }]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "registry.gsc.wustl.edu/genome/picard-2.4.1-r:2"
     - class: ResourceRequirement
       ramMin: 16000
+      tmpdirMin: 25000
 inputs:
     bam:
         type: File

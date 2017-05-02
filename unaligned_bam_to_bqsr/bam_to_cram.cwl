@@ -1,0 +1,20 @@
+#!/usr/bin/env cwl-runner
+
+cwlVersion: v1.0
+class: CommandLineTool
+label: 'BAM to CRAM conversion'
+baseCommand: ["/opt/samtools/bin/samtools", "view", "-C"]
+stdout: "final.cram"
+inputs:
+    reference:
+        type: File
+        inputBinding:
+            prefix: "-T"
+            position: 1
+    bam:
+        type: File
+        inputBinding:
+            position: 2
+outputs:
+    cram:
+        type: stdout

@@ -34,8 +34,6 @@ arguments:
     "-L", "chr22",
     "-nct", "4"]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "registry.gsc.wustl.edu/genome/gatk-3.6:1"
     - class: ResourceRequirement
       ramMin: 16000
 inputs:
