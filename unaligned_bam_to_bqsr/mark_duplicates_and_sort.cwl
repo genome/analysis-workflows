@@ -8,7 +8,7 @@ baseCommand: ["/bin/bash", "/usr/bin/markduplicates_helper.sh"]
 requirements:
     - class: ResourceRequirement
       coresMin: 8
-      ramMin: 18000
+      ramMin: 40000
 arguments:
     - position: 2
       valueFrom: $(runtime.cores)
