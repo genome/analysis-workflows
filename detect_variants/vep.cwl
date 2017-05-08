@@ -49,6 +49,12 @@ inputs:
             prefix: "--coding_only"
             position: 3
         default: false
+    hgvs:
+        type: boolean
+        inputBinding:
+            prefix: "--hgvs"
+            position: 4
+        default: false
 outputs:
     annotated_vcf:
         type: File

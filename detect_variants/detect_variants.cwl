@@ -44,6 +44,8 @@ inputs:
         type: File?
     coding_only:
         type: boolean?
+    hgvs_annotation:
+        type: boolean?
     variants_to_table_fields:
         type: string[]?
         default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
@@ -178,6 +180,7 @@ steps:
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: coding_only
+            hgvs: hgvs_annotation
         out:
             [annotated_vcf, vep_summary]
     cram_to_bam:
