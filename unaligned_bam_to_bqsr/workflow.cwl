@@ -28,7 +28,8 @@ inputs:
 outputs:
     final_cram:
         type: File
-        outputSource: bam_to_cram/cram
+        outputSource: index_cram/indexed_cram
+        secondaryFiles: [.crai, ^.crai]
 steps:
     align:
         scatter: [bam, readgroup]
@@ -81,3 +82,9 @@ steps:
             bam: apply_bqsr/bqsr_bam
         out:
             [cram]
+    index_cram:
+        run: index_cram.cwl
+        in:
+            cram: bam_to_cram/cram
+        out:
+            [indexed_cram]
