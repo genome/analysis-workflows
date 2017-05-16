@@ -3,6 +3,8 @@
 cwlVersion: v1.0
 class: Workflow
 label: "fp_filter workflow"
+requirements:
+    - class: SubworkflowFeatureRequirement
 inputs:
     cram:
         type: File
@@ -26,7 +28,7 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     cram_to_bam:
-        run: cram_to_bam.cwl
+        run: ../cram_to_bam/workflow.cwl
         in:
             cram: cram
             reference: reference

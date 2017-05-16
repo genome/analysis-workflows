@@ -47,13 +47,13 @@ steps:
             panel_of_normals_vcf:
                 default: null
         out:
-            [merged_vcf]
+            [unfiltered_vcf]
     combine:
         run: combine_variants.cwl
         in:
             reference: reference
             interval_list: interval_list
-            normal_vcfs: mutect/merged_vcf
+            normal_vcfs: mutect/unfiltered_vcf
         out:
             [combined_vcf]
 

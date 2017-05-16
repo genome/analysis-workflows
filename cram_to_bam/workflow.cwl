@@ -1,0 +1,32 @@
+#!/usr/bin/env cwl-runner
+
+cwlVersion: v1.0
+class: Workflow
+label: "cram_to_bam workflow"
+inputs:
+    cram:
+        type: File
+        secondaryFiles: [^.crai]
+    reference:
+        type: File
+        secondaryFiles: [.fai]
+outputs:
+    bam:
+        type: File
+        outputSource: index_bam/indexed_bam
+        secondaryFiles: [.bai]
+steps:
+    cram_to_bam:
+        run: cram_to_bam.cwl
+        in:
+            cram: cram
+            reference: reference
+        out:
+            [bam]
+    index_bam:
+        run: ../detect_variants/index_bam.cwl
+        in:
+            bam: cram_to_bam/bam
+        out:
+            [indexed_bam]
+
