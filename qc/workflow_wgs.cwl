@@ -6,9 +6,9 @@ label: "WGS QC workflow"
 requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
-    bam:
+    cram:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     reference:
         type: File
         secondaryFiles: [.fai]
@@ -49,27 +49,27 @@ steps:
     collect_insert_size_metrics:
         run: collect_insert_size_metrics.cwl
         in:
-            bam: bam
+            cram: cram
         out:
             [insert_size_metrics]
     collect_alignment_summary_metrics:
         run: collect_alignment_summary_metrics.cwl
         in:
-            bam: bam
+            cram: cram
             reference: reference
         out:
             [alignment_summary_metrics]
     collect_gc_bias_metrics:
         run: collect_gc_bias_metrics.cwl
         in:
-            bam: bam
+            cram: cram
             reference: reference
         out:
             [gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary]
     collect_wgs_metrics:
         run: collect_wgs_metrics.cwl
         in:
-            bam: bam
+            cram: cram
             reference: reference
             intervals: intervals
         out:
@@ -77,12 +77,19 @@ steps:
     samtools_flagstat:
         run: samtools_flagstat.cwl
         in:
-            bam: bam
+            cram: cram
         out: [flagstats]
+    cram_to_bam:
+        run: ../cram_to_bam/workflow.cwl
+        in:
+          cram: cram
+          reference: reference
+        out:
+          [bam]
     verify_bam_id:
         run: verify_bam_id.cwl
         in:
-            bam: bam
+            bam: cram_to_bam/bam
             vcf: omni_vcf
         out:
             [verify_bam_id_metrics, verify_bam_id_depth]

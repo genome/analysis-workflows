@@ -14,11 +14,11 @@ requirements:
     - class: ResourceRequirement
       ramMin: 16000
 inputs:
-    bam:
+    cram:
         type: File
         inputBinding:
             prefix: "I="
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     reference:
         type: File
         inputBinding:

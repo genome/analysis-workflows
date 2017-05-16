@@ -9,11 +9,11 @@ requirements:
       ramMin: 4000
 stdout: flagstat.out
 inputs:
-    bam:
+    cram:
         type: File
         inputBinding:
             position: 1
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
 outputs:
     flagstats:
         type: stdout

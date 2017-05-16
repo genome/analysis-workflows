@@ -30,9 +30,9 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
 outputs:
-    bam:
+    cram:
         type: File
-        outputSource: alignment/final_bam
+        outputSource: alignment/final_cram
     insert_size_metrics:
         type: File
         outputSource: qc/insert_size_metrics
@@ -64,11 +64,11 @@ steps:
             mills: mills
             known_indels: known_indels
             dbsnp: dbsnp
-        out: [final_bam]
+        out: [final_cram]
     qc:
         run: qc/workflow_exome.cwl
         in:
-            bam: alignment/final_bam
+            cram: alignment/final_cram
             reference: reference
             bait_intervals: bait_intervals
             target_intervals: target_intervals

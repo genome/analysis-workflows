@@ -26,7 +26,7 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     cram_to_bam:
-        run: cram_to_bam.cwl
+        run: ../cram_to_bam/workflow.cwl
         in:
             cram: cram
             reference: reference
