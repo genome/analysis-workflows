@@ -3,6 +3,8 @@
 cwlVersion: v1.0
 class: Workflow
 label: "fp_filter workflow"
+requirements:
+    - class: SubworkflowFeatureRequirement
 inputs:
     cram:
         type: File
