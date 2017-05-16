@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "HISAT2: align"
-baseCommand: ["/usr/bin/hisat2", "align"]
+baseCommand: ["/usr/bin/hisat2"]
 requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
@@ -29,12 +29,25 @@ inputs:
         type: File
         inputBinding:
             prefix: "-1"
-            position: -1
+            position: -2
     fastq2:
         type: File
         inputBinding:
             prefix: "-2"
-            position: -2
+            position: -1
+    read_group_id:
+        type: string
+        inputBinding:
+            prefix: "--rg-id"
+            position: -5
+    read_group_fields:
+        type:
+            type: array
+            items: string
+            inputBinding:
+                prefix: "--rg"
+        inputBinding:
+            position: -4
 outputs:
     aligned_bam:
         type: File

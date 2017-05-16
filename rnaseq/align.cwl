@@ -11,6 +11,10 @@ inputs:
         secondaryFiles: [".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"]
     instrument_data_bam:
         type: File
+    read_group_id:
+        type: string
+    read_group_fields:
+        type: string[]
 outputs:
     aligned_bam:
         type: File
@@ -28,5 +32,7 @@ steps:
             reference_index: reference_index
             fastq1: bam_to_fastq/fastq1
             fastq2: bam_to_fastq/fastq2
+            read_group_id: read_group_id
+            read_group_fields: read_group_fields
         out:
             [aligned_bam]
