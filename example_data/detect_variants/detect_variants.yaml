@@ -1,0 +1,37 @@
+reference:
+  class: File
+  path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/GRCh38_full_analysis_set_plus_decoy_hla.fa
+tumor_cram:
+  class: File
+  path: TUMOR_CRAM_FILE_PATH
+normal_cram:
+  class: File
+  path: NORMAL_CRAM_FILE_PATH
+interval_list:
+  class: File
+  path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/xgen-exome-research-panel-targets.interval_list
+dbsnp_vcf:
+  class: File
+  path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/Homo_sapiens_assembly38.dbsnp138.vcf.gz
+cosmic_vcf:
+  class: File
+  path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/Cosmic_v79.dictsorted.vcf.gz
+panel_of_normals_vcf:
+  class: File
+  path: /gscmnt/gc2764/cad/fdu/toil_test/panel_of_normal/panel_of_normals.vcf.gz
+strelka_exome_mode: true
+mutect_scatter_count: 50
+mutect_artifact_detection_mode: false
+pindel_insert_size: 400
+docm_vcf:
+  class: File
+  path: /gscmnt/gc2764/cad/tmooney/toil_test/arvados_trial/example_data/detect_variants/DoCM.hs37_011117_sanitized_sort_new_LiftOver_hg19ToHg38.vcf.gz
+vep_cache_dir: /gscmnt/gc2764/cad/ssiebert/toil_test/inputs/VEP_cache
+synonyms_file:
+  class: File
+  path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/chromAlias.ensembl.txt
+coding_only: true
+hgvs_annotation: true
+variants_to_table_fields: [CHROM,POS,ID,REF,ALT,set,AC,AF]
+variants_to_table_genotype_fields: [GT,AD]
+
