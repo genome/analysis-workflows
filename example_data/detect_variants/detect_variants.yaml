@@ -31,7 +31,6 @@ synonyms_file:
   class: File
   path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/chromAlias.ensembl.txt
 coding_only: true
-hgvs_annotation: true
 variants_to_table_fields: [CHROM,POS,ID,REF,ALT,set,AC,AF]
 variants_to_table_genotype_fields: [GT,AD]
 
