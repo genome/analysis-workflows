@@ -181,6 +181,7 @@ steps:
             synonyms_file: synonyms_file
             coding_only: coding_only
             hgvs: hgvs_annotation
+            reference: reference
         out:
             [annotated_vcf, vep_summary]
     cram_to_bam:
