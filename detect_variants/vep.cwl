@@ -25,8 +25,6 @@ inputs:
         inputBinding:
             prefix: "-i"
             position: 1
-    reference:
-        type: File
     cache_dir:
         type: string?
         inputBinding:
@@ -64,6 +62,8 @@ inputs:
                     }
                 }
             position: 5
+    reference:
+        type: File?
 outputs:
     annotated_vcf:
         type: File
