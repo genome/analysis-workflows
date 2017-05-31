@@ -50,11 +50,20 @@ inputs:
             position: 3
         default: false
     hgvs:
-        type: boolean
+        type: boolean?
         inputBinding:
-            prefix: "--hgvs"
-            position: 4
-        default: false
+            valueFrom: |
+                ${
+                    if (inputs.hgvs) {
+                        return ["--hgvs", "--fasta", inputs.reference]
+                    }
+                    else {
+                        return []
+                    }
+                }
+            position: 5
+    reference:
+        type: File?
 outputs:
     annotated_vcf:
         type: File
