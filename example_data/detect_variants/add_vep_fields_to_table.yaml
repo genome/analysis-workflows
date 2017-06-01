@@ -1,0 +1,7 @@
+tsv:
+    class: File
+    path: variants.tsv
+vcf:
+    class: File
+    path: annotated.vcf.gz
+vep_fields: [HGVSc,HGVSp]
