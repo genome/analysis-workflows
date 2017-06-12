@@ -17,6 +17,11 @@ inputs:
             valueFrom:
                 $(runtime.outdir)/$(self.basename)
             position: 1
+    max_normal_freq:
+        type: float?
+        inputBinding:
+            prefix: "--max-normal-freq"
+            position: 2
 outputs:
     somatic_hc:
         type: File

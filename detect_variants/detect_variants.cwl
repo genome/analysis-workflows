@@ -32,6 +32,24 @@ inputs:
         type: int?
     mutect_artifact_detection_mode:
         type: boolean?
+    mutect_max_alt_allele_in_normal_fraction:
+        type: float?
+    mutect_max_alt_alleles_in_normal_count:
+        type: int?
+    varscan_strand_filter:
+        type: int?
+        default: 0
+    varscan_min_coverage:
+        type: int?
+        default: 8
+    varscan_min_var_freq:
+        type: float?
+        default: 0.1
+    varscan_p_value:
+        type: float?
+        default: 0.99
+    varscan_max_normal_freq:
+        type: float?
     pindel_insert_size:
         type: int
         default: 400
@@ -118,6 +136,8 @@ steps:
             interval_list: interval_list
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
+            max_alt_allele_in_normal_fraction: mutect_max_alt_allele_in_normal_fraction
+            max_alt_alleles_in_normal_count: mutect_max_alt_alleles_in_normal_count
             scatter_count: mutect_scatter_count
             artifact_detection_mode: mutect_artifact_detection_mode
             panel_of_normals_vcf: panel_of_normals_vcf
@@ -140,6 +160,11 @@ steps:
             tumor_cram: tumor_cram
             normal_cram: normal_cram
             interval_list: interval_list
+            strand_filter: varscan_strand_filter
+            min_coverage: varscan_min_coverage
+            min_var_freq: varscan_min_var_freq
+            p_value: varscan_p_value
+            max_normal_freq: varscan_max_normal_freq
         out:
             [unfiltered_vcf, filtered_vcf]
     pindel:

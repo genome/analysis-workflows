@@ -23,10 +23,30 @@ inputs:
         inputBinding:
             position: 3
         secondaryFiles: [.fai]
+    strand_filter:
+        type: int?
+        default: 0 
+        inputBinding:
+            position: 4
+    min_coverage:
+        type: int?
+        default: 8
+        inputBinding:
+            position: 5
+    min_var_freq:
+        type: float?
+        default: 0.1
+        inputBinding:
+            position: 6
+    p_value:
+        type: float?
+        default: 0.99
+        inputBinding:
+            position: 7
     roi_bed:
         type: File?
         inputBinding:
-            position: 4
+            position: 8
 outputs:
     snvs:
         type: File
