@@ -16,13 +16,13 @@ inputs:
     roi_bed:
         type: File?
     strand_filter:
-        type: int
+        type: int?
     min_coverage:
-        type: int
+        type: int?
     min_var_freq:
-        type: float
+        type: float?
     p_value:
-        type: float
+        type: float?
     max_normal_freq:
         type: float?
 outputs:
