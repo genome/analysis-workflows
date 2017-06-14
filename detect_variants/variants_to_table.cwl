@@ -12,11 +12,10 @@ arguments:
     ["-o", { valueFrom: $(runtime.outdir)/variants.tsv }]
 inputs:
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "-R"
             position: 1
-        secondaryFiles: [".fai", "^.dict"]
     vcf:
         type: File
         inputBinding:

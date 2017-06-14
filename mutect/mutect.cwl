@@ -12,11 +12,10 @@ arguments:
     ["-o", { valueFrom: $(runtime.outdir)/mutect.vcf.gz }]
 inputs:
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "-R"
             position: 1
-        secondaryFiles: [".fai", "^.dict"]
     tumor_cram:
         type: File
         inputBinding:

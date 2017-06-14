@@ -9,8 +9,7 @@ requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
     reference:
-        type: File
-        secondaryFiles: [".fai", "^.dict"]
+        type: string
     normal_crams:
         type: File[]
         secondaryFiles: [^.crai]

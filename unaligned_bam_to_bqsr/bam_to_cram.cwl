@@ -7,7 +7,7 @@ baseCommand: ["/opt/samtools/bin/samtools", "view", "-C"]
 stdout: "final.cram"
 inputs:
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "-T"
             position: 1

@@ -12,11 +12,10 @@ arguments:
     "-o", { valueFrom: $(runtime.outdir)/docm_out.vcf }]
 inputs:
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "-R"
             position: 1
-        secondaryFiles: [.fai, ^.dict]
     normal_cram:
         type: File
         inputBinding:

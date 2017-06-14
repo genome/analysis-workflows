@@ -19,13 +19,12 @@ inputs:
             position: 2
         secondaryFiles: [^.crai]
     reference:
-        type: File
+        type: string
         inputBinding:
             position: 3
-        secondaryFiles: [.fai]
     strand_filter:
         type: int?
-        default: 0 
+        default: 0
         inputBinding:
             position: 4
     min_coverage:

@@ -12,11 +12,10 @@ arguments:
      "-o", { valueFrom: $(runtime.outdir)/normalized.vcf.gz }]
 inputs:
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "-R"
             position: 1
-        secondaryFiles: [".fai", "^.dict"]
     vcf:
         type: File
         inputBinding:

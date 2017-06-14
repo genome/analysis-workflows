@@ -16,10 +16,9 @@ inputs:
             prefix: "INPUT="
         secondaryFiles: [^.crai]
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "REFERENCE_SEQUENCE="
-        secondaryFiles: [.fai]
 outputs:
     alignment_summary_metrics:
         type: File

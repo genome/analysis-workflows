@@ -63,7 +63,7 @@ inputs:
                 }
             position: 5
     reference:
-        type: File?
+        type: string?
 outputs:
     annotated_vcf:
         type: File
