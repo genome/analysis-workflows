@@ -52,6 +52,9 @@ inputs:
     variants_to_table_genotype_fields:
         type: string[]?
         default: [GT,AD]
+    vep_to_table_fields:
+        type: string[]?
+        default: [HGVSc,HGVSp]
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -98,7 +101,7 @@ outputs:
         secondaryFiles: [.tbi]
     final_tsv:
         type: File
-        outputSource: variants_to_table/variants_tsv
+        outputSource: add_vep_fields_to_table/annotated_variants_tsv
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
@@ -222,3 +225,10 @@ steps:
             genotype_fields: variants_to_table_genotype_fields
         out:
             [variants_tsv]
+    add_vep_fields_to_table:
+        run: add_vep_fields_to_table.cwl
+        in:
+            vcf: index/indexed_vcf
+            vep_fields: vep_to_table_fields
+            tsv: variants_to_table/variants_tsv
+        out: [annotated_variants_tsv]
