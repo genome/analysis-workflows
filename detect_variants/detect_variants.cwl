@@ -38,12 +38,16 @@ inputs:
         type: int?
     varscan_strand_filter:
         type: int?
+        default: 0
     varscan_min_coverage:
         type: int?
+        default: 8
     varscan_min_var_freq:
         type: float?
+        default: 0.1
     varscan_p_value:
         type: float?
+        default: 0.99
     varscan_max_normal_freq:
         type: float?
     pindel_insert_size:

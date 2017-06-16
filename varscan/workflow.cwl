@@ -21,12 +21,16 @@ inputs:
         type: File
     strand_filter:
         type: int?
+        default: 0
     min_coverage:
         type: int?
+        default: 8
     min_var_freq:
         type: float?
+        default: 0.1
     p_value:
         type: float?
+        default: 0.99
     max_normal_freq:
         type: float?
 outputs:
