@@ -5,7 +5,5 @@ cache_dir: /gscmnt/gc2764/cad/ssiebert/toil_test/inputs/VEP_cache
 synonyms_file:
     class: File
     path: chromAlias.ensembl.txt
-reference:
-    class: File
-    path: GRCh38_full_analysis_set_plus_decoy_hla.fa
+reference: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/GRCh38_full_analysis_set_plus_decoy_hla.fa
 hgvs: true

@@ -1,6 +1,4 @@
-reference:
-  class: File
-  path: ../detect_variants/GRCh38_full_analysis_set_plus_decoy_hla.fa
+reference: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/GRCh38_full_analysis_set_plus_decoy_hla.fa
 bait_intervals:
   class: File
   path: xgen-exome-research-panel-probes.interval_list

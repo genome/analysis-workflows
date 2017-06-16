@@ -1,6 +1,4 @@
-reference:
-  class: File
-  path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/GRCh38_full_analysis_set_plus_decoy_hla.fa
+reference: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/GRCh38_full_analysis_set_plus_decoy_hla.fa
 tumor_cram:
   class: File
   path: TUMOR_CRAM_FILE_PATH
