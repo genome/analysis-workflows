@@ -22,6 +22,13 @@ panel_of_normals_vcf:
 strelka_exome_mode: true
 mutect_scatter_count: 50
 mutect_artifact_detection_mode: false
+mutect_max_alt_allele_in_normal_fraction: 0.1
+mutect_max_alt_alleles_in_normal_count: 5
+varscan_strand_filter: 1
+varscan_min_coverage: 10
+varscan_min_var_freq: 0.05
+varscan_p_value: 0.1
+varscan_max_normal_freq: 0.1
 pindel_insert_size: 400
 docm_vcf:
   class: File

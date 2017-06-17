@@ -19,6 +19,20 @@ inputs:
         secondaryFiles: [^.crai]
     interval_list:
         type: File
+    strand_filter:
+        type: int?
+        default: 0
+    min_coverage:
+        type: int?
+        default: 8
+    min_var_freq:
+        type: float?
+        default: 0.1
+    p_value:
+        type: float?
+        default: 0.99
+    max_normal_freq:
+        type: float?
 outputs:
     unfiltered_vcf:
         type: File
@@ -42,6 +56,11 @@ steps:
             tumor_cram: tumor_cram
             normal_cram: normal_cram
             roi_bed: intervals_to_bed/interval_bed
+            strand_filter: strand_filter
+            min_coverage: min_coverage
+            min_var_freq: min_var_freq
+            p_value: p_value
+            max_normal_freq: max_normal_freq
         out:
             [somatic_snvs, somatic_indels, somatic_hc_snvs, somatic_hc_indels]
     bgzip_and_index_snvs:

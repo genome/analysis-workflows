@@ -15,6 +15,16 @@ inputs:
         secondaryFiles: [^.crai]
     roi_bed:
         type: File?
+    strand_filter:
+        type: int?
+    min_coverage:
+        type: int?
+    min_var_freq:
+        type: float?
+    p_value:
+        type: float?
+    max_normal_freq:
+        type: float?
 outputs:
     snvs:
         type: File
@@ -66,17 +76,23 @@ steps:
             normal_cram: normal_cram
             tumor_cram: tumor_cram
             roi_bed: roi_bed
+            strand_filter: strand_filter
+            min_coverage: min_coverage
+            min_var_freq: min_var_freq
+            p_value: p_value
         out:
             [snvs, indels]
     process_somatic_snvs:
         run: varscan_processsomatic.cwl
         in:
             variants: somatic/snvs
+            max_normal_freq: max_normal_freq
         out:
             [somatic_hc, somatic, germline_hc, germline, loh_hc, loh]
     process_somatic_indels:
         run: varscan_processsomatic.cwl
         in:
             variants: somatic/indels
+            max_normal_freq: max_normal_freq
         out:
             [somatic_hc, somatic, germline_hc, germline, loh_hc, loh]
