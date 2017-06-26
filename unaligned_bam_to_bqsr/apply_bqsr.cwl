@@ -17,7 +17,7 @@ requirements:
       ramMin: 16000
 inputs:
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "-R"
             position: 1

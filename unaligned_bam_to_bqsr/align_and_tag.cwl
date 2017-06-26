@@ -19,10 +19,9 @@ inputs:
         inputBinding:
             position: 1
     reference:
-        type: File
+        type: string
         inputBinding:
             position: 2
-        secondaryFiles: [.fai, .bwt, .sa, .ann, .amb, .pac, .alt]
     fastq:
         type: File
         inputBinding:

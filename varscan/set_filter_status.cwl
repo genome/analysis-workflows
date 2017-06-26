@@ -26,11 +26,10 @@ inputs:
             position: 3
         secondaryFiles: [.tbi]
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "-R"
             position: 1
-        secondaryFiles: [".fai", "^.dict"]
 outputs:
     merged_vcf:
         type: File

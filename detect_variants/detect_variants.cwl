@@ -7,8 +7,7 @@ requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
     reference:
-        type: File
-        secondaryFiles: [".fai", "^.dict"]
+        type: string
     tumor_cram:
         type: File
         secondaryFiles: [^.crai,.crai]

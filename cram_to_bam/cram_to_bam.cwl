@@ -11,11 +11,10 @@ arguments:
         ["-o", { valueFrom: $(runtime.outdir)/output.bam }]
 inputs:
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "-T"
             position: 1
-        secondaryFiles: [".fai"]
     cram:
         type: File
         inputBinding:

@@ -18,10 +18,9 @@ inputs:
         inputBinding:
             position: 2
     reference_fasta:
-        type: File
+        type: string
         inputBinding:
             position: 3
-        secondaryFiles: [.fai]
     bam:
         type: File
         inputBinding:

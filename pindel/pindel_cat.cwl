@@ -8,8 +8,7 @@ requirements:
     - class: MultipleInputFeatureRequirement
 inputs:
     reference:
-        type: File
-        secondaryFiles: [".fai"]
+        type: string
     tumor_cram:
         type: File
         secondaryFiles: ["^.crai"]

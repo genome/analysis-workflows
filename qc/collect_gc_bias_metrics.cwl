@@ -20,10 +20,9 @@ inputs:
             prefix: "I="
         secondaryFiles: [^.crai]
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "R="
-        secondaryFiles: [.fai]
 outputs:
     gc_bias_metrics:
         type: File

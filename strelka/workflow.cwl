@@ -16,8 +16,7 @@ inputs:
         type: File
         secondaryFiles: [.crai]
     reference:
-        type: File
-        secondaryFiles: [.fai]
+        type: string
     interval_list:
         type: File
     exome_mode:

@@ -16,11 +16,10 @@ arguments:
      "-o", { valueFrom: $(runtime.outdir)/panel_of_normals.vcf.gz }]
 inputs:
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "-R"
             position: 1
-        secondaryFiles: [".fai", "^.dict"]
     interval_list:
         type: File?
         inputBinding:

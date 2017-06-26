@@ -19,11 +19,10 @@ inputs:
         type: File
         secondaryFiles: ["^.crai"]
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "-f"
             position: 1
-        secondaryFiles: [".fai"]
     chromosome:
         type: string
         inputBinding:
