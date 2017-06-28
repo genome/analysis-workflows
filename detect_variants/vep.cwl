@@ -31,7 +31,7 @@ inputs:
             valueFrom: |
                 ${
                     if (inputs.cache_dir) {
-                        return ["--offline", "--cache", "--maf_exac", "--dir", inputs.cache_dir ]
+                        return ["--offline", "--cache", "--af_exac", "--dir", inputs.cache_dir ]
                     }
                     else {
                         return "--database"
@@ -55,7 +55,12 @@ inputs:
             valueFrom: |
                 ${
                     if (inputs.hgvs) {
-                        return ["--hgvs", "--fasta", inputs.reference]
+                        if (inputs.cache_dir) {
+                            return ["--hgvs", "--fasta", inputs.reference]
+                        }
+                        else {
+                            return ["--hgvs"]
+                        }
                     }
                     else {
                         return []
