@@ -4,3 +4,4 @@ vcf:
 synonyms_file:
     class: File
     path: chromAlias.ensembl.txt
+hgvs: true
