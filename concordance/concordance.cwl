@@ -26,7 +26,7 @@ inputs:
         type: string?
         inputBinding:
             position: 6
-	default: "concordance_report.txt" 
+        default: "concordance_report.txt" 
 outputs:
     output_file:
         type: File
