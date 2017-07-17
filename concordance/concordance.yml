@@ -11,6 +11,9 @@ snp:
     class: File
     path: /gscmnt/gc13023/info/feature_list/6da190b2cd394a30a5b01ef2010fa44c/6da190b2cd394a30a5b01ef2010fa44c.bed
 
+#snp file for AML RMG
 # /gscmnt/gc9018/info/feature_list/ccb8bd8a885b47a78eb81223ccfcb458/ccb8bd8a885#b47a78eb81223ccfcb458.bed
+
 output_file_name: "concordance_output.txt"
-#output_geno_file_name: "geno_output.txt"
+#optional:
+output_geno_file_name: "geno_output.txt"
