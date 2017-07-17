@@ -38,6 +38,6 @@ outputs:
         outputBinding:
            glob: "$(inputs.output_file_name)"
     output_geno_file:
-        type: File[]
+        type: File?
         outputBinding:
             glob: "$(inputs.output_geno_file_name)"
