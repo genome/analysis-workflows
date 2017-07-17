@@ -25,6 +25,16 @@ inputs:
                 items: string
     sample_name:
         type: string
+    trimming_adapters:
+        type: File
+    trimming_adapter_trim_end:
+        type: string
+    trimming_adapter_min_overlap:
+        type: int
+    trimming_max_uncalled:
+        type: int
+    trimming_min_readlength:
+        type: int
 outputs:
     aligned_bam:
         type: File
@@ -42,6 +52,11 @@ steps:
             reference_index: reference_index
             read_group_id: read_group_id
             read_group_fields: read_group_fields
+            trimming_adapters: trimming_adapters
+            trimming_adapter_trim_end: trimming_adapter_trim_end
+            trimming_adapter_min_overlap: trimming_adapter_min_overlap
+            trimming_max_uncalled: trimming_max_uncalled
+            trimming_min_readlength: trimming_min_readlength
         out:
             [aligned_bam]
     merge:
