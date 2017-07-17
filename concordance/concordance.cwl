@@ -26,9 +26,18 @@ inputs:
         type: string?
         inputBinding:
             position: 6
-        default: "concordance_report.txt" 
+        default: "concordance_report.txt"
+    output_geno_file_name:
+        type: string?
+        inputBinding:
+            position: 7
+            prefix: "--output_geno" 
 outputs:
     output_file:
         type: File
         outputBinding:
-            glob: "*.txt"
+           glob: "$(inputs.output_file_name)"
+    output_geno_file:
+        type: File[]
+        outputBinding:
+            glob: "$(inputs.output_geno_file_name)"
