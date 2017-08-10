@@ -31,7 +31,7 @@ inputs:
             valueFrom: |
                 ${
                     if (inputs.cache_dir) {
-                        return ["--offline", "--cache", "--maf_exac", "--dir", inputs.cache_dir ]
+                        return ["--offline", "--cache", "--af_exac", "--dir", inputs.cache_dir ]
                     }
                     else {
                         return "--database"
@@ -50,11 +50,25 @@ inputs:
             position: 3
         default: false
     hgvs:
-        type: boolean
+        type: boolean?
         inputBinding:
-            prefix: "--hgvs"
-            position: 4
-        default: false
+            valueFrom: |
+                ${
+                    if (inputs.hgvs) {
+                        if (inputs.cache_dir) {
+                            return ["--hgvs", "--fasta", inputs.reference]
+                        }
+                        else {
+                            return ["--hgvs"]
+                        }
+                    }
+                    else {
+                        return []
+                    }
+                }
+            position: 5
+    reference:
+        type: string?
 outputs:
     annotated_vcf:
         type: File

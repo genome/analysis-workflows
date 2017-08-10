@@ -27,12 +27,11 @@ inputs:
             position: 4
         secondaryFiles: [.crai]
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: '--referenceFasta='
             separate: false
             position: 5
-        secondaryFiles: [.fai]
     exome_mode:
         type: boolean
         inputBinding:

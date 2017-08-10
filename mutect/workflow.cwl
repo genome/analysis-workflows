@@ -10,8 +10,7 @@ requirements:
     - class: StepInputExpressionRequirement
 inputs:
     reference:
-        type: File
-        secondaryFiles: [".fai", "^.dict"]
+        type: string
     tumor_cram:
         type: File
         secondaryFiles: [^.crai]
@@ -33,6 +32,10 @@ inputs:
     panel_of_normals_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    max_alt_allele_in_normal_fraction:
+        type: float?
+    max_alt_alleles_in_normal_count:
+        type: int?
 outputs:
     unfiltered_vcf:
         type: File
@@ -61,6 +64,8 @@ steps:
             cosmic_vcf: cosmic_vcf
             artifact_detection_mode: artifact_detection_mode
             panel_of_normals_vcf: panel_of_normals_vcf
+            max_alt_allele_in_normal_fraction: max_alt_allele_in_normal_fraction
+            max_alt_alleles_in_normal_count: max_alt_alleles_in_normal_count
         out:
             [vcf]
     merge:

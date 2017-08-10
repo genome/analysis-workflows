@@ -1,7 +1,5 @@
 #!/usr/bin/env cwl-runner
-reference:
-  class: File
-  path: ../detect_variants/GRCh38_full_analysis_set_plus_decoy_hla.fa
+reference: /gscmnt/gc2764/cad/ssiebert/toil_test/arvados_trial/example_data/detect_variants/GRCh38_full_analysis_set_plus_decoy_hla.fa
 normal_cram: 
   class: File
   path: ../detect_variants/H_NJ-HCC1395-HCC1395_BL_exome.cram

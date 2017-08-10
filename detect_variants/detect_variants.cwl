@@ -7,8 +7,7 @@ requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
     reference:
-        type: File
-        secondaryFiles: [".fai", "^.dict"]
+        type: string
     tumor_cram:
         type: File
         secondaryFiles: [^.crai,.crai]
@@ -32,6 +31,24 @@ inputs:
         type: int?
     mutect_artifact_detection_mode:
         type: boolean?
+    mutect_max_alt_allele_in_normal_fraction:
+        type: float?
+    mutect_max_alt_alleles_in_normal_count:
+        type: int?
+    varscan_strand_filter:
+        type: int?
+        default: 0
+    varscan_min_coverage:
+        type: int?
+        default: 8
+    varscan_min_var_freq:
+        type: float?
+        default: 0.1
+    varscan_p_value:
+        type: float?
+        default: 0.99
+    varscan_max_normal_freq:
+        type: float?
     pindel_insert_size:
         type: int
         default: 400
@@ -52,6 +69,9 @@ inputs:
     variants_to_table_genotype_fields:
         type: string[]?
         default: [GT,AD]
+    vep_to_table_fields:
+        type: string[]?
+        default: [HGVSc,HGVSp]
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -98,7 +118,7 @@ outputs:
         secondaryFiles: [.tbi]
     final_tsv:
         type: File
-        outputSource: variants_to_table/variants_tsv
+        outputSource: add_vep_fields_to_table/annotated_variants_tsv
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
@@ -118,6 +138,8 @@ steps:
             interval_list: interval_list
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
+            max_alt_allele_in_normal_fraction: mutect_max_alt_allele_in_normal_fraction
+            max_alt_alleles_in_normal_count: mutect_max_alt_alleles_in_normal_count
             scatter_count: mutect_scatter_count
             artifact_detection_mode: mutect_artifact_detection_mode
             panel_of_normals_vcf: panel_of_normals_vcf
@@ -140,6 +162,11 @@ steps:
             tumor_cram: tumor_cram
             normal_cram: normal_cram
             interval_list: interval_list
+            strand_filter: varscan_strand_filter
+            min_coverage: varscan_min_coverage
+            min_var_freq: varscan_min_var_freq
+            p_value: varscan_p_value
+            max_normal_freq: varscan_max_normal_freq
         out:
             [unfiltered_vcf, filtered_vcf]
     pindel:
@@ -181,6 +208,7 @@ steps:
             synonyms_file: synonyms_file
             coding_only: coding_only
             hgvs: hgvs_annotation
+            reference: reference
         out:
             [annotated_vcf, vep_summary]
     cram_to_bam:
@@ -221,3 +249,10 @@ steps:
             genotype_fields: variants_to_table_genotype_fields
         out:
             [variants_tsv]
+    add_vep_fields_to_table:
+        run: add_vep_fields_to_table.cwl
+        in:
+            vcf: index/indexed_vcf
+            vep_fields: vep_to_table_fields
+            tsv: variants_to_table/variants_tsv
+        out: [annotated_variants_tsv]

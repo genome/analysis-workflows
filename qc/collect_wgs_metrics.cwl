@@ -18,10 +18,9 @@ inputs:
             prefix: "I="
         secondaryFiles: [^.crai]
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "R="
-        secondaryFiles: [.fai]
     intervals:
         type: File
         inputBinding:

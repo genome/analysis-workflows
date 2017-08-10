@@ -6,9 +6,7 @@ label: "exome alignment with qc"
 requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
-    reference:
-        type: File
-        secondaryFiles: [.fai, .bwt, .sa, .ann, .amb, .pac, ^.dict, .alt]
+    reference: string
     bams:
         type: File[]
     readgroups:

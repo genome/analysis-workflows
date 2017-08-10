@@ -1,6 +1,4 @@
-reference:
-  class: File
-  path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/GRCh38_full_analysis_set_plus_decoy_hla.fa
+reference: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/GRCh38_full_analysis_set_plus_decoy_hla.fa
 tumor_cram:
   class: File
   path: TUMOR_CRAM_FILE_PATH
@@ -22,6 +20,13 @@ panel_of_normals_vcf:
 strelka_exome_mode: true
 mutect_scatter_count: 50
 mutect_artifact_detection_mode: false
+mutect_max_alt_allele_in_normal_fraction: 0.1
+mutect_max_alt_alleles_in_normal_count: 5
+varscan_strand_filter: 1
+varscan_min_coverage: 10
+varscan_min_var_freq: 0.05
+varscan_p_value: 0.1
+varscan_max_normal_freq: 0.1
 pindel_insert_size: 400
 docm_vcf:
   class: File
@@ -34,4 +39,4 @@ coding_only: true
 hgvs_annotation: true
 variants_to_table_fields: [CHROM,POS,ID,REF,ALT,set,AC,AF]
 variants_to_table_genotype_fields: [GT,AD]
-
+vep_to_table_fields: [HGVSc,HGVSp]

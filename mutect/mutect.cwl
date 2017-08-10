@@ -12,11 +12,10 @@ arguments:
     ["-o", { valueFrom: $(runtime.outdir)/mutect.vcf.gz }]
 inputs:
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "-R"
             position: 1
-        secondaryFiles: [".fai", "^.dict"]
     tumor_cram:
         type: File
         inputBinding:
@@ -57,6 +56,16 @@ inputs:
             prefix: "-PON"
             position: 8
         secondaryFiles: [.tbi]
+    max_alt_alleles_in_normal_count:
+        type: int?
+        inputBinding:
+            prefix: "--max_alt_alleles_in_normal_count"
+            position: 9
+    max_alt_allele_in_normal_fraction:
+        type: float?
+        inputBinding:
+            prefix: "--max_alt_allele_in_normal_fraction"
+            position: 10
 outputs:
     vcf:
         type: File

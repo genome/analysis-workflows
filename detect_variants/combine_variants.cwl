@@ -14,11 +14,10 @@ arguments:
      "-o", { valueFrom: $(runtime.outdir)/combined.vcf.gz }]
 inputs:
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "-R"
             position: 1
-        secondaryFiles: [".fai", "^.dict"]
     mutect_vcf:
         type: File
         inputBinding:
