@@ -1,0 +1,13 @@
+reference: /gscmnt/gc2764/cad/HCC1395/toil/refseq/GRCh38DH/GRCh38_full_analysis_set_plus_decoy_hla.fa
+bams:
+    - {class: File, path: /gscmnt/gc2764/cad/instrument_data/imported/62b8ffa0d8544d48b34bb009f6f43ec7/all_sequences.bam}
+readgroups: ['@RG\tID:62b8ffa0d8544d48b34bb009f6f43ec7\tPL:ILLUMINA\tPU:HHV33BBXX-TCCGGAGA.1\tLB:H_IJ-NA12878-NA12878_K10PCRgf-lib1\tSM:H_IJ-NA12878-NA12878_K10']
+dbsnp:
+    class: File
+    path: /gscmnt/gc2764/cad/HCC1395/toil/refseq/GRCh38DH/Homo_sapiens_assembly38.dbsnp138.vcf.gz
+known_indels:
+    class: File
+    path: /gscmnt/gc2764/cad/HCC1395/toil/refseq/GRCh38DH/Homo_sapiens_assembly38.known_indels.vcf.gz
+mills:
+    class: File
+    path: /gscmnt/gc2764/cad/HCC1395/toil/refseq/GRCh38DH/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
