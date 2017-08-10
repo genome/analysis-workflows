@@ -14,8 +14,7 @@ inputs:
     readgroups:
         type: string[]
     reference:
-        type: File
-        secondaryFiles: [.fai, .bwt, .sa, .ann, .amb, .pac, ^.dict, .alt]
+        type: string
     dbsnp:
         type: File
         secondaryFiles: [.tbi]
