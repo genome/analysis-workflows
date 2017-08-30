@@ -122,12 +122,18 @@ outputs:
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
-    snv_bam_readcount:
+    tumor_snv_bam_readcount:
         type: File
-        outputSource: bam_readcount/snv_bam_readcount
-    indel_bam_readcount:
+        outputSource: tumor_bam_readcount/snv_bam_readcount
+    tumor_indel_bam_readcount:
         type: File
-        outputSource: bam_readcount/indel_bam_readcount
+        outputSource: tumor_bam_readcount/indel_bam_readcount
+    normal_snv_bam_readcount:
+        type: File
+        outputSource: normal_bam_readcount/snv_bam_readcount
+    normal_indel_bam_readcount:
+        type: File
+        outputSource: normal_bam_readcount/indel_bam_readcount
 steps:
     mutect:
         run: ../mutect/workflow.cwl
@@ -211,21 +217,38 @@ steps:
             reference: reference
         out:
             [annotated_vcf, vep_summary]
-    cram_to_bam:
+    tumor_cram_to_bam:
         run: ../cram_to_bam/workflow.cwl
         in:
             cram: tumor_cram
             reference: reference
         out:
             [bam]
-    bam_readcount:
+    normal_cram_to_bam:
+        run: ../cram_to_bam/workflow.cwl
+        in:
+            cram: normal_cram
+            reference: reference
+        out:
+            [bam]
+    tumor_bam_readcount:
         run: ../pvacseq/bam_readcount.cwl
         in:
             vcf: combine/combined_vcf
             sample:
                 default: 'TUMOR'
             reference_fasta: reference
-            bam: cram_to_bam/bam
+            bam: tumor_cram_to_bam/bam
+        out:
+            [snv_bam_readcount, indel_bam_readcount]
+    normal_bam_readcount:
+        run: ../pvacseq/bam_readcount.cwl
+        in:
+            vcf: combine/combined_vcf
+            sample:
+                default: 'NORMAL'
+            reference_fasta: reference
+            bam: normal_cram_to_bam/bam
         out:
             [snv_bam_readcount, indel_bam_readcount]
     bgzip:
