@@ -30,8 +30,8 @@ outputs:
     snv_bam_readcount:
         type: File?
         outputBinding:
-            glob: bam_readcount_snv.tsv
+            glob: $(inputs.sample)_bam_readcount_snv.tsv
     indel_bam_readcount:
         type: File?
         outputBinding:
-            glob: bam_readcount_indel.tsv
+            glob: $(inputs.sample)_bam_readcount_indel.tsv
