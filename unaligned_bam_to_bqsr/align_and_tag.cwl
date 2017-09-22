@@ -11,25 +11,21 @@ requirements:
       ramMin: 16000
 stdout: "refAlign.bam"
 arguments:
-    - position: 5
+    - position: 4
       valueFrom: $(runtime.cores)
 inputs:
+    bam:
+        type: File
+        inputBinding:
+            position: 1
     readgroup:
         type: string
         inputBinding:
-            position: 1
+            position: 2
     reference:
         type: string
         inputBinding:
-            position: 2
-    fastq:
-        type: File
-        inputBinding:
             position: 3
-    fastq2:
-        type: File
-        inputBinding:
-            position: 4
 outputs:
     aligned_bam:
             type: stdout
