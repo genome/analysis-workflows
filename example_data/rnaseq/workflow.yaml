@@ -1,0 +1,25 @@
+instrument_data_bams:
+    - class: File
+      path: /gscmnt/gc13000/info/instrument_data/2895626107/csf_151131574/gerald_H3MYFBBXX_4_GCCAAT.bam
+    - class: File
+      path: /gscmnt/gc13000/info/instrument_data/2895626112/csf_151131586/gerald_H3MYFBBXX_5_GCCAAT.bam
+reference_index:
+    class: File
+    path: /gscmnt/gc2764/cad/tmooney/toil_test/GRCh38_test/GRCh38_tran
+reference_annotation:
+    class: File
+    path: /gscmnt/gc2764/cad/ssiebert/toil_test/arvados_trial/example_data/rnaseq/Homo_sapiens.GRCh38.89.gtf
+read_group_id:
+    - '2895626107'
+    - '2895626112'
+read_group_fields:
+    - ['PU:H3MYFBBXX5.4.GCCAAT', 'SM:H_NJ-HCC1395-HCC1395_RNA', 'LB:Pooled_RNA_2891007020-cD1-lib1', 'PL:Illumina', 'CN:WUGSC']
+    - ['PU:H3MYFBBXX5.5.GCCAAT', 'SM:H_NJ-HCC1395-HCC1395_RNA', 'LB:Pooled_RNA_2891007020-cD1-lib1', 'PL:Illumina', 'CN:WUGSC']
+trimming_adapters:
+    class: File
+    path: /gscmnt/gc2560/core/illumina_adapters/illumina_multiplex.fa
+trimming_adapter_trim_end: 'RIGHT'
+trimming_adapter_min_overlap: 7
+trimming_max_uncalled: 300
+trimming_min_readlength: 25
+sample_name: H_NJ-HCC1395-HCC1395_RNA
