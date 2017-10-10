@@ -217,6 +217,12 @@ steps:
             reference: reference
         out:
             [annotated_vcf, vep_summary]
+    annotated_vcf_filter:
+        run annotated_vcf_filter.cwl
+        in:
+            annotated_vcf: annotate_variants/annotated_vcf
+        out:
+            [annotated_filtered_vcf]
     tumor_cram_to_bam:
         run: ../cram_to_bam/workflow.cwl
         in:
@@ -254,7 +260,7 @@ steps:
     bgzip:
         run: bgzip.cwl
         in:
-            file: annotate_variants/annotated_vcf
+            file: annotated_vcf_filter/annotated_filtered_vcf
         out:
             [bgzipped_file]
     index:
