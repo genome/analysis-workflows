@@ -27,6 +27,9 @@ inputs:
         secondaryFiles: [.tbi]
     strelka_exome_mode:
         type: boolean
+    strelka_cpu_num:
+        type: int?
+        default: 4
     mutect_scatter_count:
         type: int?
     mutect_artifact_detection_mode:
@@ -159,6 +162,7 @@ steps:
             normal_cram: normal_cram
             interval_list: interval_list
             exome_mode: strelka_exome_mode
+            cpu_num: strelka_cpu_num
         out:
             [unfiltered_vcf, filtered_vcf]
     varscan:
@@ -218,7 +222,7 @@ steps:
         out:
             [annotated_vcf, vep_summary]
     annotated_vcf_filter:
-        run annotated_vcf_filter.cwl
+        run: annotated_vcf_filter.cwl
         in:
             annotated_vcf: annotate_variants/annotated_vcf
         out:
