@@ -10,6 +10,11 @@ arguments: [
 inputs:
     annotated_vcf:
         type: File
+    filter:
+        type: boolean
+        inputBinding:
+            prefix: "filter"
+            position: 1
 outputs:
     annotated_filtered_vcf:
         type: File

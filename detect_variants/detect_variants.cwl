@@ -66,6 +66,9 @@ inputs:
         type: boolean?
     hgvs_annotation:
         type: boolean?
+    filter_annotated_vcf:
+        type: boolean?
+        default: false
     variants_to_table_fields:
         type: string[]?
         default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
@@ -118,6 +121,10 @@ outputs:
     final_vcf:
         type: File
         outputSource: index/indexed_vcf
+        secondaryFiles: [.tbi]
+    final_filtered_vcf:
+        type: File
+        outputSource: annotated_filter_index/indexed_vcf
         secondaryFiles: [.tbi]
     final_tsv:
         type: File
@@ -221,12 +228,6 @@ steps:
             reference: reference
         out:
             [annotated_vcf, vep_summary]
-    annotated_vcf_filter:
-        run: annotated_vcf_filter.cwl
-        in:
-            annotated_vcf: annotate_variants/annotated_vcf
-        out:
-            [annotated_filtered_vcf]
     tumor_cram_to_bam:
         run: ../cram_to_bam/workflow.cwl
         in:
@@ -264,7 +265,7 @@ steps:
     bgzip:
         run: bgzip.cwl
         in:
-            file: annotated_vcf_filter/annotated_filtered_vcf
+            file: annotate_variants/annotated_vcf
         out:
             [bgzipped_file]
     index:
@@ -273,11 +274,30 @@ steps:
             vcf: bgzip/bgzipped_file
         out:
             [indexed_vcf]
+    annotated_vcf_filter:
+        run: annotated_vcf_filter.cwl
+        in:
+            annotated_vcf: index/indexed_vcf
+            filter_annotated_vcf: filter
+        out:
+            [annotated_filtered_vcf]
+    annotated_filter_bgzip
+        run: bgzip.cwl
+        in:
+            file: annotated_vcf_filter/annotated_filtered_vcf
+        out:
+            [bgzipped_file]
+    annotated_filter_index:
+        run: index.cwl
+        in:
+            vcf: annotated_filter_bgzip/bgzipped_file
+        out:
+            [indexed_vcf]
     variants_to_table:
         run: variants_to_table.cwl
         in:
             reference: reference
-            vcf: index/indexed_vcf
+            vcf: annotated_filter_index/indexed_vcf
             fields: variants_to_table_fields
             genotype_fields: variants_to_table_genotype_fields
         out:
