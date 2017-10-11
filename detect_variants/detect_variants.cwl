@@ -278,10 +278,10 @@ steps:
         run: annotated_vcf_filter.cwl
         in:
             annotated_vcf: index/indexed_vcf
-            filter_annotated_vcf: filter
+            filter: filter_annotated_vcf
         out:
             [annotated_filtered_vcf]
-    annotated_filter_bgzip
+    annotated_filter_bgzip:
         run: bgzip.cwl
         in:
             file: annotated_vcf_filter/annotated_filtered_vcf
