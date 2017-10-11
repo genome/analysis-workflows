@@ -9,7 +9,7 @@ requirements:
         coresMin: 8
         ramMin: 4000
 arguments:
-    [ { valueFrom: $(runtime.cores), position: 1 },
+    [ { valueFrom: $(inputs.cpu_num), position: 1 },
       { valueFrom: $(runtime.outdir), position: 2 }]
 inputs:
     tumor_cram:
@@ -37,6 +37,8 @@ inputs:
         inputBinding:
             prefix: '--exome'
             position: 6
+    cpu_num:
+        type: int?
 outputs:
      indels:
          type: File
