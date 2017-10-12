@@ -21,7 +21,10 @@ inputs:
         type: File
     exome_mode:
         type: boolean
-    cpu_num:
+    cpu_reserved:
+        type: int?
+        default: 8
+    cpu_requested:
         type: int?
         default: 4
 outputs:
@@ -41,7 +44,8 @@ steps:
             normal_cram: normal_cram
             reference: reference
             exome_mode: exome_mode
-            cpu_num: cpu_num
+            cpu_reserved: cpu_reserved
+            cpu_requested: cpu_requested
         out:
             [indels, snvs]
     process:

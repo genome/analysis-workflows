@@ -27,7 +27,10 @@ inputs:
         secondaryFiles: [.tbi]
     strelka_exome_mode:
         type: boolean
-    strelka_cpu_num:
+    strelka_cpu_reserved:
+        type: int?
+        default: 8
+    strelka_cpu_requested:
         type: int?
         default: 4
     mutect_scatter_count:
@@ -66,7 +69,7 @@ inputs:
         type: boolean?
     hgvs_annotation:
         type: boolean?
-    filter_annotated_vcf:
+    cle_vcf_filter:
         type: boolean?
         default: false
     variants_to_table_fields:
@@ -169,7 +172,8 @@ steps:
             normal_cram: normal_cram
             interval_list: interval_list
             exome_mode: strelka_exome_mode
-            cpu_num: strelka_cpu_num
+            cpu_reserved: strelka_cpu_reserved
+            cpu_requested: strelka_cpu_requested
         out:
             [unfiltered_vcf, filtered_vcf]
     varscan:
@@ -274,17 +278,17 @@ steps:
             vcf: bgzip/bgzipped_file
         out:
             [indexed_vcf]
-    annotated_vcf_filter:
-        run: annotated_vcf_filter.cwl
+    cle_annotated_vcf_filter:
+        run: cle_annotated_vcf_filter.cwl
         in:
             annotated_vcf: index/indexed_vcf
-            filter: filter_annotated_vcf
+            filter: cle_vcf_filter
         out:
             [annotated_filtered_vcf]
     annotated_filter_bgzip:
         run: bgzip.cwl
         in:
-            file: annotated_vcf_filter/annotated_filtered_vcf
+            file: cle_annotated_vcf_filter/annotated_filtered_vcf
         out:
             [bgzipped_file]
     annotated_filter_index:
