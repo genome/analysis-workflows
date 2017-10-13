@@ -27,6 +27,9 @@ inputs:
         secondaryFiles: [.tbi]
     strelka_exome_mode:
         type: boolean
+    strelka_cpu_reserved:
+        type: int?
+        default: 8
     mutect_scatter_count:
         type: int?
     mutect_artifact_detection_mode:
@@ -63,6 +66,9 @@ inputs:
         type: boolean?
     hgvs_annotation:
         type: boolean?
+    cle_vcf_filter:
+        type: boolean?
+        default: false
     variants_to_table_fields:
         type: string[]?
         default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
@@ -116,6 +122,10 @@ outputs:
         type: File
         outputSource: index/indexed_vcf
         secondaryFiles: [.tbi]
+    final_filtered_vcf:
+        type: File
+        outputSource: annotated_filter_index/indexed_vcf
+        secondaryFiles: [.tbi]
     final_tsv:
         type: File
         outputSource: add_vep_fields_to_table/annotated_variants_tsv
@@ -159,6 +169,7 @@ steps:
             normal_cram: normal_cram
             interval_list: interval_list
             exome_mode: strelka_exome_mode
+            cpu_reserved: strelka_cpu_reserved
         out:
             [unfiltered_vcf, filtered_vcf]
     varscan:
@@ -263,11 +274,30 @@ steps:
             vcf: bgzip/bgzipped_file
         out:
             [indexed_vcf]
+    cle_annotated_vcf_filter:
+        run: cle_annotated_vcf_filter.cwl
+        in:
+            annotated_vcf: index/indexed_vcf
+            filter: cle_vcf_filter
+        out:
+            [annotated_filtered_vcf]
+    annotated_filter_bgzip:
+        run: bgzip.cwl
+        in:
+            file: cle_annotated_vcf_filter/annotated_filtered_vcf
+        out:
+            [bgzipped_file]
+    annotated_filter_index:
+        run: index.cwl
+        in:
+            vcf: annotated_filter_bgzip/bgzipped_file
+        out:
+            [indexed_vcf]
     variants_to_table:
         run: variants_to_table.cwl
         in:
             reference: reference
-            vcf: index/indexed_vcf
+            vcf: annotated_filter_index/indexed_vcf
             fields: variants_to_table_fields
             genotype_fields: variants_to_table_genotype_fields
         out:

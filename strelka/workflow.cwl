@@ -21,6 +21,9 @@ inputs:
         type: File
     exome_mode:
         type: boolean
+    cpu_reserved:
+        type: int?
+        default: 8
 outputs:
     unfiltered_vcf:
         type: File
@@ -38,6 +41,7 @@ steps:
             normal_cram: normal_cram
             reference: reference
             exome_mode: exome_mode
+            cpu_reserved: cpu_reserved
         out:
             [indels, snvs]
     process:

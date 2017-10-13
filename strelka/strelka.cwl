@@ -6,10 +6,10 @@ label: "strelka 2.7.1"
 baseCommand: ["/usr/bin/perl", "/usr/bin/strelka_helper.pl"]
 requirements:
     ResourceRequirement:
-        coresMin: 8
+        coresMin: 4
         ramMin: 4000
 arguments:
-    [ { valueFrom: $(runtime.cores), position: 1 },
+    [ { valueFrom: $(inputs.cpu_reserved), position: 1 },
       { valueFrom: $(runtime.outdir), position: 2 }]
 inputs:
     tumor_cram:
@@ -37,6 +37,8 @@ inputs:
         inputBinding:
             prefix: '--exome'
             position: 6
+    cpu_reserved:
+        type: int?
 outputs:
      indels:
          type: File
