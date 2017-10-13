@@ -6,7 +6,7 @@ label: "strelka 2.7.1"
 baseCommand: ["/usr/bin/perl", "/usr/bin/strelka_helper.pl"]
 requirements:
     ResourceRequirement:
-        coresMin: {valueFrom: $(inputs.cpu_requested)}
+        coresMin: 4
         ramMin: 4000
 arguments:
     [ { valueFrom: $(inputs.cpu_reserved), position: 1 },
@@ -38,8 +38,6 @@ inputs:
             prefix: '--exome'
             position: 6
     cpu_reserved:
-        type: int?
-    cpu_requested:
         type: int?
 outputs:
      indels:

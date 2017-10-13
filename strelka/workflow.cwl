@@ -24,9 +24,6 @@ inputs:
     cpu_reserved:
         type: int?
         default: 8
-    cpu_requested:
-        type: int?
-        default: 4
 outputs:
     unfiltered_vcf:
         type: File
@@ -45,7 +42,6 @@ steps:
             reference: reference
             exome_mode: exome_mode
             cpu_reserved: cpu_reserved
-            cpu_requested: cpu_requested
         out:
             [indels, snvs]
     process:

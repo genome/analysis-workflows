@@ -30,9 +30,6 @@ inputs:
     strelka_cpu_reserved:
         type: int?
         default: 8
-    strelka_cpu_requested:
-        type: int?
-        default: 4
     mutect_scatter_count:
         type: int?
     mutect_artifact_detection_mode:
@@ -173,7 +170,6 @@ steps:
             interval_list: interval_list
             exome_mode: strelka_exome_mode
             cpu_reserved: strelka_cpu_reserved
-            cpu_requested: strelka_cpu_requested
         out:
             [unfiltered_vcf, filtered_vcf]
     varscan:
