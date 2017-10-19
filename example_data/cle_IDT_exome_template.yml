@@ -27,7 +27,6 @@ varscan_min_var_freq: 0.08
 varscan_p_value: 0.1
 varscan_max_normal_freq: 0.1
 pindel_insert_size: 400
-cle_vcf_filter: true
 docm_vcf:
   class: File
   path: /gscmnt/gc2709/info/production_reference_GRCh38DH/CLE/IDTExome/DoCM.hs37_011117_sanitized_sort_new_LiftOver_hg19ToHg38.vcf.gz
