@@ -35,12 +35,12 @@ inputs:
     sample_name:
         type: string
 outputs:
-    varscan_vcf:
+    unfiltered_vcf:
         type: File
-        outputSource: varscan/variants
-    variants:
+        outputSource: filter/unfiltered_vcf
+    filtered_vcf:
         type: File
-        outputSource: bgzip_and_index/indexed_vcf
+        outputSource: filter/filtered_vcf
         secondaryFiles: [.tbi]
 steps:
     intervals_to_bed:
@@ -69,3 +69,13 @@ steps:
             vcf: varscan/variants
         out:
             [indexed_vcf]
+    filter:
+        run: ../fp_filter/workflow.cwl
+        in:
+            reference: reference
+            cram: cram
+            vcf: bgzip_and_index/indexed_vcf
+            variant_caller:
+                valueFrom: "varscan"
+        out:
+            [unfiltered_vcf, filtered_vcf]

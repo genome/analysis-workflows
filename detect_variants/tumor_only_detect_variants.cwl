@@ -50,7 +50,7 @@ inputs:
 outputs:
     varscan_vcf:
         type: File
-        outputSource: varscan/variants
+        outputSource: varscan/unfiltered_vcf
         secondaryFiles: [.tbi]
     final_vcf:
         type: File
@@ -82,11 +82,11 @@ steps:
             p_value: varscan_p_value
             sample_name: sample_name
         out:
-            [varscan_vcf, variants]
+            [unfiltered_vcf, filtered_vcf]
     annotate_variants:
         run: vep.cwl
         in:
-            vcf: varscan/varscan_vcf
+            vcf: varscan/filtered_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: coding_only
@@ -104,7 +104,7 @@ steps:
     bam_readcount:
         run: ../pvacseq/bam_readcount.cwl
         in:
-            vcf: varscan/varscan_vcf
+            vcf: varscan/filtered_vcf
             sample: sample_name
             reference_fasta: reference
             bam: cram_to_bam/bam
