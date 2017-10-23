@@ -47,11 +47,16 @@ inputs:
         default: [HGVSc,HGVSp]
     sample_name:
         type: string
+    docm_vcf:
+        type: File
 outputs:
     varscan_vcf:
         type: File
         outputSource: varscan/unfiltered_vcf
         secondaryFiles: [.tbi]
+    docm_gatk_vcf:
+        type: File
+        outputSource: docm/unfiltered_vcf
     final_vcf:
         type: File
         outputSource: index/indexed_vcf
@@ -83,10 +88,27 @@ steps:
             sample_name: sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
+    docm:
+        run: ../docm/germline_workflow.cwl
+        in:
+            reference: reference
+            cram: cram
+            interval_list: interval_list
+            docm_vcf: docm_vcf
+        out:
+            [unfiltered_vcf, filtered_vcf]
+    combine_variants:
+        run: germline_combine_variants.cwl
+        in:
+            reference: reference
+            varscan_vcf: varscan/filtered_vcf
+            docm_vcf: docm/filtered_vcf
+        out:
+            [combined_vcf]
     annotate_variants:
         run: vep.cwl
         in:
-            vcf: varscan/filtered_vcf
+            vcf: combine_variants/combined_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: coding_only
@@ -104,7 +126,7 @@ steps:
     bam_readcount:
         run: ../pvacseq/bam_readcount.cwl
         in:
-            vcf: varscan/filtered_vcf
+            vcf: combine_variants/combined_vcf
             sample: sample_name
             reference_fasta: reference
             bam: cram_to_bam/bam
