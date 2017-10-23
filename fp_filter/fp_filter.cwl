@@ -9,8 +9,7 @@ requirements:
       ramMin: 6000
       tmpdirMin: 25000
 arguments:
-    ["--sample", "TUMOR",
-    "--bam-readcount", "/usr/bin/bam-readcount",
+    ["--bam-readcount", "/usr/bin/bam-readcount",
     "--samtools", "/opt/samtools/bin/samtools",
     "--output", { valueFrom: $(runtime.outdir)/$(inputs.output_vcf_basename).vcf }]
 inputs:
@@ -32,6 +31,12 @@ inputs:
     output_vcf_basename:
         type: string?
         default: fpfilter
+    sample_name:
+        type: string?
+        default: 'TUMOR'
+        inputBinding:
+            prefix: "--sample"
+            position: 4
 outputs:
     filtered_vcf:
         type: File

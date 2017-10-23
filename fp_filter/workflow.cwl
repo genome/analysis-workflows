@@ -16,6 +16,8 @@ inputs:
         secondaryFiles: [.tbi]
     variant_caller:
         string
+    sample_name:
+        string?
 outputs:
     unfiltered_vcf:
         type: File
@@ -46,6 +48,7 @@ steps:
             reference: reference
             bam: cram_to_bam/bam
             vcf: normalize_variants/normalized_vcf
+            sample_name: sample_name
             output_vcf_basename:
                 source: variant_caller
                 valueFrom: $(self)_full

@@ -77,5 +77,6 @@ steps:
             vcf: bgzip_and_index/indexed_vcf
             variant_caller:
                 valueFrom: "varscan"
+            sample_name: sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
