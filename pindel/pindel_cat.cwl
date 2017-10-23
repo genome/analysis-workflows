@@ -4,18 +4,17 @@ cwlVersion: v1.0
 
 class: Workflow
 label: "Per-chromosome pindel"
+requirements:
+    - class: MultipleInputFeatureRequirement
 inputs:
     reference:
+        type: string
+    tumor_cram:
         type: File
-        secondaryFiles: [".fai"]
-    tumor_bam:
+        secondaryFiles: ["^.crai"]
+    normal_cram:
         type: File
-    normal_bam:
-        type: File
-    tumor_bam_index:
-        type: File
-    normal_bam_index:
-        type: File
+        secondaryFiles: ["^.crai"]
     chromosome:
         type: string
     insert_size:
@@ -30,10 +29,8 @@ steps:
         run: pindel.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
-            tumor_bam_index: tumor_bam_index
-            normal_bam_index: normal_bam_index
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             insert_size: insert_size
             chromosome: chromosome
         out:

@@ -4,18 +4,14 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "samtools 1.3.1 somatic mpileup"
 baseCommand: "mpileup"
-requirements:
-    DockerRequirement:
-        dockerPull: "mgibio/samtools:1.3.1"
 arguments:
     ["--no-baq"]
 inputs:
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "-f"
             position: 2
-        secondaryFiles: [.fai]
     normal_bam:
         type: File
         inputBinding:

@@ -3,25 +3,25 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "vcf merge"
-baseCommand: ["/usr/bin/bcftools", "concat"]
-requirements:
-    - class: DockerRequirement
-      dockerPull: "mgibio/bcftools-cwl:1.3.1"
+baseCommand: ["/opt/bcftools/bin/bcftools", "concat"]
 arguments:
     - "--allow-overlaps"
     - "--remove-duplicates"
     - "--output-type"
     - "z"
     - "-o"
-    - { valueFrom: $(runtime.outdir)/merged.vcf.gz }
+    - { valueFrom: $(runtime.outdir)/$(inputs.merged_vcf_basename).vcf.gz }
 inputs:
     vcfs:
         type: File[]
         inputBinding:
             position: 1
         secondaryFiles: [.tbi]
+    merged_vcf_basename:
+        type: string?
+        default: 'merged'
 outputs:
     merged_vcf:
         type: File
         outputBinding:
-            glob: "merged.vcf.gz"
+            glob: $(inputs.merged_vcf_basename).vcf.gz

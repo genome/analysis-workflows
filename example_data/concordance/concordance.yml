@@ -1,0 +1,19 @@
+bam_1:
+    class: File
+    path: /gscmnt/gc13001/info/build_merged_alignments/merged-alignment-blade12-1-8.gsc.wustl.edu-apipe-builder-18866-112110234/112110234.bam 
+bam_2:
+    class: File
+    path: /gscmnt/ams1152/info/build_merged_alignments/merged-alignment-blade14-3-9.gsc.wustl.edu-apipe-builder-15561-112187291/112187291.bam
+reference:
+    class: File
+    path: /gscmnt/ams1102/info/model_data/2869585698/build106942997/all_sequences.fa
+snp:
+    class: File
+    path: /gscmnt/gc13023/info/feature_list/6da190b2cd394a30a5b01ef2010fa44c/6da190b2cd394a30a5b01ef2010fa44c.bed
+
+#snp file for AML RMG
+# /gscmnt/gc9018/info/feature_list/ccb8bd8a885b47a78eb81223ccfcb458/ccb8bd8a885#b47a78eb81223ccfcb458.bed
+
+output_file_name: "concordance_output.txt"
+#optional:
+output_geno_file_name: "geno_output.txt"

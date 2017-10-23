@@ -14,8 +14,7 @@ inputs:
     readgroups:
         type: string[]
     reference:
-        type: File
-        secondaryFiles: [.fai, .bwt, .sa, .ann, .amb, .pac, ^.dict, .alt]
+        type: string
     dbsnp:
         type: File
         secondaryFiles: [.tbi]
@@ -26,10 +25,10 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
 outputs:
-    final_bam:
+    final_cram:
         type: File
-        outputSource: apply_bqsr/bqsr_bam
-        secondaryFiles: [^.bai]
+        outputSource: index_cram/indexed_cram
+        secondaryFiles: [.crai, ^.crai]
 steps:
     align:
         scatter: [bam, readgroup]
@@ -44,7 +43,7 @@ steps:
     merge:
         run: merge.cwl
         in:
-            bams: [align/tagged_bam]
+            bams: align/tagged_bam
         out:
             [merged_bam]
     name_sort:
@@ -75,3 +74,16 @@ steps:
             bqsr_table: bqsr/bqsr_table
         out:
             [bqsr_bam]
+    bam_to_cram:
+        run: bam_to_cram.cwl
+        in:
+            reference: reference
+            bam: apply_bqsr/bqsr_bam
+        out:
+            [cram]
+    index_cram:
+        run: index_cram.cwl
+        in:
+            cram: bam_to_cram/cram
+        out:
+            [indexed_cram]

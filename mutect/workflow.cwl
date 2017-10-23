@@ -7,21 +7,20 @@ requirements:
     - class: ScatterFeatureRequirement
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     reference:
+        type: string
+    tumor_cram:
         type: File
-        secondaryFiles: [".fai", "^.dict"]
-    tumor_bam:
-        type: File
-        secondaryFiles: [^.bai]
-    normal_bam:
+        secondaryFiles: [^.crai]
+    normal_cram:
         type: File?
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     interval_list:
         type: File
     scatter_count:
         type: int
-        default: 50
     dbsnp_vcf:
         type: File?
         secondaryFiles: [.tbi]
@@ -29,11 +28,22 @@ inputs:
         type: File?
         secondaryFiles: [.tbi]
     artifact_detection_mode:
-        type: boolean?
+        type: boolean
+    panel_of_normals_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
+    max_alt_allele_in_normal_fraction:
+        type: float?
+    max_alt_alleles_in_normal_count:
+        type: int?
 outputs:
-    merged_vcf:
+    unfiltered_vcf:
         type: File
-        outputSource: index/indexed_vcf
+        outputSource: filter/unfiltered_vcf
+        secondaryFiles: [.tbi]
+    filtered_vcf:
+        type: File
+        outputSource: filter/filtered_vcf
         secondaryFiles: [.tbi]
 steps:
     split_interval_list:
@@ -47,24 +57,38 @@ steps:
         run: mutect.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             interval_list: split_interval_list/split_interval_lists
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
             artifact_detection_mode: artifact_detection_mode
+            panel_of_normals_vcf: panel_of_normals_vcf
+            max_alt_allele_in_normal_fraction: max_alt_allele_in_normal_fraction
+            max_alt_alleles_in_normal_count: max_alt_alleles_in_normal_count
         out:
             [vcf]
     merge:
         run: ../detect_variants/merge.cwl
         in:
-            vcfs: [mutect/vcf]
+            vcfs: mutect/vcf
         out:
             [merged_vcf]
     index:
         run: ../detect_variants/index.cwl
         in:
-            vcf: [merge/merged_vcf]
+            vcf: merge/merged_vcf
         out:
             [indexed_vcf]
+    filter:
+        run: ../fp_filter/workflow.cwl
+        in:
+            reference: reference
+            cram: tumor_cram
+            vcf: index/indexed_vcf
+            variant_caller: 
+                valueFrom: "mutect"
+        out:
+            [unfiltered_vcf, filtered_vcf]
+
 

@@ -7,39 +7,31 @@ requirements:
     - class: ScatterFeatureRequirement
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     reference:
+        type: string
+    tumor_cram:
         type: File
-        secondaryFiles: [".fai"]
-    tumor_bam:
+        secondaryFiles: ["^.crai"]
+    normal_cram:
         type: File
-        secondaryFiles: ["^.bai"]
-    normal_bam:
-        type: File
-        secondaryFiles: ["^.bai"]
+        secondaryFiles: ["^.crai"]
     interval_list:
         type: File
     insert_size:
         type: int
         default: 400
 outputs:
-    merged_vcf:
+    unfiltered_vcf:
         type: File
-        outputSource: index_filtered/indexed_vcf
+        outputSource: filter/unfiltered_vcf
+        secondaryFiles: [".tbi"]
+    filtered_vcf:
+        type: File
+        outputSource: filter/filtered_vcf
         secondaryFiles: [".tbi"]
 steps:
-    get_tumor_bam_index:
-        run: get_bam_index.cwl
-        in:
-            bam: tumor_bam
-        out:
-            [bam_index]
-    get_normal_bam_index:
-        run: get_bam_index.cwl
-        in:
-            bam: normal_bam
-        out:
-            [bam_index]
     get_chromosome_list:
         run: get_chromosome_list.cwl
         in: 
@@ -51,18 +43,16 @@ steps:
         run: pindel_cat.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
-            tumor_bam_index: [get_tumor_bam_index/bam_index]
-            normal_bam_index: [get_normal_bam_index/bam_index]
-            chromosome: [get_chromosome_list/chromosome_list]
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
+            chromosome: get_chromosome_list/chromosome_list
             insert_size: insert_size
         out:
             [per_chromosome_pindel_out]
     cat_all:
         run: cat_all.cwl
         in:
-            chromosome_pindel_outs: [pindel_cat/per_chromosome_pindel_out]
+            chromosome_pindel_outs: pindel_cat/per_chromosome_pindel_out
         out:
             [all_chromosome_pindel_out]
     grep:
@@ -98,9 +88,25 @@ steps:
             interval_list: interval_list
         out:
             [filtered_vcf]
-    index_filtered:
-        run: ../detect_variants/index.cwl
+    remove_end_tags:
+        run: remove_end_tags.cwl
         in:
             vcf: region_filter/filtered_vcf
         out:
+            [processed_vcf]
+    reindex:
+        run: ../detect_variants/index.cwl
+        in:
+            vcf: remove_end_tags/processed_vcf
+        out:
             [indexed_vcf]
+    filter:
+        run: ../fp_filter/workflow.cwl
+        in:
+            reference: reference
+            cram: tumor_cram
+            vcf: reindex/indexed_vcf
+            variant_caller: 
+                valueFrom: "pindel"
+        out:
+            [unfiltered_vcf, filtered_vcf]

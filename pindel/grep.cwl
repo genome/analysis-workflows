@@ -2,9 +2,6 @@
 cwlVersion: v1.0
 class: CommandLineTool
 baseCommand: ['/bin/grep', 'ChrID']
-requirements:
-    - class: DockerRequirement
-      dockerPull: "ubuntu:xenial"
 stdout: "all_chromosome_pindel.head"
 inputs:
     pindel_output:

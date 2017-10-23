@@ -13,13 +13,11 @@ arguments:
     "-nct", "8",
     "--disable_indel_quals"]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "registry.gsc.wustl.edu/genome/gatk-3.6:1"
     - class: ResourceRequirement
       ramMin: 16000
 inputs:
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "-R"
             position: 1

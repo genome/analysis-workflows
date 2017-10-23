@@ -1,6 +1,8 @@
 language: python
 python: 2.7
 install:
+    - pip install --upgrade pip
     - pip install 'setuptools>=18.5'
     - pip install cwltool
+    - pip install 'ruamel.yaml==0.14.2'
 script: find . -name '*.cwl' | xargs -n 1 cwltool --validate

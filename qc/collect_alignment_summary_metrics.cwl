@@ -7,21 +7,18 @@ baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/usr/picard/picard.jar", "Col
 arguments:
     ["OUTPUT=", { valueFrom: $(runtime.outdir)/AlignmentSummaryMetrics.txt }]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "registry.gsc.wustl.edu/genome/picard-2.4.1-r:2"
     - class: ResourceRequirement
       ramMin: 16000
 inputs:
-    bam:
+    cram:
         type: File
         inputBinding:
             prefix: "INPUT="
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: "REFERENCE_SEQUENCE="
-        secondaryFiles: [.fai]
 outputs:
     alignment_summary_metrics:
         type: File

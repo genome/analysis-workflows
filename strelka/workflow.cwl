@@ -7,33 +7,41 @@ requirements:
     - class: ScatterFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: MultipleInputFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
-    tumor_bam:
+    tumor_cram:
         type: File
-        secondaryFiles: [^.bai]
-    normal_bam:
+        secondaryFiles: [.crai]
+    normal_cram:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [.crai]
     reference:
-        type: File
-        secondaryFiles: [.fai]
+        type: string
     interval_list:
         type: File
     exome_mode:
         type: boolean
+    cpu_reserved:
+        type: int?
+        default: 8
 outputs:
-    merged_vcf:
+    unfiltered_vcf:
         type: File
-        outputSource: index_filtered/indexed_vcf
+        outputSource: filter/unfiltered_vcf
+        secondaryFiles: [.tbi]
+    filtered_vcf:
+        type: File
+        outputSource: filter/filtered_vcf
         secondaryFiles: [.tbi]
 steps:
     strelka:
         run: strelka.cwl
         in:
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             reference: reference
             exome_mode: exome_mode
+            cpu_reserved: cpu_reserved
         out:
             [indels, snvs]
     process:
@@ -46,7 +54,7 @@ steps:
     merge:
         run: ../detect_variants/merge.cwl
         in:
-            vcfs: [process/processed_vcf]
+            vcfs: process/processed_vcf
         out:
             [merged_vcf]
     index_full:
@@ -63,12 +71,16 @@ steps:
             interval_list: interval_list
         out:
             [filtered_vcf]
-    index_filtered:
-        run: ../detect_variants/index.cwl
+    filter:
+        run: ../fp_filter/workflow.cwl
         in:
+            reference: reference
+            cram: tumor_cram
             vcf: region_filter/filtered_vcf
+            variant_caller: 
+                valueFrom: "strelka"
         out:
-            [indexed_vcf]
+            [unfiltered_vcf, filtered_vcf]
 
 
 

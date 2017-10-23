@@ -1,0 +1,43 @@
+reference: /gscmnt/gc2709/info/production_reference_GRCh38DH/reference/all_sequences.fa
+tumor_cram:
+  class: File
+  path: TUMOR_CRAM_FILE_PATH
+normal_cram:
+  class: File
+  path: NORMAL_CRAM_FILE_PATH
+interval_list:
+  class: File
+  path:  /gscmnt/gc2709/info/production_reference_GRCh38DH/CLE/IDTExome/xgen-exome-research-panel-targets.interval_list
+dbsnp_vcf:
+  class: File
+  path: /gscmnt/gc2709/info/production_reference_GRCh38DH/known_sites/Homo_sapiens_assembly38.dbsnp138.vcf.gz
+cosmic_vcf:
+  class: File
+  path: /gscmnt/gc2709/info/production_reference_GRCh38DH/CLE/IDTExome/Cosmic_v79.dictsorted.vcf.gz
+panel_of_normals_vcf:
+  class: File
+  path: /gscmnt/gc2709/info/production_reference_GRCh38DH/CLE/IDTExome/panel_of_normals.vcf.gz
+strelka_exome_mode: true
+mutect_scatter_count: 50
+mutect_artifact_detection_mode: false
+mutect_max_alt_allele_in_normal_fraction: 0.1
+mutect_max_alt_alleles_in_normal_count: 5
+varscan_strand_filter: 1
+varscan_min_var_freq: 0.08
+varscan_p_value: 0.1
+varscan_max_normal_freq: 0.1
+pindel_insert_size: 400
+cle_vcf_filter: true
+docm_vcf:
+  class: File
+  path: /gscmnt/gc2709/info/production_reference_GRCh38DH/CLE/IDTExome/DoCM.hs37_011117_sanitized_sort_new_LiftOver_hg19ToHg38.vcf.gz
+vep_cache_dir: /gscmnt/gc2709/info/production_reference_GRCh38DH/CLE/IDTExome/VEP_cache
+synonyms_file:
+  class: File
+  path: /gscmnt/gc2709/info/production_reference_GRCh38DH/CLE/IDTExome/chromAlias.ensembl.txt
+coding_only: false
+hgvs_annotation: true
+cle_vcf_filter: true
+variants_to_table_fields: [CHROM,POS,ID,REF,ALT,set]
+variants_to_table_genotype_fields: [GT,AD]
+vep_to_table_fields: [Consequence,SYMBOL,Feature,HGVSc,HGVSp]

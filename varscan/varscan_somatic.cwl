@@ -3,28 +3,49 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "varscan v2.4.2 somatic"
-baseCommand: "/usr/bin/cwl_helper.sh"
+baseCommand: "/usr/bin/varscan_helper.sh"
 requirements:
-    - class: DockerRequirement
-      dockerPull: "mgibio/varscan-cwl:v2.4.2-samtools1.3.1"
+    - class: ResourceRequirement
+      ramMin: 12000
 inputs:
-    tumor_bam:
+    tumor_cram:
         type: File
         inputBinding:
             position: 1
-    normal_bam:
+        secondaryFiles: [^.crai]
+    normal_cram:
         type: File
         inputBinding:
             position: 2
+        secondaryFiles: [^.crai]
     reference:
-        type: File
+        type: string
         inputBinding:
             position: 3
-        secondaryFiles: [.fai]
+    strand_filter:
+        type: int?
+        default: 0
+        inputBinding:
+            position: 4
+    min_coverage:
+        type: int?
+        default: 8
+        inputBinding:
+            position: 5
+    min_var_freq:
+        type: float?
+        default: 0.1
+        inputBinding:
+            position: 6
+    p_value:
+        type: float?
+        default: 0.99
+        inputBinding:
+            position: 7
     roi_bed:
         type: File?
         inputBinding:
-            position: 4
+            position: 8
 outputs:
     snvs:
         type: File

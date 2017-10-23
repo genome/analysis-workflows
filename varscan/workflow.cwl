@@ -6,28 +6,40 @@ label: "Varscan Workflow"
 requirements:
     - class: SubworkflowFeatureRequirement
     - class: MultipleInputFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     reference:
+        type: string
+    tumor_cram:
         type: File
-        secondaryFiles: [.fai]
-    tumor_bam:
+        secondaryFiles: [^.crai]
+    normal_cram:
         type: File
-    normal_bam:
-        type: File
+        secondaryFiles: [^.crai]
     interval_list:
         type: File
+    strand_filter:
+        type: int?
+        default: 0
+    min_coverage:
+        type: int?
+        default: 8
+    min_var_freq:
+        type: float?
+        default: 0.1
+    p_value:
+        type: float?
+        default: 0.99
+    max_normal_freq:
+        type: float?
 outputs:
-    snvs:
+    unfiltered_vcf:
         type: File
-        outputSource: index_snvs/indexed_vcf
+        outputSource: filter/unfiltered_vcf
         secondaryFiles: [.tbi]
-    indels:
+    filtered_vcf:
         type: File
-        outputSource: index_indels/indexed_vcf
-        secondaryFiles: [.tbi]
-    merged_vcf:
-        type: File
-        outputSource: index/indexed_vcf
+        outputSource: filter/filtered_vcf
         secondaryFiles: [.tbi]
 steps:
     intervals_to_bed:
@@ -40,9 +52,14 @@ steps:
         run: varscan.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             roi_bed: intervals_to_bed/interval_bed
+            strand_filter: strand_filter
+            min_coverage: min_coverage
+            min_var_freq: min_var_freq
+            p_value: p_value
+            max_normal_freq: max_normal_freq
         out:
             [somatic_snvs, somatic_indels, somatic_hc_snvs, somatic_hc_indels]
     bgzip_and_index_snvs:
@@ -109,3 +126,13 @@ steps:
             vcf: merge/merged_vcf
         out:
             [indexed_vcf]
+    filter:
+        run: ../fp_filter/workflow.cwl
+        in:
+            reference: reference
+            cram: tumor_cram
+            vcf: index/indexed_vcf
+            variant_caller: 
+                valueFrom: "varscan"
+        out:
+            [unfiltered_vcf, filtered_vcf]

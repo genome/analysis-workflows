@@ -1,0 +1,7 @@
+vcf:
+    class: File
+    path: exome.merged.fpfilter.pass.vcf.gz
+synonyms_file:
+    class: File
+    path: chromAlias.ensembl.txt
+hgvs: true

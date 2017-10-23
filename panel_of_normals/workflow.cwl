@@ -2,58 +2,57 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "panel of normals workflow"
+label: "mutect panel-of-normals workflow"
 requirements:
     - class: ScatterFeatureRequirement
+    - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
 inputs:
     reference:
-        type: File
-        secondaryFiles: [".fai"]
-    tumor_bams:
+        type: string
+    normal_crams:
         type: File[]
-    scatter_count:
-        type: int
-        default: 50
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
-    cosmic_vcf:
-        type: File
-        secondaryFiles: [.tbi]
-    artifact_detection_mode:
-        type: boolean
-        default: true
+        secondaryFiles: [^.crai]
     interval_list:
         type: File
-    minimumN:
+    scatter_count:
         type: int
-        default: 2
+    dbsnp_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
+    cosmic_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
 outputs:
     pon_vcf:
         type: File
-        outputSource: combine_variants/combined_vcf
+        outputSource: combine/combined_vcf
         secondaryFiles: [.tbi]
 steps:
     mutect:
-        scatter: tumor_bam
+        scatter: tumor_cram
         run: ../mutect/workflow.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bams
-            dbsnp_vcf: dbsnp_vcf
-            cosmic_vcf: cosmic_vcf
-            artifact_detection_mode: artifact_detection_mode
+            tumor_cram: normal_crams
+            normal_cram:
+                default: null
             interval_list: interval_list
             scatter_count: scatter_count
+            dbsnp_vcf: dbsnp_vcf
+            cosmic_vcf: cosmic_vcf
+            artifact_detection_mode:
+                default: true
+            panel_of_normals_vcf:
+                default: null
         out:
-            [merged_vcf]
-    combine_variants:
+            [unfiltered_vcf]
+    combine:
         run: combine_variants.cwl
         in:
             reference: reference
             interval_list: interval_list
-            minimumN: minimumN
-            vcfs: [mutect/merged_vcf]
+            normal_vcfs: mutect/unfiltered_vcf
         out:
             [combined_vcf]
+
