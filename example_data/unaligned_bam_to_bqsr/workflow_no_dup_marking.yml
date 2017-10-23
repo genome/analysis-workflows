@@ -1,4 +1,4 @@
-reference: /gscmnt/gc2764/cad/HCC1395/toil/refseq/GRCh38DH/GRCh38_full_analysis_set_plus_decoy_hla.fa
+reference: /gscmnt/gc2560/core/model_data/2887491634/build50f99e75d14340ffb5b7d21b03887637/all_sequences.fa
 bams:
     - {class: File, path: /gscmnt/gc2764/cad/instrument_data/imported/62b8ffa0d8544d48b34bb009f6f43ec7/all_sequences.bam}
 readgroups: ['@RG\tID:62b8ffa0d8544d48b34bb009f6f43ec7\tPL:ILLUMINA\tPU:HHV33BBXX-TCCGGAGA.1\tLB:H_IJ-NA12878-NA12878_K10PCRgf-lib1\tSM:H_IJ-NA12878-NA12878_K10']
