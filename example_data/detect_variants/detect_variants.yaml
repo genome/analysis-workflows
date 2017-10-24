@@ -1,4 +1,4 @@
-reference: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/GRCh38_full_analysis_set_plus_decoy_hla.fa
+reference: /gscmnt/gc2560/core/model_data/2887491634/build50f99e75d14340ffb5b7d21b03887637/all_sequences.fa
 tumor_cram:
   class: File
   path: TUMOR_CRAM_FILE_PATH
@@ -10,13 +10,13 @@ interval_list:
   path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/xgen-exome-research-panel-targets.interval_list
 dbsnp_vcf:
   class: File
-  path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/Homo_sapiens_assembly38.dbsnp138.vcf.gz
+  path: /gscmnt/gc2764/cad/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-19443-e48c595a620a432c93e8dd29e4af64f2/snvs.hq.vcf.gz
 cosmic_vcf:
   class: File
-  path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/Cosmic_v79.dictsorted.vcf.gz
+  path: /gscmnt/gc2764/cad/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-774-52fa2dadc4ba4b6490abe0701907d394/snvs.hq.vcf.gz
 panel_of_normals_vcf:
   class: File
-  path: /gscmnt/gc2764/cad/fdu/toil_test/panel_of_normal/panel_of_normals.vcf.gz
+  path: /gscmnt/gc2764/cad/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-2237-db881b860992443da9d6aac8b36a7ea6/snvs.hq.vcf.gz
 strelka_exome_mode: true
 mutect_scatter_count: 50
 mutect_artifact_detection_mode: false
@@ -30,11 +30,11 @@ varscan_max_normal_freq: 0.1
 pindel_insert_size: 400
 docm_vcf:
   class: File
-  path: /gscmnt/gc2764/cad/tmooney/toil_test/arvados_trial/example_data/detect_variants/DoCM.hs37_011117_sanitized_sort_new_LiftOver_hg19ToHg38.vcf.gz
+  path: /gscmnt/gc2764/cad/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-2936-de204a437ec9416aaf08e3c018a92795/snvs.hq.vcf.gz
 vep_cache_dir: /gscmnt/gc2764/cad/ssiebert/toil_test/inputs/VEP_cache
 synonyms_file:
   class: File
-  path: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/chromAlias.ensembl.txt
+  path: /gscmnt/gc2560/core/model_data/2887491634/build50f99e75d14340ffb5b7d21b03887637/chromAlias.ensembl.txt
 coding_only: true
 hgvs_annotation: true
 variants_to_table_fields: [CHROM,POS,ID,REF,ALT,set,AC,AF]
