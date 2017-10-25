@@ -49,6 +49,7 @@ steps:
         run: collect_insert_size_metrics.cwl
         in:
             cram: cram
+            reference: reference
         out:
             [insert_size_metrics]
     collect_alignment_summary_metrics:
