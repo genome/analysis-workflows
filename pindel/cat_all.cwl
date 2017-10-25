@@ -2,13 +2,18 @@
 cwlVersion: v1.0
 class: CommandLineTool
 baseCommand: ['/bin/cat']
-stdout: "all_chromosome_pindel.out"
+requirements:
+    - class: ShellCommandRequirement
+arguments: [
+    { shellQuote: false, valueFrom: "|" },
+    "/bin/grep", "ChrID", "/dev/stdin"
+]
+stdout: "all_chromosome_pindel.head"
 inputs:
     chromosome_pindel_outs:
         type: File[]
         inputBinding:
-            position: 1 
+            position: -1 
 outputs:
-    all_chromosome_pindel_out:
+    all_chromosome_pindel_head:
         type: stdout
-

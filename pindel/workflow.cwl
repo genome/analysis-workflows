@@ -54,18 +54,12 @@ steps:
         in:
             chromosome_pindel_outs: pindel_cat/per_chromosome_pindel_out
         out:
-            [all_chromosome_pindel_out]
-    grep:
-        run: grep.cwl
-        in: 
-           pindel_output: cat_all/all_chromosome_pindel_out
-        out:
-           [pindel_head] 
+            [all_chromosome_pindel_head]
     somaticfilter:
         run: somaticfilter.cwl
         in:
             reference: reference
-            pindel_output_summary: grep/pindel_head
+            pindel_output_summary: cat_all/all_chromosome_pindel_head
         out: 
             [vcf]
     bgzip:
