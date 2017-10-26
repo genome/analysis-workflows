@@ -16,6 +16,10 @@ inputs:
         inputBinding:
             prefix: "I="
         secondaryFiles: [^.crai]
+    reference:
+        type: string
+        inputBinding:
+            prefix: "REFERENCE_SEQUENCE="
 outputs:
     insert_size_metrics:
         type: File
