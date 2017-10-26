@@ -19,6 +19,10 @@ inputs:
         type: float
         inputBinding:
             prefix: "PROBABILITY="
+    reference:
+        type: string
+        inputBinding:
+            prefix: "REFERENCE_SEQUENCE="
 outputs:
     downsampled_cram:
         type: File

@@ -19,7 +19,8 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     collect_hs_metrics_per_target_coverage:
-        type: boolean?
+        type: boolean
+        default: true
     downsample_probability:
         type: float
 outputs:
@@ -50,12 +51,14 @@ steps:
         in:
             cram: cram
             probability: downsample_probability
+            reference: reference
         out:
             [downsampled_cram]
     collect_insert_size_metrics:
         run: collect_insert_size_metrics.cwl
         in:
             cram: downsample/downsampled_cram
+            reference: reference
         out:
             [insert_size_metrics]
     collect_alignment_summary_metrics:
