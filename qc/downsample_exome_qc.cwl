@@ -54,24 +54,30 @@ steps:
             reference: reference
         out:
             [downsampled_cram]
+    index_cram:
+        run: ../unaligned_bam_to_bqsr/index_cram.cwl
+        in:
+            cram: downsample/downsampled_cram
+        out:
+            [indexed_cram]
     collect_insert_size_metrics:
         run: collect_insert_size_metrics.cwl
         in:
-            cram: downsample/downsampled_cram
+            cram: index_cram/indexed_cram
             reference: reference
         out:
             [insert_size_metrics]
     collect_alignment_summary_metrics:
         run: collect_alignment_summary_metrics.cwl
         in:
-            cram: downsample/downsampled_cram
+            cram: index_cram/indexed_cram
             reference: reference
         out:
             [alignment_summary_metrics]
     collect_hs_metrics:
         run: collect_hs_metrics.cwl
         in:
-            cram: downsample/downsampled_cram
+            cram: index_cram/indexed_cram
             reference: reference
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -81,7 +87,7 @@ steps:
     samtools_flagstat:
         run: samtools_flagstat.cwl
         in:
-            cram: downsample/downsampled_cram
+            cram: index_cram/indexed_cram
         out: [flagstats]
     select_variants:
         run: ../detect_variants/select_variants.cwl
@@ -94,7 +100,7 @@ steps:
     cram_to_bam:
         run: ../cram_to_bam/workflow.cwl
         in:
-          cram: downsample/downsampled_cram
+          cram: index_cram/indexed_cram
           reference: reference
         out:
           [bam]
