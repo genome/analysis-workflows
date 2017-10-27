@@ -20,6 +20,9 @@ inputs:
         secondaryFiles: [.tbi]
     collect_hs_metrics_per_target_coverage:
         type: boolean?
+    picard_metric_accumulation_level:
+        type: string?
+        default: ALL_READS
 outputs:
     insert_size_metrics:
         type: File
@@ -47,6 +50,8 @@ steps:
         run: collect_insert_size_metrics.cwl
         in:
             cram: cram
+            reference: reference
+            metric_accumulation_level: picard_metric_accumulation_level
         out:
             [insert_size_metrics]
     collect_alignment_summary_metrics:
@@ -54,6 +59,7 @@ steps:
         in:
             cram: cram
             reference: reference
+            metric_accumulation_level: picard_metric_accumulation_level
         out:
             [alignment_summary_metrics]
     collect_hs_metrics:
@@ -61,6 +67,7 @@ steps:
         in:
             cram: cram
             reference: reference
+            metric_accumulation_level: picard_metric_accumulation_level
             bait_intervals: bait_intervals
             target_intervals: target_intervals
             per_target_coverage: collect_hs_metrics_per_target_coverage
