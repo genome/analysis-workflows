@@ -62,12 +62,9 @@ outputs:
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
-    snv_bam_readcount:
+    tumor_bam_readcount_tsv:
         type: File
-        outputSource: bam_readcount/snv_bam_readcount
-    indel_bam_readcount:
-        type: File
-        outputSource: bam_readcount/indel_bam_readcount
+        outputSource: bam_readcount/bam_readcount_tsv
 steps:
     varscan:
         run: ../varscan/germline_workflow.cwl
@@ -109,7 +106,7 @@ steps:
             reference_fasta: reference
             bam: cram_to_bam/bam
         out:
-            [snv_bam_readcount, indel_bam_readcount]
+            [bam_readcount_tsv]
     bgzip:
         run: bgzip.cwl
         in:
