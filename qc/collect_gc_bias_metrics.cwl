@@ -23,6 +23,10 @@ inputs:
         type: string
         inputBinding:
             prefix: "R="
+    metric_accumulation_level:
+        type: string
+        inputBinding:
+            prefix: "METRIC_ACCUMULATION_LEVEL="
 outputs:
     gc_bias_metrics:
         type: File

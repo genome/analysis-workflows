@@ -19,6 +19,10 @@ inputs:
         type: string
         inputBinding:
             prefix: "REFERENCE_SEQUENCE="
+    metric_accumulation_level:
+        type: string
+        inputBinding:
+            prefix: "METRIC_ACCUMULATION_LEVEL="
 outputs:
     alignment_summary_metrics:
         type: File

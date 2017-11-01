@@ -16,6 +16,14 @@ inputs:
         inputBinding:
             prefix: "I="
         secondaryFiles: [^.crai]
+    reference:
+        type: string
+        inputBinding:
+            prefix: "REFERENCE_SEQUENCE="
+    metric_accumulation_level:
+        type: string
+        inputBinding:
+            prefix: "METRIC_ACCUMULATION_LEVEL="
 outputs:
     insert_size_metrics:
         type: File

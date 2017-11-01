@@ -16,6 +16,9 @@ inputs:
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
+    picard_metric_accumulation_level:
+        type: string?
+        default: ALL_READS
 outputs:
     insert_size_metrics:
         type: File
@@ -49,6 +52,8 @@ steps:
         run: collect_insert_size_metrics.cwl
         in:
             cram: cram
+            reference: reference
+            metric_accumulation_level: picard_metric_accumulation_level
         out:
             [insert_size_metrics]
     collect_alignment_summary_metrics:
@@ -56,6 +61,7 @@ steps:
         in:
             cram: cram
             reference: reference
+            metric_accumulation_level: picard_metric_accumulation_level
         out:
             [alignment_summary_metrics]
     collect_gc_bias_metrics:
@@ -63,6 +69,7 @@ steps:
         in:
             cram: cram
             reference: reference
+            metric_accumulation_level: picard_metric_accumulation_level
         out:
             [gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary]
     collect_wgs_metrics:

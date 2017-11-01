@@ -19,6 +19,10 @@ inputs:
         type: string
         inputBinding:
             prefix: "R="
+    metric_accumulation_level:
+        type: string
+        inputBinding:
+            prefix: "METRIC_ACCUMULATION_LEVEL="
     bait_intervals:
         type: File
         inputBinding:
