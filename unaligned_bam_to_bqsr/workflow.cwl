@@ -29,6 +29,9 @@ outputs:
         type: File
         outputSource: index_cram/indexed_cram
         secondaryFiles: [.crai, ^.crai]
+    mark_duplicates_metrics_file:
+        type: File
+        outputSource: mark_duplicates_and_sort/metrics_file
 steps:
     align:
         scatter: [bam, readgroup]
@@ -57,7 +60,7 @@ steps:
         in:
             bam: name_sort/name_sorted_bam
         out:
-            [sorted_bam]
+            [sorted_bam, metrics_file]
     bqsr:
         run: bqsr.cwl
         in:

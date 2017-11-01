@@ -25,3 +25,7 @@ outputs:
         outputBinding:
             glob: "MarkedSorted.bam"
         secondaryFiles: [.bai]
+    metrics_file:
+        type: File
+        outputBinding:
+            glob: "mark_dups_metrics.txt"
