@@ -38,5 +38,5 @@ coding_only: false
 hgvs_annotation: true
 cle_vcf_filter: true
 variants_to_table_fields: [CHROM,POS,ID,REF,ALT,set]
-variants_to_table_genotype_fields: [GT,AD]
+variants_to_table_genotype_fields: [GT,AD,DP,AF]
 vep_to_table_fields: [Consequence,SYMBOL,Feature,HGVSc,HGVSp]

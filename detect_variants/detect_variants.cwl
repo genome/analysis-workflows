@@ -132,18 +132,12 @@ outputs:
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
-    tumor_snv_bam_readcount:
+    tumor_bam_readcount_tsv:
         type: File
-        outputSource: tumor_bam_readcount/snv_bam_readcount
-    tumor_indel_bam_readcount:
+        outputSource: tumor_bam_readcount/bam_readcount_tsv
+    normal_bam_readcount_tsv:
         type: File
-        outputSource: tumor_bam_readcount/indel_bam_readcount
-    normal_snv_bam_readcount:
-        type: File
-        outputSource: normal_bam_readcount/snv_bam_readcount
-    normal_indel_bam_readcount:
-        type: File
-        outputSource: normal_bam_readcount/indel_bam_readcount
+        outputSource: normal_bam_readcount/bam_readcount_tsv
 steps:
     mutect:
         run: ../mutect/workflow.cwl
@@ -251,7 +245,7 @@ steps:
             reference_fasta: reference
             bam: tumor_cram_to_bam/bam
         out:
-            [snv_bam_readcount, indel_bam_readcount]
+            [bam_readcount_tsv]
     normal_bam_readcount:
         run: ../pvacseq/bam_readcount.cwl
         in:
@@ -261,17 +255,18 @@ steps:
             reference_fasta: reference
             bam: normal_cram_to_bam/bam
         out:
-            [snv_bam_readcount, indel_bam_readcount]
-    bgzip:
-        run: bgzip.cwl
+            [bam_readcount_tsv]
+    add_bam_readcount_to_vcf:
+        run: add_bam_readcount_to_vcf.cwl
         in:
-            file: annotate_variants/annotated_vcf
+            vcf: annotate_variants/annotated_vcf
+            bam_readcount_tsvs: [tumor_bam_readcount/bam_readcount_tsv, normal_bam_readcount/bam_readcount_tsv]
         out:
-            [bgzipped_file]
+            [annotated_bam_readcount_vcf]
     index:
         run: index.cwl
         in:
-            vcf: bgzip/bgzipped_file
+            vcf: add_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
             [indexed_vcf]
     cle_annotated_vcf_filter:
@@ -305,7 +300,7 @@ steps:
     add_vep_fields_to_table:
         run: add_vep_fields_to_table.cwl
         in:
-            vcf: index/indexed_vcf
+            vcf: annotated_filter_index/indexed_vcf
             vep_fields: vep_to_table_fields
             tsv: variants_to_table/variants_tsv
         out: [annotated_variants_tsv]
