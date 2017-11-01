@@ -50,6 +50,6 @@ steps:
             reference: reference
             dbsnp: dbsnp
             mills: mills
-            known_indel: known_indels
+            known_indels: known_indels
         out:
             [cram]
