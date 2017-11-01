@@ -29,7 +29,7 @@ inputs:
 outputs:
     cram:
         type: File
-        outputSource: align_workflow/cram
+        outputSource: align_workflow/final_cram
         secondaryFiles: [.crai, ^.crai]
 steps:
     downsample:
@@ -52,4 +52,4 @@ steps:
             mills: mills
             known_indels: known_indels
         out:
-            [cram]
+            [final_cram]
