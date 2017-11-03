@@ -5,6 +5,8 @@ class: Workflow
 label: "Tumor-Only Detect Variants workflow"
 requirements:
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
+    - class: InlineJavascriptRequirement
 inputs:
     reference:
         type: string
@@ -107,10 +109,23 @@ steps:
             bam: cram_to_bam/bam
         out:
             [bam_readcount_tsv]
+    add_bam_readcount_to_vcf:
+        run: add_bam_readcount_to_vcf.cwl
+        in:
+            - id: vcf
+              source: annotate_variants/annotated_vcf
+            - id: bam_readcount_tsvs
+              source: bam_readcount/bam_readcount_tsv
+              valueFrom: ${ return [ self ]; }
+            - id: sample_names
+              source: sample_name
+              valueFrom: ${ return [ self ]; }
+        out:
+            [annotated_bam_readcount_vcf]
     bgzip:
         run: bgzip.cwl
         in:
-            file: annotate_variants/annotated_vcf
+            file: add_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
             [bgzipped_file]
     index:
