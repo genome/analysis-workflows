@@ -122,16 +122,10 @@ steps:
               valueFrom: ${ return [ self ]; }
         out:
             [annotated_bam_readcount_vcf]
-    bgzip:
-        run: bgzip.cwl
-        in:
-            file: add_bam_readcount_to_vcf/annotated_bam_readcount_vcf
-        out:
-            [bgzipped_file]
     index:
         run: index.cwl
         in:
-            vcf: bgzip/bgzipped_file
+            vcf: add_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
             [indexed_vcf]
     variants_to_table:
