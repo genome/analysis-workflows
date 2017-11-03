@@ -40,7 +40,7 @@ inputs:
         type: boolean?
     variants_to_table_fields:
         type: string[]?
-        default: [CHROM,POS,ID,REF,ALT]
+        default: [CHROM,POS,ID,REF,ALT, set]
     variants_to_table_genotype_fields:
         type: string[]?
         default: [GT,AD,AF,DP]
