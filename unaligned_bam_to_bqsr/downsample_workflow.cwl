@@ -31,6 +31,9 @@ outputs:
         type: File
         outputSource: align_workflow/final_cram
         secondaryFiles: [.crai, ^.crai]
+    mark_duplicates_metrics_file:
+        type: File
+        outputSource: align_workflow/mark_duplicates_metrics_file
 steps:
     downsample:
         scatter: [bam]
@@ -52,4 +55,4 @@ steps:
             mills: mills
             known_indels: known_indels
         out:
-            [final_cram]
+            [final_cram,mark_duplicates_metrics_file]
