@@ -261,6 +261,8 @@ steps:
         in:
             vcf: annotate_variants/annotated_vcf
             bam_readcount_tsvs: [tumor_bam_readcount/bam_readcount_tsv, normal_bam_readcount/bam_readcount_tsv]
+            sample_names:
+                default: ['TUMOR', 'NORMAL']
         out:
             [annotated_bam_readcount_vcf]
     index:
