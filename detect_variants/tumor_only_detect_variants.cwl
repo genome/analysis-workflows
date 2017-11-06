@@ -5,6 +5,8 @@ class: Workflow
 label: "Tumor-Only Detect Variants workflow"
 requirements:
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
+    - class: InlineJavascriptRequirement
 inputs:
     reference:
         type: string
@@ -38,13 +40,13 @@ inputs:
         type: boolean?
     variants_to_table_fields:
         type: string[]?
-        default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
+        default: [CHROM,POS,ID,REF,ALT, set]
     variants_to_table_genotype_fields:
         type: string[]?
-        default: [GT,AD]
+        default: [GT,AD,AF,DP]
     vep_to_table_fields:
         type: string[]?
-        default: [HGVSc,HGVSp]
+        default: [HGVSc,HGVSp,ExAC_NFE_AF,ExAC_AMR_AF,ExAC_SAS_AF,ExAC_Adj_AF,ExAC_AFR_AF,ExAC_OTH_AF,ExAC_FIN_AF,ExAC_AF,ExAC_EAS_AF]
     sample_name:
         type: string
     docm_vcf:
@@ -129,16 +131,23 @@ steps:
             bam: cram_to_bam/bam
         out:
             [bam_readcount_tsv]
-    bgzip:
-        run: bgzip.cwl
+    add_bam_readcount_to_vcf:
+        run: add_bam_readcount_to_vcf.cwl
         in:
-            file: annotate_variants/annotated_vcf
+            - id: vcf
+              source: annotate_variants/annotated_vcf
+            - id: bam_readcount_tsvs
+              source: bam_readcount/bam_readcount_tsv
+              valueFrom: ${ return [ self ]; }
+            - id: sample_names
+              source: sample_name
+              valueFrom: ${ return [ self ]; }
         out:
-            [bgzipped_file]
+            [annotated_bam_readcount_vcf]
     index:
         run: index.cwl
         in:
-            vcf: bgzip/bgzipped_file
+            vcf: add_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
             [indexed_vcf]
     variants_to_table:
