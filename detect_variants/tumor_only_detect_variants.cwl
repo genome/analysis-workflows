@@ -46,7 +46,7 @@ inputs:
         default: [GT,AD,AF,DP]
     vep_to_table_fields:
         type: string[]?
-        default: [HGVSc,HGVSp]
+        default: [HGVSc,HGVSp,ExAC_NFE_AF,ExAC_AMR_AF,ExAC_SAS_AF,ExAC_Adj_AF,ExAC_AFR_AF,ExAC_OTH_AF,ExAC_FIN_AF,ExAC_AF,ExAC_EAS_AF]
     sample_name:
         type: string
     docm_vcf:
