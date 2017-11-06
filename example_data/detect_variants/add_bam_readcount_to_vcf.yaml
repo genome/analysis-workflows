@@ -1,0 +1,9 @@
+vcf:
+    class: File
+    path: /gscmnt/gc2764/cad/ssiebert/bam_readcount_test/annotated.vcf.gz
+bam_readcount_tsvs:
+    - {class: File, path: /gscmnt/gc2764/cad/ssiebert/bam_readcount_test/TUMOR_bam_readcount.tsv}
+    - {class: File, path: /gscmnt/gc2764/cad/ssiebert/bam_readcount_test/NORMAL_bam_readcount.tsv}
+sample_names:
+    - 'TUMOR'
+    - 'NORMAL'
