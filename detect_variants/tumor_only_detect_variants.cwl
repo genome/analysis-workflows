@@ -40,13 +40,13 @@ inputs:
         type: boolean?
     variants_to_table_fields:
         type: string[]?
-        default: [CHROM,POS,ID,REF,ALT, set]
+        default: [CHROM,POS,ID,REF,ALT,set]
     variants_to_table_genotype_fields:
         type: string[]?
         default: [GT,AD,AF,DP]
     vep_to_table_fields:
         type: string[]?
-        default: [HGVSc,HGVSp,ExAC_NFE_AF,ExAC_AMR_AF,ExAC_SAS_AF,ExAC_Adj_AF,ExAC_AFR_AF,ExAC_OTH_AF,ExAC_FIN_AF,ExAC_AF,ExAC_EAS_AF]
+        default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,ExAC_NFE_AF,ExAC_AMR_AF,ExAC_SAS_AF,ExAC_Adj_AF,ExAC_AFR_AF,ExAC_OTH_AF,ExAC_FIN_AF,ExAC_AF,ExAC_EAS_AF,CLIN_SIG,SOMATIC,PHENO]
     sample_name:
         type: string
     docm_vcf:
