@@ -30,6 +30,9 @@ inputs:
     varscan_min_reads:
         type: int?
         default: 2
+    maximum_population_allele_frequency:
+        type: float?
+        default: 0.001
     vep_cache_dir:
         type: string?
     synonyms_file:
@@ -59,9 +62,13 @@ outputs:
     docm_gatk_vcf:
         type: File
         outputSource: docm/unfiltered_vcf
-    final_vcf:
+    annotated_vcf:
         type: File
         outputSource: index/indexed_vcf
+        secondaryFiles: [.tbi]
+    final_vcf:
+        type: File
+        outputSource: index_filtered/indexed_vcf
         secondaryFiles: [.tbi]
     final_tsv:
         type: File
@@ -150,11 +157,46 @@ steps:
             vcf: add_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
             [indexed_vcf]
+    hard_filter:
+        run: select_variants.cwl
+        in:
+            reference: reference
+            vcf: index/indexed_vcf
+            interval_list: interval_list
+            exclude_filtered:
+                default: true
+        out:
+            [filtered_vcf]
+    exac_filter:
+        run: exac_filter.cwl
+        in:
+            vcf: hard_filter/filtered_vcf
+            maximum_population_allele_frequency: maximum_population_allele_frequency
+        out:
+            [filtered_vcf]
+    coding_variant_filter:
+        run: coding_variant_filter.cwl
+        in:
+            vcf: exac_filter/filtered_vcf
+        out:
+            [filtered_vcf]
+    bgzip_filtered:
+        run: bgzip.cwl
+        in:
+            file: coding_variant_filter/filtered_vcf
+        out:
+            [bgzipped_file]
+    index_filtered:
+        run: index.cwl
+        in:
+            vcf: bgzip_filtered/bgzipped_file
+        out:
+            [indexed_vcf]
     variants_to_table:
         run: variants_to_table.cwl
         in:
             reference: reference
-            vcf: index/indexed_vcf
+            vcf: index_filtered/indexed_vcf
             fields: variants_to_table_fields
             genotype_fields: variants_to_table_genotype_fields
         out:
@@ -162,7 +204,7 @@ steps:
     add_vep_fields_to_table:
         run: add_vep_fields_to_table.cwl
         in:
-            vcf: index/indexed_vcf
+            vcf: index_filtered/indexed_vcf
             vep_fields: vep_to_table_fields
             tsv: variants_to_table/variants_tsv
         out: [annotated_variants_tsv]
