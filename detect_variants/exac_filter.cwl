@@ -5,7 +5,6 @@ class: CommandLineTool
 label: "ExAC filter"
 baseCommand: ["/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep.pl"]
 requirements:
-    - class: ShellCommandRequirement
     - class: InlineJavascriptRequirement
 arguments:
     ["--format", "vcf",
