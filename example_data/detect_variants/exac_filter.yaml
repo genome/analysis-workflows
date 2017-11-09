@@ -1,0 +1,4 @@
+vcf:
+    class: File
+    path: /gscmnt/gc2764/cad/ssiebert/bam_readcount_test/annotated.vcf.gz
+maximum_population_allele_frequency: 0.001
