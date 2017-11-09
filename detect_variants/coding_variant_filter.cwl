@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Coding Variant filter"
-baseCommand: ["/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep.pl"]
+baseCommand: ["/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep"]
 arguments:
     ["--format", "vcf",
     "-o", { valueFrom: $(runtime.outdir)/annotated.coding_variant_filtered.vcf },
