@@ -39,8 +39,10 @@ inputs:
         type: File?
     coding_only:
         type: boolean?
+        default: true
     hgvs_annotation:
         type: boolean?
+        default: true
     variants_to_table_fields:
         type: string[]?
         default: [CHROM,POS,ID,REF,ALT,set]
