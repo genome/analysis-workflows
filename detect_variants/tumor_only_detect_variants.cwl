@@ -51,7 +51,7 @@ inputs:
         default: [GT,AD,AF,DP]
     vep_to_table_fields:
         type: string[]?
-        default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,MAX_AF,MAx_AF_POPS,CLIN_SIG,SOMATIC,PHENO]
+        default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,MAX_AF,MAX_AF_POPS,CLIN_SIG,SOMATIC,PHENO]
     sample_name:
         type: string
     docm_vcf:
