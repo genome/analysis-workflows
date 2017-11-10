@@ -32,7 +32,7 @@ inputs:
         default: 2
     maximum_population_allele_frequency:
         type: float?
-        default: 0.1
+        default: 0.001
     vep_cache_dir:
         type: string?
     synonyms_file:
