@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "ExAC filter"
-baseCommand: ["/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep.pl"]
+baseCommand: ["/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep"]
 requirements:
     - class: InlineJavascriptRequirement
 arguments:
