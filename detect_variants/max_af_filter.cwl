@@ -24,6 +24,7 @@ inputs:
                         "--filter",
                         [
                             "MAX_AF", "<", inputs.maximum_population_allele_frequency
+                            "or not", "MAX_AF"
                         ].join(" ")
                     ]
                 }
