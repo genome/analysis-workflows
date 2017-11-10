@@ -39,17 +39,19 @@ inputs:
         type: File?
     coding_only:
         type: boolean?
+        default: true
     hgvs_annotation:
         type: boolean?
+        default: true
     variants_to_table_fields:
         type: string[]?
-        default: [CHROM,POS,ID,REF,ALT,set]
+        default: [CHROM,POS,REF,ALT,set]
     variants_to_table_genotype_fields:
         type: string[]?
         default: [GT,AD,AF,DP]
     vep_to_table_fields:
         type: string[]?
-        default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,ExAC_NFE_AF,ExAC_AMR_AF,ExAC_SAS_AF,ExAC_Adj_AF,ExAC_AFR_AF,ExAC_OTH_AF,ExAC_FIN_AF,ExAC_AF,ExAC_EAS_AF,CLIN_SIG,SOMATIC,PHENO]
+        default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,MAX_AF,MAX_AF_POPS,CLIN_SIG,SOMATIC,PHENO]
     sample_name:
         type: string
     docm_vcf:
@@ -167,8 +169,8 @@ steps:
                 default: true
         out:
             [filtered_vcf]
-    exac_filter:
-        run: exac_filter.cwl
+    max_af_filter:
+        run: max_af_filter.cwl
         in:
             vcf: hard_filter/filtered_vcf
             maximum_population_allele_frequency: maximum_population_allele_frequency
@@ -177,7 +179,7 @@ steps:
     coding_variant_filter:
         run: coding_variant_filter.cwl
         in:
-            vcf: exac_filter/filtered_vcf
+            vcf: max_af_filter/filtered_vcf
         out:
             [filtered_vcf]
     bgzip_filtered:

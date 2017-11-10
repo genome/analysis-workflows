@@ -31,7 +31,7 @@ inputs:
             valueFrom: |
                 ${
                     if (inputs.cache_dir) {
-                        return ["--offline", "--cache", "--af_exac", "--dir", inputs.cache_dir ]
+                        return ["--offline", "--cache", "--max_af", "--af_gnomad", "--af_1kg", "--dir", inputs.cache_dir ]
                     }
                     else {
                         return "--database"
