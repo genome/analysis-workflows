@@ -31,6 +31,9 @@ outputs:
     cram:
         type: File
         outputSource: alignment/final_cram
+    mark_duplicates_metrics:
+        type: File
+        outputSource: alignment/mark_duplicates_metrics_file
     insert_size_metrics:
         type: File
         outputSource: qc/insert_size_metrics
@@ -62,7 +65,7 @@ steps:
             mills: mills
             known_indels: known_indels
             dbsnp: dbsnp
-        out: [final_cram]
+        out: [final_cram,mark_duplicates_metrics_file]
     qc:
         run: qc/workflow_exome.cwl
         in:
