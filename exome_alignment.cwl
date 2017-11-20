@@ -27,6 +27,8 @@ inputs:
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
+    picard_metric_accumulation_level:
+        type: string
 outputs:
     cram:
         type: File
@@ -74,4 +76,5 @@ steps:
             bait_intervals: bait_intervals
             target_intervals: target_intervals
             omni_vcf: omni_vcf
+            picard_metric_accumulation_level: picard_metric_accumulation_level
         out: [insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
