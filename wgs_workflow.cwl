@@ -23,10 +23,12 @@ inputs:
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
-    intervals:
+    qc_intervals:
         type: File
     picard_metric_accumulation_level:
         type: string
+    variant_detection_intervals:
+        type: File
     vep_cache_dir:
         type: string?
     synonyms_file:
@@ -104,7 +106,7 @@ steps:
             known_indels: known_indels
             dbsnp: dbsnp
             omni_vcf: omni_vcf
-            intervals: intervals
+            intervals: qc_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level
         out:
             [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
@@ -113,7 +115,7 @@ steps:
         in:
             reference: reference
             cram: alignment_and_qc/cram
-            interval_list: intervals
+            interval_list: variant_detection_intervals
             #varscan_strand_filter:
             #varscan_min_coverage:
             #varscan_min_var_freq:
