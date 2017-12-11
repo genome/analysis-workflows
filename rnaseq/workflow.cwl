@@ -13,7 +13,7 @@ inputs:
         secondaryFiles: [".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"]
     reference_annotation:
         type: File
-    instrument_data_bams:
+    instrument_data_bam:
         type: File[]
     read_group_id:
         type: string[]
@@ -35,40 +35,83 @@ inputs:
         type: int
     trimming_min_readlength:
         type: int
+    kallisto_index: 
+       type: File
+    gene_transcript_lookup_table:
+       type: File
 outputs:
     aligned_bam:
         type: File
-        outputSource: merge/merged_bam
+        outputBinding:
+            glob: hisat2_align/aligned_bam
     gtf:
         type: File
-        outputSource: stringtie/gtf
+        outputBinding:
+            glob:  stringtie/gtf
+    transcript_abundance:
+        type: File
+        outputBinding:
+            glob:  kallisto/transcriptQuant.tsv
+    gene_abundance:
+        type: File
+        outputBinding:
+            glob:  kallisto/gene_lengths.tsv
+    gene_counts:
+        type: File
+        outputBinding:
+            glob:  kallisto/gene_counts.tsv
+    gene_lengths:
+        type: File
+        outputBinding:
+            glob:  kallisto/gene_lengths.tsv
 steps:
-    align:
-        run: align.cwl
-        scatter: [instrument_data_bam, read_group_id, read_group_fields]
-        scatterMethod: dotproduct
+    bam_to_fastq:
+        run: bam_to_fastq.cwl
         in:
-            instrument_data_bam: instrument_data_bams
+            bam: instrument_data_bam
+        out:
+            [fastq1, fastq2]
+    trim_fastq:
+        run: trim_fastq.cwl
+        in:
+            reads1: bam_to_fastq/fastq1
+            reads2: bam_to_fastq/fastq2
+            adapters: trimming_adapters
+            adapter_trim_end: trimming_adapter_trim_end
+            adapter_min_overlap: trimming_adapter_min_overlap
+            max_uncalled: trimming_max_uncalled
+            min_readlength: trimming_min_readlength
+        out:
+            [trimmed_fastq1, trimmed_fastq2]
+    kallisto:
+        run: kallisto.cwl
+        in:
+            kallisto_index: kallisto_index
+            fastq1: trim_fastq/trimmed_fastq1
+            fastq2: trim_fastq/trimmed_fastq2
+        out:
+            [expression_transcript_table]
+    transcript_to_gene:
+        run: transcript_to_gene.cwl
+        in:
+            transcript_table: kallisto/expression_transcript_table
+            gene_transcript_lookup_table: gene_transcript_lookup_table
+        out:
+            [gene_abundance, gene_counts, gene_lengths] 
+    hisat2_align:
+        run: hisat2_align.cwl
+        in:
             reference_index: reference_index
+            trimmed_fastq1: trim_fastq/trimmed_fastq1
+            trimmed_fastq2: trim_fastq/trimmed_fastq2
             read_group_id: read_group_id
             read_group_fields: read_group_fields
-            trimming_adapters: trimming_adapters
-            trimming_adapter_trim_end: trimming_adapter_trim_end
-            trimming_adapter_min_overlap: trimming_adapter_min_overlap
-            trimming_max_uncalled: trimming_max_uncalled
-            trimming_min_readlength: trimming_min_readlength
         out:
             [aligned_bam]
-    merge:
-        run: merge.cwl
-        in:
-            bams: align/aligned_bam
-        out:
-            [merged_bam]
     stringtie:
         run: stringtie.cwl
         in:
-            bam: merge/merged_bam
+            bam: hisat2_align/aligned_bam
             reference_annotation: reference_annotation
             sample_name: sample_name
         out:
