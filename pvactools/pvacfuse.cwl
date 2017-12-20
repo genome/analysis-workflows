@@ -10,7 +10,7 @@ baseCommand: [
 ]
 requirements:
     - class: DockerRequirement
-      dockerPull: registry.gsc.wustl.edu/ssiebert/docker-pvactools
+      dockerPull: mgibio/pvactools
 arguments:
     - position: 5
       valueFrom: $(runtime.outdir)
