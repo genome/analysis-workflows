@@ -40,10 +40,6 @@ inputs:
             prefix: "-e"
             itemSeparator: ','
             separate: false
-    iedb_install_directory:
-        type: string?
-        inputBinding:
-            prefix: "--iedb-install-directory"
     binding_threshold:
         type: int?
         inputBinding:
