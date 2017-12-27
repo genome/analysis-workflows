@@ -5,7 +5,6 @@ class: Workflow
 label: "RnaSeq alignment workflow"
 requirements:
     - class: MultipleInputFeatureRequirement
-    - class: ScatterFeatureRequirement
     - class: SubworkflowFeatureRequirement
 inputs:
     reference_index:
@@ -14,15 +13,13 @@ inputs:
     reference_annotation:
         type: File
     instrument_data_bam:
-        type: File[]
+        type: File
     read_group_id:
-        type: string[]
+        type: string
     read_group_fields:
         type:
             type: array
-            items:
-                type: array
-                items: string
+            items: string
     sample_name:
         type: string
     trimming_adapters:
@@ -40,30 +37,31 @@ inputs:
     gene_transcript_lookup_table:
        type: File
 outputs:
+    fastq1:
+      type: File
+      outputSource: bam_to_fastq/fastq1
+    fastq2:
+      type: File
+      outputSource: bam_to_fastq/fastq2
     aligned_bam:
-        type: File
-        outputBinding:
-            glob: hisat2_align/aligned_bam
-    gtf:
-        type: File
-        outputBinding:
-            glob:  stringtie/gtf
+      type: File
+      outputSource: hisat2_align/aligned_bam
+    # gtf:
+    #     type: File
+    #     outputBinding:
+    #         glob:  stringtie/gtf
     transcript_abundance:
         type: File
-        outputBinding:
-            glob:  kallisto/transcriptQuant.tsv
-    gene_abundance:
+        outputSource:  kallisto/expression_transcript_table
+    gene_abundances:
         type: File
-        outputBinding:
-            glob:  kallisto/gene_lengths.tsv
+        outputSource:  transcript_to_gene/gene_abundances
     gene_counts:
         type: File
-        outputBinding:
-            glob:  kallisto/gene_counts.tsv
+        outputSource:  transcript_to_gene/gene_counts
     gene_lengths:
         type: File
-        outputBinding:
-            glob:  kallisto/gene_lengths.tsv
+        outputSource:  transcript_to_gene/gene_lengths
 steps:
     bam_to_fastq:
         run: bam_to_fastq.cwl
@@ -97,7 +95,7 @@ steps:
             transcript_table: kallisto/expression_transcript_table
             gene_transcript_lookup_table: gene_transcript_lookup_table
         out:
-            [gene_abundance, gene_counts, gene_lengths] 
+            [gene_abundances, gene_counts, gene_lengths]
     hisat2_align:
         run: hisat2_align.cwl
         in:
@@ -108,11 +106,11 @@ steps:
             read_group_fields: read_group_fields
         out:
             [aligned_bam]
-    stringtie:
-        run: stringtie.cwl
-        in:
-            bam: hisat2_align/aligned_bam
-            reference_annotation: reference_annotation
-            sample_name: sample_name
-        out:
-            [gtf]
+    # stringtie:
+    #     run: stringtie.cwl
+    #     in:
+    #         bam: hisat2_align/aligned_bam
+    #         reference_annotation: reference_annotation
+    #         sample_name: sample_name
+    #     out:
+    #         [gtf]

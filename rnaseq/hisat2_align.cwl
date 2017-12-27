@@ -24,12 +24,12 @@ inputs:
         inputBinding:
             prefix: "-x"
             position: -3
-    fastq1:
+    trimmed_fastq1:
         type: File
         inputBinding:
             prefix: "-1"
             position: -2
-    fastq2:
+    trimmed_fastq2:
         type: File
         inputBinding:
             prefix: "-2"
