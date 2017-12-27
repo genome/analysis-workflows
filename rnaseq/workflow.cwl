@@ -50,18 +50,15 @@ outputs:
     #     type: File
     #     outputBinding:
     #         glob:  stringtie/gtf
-    transcript_abundance:
+    transcript_abundance_tsv:
         type: File
         outputSource:  kallisto/expression_transcript_table
-    gene_abundances:
+    transcript_abundance_h5:
         type: File
-        outputSource:  transcript_to_gene/gene_abundances
-    gene_counts:
+        outputSource:  kallisto/expression_transcript_h5
+    gene_abundance:
         type: File
-        outputSource:  transcript_to_gene/gene_counts
-    gene_lengths:
-        type: File
-        outputSource:  transcript_to_gene/gene_lengths
+        outputSource:  transcript_to_gene/gene_abundance
 steps:
     bam_to_fastq:
         run: bam_to_fastq.cwl
@@ -88,14 +85,14 @@ steps:
             fastq1: trim_fastq/trimmed_fastq1
             fastq2: trim_fastq/trimmed_fastq2
         out:
-            [expression_transcript_table]
+            [expression_transcript_table,expression_transcript_h5]
     transcript_to_gene:
         run: transcript_to_gene.cwl
         in:
-            transcript_table: kallisto/expression_transcript_table
+            transcript_table_h5: kallisto/expression_transcript_h5
             gene_transcript_lookup_table: gene_transcript_lookup_table
         out:
-            [gene_abundances, gene_counts, gene_lengths]
+            [gene_abundance]
     hisat2_align:
         run: hisat2_align.cwl
         in:

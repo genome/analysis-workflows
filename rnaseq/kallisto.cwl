@@ -37,3 +37,7 @@ outputs:
         type: File
         outputBinding:
             glob: "kallisto/abundance.tsv"
+    expression_transcript_h5:
+        type: File
+        outputBinding:
+            glob: "kallisto/abundance.h5"

@@ -17,20 +17,12 @@ inputs:
         type: File
         inputBinding:
             position: 1
-    transcript_table:
+    transcript_table_h5:
         type: File
         inputBinding:
             position: 2
 outputs:
-    gene_abundances:
+    gene_abundance:
         type: File
         outputBinding:
-            glob: "gene_abundances.tsv"
-    gene_counts:
-        type: File
-        outputBinding:
-            glob: "gene_counts.tsv"
-    gene_lengths:
-        type: File
-        outputBinding:
-            glob: "gene_lengths.tsv"
+            glob: "gene_abundance.tsv"
