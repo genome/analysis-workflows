@@ -5,7 +5,6 @@ class: CommandLineTool
 label: "Ensembl Variant Effect Predictor"
 baseCommand: ["/home/vep/src/ensembl-vep/vep", "-I", "/home/vep/Plugins"]
 requirements:
-    - class: ShellCommandRequirement
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
       dockerPull: "mgibio/vep-cwl:v90"
