@@ -50,12 +50,8 @@ inputs:
             prefix: "--reads2"
             position: 8
 outputs:
-    trimmed_fastq1:
-        type: File
+    fastqs:
+        type: File[]
         outputBinding:
-            glob: "trimmed_read_1.fastq"
-    trimmed_fastq2:
-        type: File
-        outputBinding:
-            glob: "trimmed_read_2.fastq"
+            glob: "trimmed_read_*.fastq"
 

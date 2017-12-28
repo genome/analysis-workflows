@@ -7,15 +7,14 @@ baseCommand: ["/opt/kallisto/kallisto_linux-v0.43.1/kallisto"] #TODO - switch ba
 requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
+    - class: MultipleInputFeatureRequirement
       ramMin: 32000
       coresMin: 8
 arguments: [
     "quant",
     "-t", $(runtime.cores),
     "-b", "100",
-    "-o", "kallisto",
-    $(inputs.fastq1),
-    $(inputs.fastq2)
+    "-o", "kallisto"
 ]
 inputs:
     kallisto_index:
@@ -23,15 +22,14 @@ inputs:
         inputBinding:
             prefix: "-i"
             position: 1
-    fastq1:
-        type: File
+    fastqs:
+        type:
+            type: array
+            items: 
+                type: array
+                items: File
         inputBinding:
             position: 2
-    fastq2:
-        type: File
-        inputBinding:        
-            position: 3
-
 outputs:
     expression_transcript_table:
         type: File
