@@ -81,7 +81,7 @@ steps:
                 source: bam_to_trimmed_fastq_and_hisat_alignments/fastqs
                 valueFrom: |
                     ${
-                      for(var i=0;i<self.length;i++){self[i] = self[i].sort()}
+                      for(var i=0;i<self.length;i++){self[i] = self[i].reverse()}
                       return(self)                      
                      }
         out:
