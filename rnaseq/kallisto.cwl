@@ -3,11 +3,10 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Kallisto: Quant"
-baseCommand: ["/opt/kallisto/kallisto_linux-v0.43.1/kallisto"] #TODO - switch back to /usr/bin/kallisto after rebuilding container
+baseCommand: ["/usr/bin/kallisto"] 
 requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
-    - class: MultipleInputFeatureRequirement
       ramMin: 32000
       coresMin: 8
 arguments: [
