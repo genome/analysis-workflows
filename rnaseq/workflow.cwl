@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "RnaSeq alignment workflow"
+label: "RNA-Seq alignment and transcript/gene abundance workflow - first-stranded data"
 requirements:
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
