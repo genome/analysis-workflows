@@ -30,7 +30,7 @@ inputs:
         type: File
 outputs:
     fastqs:
-        type: File
+        type: File[]
         outputSource: trim_fastq/fastqs
     aligned_bam:
         type: File
