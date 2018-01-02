@@ -14,6 +14,7 @@ arguments: [
     "-t", $(runtime.cores),
     "-b", "100",
     "-o", "kallisto"
+    "--fr-stranded",
 ]
 inputs:
     kallisto_index:

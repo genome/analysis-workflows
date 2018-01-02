@@ -12,6 +12,7 @@ requirements:
 arguments: [
     "-p", $(runtime.cores),
     "--dta",
+    "--rna-strandness", "RF",
     { shellQuote: false, valueFrom: "|" },
     "/usr/bin/sambamba", "view", "-S", "-f", "bam", "-l", "0", "/dev/stdin",
     { shellQuote: false, valueFrom: "|" },
