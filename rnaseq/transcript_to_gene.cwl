@@ -11,7 +11,7 @@ requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
       ramMin: 2000
-      coresMin: 16
+      coresMin: 1
 inputs:
     gene_transcript_lookup_table:
         type: File
