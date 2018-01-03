@@ -9,8 +9,6 @@ arguments:
     "CHART=", { valueFrom: $(runtime.outdir)/GcBiasMetricsChart.pdf },
     "S=", { valueFrom: $(runtime.outdir)/GcBiasMetricsSummary.txt } ]
 requirements:
-    - class: DockerRequirement
-      dockerPull: "registry.gsc.wustl.edu/genome/picard-2.4.1-r:2"
     - class: ResourceRequirement
       ramMin: 16000
 inputs:
