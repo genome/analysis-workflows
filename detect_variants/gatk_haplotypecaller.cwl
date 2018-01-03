@@ -55,6 +55,7 @@ inputs:
         inputBinding:
             prefix: "--dbsnp"
             position: 6
+        secondaryFiles: [.tbi]
 outputs:
     gvcf:
         type: File
