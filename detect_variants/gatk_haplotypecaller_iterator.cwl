@@ -24,6 +24,7 @@ inputs:
 
     dbsnp_vcf:
         type: File?
+        secondaryFiles: [.tbi]
 outputs:
     gvcf:
         type: File[]
