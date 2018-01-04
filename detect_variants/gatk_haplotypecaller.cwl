@@ -61,3 +61,4 @@ outputs:
         type: File
         outputBinding:
             glob: "*.g.vcf.gz"
+        secondaryFiles: [.tbi]

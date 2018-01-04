@@ -29,6 +29,7 @@ outputs:
     gvcf:
         type: File[]
         outputSource: haplotype_caller/gvcf
+        secondaryFiles: [.tbi]
 steps:
     haplotype_caller:
         scatter: [intervals]
