@@ -5,7 +5,6 @@ class: CommandLineTool
 label: "Kallisto: Quant"
 baseCommand: ["/usr/bin/kallisto"] 
 requirements:
-    - class: ShellCommandRequirement
     - class: ResourceRequirement
       ramMin: 32000
       coresMin: 8
@@ -13,7 +12,7 @@ arguments: [
     "quant",
     "-t", $(runtime.cores),
     "-b", "100",
-    "-o", "kallisto"
+    "-o", "kallisto",
     "--fr-stranded",
 ]
 inputs:

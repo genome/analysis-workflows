@@ -8,7 +8,6 @@ arguments: [
     "/usr/src/transcript_to_gene.R"
 ]
 requirements:
-    - class: ShellCommandRequirement
     - class: ResourceRequirement
       ramMin: 2000
       coresMin: 1

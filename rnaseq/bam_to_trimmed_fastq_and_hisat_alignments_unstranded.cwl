@@ -28,14 +28,13 @@ inputs:
             items: string
     reference_index:
         type: File
-        secondaryFiles: [".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"]
 outputs:
     fastqs:
         type: File[]
         outputSource: trim_fastq/fastqs
     aligned_bam:
         type: File
-        outputSource: hisat2_align/aligned_bam
+        outputSource: hisat2_align_unstranded/aligned_bam
 steps:
     bam_to_fastq:
         run: bam_to_fastq.cwl
@@ -55,8 +54,8 @@ steps:
             min_readlength: min_readlength
         out:
             [fastqs]
-    hisat2_align:
-        run: hisat2_align.cwl
+    hisat2_align_unstranded:
+        run: hisat2_align_unstranded.cwl
         in:
             reference_index: reference_index
             fastq1: 
