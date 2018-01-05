@@ -3,13 +3,13 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Sambamba: merge"
-baseCommand: ["/usr/bin/sambamba", "merge"]
+baseCommand: ["/usr/bin/sambamba_merge"]
 requirements:
     - class: ResourceRequirement
       ramMin: 8000
       coresMin: 4
 arguments: [
-    "-t", $(runtime.cores),
+    "$(runtime.cores)",
     "$(runtime.outdir)/merged.bam"
 ]
 inputs:
