@@ -20,6 +20,8 @@ inputs:
         secondaryFiles: [.tbi]
     collect_hs_metrics_per_target_coverage:
         type: boolean?
+    collect_hs_metrics_per_base_coverage:
+        type: boolean?
     picard_metric_accumulation_level:
         type: string?
         default: ALL_READS
@@ -36,6 +38,9 @@ outputs:
     per_target_coverage_metrics:
         type: File?
         outputSource: collect_hs_metrics/per_target_coverage_metrics
+    per_base_coverage_metrics:
+        type: File?
+        outputSource: collect_hs_metrics/per_base_coverage_metrics
     flagstats:
         type: File
         outputSource: samtools_flagstat/flagstats
@@ -71,8 +76,9 @@ steps:
             bait_intervals: bait_intervals
             target_intervals: target_intervals
             per_target_coverage: collect_hs_metrics_per_target_coverage
+            per_base_coverage: collect_hs_metrics_per_base_coverage
         out:
-            [hs_metrics, per_target_coverage_metrics]
+            [hs_metrics, per_target_coverage_metrics, per_base_coverage_metrics]
     samtools_flagstat:
         run: samtools_flagstat.cwl
         in:
