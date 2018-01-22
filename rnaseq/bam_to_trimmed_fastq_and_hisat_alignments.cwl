@@ -29,6 +29,10 @@ inputs:
     reference_index:
         type: File
         secondaryFiles: [".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"]
+    firststrand:
+        type: boolean?
+    secondstrand:
+        type: boolean?
 outputs:
     fastqs:
         type: File[]
@@ -67,5 +71,7 @@ steps:
                 valueFrom: $(self[1])
             read_group_id: read_group_id
             read_group_fields: read_group_fields
+            firststrand: firststrand
+            secondstrand: secondstrand
         out:
             [aligned_bam]

@@ -13,14 +13,13 @@ arguments: [
     "-t", $(runtime.cores),
     "-b", "100",
     "-o", "kallisto",
-    "--fr-stranded",
 ]
 inputs:
     kallisto_index:
         type: File
         inputBinding:
             prefix: "-i"
-            position: 1
+            position: 2
     fastqs:
         type:
             type: array
@@ -28,7 +27,17 @@ inputs:
                 type: array
                 items: File
         inputBinding:
-            position: 2
+            position: 3
+    firststrand:
+        type: boolean?
+        inputBinding:
+            prefix: --fr-stranded
+            position: 1
+    secondstrand:
+        type: boolean?
+        inputBinding:
+            prefix: --rf-stranded
+            position: 1
 outputs:
     expression_transcript_table:
         type: File

@@ -12,7 +12,6 @@ requirements:
 arguments: [
     "-p", $(runtime.cores),
     "--dta",
-    "--rna-strandness", "RF",
     { shellQuote: false, valueFrom: "|" },
     "/usr/bin/sambamba", "view", "-S", "-f", "bam", "-l", "0", "/dev/stdin",
     { shellQuote: false, valueFrom: "|" },
@@ -48,6 +47,16 @@ inputs:
                 prefix: "--rg"
         inputBinding:
             position: -4
+    firststrand:
+        type: boolean?
+        inputBinding:
+            prefix: "--rna-strandness RF"
+            position: -6
+    secondstrand:
+        type: boolean?
+        inputBinding:
+            prefix: "--rna-strandness FR"
+            position: -6
 outputs:
     aligned_bam:
         type: File
