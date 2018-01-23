@@ -5,7 +5,7 @@ class: Workflow
 label: "RNA-Seq alignment and transcript/gene abundance workflow - first-stranded data"
 requirements:
     - class: MultipleInputFeatureRequirement
-hisat   - class: SubworkflowFeatureRequirement
+    - class: SubworkflowFeatureRequirement
     - class: ScatterFeatureRequirement
     - class: InlineJavascriptRequirement
 inputs:
