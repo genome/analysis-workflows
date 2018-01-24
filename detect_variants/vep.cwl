@@ -31,7 +31,7 @@ inputs:
             valueFrom: |
                 ${
                     if (inputs.cache_dir) {
-                        return ["--offline", "--cache", "--max_af", "--af_gnomad", "--af_1kg", "--dir", inputs.cache_dir ]
+                        return ["--offline", "--cache", "--dir", inputs.cache_dir ]
                     }
                     else {
                         return "--database"
@@ -49,6 +49,25 @@ inputs:
             prefix: "--coding_only"
             position: 3
         default: false
+    custom_gnomad_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
+        inputBinding:
+            valueFrom: |
+                ${
+                    if (inputs.custom_gnomad_vcf) {
+                        return ['--check_existing', '--custom', inputs.custom_gnomad_vcf.path + ',gnomADe,vcf,overlap,0,AF,AF_AFR,AF_AMR,AF_ASJ,AF_EAS,AF_FIN,AF_NFE,AF_OTH']
+                    }
+                    else {
+                        if (inputs.cache_dir) {
+                            return ['--max_af', '--af_gnomad', '--af_1kg']
+                        }
+                        else {
+                            return []
+                        }
+                    }
+                }
+            position: 6
     hgvs:
         type: boolean?
         inputBinding:
