@@ -35,6 +35,10 @@ inputs:
         type: boolean?
         inputBinding:
             prefix: "PER_TARGET_COVERAGE=PerTargetCoverage.txt"
+    per_base_coverage:
+        type: boolean?
+        inputBinding:
+            prefix: "PER_BASE_COVERAGE=PerBaseCoverage.txt"
 outputs:
     hs_metrics:
         type: File
@@ -44,3 +48,7 @@ outputs:
         type: File?
         outputBinding:
             glob: "PerTargetCoverage.txt"
+    per_base_coverage_metrics:
+        type: File?
+        outputBinding:
+            glob: "PerBaseCoverage.txt"

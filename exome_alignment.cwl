@@ -46,8 +46,11 @@ outputs:
         type: File
         outputSource: qc/hs_metrics
     per_target_coverage_metrics:
-        type: File
+        type: File?
         outputSource: qc/per_target_coverage_metrics
+    per_base_coverage_metrics:
+        type: File?
+        outputSource: qc/per_base_coverage_metrics
     flagstats:
         type: File
         outputSource: qc/flagstats
@@ -77,4 +80,4 @@ steps:
             target_intervals: target_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level
-        out: [insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+        out: [insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_base_coverage_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
