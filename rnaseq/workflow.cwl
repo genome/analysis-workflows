@@ -2,11 +2,12 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "RnaSeq alignment workflow"
+label: "RNA-Seq alignment and transcript/gene abundance workflow - first-stranded data"
 requirements:
     - class: MultipleInputFeatureRequirement
-    - class: ScatterFeatureRequirement
     - class: SubworkflowFeatureRequirement
+    - class: ScatterFeatureRequirement
+    - class: InlineJavascriptRequirement
 inputs:
     reference_index:
         type: File #this requires an extra file with the basename
@@ -35,34 +36,75 @@ inputs:
         type: int
     trimming_min_readlength:
         type: int
+    kallisto_index: 
+       type: File
+    gene_transcript_lookup_table:
+       type: File
+    firststrand:
+       type: boolean?
+    secondstrand:
+       type: boolean?
 outputs:
-    aligned_bam:
-        type: File
-        outputSource: merge/merged_bam
+    merged_bam:
+      type: File
+      outputSource: merge/merged_bam
     gtf:
         type: File
         outputSource: stringtie/gtf
+    transcript_abundance_tsv:
+        type: File
+        outputSource: kallisto/expression_transcript_table
+    transcript_abundance_h5:
+        type: File
+        outputSource: kallisto/expression_transcript_h5
+    gene_abundance:
+        type: File
+        outputSource: transcript_to_gene/gene_abundance
 steps:
-    align:
-        run: align.cwl
-        scatter: [instrument_data_bam, read_group_id, read_group_fields]
+    bam_to_trimmed_fastq_and_hisat_alignments:
+        run: bam_to_trimmed_fastq_and_hisat_alignments.cwl
+        scatter: [bam, read_group_id, read_group_fields]
         scatterMethod: dotproduct
         in:
-            instrument_data_bam: instrument_data_bams
-            reference_index: reference_index
+            bam: instrument_data_bams
             read_group_id: read_group_id
             read_group_fields: read_group_fields
-            trimming_adapters: trimming_adapters
-            trimming_adapter_trim_end: trimming_adapter_trim_end
-            trimming_adapter_min_overlap: trimming_adapter_min_overlap
-            trimming_max_uncalled: trimming_max_uncalled
-            trimming_min_readlength: trimming_min_readlength
+            adapters: trimming_adapters
+            adapter_trim_end: trimming_adapter_trim_end
+            adapter_min_overlap: trimming_adapter_min_overlap
+            max_uncalled: trimming_max_uncalled
+            min_readlength: trimming_min_readlength
+            reference_index: reference_index
+            firststrand: firststrand
+            secondstrand: secondstrand
         out:
-            [aligned_bam]
+            [fastqs,aligned_bam]
+    kallisto:
+        run: kallisto.cwl
+        in:
+            kallisto_index: kallisto_index
+            firststrand: firststrand
+            secondstrand: secondstrand
+            fastqs: 
+                source: bam_to_trimmed_fastq_and_hisat_alignments/fastqs
+                valueFrom: |
+                    ${
+                      for(var i=0;i<self.length;i++){self[i] = self[i].reverse()}
+                      return(self)                      
+                     }
+        out:
+            [expression_transcript_table,expression_transcript_h5]
+    transcript_to_gene:
+        run: transcript_to_gene.cwl
+        in:
+            transcript_table_h5: kallisto/expression_transcript_h5
+            gene_transcript_lookup_table: gene_transcript_lookup_table
+        out:
+            [gene_abundance]
     merge:
         run: merge.cwl
         in:
-            bams: align/aligned_bam
+            bams: bam_to_trimmed_fastq_and_hisat_alignments/aligned_bam
         out:
             [merged_bam]
     stringtie:
