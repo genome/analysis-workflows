@@ -3,11 +3,14 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "MAX_AF filter"
-baseCommand: ["/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep"]
+baseCommand: ["/usr/bin/perl", "/usr/bin/vcf_check.pl"]
 requirements:
     - class: InlineJavascriptRequirement
 arguments:
-    ["--format", "vcf",
+    [{ valueFrom: $(inputs.vcf.path) },
+    { valueFrom: $(runtime.outdir)/annotated.max_af_filtered.vcf },
+    "/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep",
+    "--format", "vcf",
     "-o", { valueFrom: $(runtime.outdir)/annotated.max_af_filtered.vcf }]
 inputs:
     vcf:
