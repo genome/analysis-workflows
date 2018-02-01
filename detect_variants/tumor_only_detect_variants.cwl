@@ -56,6 +56,7 @@ inputs:
         type: string
     docm_vcf:
         type: File
+        secondaryFiles: [.tbi]
 outputs:
     varscan_vcf:
         type: File

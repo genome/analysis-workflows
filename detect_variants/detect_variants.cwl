@@ -56,8 +56,8 @@ inputs:
         type: int
         default: 400
     docm_vcf:
-         type: File
-         secondaryFiles: [.tbi]
+        type: File
+        secondaryFiles: [.tbi]
     vep_cache_dir:
         type: string?
     synonyms_file:
