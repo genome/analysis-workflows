@@ -170,8 +170,8 @@ steps:
                 default: true
         out:
             [filtered_vcf]
-    max_af_filter:
-        run: max_af_filter.cwl
+    af_filter:
+        run: af_filter.cwl
         in:
             vcf: hard_filter/filtered_vcf
             maximum_population_allele_frequency: maximum_population_allele_frequency
@@ -180,7 +180,7 @@ steps:
     coding_variant_filter:
         run: coding_variant_filter.cwl
         in:
-            vcf: max_af_filter/filtered_vcf
+            vcf: af_filter/filtered_vcf
         out:
             [filtered_vcf]
     bgzip_filtered:
