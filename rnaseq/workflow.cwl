@@ -45,9 +45,10 @@ inputs:
     secondstrand:
        type: boolean?
 outputs:
-    merged_bam:
-      type: File
-      outputSource: merge/merged_bam
+    final_bam:
+        type: File
+        outputSource: index_bam/indexed_bam
+        secondaryFiles: [.bai, ^.bai]
     gtf:
         type: File
         outputSource: stringtie/gtf
@@ -107,6 +108,12 @@ steps:
             bams: bam_to_trimmed_fastq_and_hisat_alignments/aligned_bam
         out:
             [merged_bam]
+    index_bam:
+        run: ../detect_variants/index_bam.cwl
+        in:
+            bam: merge/merged_bam
+        out:
+            [indexed_bam]
     stringtie:
         run: stringtie.cwl
         in:
