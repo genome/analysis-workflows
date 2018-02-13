@@ -11,7 +11,7 @@ arguments:
     "-o", { valueFrom: $(runtime.outdir)/NameSorted.bam }]
 requirements:
     - class: ResourceRequirement
-      ramMin: 12000
+      ramMin: 13000
       coresMin: 8
 inputs:
     bam:
