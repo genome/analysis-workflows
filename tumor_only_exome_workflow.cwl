@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "exome alignment and variant detection"
+label: "tumor-only exome alignment and variant detection"
 requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
