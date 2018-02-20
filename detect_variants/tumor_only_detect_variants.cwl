@@ -33,6 +33,9 @@ inputs:
     maximum_population_allele_frequency:
         type: float?
         default: 0.001
+    population_allele_frequency_field_name:
+        type: string?
+        default: MAX_AF
     vep_cache_dir:
         type: string?
     synonyms_file:
@@ -51,7 +54,7 @@ inputs:
         default: [GT,AD,AF,DP]
     vep_to_table_fields:
         type: string[]?
-        default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,gnomADe_AF,CLIN_SIG,SOMATIC,PHENO]
+        default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,MAX_AF,MAX_AF_POPS,CLIN_SIG,SOMATIC,PHENO]
     sample_name:
         type: string
     docm_vcf:
@@ -170,17 +173,18 @@ steps:
                 default: true
         out:
             [filtered_vcf]
-    af_filter:
-        run: gnomADe_AF_filter.cwl
+    populcation_allele_frequency_filter:
+        run: population_allele_frequency_filter.cwl
         in:
             vcf: hard_filter/filtered_vcf
             maximum_population_allele_frequency: maximum_population_allele_frequency
+            population_allele_frequency_field_name: population_allele_frequency_field_name
         out:
             [filtered_vcf]
     coding_variant_filter:
         run: coding_variant_filter.cwl
         in:
-            vcf: af_filter/filtered_vcf
+            vcf: population_allele_frequency_filter/filtered_vcf
         out:
             [filtered_vcf]
     bgzip_filtered:
