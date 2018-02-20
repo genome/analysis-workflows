@@ -57,6 +57,9 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+    custom_gnomad_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
 outputs:
     varscan_vcf:
         type: File
@@ -123,6 +126,7 @@ steps:
             coding_only: coding_only
             hgvs: hgvs_annotation
             reference: reference
+            custom_gnomad_vcf: custom_gnomad_vcf
         out:
             [annotated_vcf, vep_summary]
     cram_to_bam:

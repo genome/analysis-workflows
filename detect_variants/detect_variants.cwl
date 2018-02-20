@@ -78,6 +78,9 @@ inputs:
     vep_to_table_fields:
         type: string[]?
         default: [HGVSc,HGVSp]
+    custom_gnomad_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -220,6 +223,7 @@ steps:
             coding_only: coding_only
             hgvs: hgvs_annotation
             reference: reference
+            custom_gnomad_vcf: custom_gnomad_vcf
         out:
             [annotated_vcf, vep_summary]
     tumor_cram_to_bam:
