@@ -173,7 +173,7 @@ steps:
                 default: true
         out:
             [filtered_vcf]
-    populcation_allele_frequency_filter:
+    population_allele_frequency_filter:
         run: population_allele_frequency_filter.cwl
         in:
             vcf: hard_filter/filtered_vcf
