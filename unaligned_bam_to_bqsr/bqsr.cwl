@@ -55,6 +55,7 @@ inputs:
             inputBinding:
                 prefix: "-knownSites"
                 position: 3
+            secondaryFiles: [.tbi]
 outputs:
     bqsr_table:
         type: File
