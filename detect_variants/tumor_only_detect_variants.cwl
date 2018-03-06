@@ -51,11 +51,14 @@ inputs:
         default: [GT,AD,AF,DP]
     vep_to_table_fields:
         type: string[]?
-        default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,MAX_AF,MAX_AF_POPS,CLIN_SIG,SOMATIC,PHENO]
+        default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,gnomADe_AF,CLIN_SIG,SOMATIC,PHENO]
     sample_name:
         type: string
     docm_vcf:
         type: File
+        secondaryFiles: [.tbi]
+    custom_gnomad_vcf:
+        type: File?
         secondaryFiles: [.tbi]
 outputs:
     varscan_vcf:
@@ -123,6 +126,7 @@ steps:
             coding_only: coding_only
             hgvs: hgvs_annotation
             reference: reference
+            custom_gnomad_vcf: custom_gnomad_vcf
         out:
             [annotated_vcf, vep_summary]
     cram_to_bam:
@@ -171,7 +175,7 @@ steps:
         out:
             [filtered_vcf]
     af_filter:
-        run: af_filter.cwl
+        run: gnomADe_AF_filter.cwl
         in:
             vcf: hard_filter/filtered_vcf
             maximum_population_allele_frequency: maximum_population_allele_frequency
