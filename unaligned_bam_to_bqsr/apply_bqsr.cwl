@@ -14,7 +14,7 @@ arguments:
     "--disable_indel_quals"]
 requirements:
     - class: ResourceRequirement
-      ramMin: 16000
+      ramMin: 18000
 inputs:
     reference:
         type: string
