@@ -1,7 +1,10 @@
 # cancer-genomics-workflow
+
 CWL workflow defintions for executing MGI Cancer Genomics analysis.
 
 ## Docker Images
+
+** PLEASE USE THE toil_compatibility BRANCH **
 
 At this time, the toil_compatibility branch relies on large, aka. fat, Docker images. Below is a mapping of workflow to Docker image name, all available on [DockerHub](https://hub.docker.com/u/mgibio/)
 
