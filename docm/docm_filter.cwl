@@ -5,10 +5,14 @@ class: CommandLineTool
 label: "docm filter"
 arguments: [
     "/usr/bin/perl", "/usr/bin/docm_filter.pl",
-    $(inputs.docm_out.path), $(runtime.outdir)
+    $(inputs.docm_out.path), $(inputs.normal_cram.path), $(inputs.tumor_cram.path), $(runtime.outdir)
 ]
 inputs:
     docm_out:
+        type: File
+    normal_cram:
+        type: File
+    tumor_cram:
         type: File
 outputs:
     docm_filter_out:

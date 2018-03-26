@@ -42,6 +42,8 @@ steps:
         run: docm_filter.cwl
         in:
             docm_out: GATK_haplotype_caller/docm_out
+            normal_cram: normal_cram
+            tumor_cram: tumor_cram
         out:
             [docm_filter_out]
     bgzip:
