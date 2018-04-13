@@ -20,6 +20,8 @@ inputs:
     dbsnp:
         type: File
         secondaryFiles: [.tbi]
+    bqsr_intervals:
+        type: string[]?
     bait_intervals:
         type: File
     target_intervals:
@@ -139,6 +141,7 @@ steps:
             mills: mills
             known_indels: known_indels
             dbsnp: dbsnp
+            bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
             omni_vcf: omni_vcf
