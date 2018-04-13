@@ -65,11 +65,14 @@ inputs:
         default: [GT,AD,AF,DP]
     vep_to_table_fields:
         type: string[]?
-        default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,MAX_AF,MAX_AF_POPS,CLIN_SIG,SOMATIC,PHENO]
+        default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,gnomADe_AF,CLIN_SIG,SOMATIC,PHENO]
     sample_name:
         type: string
     docm_vcf:
         type: File
+        secondaryFiles: [.tbi]
+    custom_gnomad_vcf:
+        type: File?
         secondaryFiles: [.tbi]
 outputs:
     cram:
@@ -162,5 +165,6 @@ steps:
             sample_name: sample_name
             docm_vcf: docm_vcf
             hgvs_annotation: hgvs_annotation
+            custom_gnomad_vcf: custom_gnomad_vcf
         out:
             [varscan_vcf, docm_gatk_vcf, annotated_vcf, final_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv]
