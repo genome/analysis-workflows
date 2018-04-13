@@ -13,6 +13,8 @@ inputs:
         type: File[]
     readgroups:
         type: string[]
+    bqsr_intervals:
+        type: string[]?
     reference:
         type: string
     dbsnp:
@@ -66,6 +68,7 @@ steps:
         in:
             reference: reference
             bam: mark_duplicates_and_sort/sorted_bam
+            intervals: bqsr_intervals
             known_sites: [dbsnp, mills, known_indels]
         out:
             [bqsr_table]

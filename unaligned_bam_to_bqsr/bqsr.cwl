@@ -10,28 +10,6 @@ arguments:
     "--disable_auto_index_creation_and_locking_when_reading_rods",
     "--disable_bam_indexing",
     "-dfrac", ".1",
-    "-L", "chr1",
-    "-L", "chr2",
-    "-L", "chr3",
-    "-L", "chr4",
-    "-L", "chr5",
-    "-L", "chr6",
-    "-L", "chr7",
-    "-L", "chr8",
-    "-L", "chr9",
-    "-L", "chr10",
-    "-L", "chr11",
-    "-L", "chr12",
-    "-L", "chr13",
-    "-L", "chr14",
-    "-L", "chr15",
-    "-L", "chr16",
-    "-L", "chr17",
-    "-L", "chr18",
-    "-L", "chr19",
-    "-L", "chr20",
-    "-L", "chr21",
-    "-L", "chr22",
     "-nct", "4"]
 requirements:
     - class: ResourceRequirement
@@ -41,12 +19,12 @@ inputs:
         type: string
         inputBinding:
             prefix: "-R"
-            position: 1
+            position: 2
     bam:
         type: File
         inputBinding:
             prefix: "-I"
-            position: 2
+            position: 3
         secondaryFiles: [.bai]
     known_sites:
         type:
@@ -54,8 +32,17 @@ inputs:
             items: File
             inputBinding:
                 prefix: "-knownSites"
-                position: 3
+                position: 4
         secondaryFiles: [.tbi]
+    intervals:
+        type:
+            type: array
+            items: string
+            inputBinding:
+                prefix: "-L"
+        inputBinding:
+            position: 1
+        default: [chr1, chr2, chr3, chr4, chr5,chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22]
 outputs:
     bqsr_table:
         type: File

@@ -20,6 +20,8 @@ inputs:
     dbsnp:
         type: File
         secondaryFiles: [.tbi]
+    bqsr_intervals:
+        type: string[]?
     bait_intervals:
         type: File
     target_intervals:
@@ -70,6 +72,7 @@ steps:
             mills: mills
             known_indels: known_indels
             dbsnp: dbsnp
+            bqsr_intervals: bqsr_intervals
         out: [final_cram,mark_duplicates_metrics_file]
     qc:
         run: qc/workflow_exome.cwl
