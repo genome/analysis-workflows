@@ -56,7 +56,7 @@ inputs:
             valueFrom: |
                 ${
                     if (inputs.custom_gnomad_vcf) {
-                        return ['--check_existing', '--custom', inputs.custom_gnomad_vcf.path + ',gnomADe,vcf,overlap,0,AF,AF_AFR,AF_AMR,AF_ASJ,AF_EAS,AF_FIN,AF_NFE,AF_OTH,AF_SAS']
+                        return ['--check_existing', '--custom', inputs.custom_gnomad_vcf.path + ',gnomADe,vcf,exact,0,AF,AF_AFR,AF_AMR,AF_ASJ,AF_EAS,AF_FIN,AF_NFE,AF_OTH,AF_SAS']
                     }
                     else {
                         if (inputs.cache_dir) {
