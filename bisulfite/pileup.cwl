@@ -16,7 +16,7 @@ arguments: [
     { valueFrom: "-w", position: -8 },
     { valueFrom: "pileup_stats.txt", position: -7 },
     { shellQuote: false, valueFrom: "|" },
-    "/bin/gzip"
+    "/bin/bgzip"
 ]
 inputs:
     bam:
@@ -31,6 +31,4 @@ inputs:
             position: -1
 outputs:
     vcf:
-        type: File
-        outputBinding:
-            glob: pileup.vcf.gz
+        type: stdout
