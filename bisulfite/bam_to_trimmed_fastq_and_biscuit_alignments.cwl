@@ -4,9 +4,7 @@ cwlVersion: v1.0
 class: Workflow
 label: "bam to trimmed fastqs and biscuit alignments"
 requirements:
-    - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
-    - class: InlineJavascriptRequirement
 inputs:
     bam:
         type: File
@@ -51,10 +49,8 @@ steps:
         run: biscuit_align.cwl
         in:
             reference_index: reference_index
-            fastq1: 
-                source: trim_fastq/fastq1
-            fastq2: 
-                source: trim_fastq/fastq2
+            fastq1: trim_fastq/fastq1
+            fastq2: trim_fastq/fastq2
             read_group_id: read_group_id
         out:
             [aligned_bam]

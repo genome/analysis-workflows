@@ -16,7 +16,7 @@ arguments: [
     { valueFrom: "-w", position: -8 },
     { valueFrom: "pileup_stats.txt", position: -7 },
     { shellQuote: false, valueFrom: "|" },
-    "/bin/bgzip"
+    "/opt/htslib/bin/bgzip"
 ]
 inputs:
     bam:
