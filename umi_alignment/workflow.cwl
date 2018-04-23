@@ -28,13 +28,13 @@ outputs:
     aligned_bam:
         type: File
         secondaryFiles: [.bai]
-        outputSource: clip_overlap/clipped_bam
+        outputSource: alignment_workflow/aligned_bam
     adapter_histogram:
         type: File
-        outputSource: mark_illumina_adapters/metrics
+        outputSource: alignment_workflow/adapter_histogram
     duplex_seq_metrics:
         type: File[]
-        outputSource: collect_duplex_seq_metrics/duplex_seq_metrics
+        outputSource: alignment_workflow/duplex_seq_metrics
 steps:
     fastq_to_bam:
         run: fastq_to_bam.cwl
@@ -47,64 +47,13 @@ steps:
             platform: platform
         out:
             [bam]
-    extract_umis:
-        run: extract_umis.cwl
+    alignment_workflow:
+        run: alignment_workflow.cwl
         in:
             bam: fastq_to_bam/bam
+            sample_name: sample_name
             read_structure: read_structure
-        out:
-            [umi_extracted_bam]
-    mark_illumina_adapters:
-        run: mark_illumina_adapters.cwl
-        in:
-            bam: extract_umis/umi_extracted_bam
-        out:
-            [marked_bam, metrics]
-    align:
-        run: align.cwl
-        in:
-            bam: mark_illumina_adapters/marked_bam
             reference: reference
+            target_intervals: target_intervals
         out:
-            [aligned_bam]
-    group_reads_by_umi:
-        run: group_reads.cwl
-        in:
-            bam: align/aligned_bam
-        out:
-            [grouped_bam]
-    call_duplex_consensus:
-        run: call_duplex_consensus.cwl
-        in:
-            bam: group_reads_by_umi/grouped_bam
-        out:
-            [consensus_bam]
-    align_consensus:
-        run: realign.cwl
-        in:
-            bam: call_duplex_consensus/consensus_bam
-            reference: reference
-        out:
-            [consensus_aligned_bam]
-    filter_consensus:
-        run: filter_consensus.cwl
-        in:
-            bam: align_consensus/consensus_aligned_bam
-            reference: reference
-        out:
-            [filtered_bam]
-    clip_overlap:
-        run: clip_overlap.cwl
-        in:
-            bam: filter_consensus/filtered_bam
-            reference: reference
-        out:
-            [clipped_bam]
-    collect_duplex_seq_metrics:
-       run: duplex_seq_metrics.cwl
-       in:
-            bam: group_reads_by_umi/grouped_bam
-            intervals: target_intervals
-            description: sample_name
-       out:
-            [duplex_seq_metrics]
+            [aligned_bam, adapter_histogram, duplex_seq_metrics]
