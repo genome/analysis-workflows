@@ -9,7 +9,8 @@ requirements:
       ramMin: 6000
       coresMin: 16
 arguments: [
-    "-o", "$(runtime.outdir)/transcripts.gtf",
+    "-o", "$(runtime.outdir)/stringtie_transcripts.gtf",
+    "-A", "$(runtime.outdir)/stringtie_gene_expression.tsv",
     "-n", $(runtime.cores)
 ]
 inputs:
@@ -31,4 +32,8 @@ outputs:
     gtf:
         type: File
         outputBinding:
-            glob: transcripts.gtf
+            glob: stringtie_transcripts.gtf
+    tsv:
+        type: File
+        outputBinding:
+            glob: stringtie_gene_expression.tsv

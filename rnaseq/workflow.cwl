@@ -52,6 +52,9 @@ outputs:
     gtf:
         type: File
         outputSource: stringtie/gtf
+    stringtie_gene_expression_tsv:
+        type: File
+        outputSource: stringtie/tsv
     transcript_abundance_tsv:
         type: File
         outputSource: kallisto/expression_transcript_table
@@ -121,4 +124,4 @@ steps:
             reference_annotation: reference_annotation
             sample_name: sample_name
         out:
-            [gtf]
+            [gtf,tsv]
