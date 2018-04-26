@@ -167,7 +167,9 @@ steps:
             vep_to_table_fields: vep_to_table_fields
             sample_name: sample_name
             docm_vcf: docm_vcf
-            hgvs_annotation: hgvs_annotation
+            hgvs_annotation:
+                source: hgvs_annotation
+                default: true
             custom_gnomad_vcf: custom_gnomad_vcf
         out:
             [varscan_vcf, docm_gatk_vcf, annotated_vcf, final_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv]
