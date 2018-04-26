@@ -40,7 +40,7 @@ inputs:
     min_var_freq:
         type: float?
         default: 0.05
-        inputbinding:
+        inputBinding:
             prefix: "--min-var-freq"
             position: 5
 outputs:
