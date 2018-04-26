@@ -49,9 +49,12 @@ outputs:
         type: File
         outputSource: index_bam/indexed_bam
         secondaryFiles: [.bai, ^.bai]
-    gtf:
+    stringtie_transcript_gtf:
         type: File
-        outputSource: stringtie/gtf
+        outputSource: stringtie/transcript_gtf
+    stringtie_gene_expression_tsv:
+        type: File
+        outputSource: stringtie/gene_expression_tsv
     transcript_abundance_tsv:
         type: File
         outputSource: kallisto/expression_transcript_table
@@ -121,4 +124,4 @@ steps:
             reference_annotation: reference_annotation
             sample_name: sample_name
         out:
-            [gtf]
+            [transcript_gtf,gene_expression_tsv]
