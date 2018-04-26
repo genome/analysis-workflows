@@ -75,8 +75,10 @@ steps:
             metric_accumulation_level: picard_metric_accumulation_level
             bait_intervals: bait_intervals
             target_intervals: target_intervals
-            per_target_coverage: collect_hs_metrics_per_target_coverage
-            per_base_coverage: collect_hs_metrics_per_base_coverage
+            per_target_coverage:
+                default: true
+            per_base_coverage:
+                default: true
         out:
             [hs_metrics, per_target_coverage_metrics, per_base_coverage_metrics]
     samtools_flagstat:

@@ -124,7 +124,8 @@ steps:
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: coding_only
-            hgvs: hgvs_annotation
+            hgvs:
+                default: true
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
         out:
