@@ -29,11 +29,11 @@ inputs:
         inputBinding:
             position: 3
 outputs:
-    gtf:
+    transcript_gtf:
         type: File
         outputBinding:
             glob: stringtie_transcripts.gtf
-    tsv:
+    gene_expression_tsv:
         type: File
         outputBinding:
             glob: stringtie_gene_expression.tsv
