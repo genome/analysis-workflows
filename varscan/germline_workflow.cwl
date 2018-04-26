@@ -78,5 +78,6 @@ steps:
             variant_caller:
                 valueFrom: "varscan"
             sample_name: sample_name
+            min_var_freq: min_var_freq
         out:
             [unfiltered_vcf, filtered_vcf]
