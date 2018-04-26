@@ -18,6 +18,8 @@ inputs:
         string
     sample_name:
         string?
+    min_var_freq:
+        float?
 outputs:
     unfiltered_vcf:
         type: File
@@ -49,6 +51,7 @@ steps:
             bam: cram_to_bam/bam
             vcf: normalize_variants/normalized_vcf
             sample_name: sample_name
+            min_var_freq: min_var_freq
             output_vcf_basename:
                 source: variant_caller
                 valueFrom: $(self)_full

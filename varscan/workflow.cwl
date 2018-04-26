@@ -132,6 +132,7 @@ steps:
             reference: reference
             cram: tumor_cram
             vcf: index/indexed_vcf
+            min_var_freq: min_var_freq
             variant_caller: 
                 valueFrom: "varscan"
         out:
