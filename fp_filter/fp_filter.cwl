@@ -37,6 +37,12 @@ inputs:
         inputBinding:
             prefix: "--sample"
             position: 4
+    min_var_freq:
+        type: float?
+        default: 0.05
+        inputbinding:
+            prefix: "--min-var-freq"
+            position: 5
 outputs:
     filtered_vcf:
         type: File
