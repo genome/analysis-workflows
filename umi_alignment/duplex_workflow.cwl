@@ -48,7 +48,7 @@ steps:
         out:
             [bam]
     alignment_workflow:
-        run: alignment_workflow.cwl
+        run: duplex_alignment_workflow.cwl
         in:
             bam: fastq_to_bam/bam
             sample_name: sample_name
