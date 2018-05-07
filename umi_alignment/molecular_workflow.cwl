@@ -27,7 +27,7 @@ inputs:
 outputs:
     aligned_bam:
         type: File
-        secondaryFiles: [.bai]
+        secondaryFiles: [^.bai]
         outputSource: alignment_workflow/aligned_bam
     adapter_histogram:
         type: File

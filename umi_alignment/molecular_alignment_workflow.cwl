@@ -19,7 +19,7 @@ inputs:
 outputs:
     aligned_bam:
         type: File
-        secondaryFiles: [.bai]
+        secondaryFiles: [^.bai]
         outputSource: clip_overlap/clipped_bam
     adapter_histogram:
         type: File
