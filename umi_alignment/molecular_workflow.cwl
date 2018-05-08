@@ -27,7 +27,7 @@ inputs:
 outputs:
     aligned_bam:
         type: File
-        secondaryFiles: [.bai]
+        secondaryFiles: [^.bai]
         outputSource: alignment_workflow/aligned_bam
     adapter_histogram:
         type: File
@@ -48,7 +48,7 @@ steps:
         out:
             [bam]
     alignment_workflow:
-        run: alignment_workflow.cwl
+        run: molecular_alignment_workflow.cwl
         in:
             bam: fastq_to_bam/bam
             sample_name: sample_name

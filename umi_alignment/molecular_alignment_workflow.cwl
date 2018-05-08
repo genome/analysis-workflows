@@ -19,7 +19,7 @@ inputs:
 outputs:
     aligned_bam:
         type: File
-        secondaryFiles: [.bai]
+        secondaryFiles: [^.bai]
         outputSource: clip_overlap/clipped_bam
     adapter_histogram:
         type: File
@@ -54,8 +54,8 @@ steps:
             bam: align/aligned_bam
         out:
             [grouped_bam]
-    call_duplex_consensus:
-        run: call_duplex_consensus.cwl
+    call_molecular_consensus:
+        run: call_molecular_consensus.cwl
         in:
             bam: group_reads_by_umi/grouped_bam
         out:
@@ -63,7 +63,7 @@ steps:
     align_consensus:
         run: realign.cwl
         in:
-            bam: call_duplex_consensus/consensus_bam
+            bam: call_molecular_consensus/consensus_bam
             reference: reference
         out:
             [consensus_aligned_bam]

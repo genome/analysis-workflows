@@ -23,6 +23,6 @@ inputs:
 outputs:
     aligned_bam:
         type: File
-        secondaryFiles: [.bai]
+        secondaryFiles: [^.bai]
         outputBinding:
             glob: "aligned.bam"
