@@ -2,22 +2,23 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "umi alignment workflow"
+label: "umi duplex alignment fastq workflow"
 requirements:
     - class: SubworkflowFeatureRequirement
+    - class: ScatterFeatureRequirement
 inputs:
     read1_fastq:
-        type: File
+        type: File[]
     read2_fastq:
-        type: File
+        type: File[]
     sample_name:
         type: string
     library_name:
-        type: string
+        type: string[]
     platform_unit:
-        type: string
+        type: string[]
     platform:
-        type: string
+        type: string[]
     read_structure:
         type: string[]
     reference:
@@ -30,13 +31,15 @@ outputs:
         secondaryFiles: [^.bai]
         outputSource: alignment_workflow/aligned_bam
     adapter_histogram:
-        type: File
+        type: File[]
         outputSource: alignment_workflow/adapter_histogram
     duplex_seq_metrics:
         type: File[]
         outputSource: alignment_workflow/duplex_seq_metrics
 steps:
     fastq_to_bam:
+        scatter: [read1_fastq, read2_fastq, library_name, platform_unit, platform]
+        scatterMethod: dotproduct
         run: fastq_to_bam.cwl
         in:
             read1_fastq: read1_fastq

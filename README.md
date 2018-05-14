@@ -14,6 +14,7 @@ At this time, the toil_compatibility branch relies on large, a/k/a fat, Docker i
 | detect_variants | mgibio/cle | detect_variants/detect_variants.cwl |
 | rnaseq | mgibio/rnaseq | rnaseq/workflow.cwl |
 | tumor_only_exome | mgibio/cle | exome_workflow.cwl |
+| umi_alignment | mgibio/dna-alignment | umi_alignment/duplex_workflow.cwl |
 
 If a tool or workflow is a subworkflow of a larger workflow, then the same Docker image is required.
 
