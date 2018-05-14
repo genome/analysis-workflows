@@ -86,14 +86,14 @@ steps:
        out:
             [duplex_seq_metrics]
     bam_to_cram:
-        run: ../unaligned_bam_to_bqsr/bam_to_cram.cwl
+        run: bam_to_cram.cwl
         in:
             bam: clip_overlap/clipped_bam
             reference: reference
         out:
             [cram]
     index_cram:
-        run: ../unaligned_bam_to_bqsr/index_cram.cwl
+        run: index_cram.cwl
         in:
             cram: bam_to_cram/cram
         out:
