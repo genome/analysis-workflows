@@ -26,10 +26,10 @@ inputs:
     target_intervals:
        type: File?
 outputs:
-    aligned_bam:
+    aligned_cram:
         type: File
-        secondaryFiles: [^.bai]
-        outputSource: alignment_workflow/aligned_bam
+        secondaryFiles: [.crai, ^.crai]
+        outputSource: alignment_workflow/aligned_cram
     adapter_histogram:
         type: File[]
         outputSource: alignment_workflow/adapter_histogram
@@ -59,4 +59,4 @@ steps:
             reference: reference
             target_intervals: target_intervals
         out:
-            [aligned_bam, adapter_histogram, duplex_seq_metrics]
+            [aligned_cram, adapter_histogram, duplex_seq_metrics]
