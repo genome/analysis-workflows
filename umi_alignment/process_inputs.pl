@@ -127,6 +127,11 @@ $inputs{bait_intervals} = {
 };
 my @read_structure_inputs = grep { $_->name eq 'read_structure' } @inputs;
 my @read_structure = map $_->value_id, @read_structure_inputs;
+
+unless(@read_structure) {
+    push @read_structure, ('8M+T') x 2;
+}
+
 $inputs{read_structure} = \@read_structure;
 
 my $yaml = File::Spec->join($build->data_directory, 'inputs.yaml');
