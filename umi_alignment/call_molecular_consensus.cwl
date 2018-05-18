@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: 'call molectular consensus'
+label: 'call molecular consensus'
 baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/fgbio-0.5.0.jar", "CallMolecularConsensusReads"]
 arguments:
     ["--error-rate-pre-umi", "45", "--error-rate-post-umi", "30", "--min-input-base-quality", "30", "--min-reads", "1",
