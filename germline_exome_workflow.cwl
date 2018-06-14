@@ -92,6 +92,32 @@ steps:
             picard_metric_accumulation_level: picard_metric_accumulation_level   
         out:
             [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_base_coverage_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+    extract_freemix:
+        in:
+            verify_bam_id_metrics: alignment_and_qc/verify_bam_id_metrics
+        out:
+            [freemix_score]
+        run:
+            class: ExpressionTool
+            requirements:
+                - class: InlineJavascriptRequirement
+            inputs:
+                verify_bam_id_metrics:
+                    type: File
+                    inputBinding:
+                        loadContents: true
+            outputs:
+                freemix_score:
+                    type: string?
+            expression: |
+                        ${
+                            var metrics = inputs.verify_bam_id_metrics.contents.split("\n");
+                            if ( metrics[0].split("\t")[6] == 'FREEMIX' ) {
+                                return {'freemix_score': metrics[1].split("\t")[6]};
+                            } else {
+                                return {'freemix_score:': null };
+                            }
+                        }
     haplotype_caller:
         run: detect_variants/gatk_haplotypecaller_iterator.cwl
         in:
@@ -100,5 +126,6 @@ steps:
             emit_reference_confidence: emit_reference_confidence
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
+            contamination_fraction: extract_freemix/freemix_score
         out:
             [gvcf]
