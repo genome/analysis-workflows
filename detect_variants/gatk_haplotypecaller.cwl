@@ -56,6 +56,11 @@ inputs:
             prefix: "--dbsnp"
             position: 6
         secondaryFiles: [.tbi]
+    contamination_fraction:
+        type: string?
+        inputBinding:
+            prefix: "-contamination"
+            position: 7
 outputs:
     gvcf:
         type: File

@@ -25,6 +25,8 @@ inputs:
     dbsnp_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    contamination_fraction:
+        type: string?
 outputs:
     gvcf:
         type: File[]
@@ -41,5 +43,6 @@ steps:
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
             dbsnp_vcf: dbsnp_vcf
+            contamination_fraction: contamination_fraction
         out:
             [gvcf]
