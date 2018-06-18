@@ -18,10 +18,10 @@ inputs:
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
-    collect_hs_metrics_per_target_coverage:
-        type: boolean?
-    collect_hs_metrics_per_base_coverage:
-        type: boolean?
+    per_target_intervals:
+        type: File
+    per_base_intervals:
+        type: File
     picard_metric_accumulation_level:
         type: string?
         default: ALL_READS
@@ -37,10 +37,10 @@ outputs:
         outputSource: collect_hs_metrics/hs_metrics
     per_target_coverage_metrics:
         type: File?
-        outputSource: collect_hs_metrics/per_target_coverage_metrics
+        outputSource: collect_per_target_metrics/per_target_coverage_metrics
     per_base_coverage_metrics:
         type: File?
-        outputSource: collect_hs_metrics/per_base_coverage_metrics
+        outputSource: collect_per_base_metrics/per_base_coverage_metrics
     flagstats:
         type: File
         outputSource: samtools_flagstat/flagstats
@@ -75,10 +75,40 @@ steps:
             metric_accumulation_level: picard_metric_accumulation_level
             bait_intervals: bait_intervals
             target_intervals: target_intervals
-            per_target_coverage: collect_hs_metrics_per_target_coverage
-            per_base_coverage: collect_hs_metrics_per_base_coverage
+            per_target_coverage:
+                default: false
+            per_base_coverage:
+                default: false
         out:
-            [hs_metrics, per_target_coverage_metrics, per_base_coverage_metrics]
+            [hs_metrics]
+    collect_per_base_metrics:
+        run: collect_hs_metrics.cwl
+        in:
+            cram: cram
+            reference: reference
+            metric_accumulation_level: picard_metric_accumulation_level
+            bait_intervals: bait_intervals
+            target_intervals: per_base_intervals
+            per_target_coverage:
+                default: false
+            per_base_coverage:
+                default: true
+        out:
+            [per_base_coverage_metrics]
+    collect_per_target_metrics:
+        run: collect_hs_metrics.cwl
+        in:
+            cram: cram
+            reference: reference
+            metric_accumulation_level: picard_metric_accumulation_level
+            bait_intervals: bait_intervals
+            target_intervals: per_target_intervals
+            per_target_coverage:
+                default: true
+            per_base_coverage:
+                default: false
+        out:
+            [per_target_coverage_metrics]
     samtools_flagstat:
         run: samtools_flagstat.cwl
         in:
