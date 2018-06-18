@@ -41,6 +41,17 @@ inputs:
             items:
                 type: array
                 items: string
+    vep_cache_dir:
+        type: string?
+    synonyms_file:
+        type: File?
+    coding_only:
+        type: boolean?
+    hgvs_annotation:
+        type: boolean?
+    custom_gnomad_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
 outputs:
     cram:
         type: File
@@ -77,7 +88,10 @@ outputs:
         outputSource: haplotype_caller/gvcf
     final_vcf:
         type: File
-        outputSource: genotype_gvcfs/genotype_vcf
+        outputSource: annotate_variants/annotated_vcf
+    vep_summary:
+        type: File
+        outputSource: annotate_variants/vep_summary
 steps:
     alignment_and_qc:
         run: exome_alignment.cwl
@@ -139,3 +153,15 @@ steps:
             gvcfs: haplotype_caller/gvcf
         out:
             [genotype_vcf]
+    annotate_variants:
+        run: detect_variants/vep.cwl
+        in:
+            vcf: genotype_gvcfs/genotype_vcf
+            cache_dir: vep_cache_dir
+            synonyms_file: synonyms_file
+            coding_only: coding_only
+            hgvs: hgvs_annotation
+            reference: reference
+            custom_gnomad_vcf: custom_gnomad_vcf
+        out:
+            [annotated_vcf, vep_summary]
