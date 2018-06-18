@@ -75,6 +75,9 @@ outputs:
     gvcf:
         type: File[]
         outputSource: haplotype_caller/gvcf
+    final_vcf:
+        type: File
+        outputSource: genotype_gvcfs/genotype_vcf
 steps:
     alignment_and_qc:
         run: exome_alignment.cwl
@@ -129,3 +132,10 @@ steps:
             contamination_fraction: extract_freemix/freemix_score
         out:
             [gvcf]
+    genotype_gvcfs:
+        run: detect_variants/gatk_genotypegvcfs.cwl
+        in:
+            reference: reference
+            gvcfs: haplotype_caller/gvcf
+        out:
+            [genotype_vcf]
