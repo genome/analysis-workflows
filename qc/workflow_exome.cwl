@@ -87,7 +87,7 @@ steps:
             cram: cram
             reference: reference
             metric_accumulation_level: picard_metric_accumulation_level
-            bait_intervals: bait_intervals
+            bait_intervals: per_base_intervals
             target_intervals: per_base_intervals
             per_target_coverage:
                 default: false
@@ -101,7 +101,7 @@ steps:
             cram: cram
             reference: reference
             metric_accumulation_level: picard_metric_accumulation_level
-            bait_intervals: bait_intervals
+            bait_intervals: per_target_intervals
             target_intervals: per_target_intervals
             per_target_coverage:
                 default: true
