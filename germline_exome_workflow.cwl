@@ -68,9 +68,15 @@ outputs:
     per_target_coverage_metrics:
         type: File?
         outputSource: alignment_and_qc/per_target_coverage_metrics
+    per_target_hs_metrics:
+        type: File?
+        outputSource: alignment_and_qc/per_target_hs_metrics
     per_base_coverage_metrics:
         type: File?
         outputSource: alignment_and_qc/per_base_coverage_metrics
+    per_base_hs_metrics:
+        type: File?
+        outputSource: alignment_and_qc/per_base_hs_metrics
     flagstats:
         type: File
         outputSource: alignment_and_qc/flagstats
@@ -103,7 +109,7 @@ steps:
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_base_coverage_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     extract_freemix:
         in:
             verify_bam_id_metrics: alignment_and_qc/verify_bam_id_metrics
