@@ -20,7 +20,11 @@ inputs:
         secondaryFiles: [.tbi]
     per_target_intervals:
         type: File
+    per_target_bait_intervals:
+        type: File
     per_base_intervals:
+        type: File
+    per_base_bait_intervals:
         type: File
     picard_metric_accumulation_level:
         type: string?
@@ -87,7 +91,7 @@ steps:
             cram: cram
             reference: reference
             metric_accumulation_level: picard_metric_accumulation_level
-            bait_intervals: per_base_intervals
+            bait_intervals: per_base_bait_intervals
             target_intervals: per_base_intervals
             per_target_coverage:
                 default: false
@@ -101,7 +105,7 @@ steps:
             cram: cram
             reference: reference
             metric_accumulation_level: picard_metric_accumulation_level
-            bait_intervals: per_target_intervals
+            bait_intervals: per_target_bait_intervals
             target_intervals: per_target_intervals
             per_target_coverage:
                 default: true

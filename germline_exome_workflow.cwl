@@ -28,7 +28,11 @@ inputs:
         type: File
     per_target_intervals:
         type: File
+    per_target_bait_intervals:
+        type: File
     per_base_intervals:
+        type: File
+    per_base_bait_intervals:
         type: File
     omni_vcf:
         type: File
@@ -93,7 +97,9 @@ steps:
             bait_intervals: bait_intervals
             target_intervals: target_intervals
             per_target_intervals: per_target_intervals
+            per_target_bait_intervals: per_target_bait_intervals
             per_base_intervals: per_base_intervals
+            per_base_bait_intervals: per_base_bait_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
         out:
