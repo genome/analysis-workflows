@@ -9,6 +9,7 @@ arguments:
 requirements:
     - class: ResourceRequirement
       ramMin: 16000
+    - class: InlineJavascriptRequirement
 inputs:
     cram:
         type: File
@@ -34,11 +35,27 @@ inputs:
     per_target_coverage:
         type: boolean?
         inputBinding:
-            prefix: "PER_TARGET_COVERAGE=$(inputs.output_prefix)-PerTargetCoverage.txt"
+            prefix: "PER_TARGET_COVERAGE="
+            valueFrom: |
+                        ${
+                            if(self) {
+                                return inputs.output_prefix + "-PerTargetCoverage.txt"
+                            } else {
+                                return false;
+                            }
+                        }
     per_base_coverage:
         type: boolean?
         inputBinding:
-            prefix: "PER_BASE_COVERAGE=$(inputs.output_prefix)-PerBaseCoverage.txt"
+            prefix: "PER_BASE_COVERAGE="
+            valueFrom: |
+                        ${
+                            if(self) {
+                                return inputs.output_prefix + "-PerBaseCoverage.txt"
+                            } else {
+                                return false;
+                            }
+                        }
     output_prefix:
         type: string?
         default: "out"
