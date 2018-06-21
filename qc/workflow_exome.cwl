@@ -82,7 +82,8 @@ steps:
         in:
             cram: cram
             reference: reference
-            metric_accumulation_level: picard_metric_accumulation_level
+            metric_accumulation_level:
+                valueFrom: "ALL_READS"
             bait_intervals: bait_intervals
             target_intervals: target_intervals
             per_target_coverage:
@@ -98,7 +99,8 @@ steps:
         in:
             cram: cram
             reference: reference
-            metric_accumulation_level: picard_metric_accumulation_level
+            metric_accumulation_level:
+                valueFrom: "ALL_READS"
             bait_intervals: per_base_bait_intervals
             target_intervals: per_base_intervals
             per_target_coverage:
@@ -114,7 +116,8 @@ steps:
         in:
             cram: cram
             reference: reference
-            metric_accumulation_level: picard_metric_accumulation_level
+            metric_accumulation_level:
+                valueFrom: "ALL_READS"
             bait_intervals: per_target_bait_intervals
             target_intervals: per_target_intervals
             per_target_coverage:
