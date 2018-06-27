@@ -7,8 +7,8 @@ baseCommand: ["/usr/bin/biscuit","align"]
 requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
-      ramMin: 16000
-      coresMin: 16
+      ramMin: 32000
+      coresMin: 12
 arguments: [
     { valueFrom: "-t", position: -10 },
     { valueFrom: $(runtime.cores), position: -9 },
