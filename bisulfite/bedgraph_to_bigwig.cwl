@@ -7,7 +7,7 @@ baseCommand: ["/usr/bin/bedGraphToBigWig"]
 requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
-      ramMin: 16000
+      ramMin: 32000
       coresMin: 1
 arguments:
     - position: 3
