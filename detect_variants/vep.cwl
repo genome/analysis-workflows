@@ -5,7 +5,6 @@ class: CommandLineTool
 label: "Ensembl Variant Effect Predictor"
 baseCommand: ["/usr/bin/perl", "-I", "/opt/lib/perl/VEP/Plugins", "/usr/bin/variant_effect_predictor.pl"]
 requirements:
-    - class: ShellCommandRequirement
     - class: InlineJavascriptRequirement
     - class: ResourceRequirement
       ramMin: 32000
