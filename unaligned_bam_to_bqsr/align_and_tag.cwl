@@ -8,7 +8,7 @@ baseCommand: ["/bin/bash", "/usr/bin/alignment_helper.sh"]
 requirements:
     - class: ResourceRequirement
       coresMin: 8
-      ramMin: 16000
+      ramMin: 20000
 stdout: "refAlign.bam"
 arguments:
     - position: 4
