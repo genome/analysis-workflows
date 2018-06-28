@@ -88,7 +88,8 @@ outputs:
         outputSource: haplotype_caller/gvcf
     final_vcf:
         type: File
-        outputSource: annotate_variants/annotated_vcf
+        outputSource: index_annotated_vcf/indexed_vcf
+        secondaryFiles: [.tbi]
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
@@ -165,3 +166,15 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
         out:
             [annotated_vcf, vep_summary]
+    bgzip_annotated_vcf:
+        run: detect_variants/bgzip.cwl
+        in:
+            file: annotate_variants/annotated_vcf
+        out:
+            [bgzipped_file]
+    index_annotated_vcf:
+        run: detect_variants/index.cwl
+        in:
+            vcf: bgzip_annotated_vcf/bgzipped_file
+        out:
+            [indexed_vcf]
