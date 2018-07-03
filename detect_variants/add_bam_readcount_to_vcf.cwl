@@ -4,32 +4,24 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "add bam_readcount info to vcf"
 
-baseCommand: ["/usr/bin/python3", "/usr/bin/add_bam_readcount_to_vcf_helper.py"]
-arguments:
-    [$(runtime.outdir)]
+baseCommand: ["vcf-readcount-annotator"]
 inputs:
     vcf:
         type: File
         inputBinding:
-            position: -3
-    bam_readcount_tsvs:
-        type:
-            type: array
-            items: File
+            position: 1
+    bam_readcount_tsv:
+        type: File
         inputBinding:
-            prefix: ""
-            itemSeparator: ","
-            separate: false
-            position: -2
-    sample_names:
-        type:
-            type: array
-            items: string
+            position: 2
+    data_type:
+        type: string
         inputBinding:
-            prefix: ""
-            itemSeparator: ","
-            separate: false
-            position: -1
+            position: 3
+    sample_name:
+        type: string
+        inputBinding:
+            prefix: "-s"
 outputs:
     annotated_bam_readcount_vcf:
         type: File

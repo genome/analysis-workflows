@@ -260,13 +260,26 @@ steps:
             bam: normal_cram_to_bam/bam
         out:
             [bam_readcount_tsv]
-    add_bam_readcount_to_vcf:
+    add_tumor_bam_readcount_to_vcf:
         run: add_bam_readcount_to_vcf.cwl
         in:
             vcf: annotate_variants/annotated_vcf
-            bam_readcount_tsvs: [tumor_bam_readcount/bam_readcount_tsv, normal_bam_readcount/bam_readcount_tsv]
-            sample_names:
-                default: ['TUMOR', 'NORMAL']
+            bam_readcount_tsv: tumor_bam_readcount/bam_readcount_tsv
+            data_type:
+                default: 'DNA'
+            sample_name:
+                default: 'TUMOR'
+        out:
+            [tumor_annotated_bam_readcount_vcf]
+    add_normal_bam_readcount_to_vcf:
+        run: add_bam_readcount_to_vcf.cwl
+        in:
+            vcf: add_tumor_bam_readcount_to_vcf/tumor_annotated_bam_readcount_vcf
+            bam_readcount_tsv: normal_bam_readcount/bam_readcount_tsv
+            data_type:
+                default: 'DNA'
+            sample_name:
+                default: 'NORMAL'
         out:
             [annotated_bam_readcount_vcf]
     index:
