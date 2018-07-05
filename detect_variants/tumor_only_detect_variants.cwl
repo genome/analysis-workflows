@@ -148,14 +148,11 @@ steps:
     add_bam_readcount_to_vcf:
         run: add_bam_readcount_to_vcf.cwl
         in:
-            - id: vcf
-              source: annotate_variants/annotated_vcf
-            - id: bam_readcount_tsvs
-              source: bam_readcount/bam_readcount_tsv
-              valueFrom: ${ return [ self ]; }
-            - id: sample_names
-              source: sample_name
-              valueFrom: ${ return [ self ]; }
+            vcf: annotate_variants/annotated_vcf
+            bam_readcount_tsv: bam_readcount/bam_readcount_tsv
+            sample_name: sample_name
+            data_type:
+                default: 'DNA'
         out:
             [annotated_bam_readcount_vcf]
     index:
