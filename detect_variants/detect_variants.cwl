@@ -285,7 +285,7 @@ steps:
     index:
         run: index.cwl
         in:
-            vcf: add_bam_readcount_to_vcf/annotated_bam_readcount_vcf
+            vcf: add_normal_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
             [indexed_vcf]
     cle_annotated_vcf_filter:
