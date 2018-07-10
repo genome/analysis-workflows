@@ -26,6 +26,14 @@ inputs:
         type: File
     target_intervals:
         type: File
+    per_target_intervals:
+        type: File
+    per_target_bait_intervals:
+        type: File
+    per_base_intervals:
+        type: File
+    per_base_bait_intervals:
+        type: File
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -41,6 +49,17 @@ inputs:
             items:
                 type: array
                 items: string
+    vep_cache_dir:
+        type: string?
+    synonyms_file:
+        type: File?
+    coding_only:
+        type: boolean?
+    hgvs_annotation:
+        type: boolean?
+    custom_gnomad_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
 outputs:
     cram:
         type: File
@@ -60,9 +79,15 @@ outputs:
     per_target_coverage_metrics:
         type: File?
         outputSource: alignment_and_qc/per_target_coverage_metrics
+    per_target_hs_metrics:
+        type: File?
+        outputSource: alignment_and_qc/per_target_hs_metrics
     per_base_coverage_metrics:
         type: File?
         outputSource: alignment_and_qc/per_base_coverage_metrics
+    per_base_hs_metrics:
+        type: File?
+        outputSource: alignment_and_qc/per_base_hs_metrics
     flagstats:
         type: File
         outputSource: alignment_and_qc/flagstats
@@ -75,6 +100,13 @@ outputs:
     gvcf:
         type: File[]
         outputSource: haplotype_caller/gvcf
+    final_vcf:
+        type: File
+        outputSource: index_annotated_vcf/indexed_vcf
+        secondaryFiles: [.tbi]
+    vep_summary:
+        type: File
+        outputSource: annotate_variants/vep_summary
 steps:
     alignment_and_qc:
         run: exome_alignment.cwl
@@ -88,10 +120,14 @@ steps:
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
+            per_target_intervals: per_target_intervals
+            per_target_bait_intervals: per_target_bait_intervals
+            per_base_intervals: per_base_intervals
+            per_base_bait_intervals: per_base_bait_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_base_coverage_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     extract_freemix:
         in:
             verify_bam_id_metrics: alignment_and_qc/verify_bam_id_metrics
@@ -129,3 +165,34 @@ steps:
             contamination_fraction: extract_freemix/freemix_score
         out:
             [gvcf]
+    genotype_gvcfs:
+        run: detect_variants/gatk_genotypegvcfs.cwl
+        in:
+            reference: reference
+            gvcfs: haplotype_caller/gvcf
+        out:
+            [genotype_vcf]
+    annotate_variants:
+        run: detect_variants/vep.cwl
+        in:
+            vcf: genotype_gvcfs/genotype_vcf
+            cache_dir: vep_cache_dir
+            synonyms_file: synonyms_file
+            coding_only: coding_only
+            hgvs: hgvs_annotation
+            reference: reference
+            custom_gnomad_vcf: custom_gnomad_vcf
+        out:
+            [annotated_vcf, vep_summary]
+    bgzip_annotated_vcf:
+        run: detect_variants/bgzip.cwl
+        in:
+            file: annotate_variants/annotated_vcf
+        out:
+            [bgzipped_file]
+    index_annotated_vcf:
+        run: detect_variants/index.cwl
+        in:
+            vcf: bgzip_annotated_vcf/bgzipped_file
+        out:
+            [indexed_vcf]

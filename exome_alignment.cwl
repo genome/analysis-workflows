@@ -26,6 +26,14 @@ inputs:
         type: File
     target_intervals:
         type: File
+    per_target_intervals:
+        type: File
+    per_target_bait_intervals:
+        type: File
+    per_base_intervals:
+        type: File
+    per_base_bait_intervals:
+        type: File
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -50,9 +58,15 @@ outputs:
     per_target_coverage_metrics:
         type: File?
         outputSource: qc/per_target_coverage_metrics
+    per_target_hs_metrics:
+        type: File?
+        outputSource: qc/per_target_hs_metrics
     per_base_coverage_metrics:
         type: File?
         outputSource: qc/per_base_coverage_metrics
+    per_base_hs_metrics:
+        type: File?
+        outputSource: qc/per_base_hs_metrics
     flagstats:
         type: File
         outputSource: qc/flagstats
@@ -81,6 +95,10 @@ steps:
             reference: reference
             bait_intervals: bait_intervals
             target_intervals: target_intervals
+            per_target_intervals: per_target_intervals
+            per_target_bait_intervals: per_target_bait_intervals
+            per_base_intervals: per_base_intervals
+            per_base_bait_intervals: per_base_bait_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level
-        out: [insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_base_coverage_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+        out: [insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]

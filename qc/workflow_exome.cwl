@@ -18,10 +18,14 @@ inputs:
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
-    collect_hs_metrics_per_target_coverage:
-        type: boolean?
-    collect_hs_metrics_per_base_coverage:
-        type: boolean?
+    per_target_intervals:
+        type: File
+    per_target_bait_intervals:
+        type: File
+    per_base_intervals:
+        type: File
+    per_base_bait_intervals:
+        type: File
     picard_metric_accumulation_level:
         type: string?
         default: ALL_READS
@@ -34,13 +38,19 @@ outputs:
         outputSource: collect_alignment_summary_metrics/alignment_summary_metrics
     hs_metrics:
         type: File
-        outputSource: collect_hs_metrics/hs_metrics
+        outputSource: collect_roi_hs_metrics/hs_metrics
     per_target_coverage_metrics:
         type: File?
-        outputSource: collect_hs_metrics/per_target_coverage_metrics
+        outputSource: collect_per_target_hs_metrics/per_target_coverage_metrics
+    per_target_hs_metrics:
+        type: File?
+        outputSource: collect_per_target_hs_metrics/hs_metrics
     per_base_coverage_metrics:
         type: File?
-        outputSource: collect_hs_metrics/per_base_coverage_metrics
+        outputSource: collect_per_base_hs_metrics/per_base_coverage_metrics
+    per_base_hs_metrics:
+        type: File?
+        outputSource: collect_per_base_hs_metrics/hs_metrics
     flagstats:
         type: File
         outputSource: samtools_flagstat/flagstats
@@ -67,18 +77,57 @@ steps:
             metric_accumulation_level: picard_metric_accumulation_level
         out:
             [alignment_summary_metrics]
-    collect_hs_metrics:
+    collect_roi_hs_metrics:
         run: collect_hs_metrics.cwl
         in:
             cram: cram
             reference: reference
-            metric_accumulation_level: picard_metric_accumulation_level
+            metric_accumulation_level:
+                valueFrom: "ALL_READS"
             bait_intervals: bait_intervals
             target_intervals: target_intervals
-            per_target_coverage: collect_hs_metrics_per_target_coverage
-            per_base_coverage: collect_hs_metrics_per_base_coverage
+            per_target_coverage:
+                default: false
+            per_base_coverage:
+                default: false
+            output_prefix:
+                valueFrom: "roi"
         out:
-            [hs_metrics, per_target_coverage_metrics, per_base_coverage_metrics]
+            [hs_metrics]
+    collect_per_base_hs_metrics:
+        run: collect_hs_metrics.cwl
+        in:
+            cram: cram
+            reference: reference
+            metric_accumulation_level:
+                valueFrom: "ALL_READS"
+            bait_intervals: per_base_bait_intervals
+            target_intervals: per_base_intervals
+            per_target_coverage:
+                default: false
+            per_base_coverage:
+                default: true
+            output_prefix:
+                valueFrom: "base"
+        out:
+            [hs_metrics, per_base_coverage_metrics]
+    collect_per_target_hs_metrics:
+        run: collect_hs_metrics.cwl
+        in:
+            cram: cram
+            reference: reference
+            metric_accumulation_level:
+                valueFrom: "ALL_READS"
+            bait_intervals: per_target_bait_intervals
+            target_intervals: per_target_intervals
+            per_target_coverage:
+                default: true
+            per_base_coverage:
+                default: false
+            output_prefix:
+                valueFrom: "target"
+        out:
+            [hs_metrics, per_target_coverage_metrics]
     samtools_flagstat:
         run: samtools_flagstat.cwl
         in:
