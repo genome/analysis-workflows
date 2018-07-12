@@ -50,6 +50,9 @@ outputs:
     insert_size_metrics:
         type: File
         outputSource: alignment_and_qc/insert_size_metrics
+    insert_size_histogram:
+        type: File
+        outputSource: alignment_and_qc/insert_size_histogram
     alignment_summary_metrics:
         type: File
         outputSource: alignment_and_qc/alignment_summary_metrics
@@ -112,7 +115,7 @@ steps:
             intervals: qc_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     detect_variants:
         run: detect_variants/tumor_only_detect_variants.cwl
         in:
