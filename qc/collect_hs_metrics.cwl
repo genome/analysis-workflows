@@ -59,6 +59,16 @@ inputs:
     output_prefix:
         type: string?
         default: "out"
+    minimum_mapping_quality:
+        type: int?
+        default: 1
+        inputBinding:
+            prefix: "MINIMUM_MAPPING_QUALITY="
+    minimum_base_quality:
+        type: int?
+        default: 1
+        inputBinding:
+            prefix: "MINIMUM_BASE_QUALITY="
 outputs:
     hs_metrics:
         type: File
