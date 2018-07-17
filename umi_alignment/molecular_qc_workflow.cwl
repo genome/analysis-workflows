@@ -32,6 +32,10 @@ inputs:
         secondaryFiles: [.tbi]
     picard_metric_accumulation_level:
         type: string
+    minimum_mapping_quality:
+        type: int?
+    minimum_base_quality:
+        type: int?
 outputs:
     aligned_cram:
         type: File
@@ -97,5 +101,7 @@ steps:
             per_target_bait_intervals: per_target_bait_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level
+            minimum_mapping_quality: minimum_mapping_quality
+            minimum_base_quality: minimum_base_quality
         out:
             [insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
