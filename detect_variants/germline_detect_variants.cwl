@@ -41,6 +41,10 @@ outputs:
         type: File
         outputSource: index_annotated_vcf/indexed_vcf
         secondaryFiles: [.tbi]
+    coding_vcf:
+        type: File
+        outputSource: index_coding_vcf/indexed_vcf
+        secondaryFiles: [.tbi]
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
@@ -87,3 +91,22 @@ steps:
             vcf: bgzip_annotated_vcf/bgzipped_file
         out:
             [indexed_vcf]
+    coding_variant_filter:
+        run: coding_variant_filter.cwl
+        in:
+            vcf: annotate_variants/annotated_vcf
+        out:
+            [filtered_vcf]
+    bgzip_coding_vcf:
+        run: bgzip.cwl
+        in:
+            file: coding_variant_filter/filtered_vcf
+        out:
+            [bgzipped_file]
+    index_coding_vcf:
+        run: index.cwl
+        in:
+            vcf: bgzip_coding_vcf/bgzipped_file
+        out:
+            [indexed_vcf]
+
