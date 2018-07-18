@@ -33,6 +33,8 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    limit_variant_intervals:
+        type: File
 outputs:
     gvcf:
         type: File[]
@@ -44,6 +46,10 @@ outputs:
     coding_vcf:
         type: File
         outputSource: index_coding_vcf/indexed_vcf
+        secondaryFiles: [.tbi]
+    limited_vcf:
+        type: File
+        outputSource: limit_variants/filtered_vcf
         secondaryFiles: [.tbi]
     vep_summary:
         type: File
@@ -109,4 +115,14 @@ steps:
             vcf: bgzip_coding_vcf/bgzipped_file
         out:
             [indexed_vcf]
+    limit_variants:
+        run: select_variants.cwl
+        in:
+            reference: reference
+            vcf: index_coding_vcf/indexed_vcf
+            interval_list: limit_variant_intervals
+            exclude_filtered:
+                default: true
+        out:
+            [filtered_vcf]
 

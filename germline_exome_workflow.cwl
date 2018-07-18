@@ -104,6 +104,10 @@ outputs:
         type: File
         outputSource: detect_variants/final_vcf
         secondaryFiles: [.tbi]
+    limited_vcf:
+        type: File
+        outputSource: detect_variants/limited_vcf
+        secondaryFiles: [.tbi]
     vep_summary:
         type: File
         outputSource: detect_variants/vep_summary
@@ -168,5 +172,6 @@ steps:
             coding_only: coding_only
             hgvs: hgvs_annotation
             custom_gnomad_vcf: custom_gnomad_vcf
+            limit_variant_intervals: per_base_intervals
         out:
-            [gvcf, final_vcf, vep_summary]
+            [gvcf, final_vcf, limited_vcf, vep_summary]
