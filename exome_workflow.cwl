@@ -84,6 +84,10 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    min_mapping_quality:
+        type: int?
+    min_base_quality:
+        type: int?
 outputs:
     cram:
         type: File
@@ -187,5 +191,7 @@ steps:
             docm_vcf: docm_vcf
             hgvs_annotation: hgvs_annotation
             custom_gnomad_vcf: custom_gnomad_vcf
+            min_mapping_quality: min_mapping_quality
+            min_base_quality: min_base_quality
         out:
             [varscan_vcf, docm_gatk_vcf, annotated_vcf, final_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv]

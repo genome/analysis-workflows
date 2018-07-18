@@ -14,6 +14,16 @@ arguments: [
 ]
 stdout: $(inputs.sample)_bam_readcount.tsv
 inputs:
+    min_mapping_quality:
+        type: int?
+        default: -1
+        inputBinding:
+            position: -6
+    min_base_quality:
+        type: int?
+        default: -1
+        inputBinding:
+            position: -5
     vcf:
         type: File
         inputBinding:
