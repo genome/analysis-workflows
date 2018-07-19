@@ -14,32 +14,33 @@ arguments: [
 ]
 stdout: $(inputs.sample)_bam_readcount.tsv
 inputs:
-    min_mapping_quality:
-        type: int?
+    vcf:
+        type: File
         inputBinding:
             position: -6
+    sample:
+        type: string
+        inputBinding:
+            position: -5
+    reference_fasta:
+        type: string
+        inputBinding:
+            position: -4
+    bam:
+        type: File
+        inputBinding:
+            position: -3
+        secondaryFiles: [.bai]
+    min_mapping_quality:
+        type: int?
+        default: 0
+        inputBinding:
+            position: -2
     min_base_quality:
         type: int?
         default: 20
         inputBinding:
-            position: -5
-    vcf:
-        type: File
-        inputBinding:
-            position: -4
-    sample:
-        type: string
-        inputBinding:
-            position: -3
-    reference_fasta:
-        type: string
-        inputBinding:
-            position: -2
-    bam:
-        type: File
-        inputBinding:
             position: -1
-        secondaryFiles: [.bai]
 outputs:
     bam_readcount_tsv:
         type: stdout
