@@ -31,14 +31,14 @@ inputs:
         inputBinding:
             position: -3
         secondaryFiles: [.bai]
-    min_mapping_quality:
-        type: int?
-        default: 0
-        inputBinding:
-            position: -2
     min_base_quality:
         type: int?
         default: 20
+        inputBinding:
+            position: -2
+    min_mapping_quality:
+        type: int?
+        default: 0
         inputBinding:
             position: -1
 outputs:
