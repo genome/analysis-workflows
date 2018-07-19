@@ -123,5 +123,7 @@ steps:
             bam: merge/merged_bam
             reference_annotation: reference_annotation
             sample_name: sample_name
+            firststrand: firststrand
+            secondstrand: secondstrand
         out:
             [transcript_gtf,gene_expression_tsv]
