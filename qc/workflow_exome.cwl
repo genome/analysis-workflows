@@ -29,6 +29,10 @@ inputs:
     picard_metric_accumulation_level:
         type: string?
         default: ALL_READS
+    minimum_mapping_quality:
+        type: int?
+    minimum_base_quality:
+        type: int?
 outputs:
     insert_size_metrics:
         type: File
@@ -92,6 +96,8 @@ steps:
                 default: false
             output_prefix:
                 valueFrom: "roi"
+            minimum_mapping_quality: minimum_mapping_quality
+            minimum_base_quality: minimum_base_quality
         out:
             [hs_metrics]
     collect_per_base_hs_metrics:
@@ -109,6 +115,8 @@ steps:
                 default: true
             output_prefix:
                 valueFrom: "base"
+            minimum_mapping_quality: minimum_mapping_quality
+            minimum_base_quality: minimum_base_quality
         out:
             [hs_metrics, per_base_coverage_metrics]
     collect_per_target_hs_metrics:
@@ -126,6 +134,8 @@ steps:
                 default: false
             output_prefix:
                 valueFrom: "target"
+            minimum_mapping_quality: minimum_mapping_quality
+            minimum_base_quality: minimum_base_quality
         out:
             [hs_metrics, per_target_coverage_metrics]
     samtools_flagstat:
