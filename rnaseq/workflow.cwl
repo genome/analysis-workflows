@@ -48,7 +48,7 @@ outputs:
     final_bam:
         type: File
         outputSource: index_bam/indexed_bam
-        secondaryFiles: [.bai, ^.bai]
+        secondaryFiles: [.bai]
     stringtie_transcript_gtf:
         type: File
         outputSource: stringtie/transcript_gtf
