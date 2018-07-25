@@ -37,6 +37,9 @@ outputs:
     insert_size_metrics:
         type: File
         outputSource: collect_insert_size_metrics/insert_size_metrics
+    insert_size_histogram:
+        type: File
+        outputSource: collect_insert_size_metrics/insert_size_histogram
     alignment_summary_metrics:
         type: File
         outputSource: collect_alignment_summary_metrics/alignment_summary_metrics
@@ -72,7 +75,7 @@ steps:
             reference: reference
             metric_accumulation_level: picard_metric_accumulation_level
         out:
-            [insert_size_metrics]
+            [insert_size_metrics, insert_size_histogram]
     collect_alignment_summary_metrics:
         run: collect_alignment_summary_metrics.cwl
         in:

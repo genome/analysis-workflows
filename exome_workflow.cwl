@@ -98,6 +98,9 @@ outputs:
     insert_size_metrics:
         type: File
         outputSource: alignment_and_qc/insert_size_metrics
+    insert_size_histogram:
+        type: File
+        outputSource: alignment_and_qc/insert_size_histogram
     alignment_summary_metrics:
         type: File
         outputSource: alignment_and_qc/alignment_summary_metrics
@@ -171,7 +174,7 @@ steps:
             minimum_mapping_quality: minimum_mapping_quality
             minimum_base_quality: minimum_base_quality
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     detect_variants:
         run: detect_variants/tumor_only_detect_variants.cwl
         in:

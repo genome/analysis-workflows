@@ -37,6 +37,9 @@ outputs:
     insert_size_metrics:
         type: File
         outputSource: qc/insert_size_metrics
+    insert_size_histogram:
+        type: File
+        outputSource: qc/insert_size_histogram
     alignment_summary_metrics:
         type: File
         outputSource: qc/alignment_summary_metrics
@@ -80,4 +83,4 @@ steps:
             omni_vcf: omni_vcf
             intervals: intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level
-        out: [insert_size_metrics, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+        out: [insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
