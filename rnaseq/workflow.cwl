@@ -36,7 +36,7 @@ inputs:
         type: int
     trimming_min_readlength:
         type: int
-    kallisto_index: 
+    kallisto_index:
        type: File
     gene_transcript_lookup_table:
        type: File
@@ -44,6 +44,19 @@ inputs:
        type: boolean?
     secondstrand:
        type: boolean?
+    refFlat:
+        type: File
+    ribosomal_intervals:
+        type: File
+    strand:
+        type: string
+    metrics_output_file:
+        type: string
+    chart_output_file:
+        type: string
+    bam:
+        type: File
+
 outputs:
     final_bam:
         type: File
@@ -64,6 +77,12 @@ outputs:
     gene_abundance:
         type: File
         outputSource: transcript_to_gene/gene_abundance
+    metrics:
+        type: File
+        outputSource: generate_qc_metrics/metrics
+    chart:
+        type: File
+        outputSource: generate_qc_metrics/chart
 steps:
     bam_to_trimmed_fastq_and_hisat_alignments:
         run: bam_to_trimmed_fastq_and_hisat_alignments.cwl
@@ -89,12 +108,12 @@ steps:
             kallisto_index: kallisto_index
             firststrand: firststrand
             secondstrand: secondstrand
-            fastqs: 
+            fastqs:
                 source: bam_to_trimmed_fastq_and_hisat_alignments/fastqs
                 valueFrom: |
                     ${
                       for(var i=0;i<self.length;i++){self[i] = self[i].reverse()}
-                      return(self)                      
+                      return(self)
                      }
         out:
             [expression_transcript_table,expression_transcript_h5]
@@ -127,3 +146,14 @@ steps:
             secondstrand: secondstrand
         out:
             [transcript_gtf,gene_expression_tsv]
+    generate_qc_metrics:
+        run: generate_qc_metrics.cwl
+        in:
+            refFlat: refFlat
+            ribosomal_intervals: ribosomal_intervals
+            strand: strand
+            metrics_output_file: metrics_output_file
+            chart_output_file: chart_output_file
+            bam: bam
+        out:
+            [metrics, chart]
