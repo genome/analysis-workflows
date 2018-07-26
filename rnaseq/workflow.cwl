@@ -64,6 +64,9 @@ outputs:
     gene_abundance:
         type: File
         outputSource: transcript_to_gene/gene_abundance
+    fusion_inputs:
+        type: File
+        outputSource: kallisto/fusion_inputs
 steps:
     bam_to_trimmed_fastq_and_hisat_alignments:
         run: bam_to_trimmed_fastq_and_hisat_alignments.cwl
@@ -97,7 +100,7 @@ steps:
                       return(self)                      
                      }
         out:
-            [expression_transcript_table,expression_transcript_h5]
+            [expression_transcript_table,expression_transcript_h5,fusion_inputs]
     transcript_to_gene:
         run: transcript_to_gene.cwl
         in:
