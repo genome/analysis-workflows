@@ -30,3 +30,15 @@ trimming_max_uncalled: 300
 trimming_min_readlength: 25
 sample_name: H_NJ-HCC1395-HCC1395_RNA
 firststrand: TRUE
+refFlat:
+    - class: File
+    - path: /gscmnt/gc2560/core/GRC-human-build38_human_90_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.90.refFlat.txt
+ribosomal_intervals:
+    - class: File
+    - path: /gscmnt/gc2560/core/GRC-human-build38_human_90_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.90.rRNA.interval_list
+strand: "FIRST_READ_TRANSCRIPTION_STRAND"
+metrics_output_file: "test_rna_metrics.txt"
+chart_output_file: "test_rna_metrics.pdf"
+bam: 
+    - class: File
+    - path: /gscmnt/gc2761/aml_ppg/model_data/4ac3f004141445adba90fd51965a2926/build82e1f36656624a1db412e7e6318b2ed4/results/merged.bam
