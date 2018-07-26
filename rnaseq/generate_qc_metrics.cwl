@@ -4,6 +4,8 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Picard: RNA Seq Metrics"
 baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/opt/picard/picard.jar", "CollectRnaSeqMetrics"]
+arguments: [ {valueFrom: "O=$(runtime.outdir)/rna_metrics.txt"},
+             {valueFrom: "CHART=$(runtime.outdir)/rna_metrics.pdf"} ]
 inputs:
     refFlat:
         type: File
@@ -20,16 +22,6 @@ inputs:
         inputBinding:
             prefix: "STRAND="
             separate: false
-    metrics_output_file:
-        type: string
-        inputBinding:
-            prefix: "O="
-            separate: false
-    chart_output_file:
-        type: string
-        inputBinding:
-            prefix: "CHART="
-            separate: false
     bam:
         type: File
         inputBinding:
@@ -39,8 +31,8 @@ outputs:
     metrics:
         type: File
         outputBinding:
-            glob: $(inputs.metrics_output_file)
+            glob: "rna_metrics.txt"
     chart:
         type: File
         outputBinding:
-            glob: $(inputs.chart_output_file)
+            glob: "rna_metrics.pdf"

@@ -50,13 +50,6 @@ inputs:
         type: File
     strand:
         type: string
-    metrics_output_file:
-        type: string
-    chart_output_file:
-        type: string
-    bam:
-        type: File
-
 outputs:
     final_bam:
         type: File
@@ -152,8 +145,6 @@ steps:
             refFlat: refFlat
             ribosomal_intervals: ribosomal_intervals
             strand: strand
-            metrics_output_file: metrics_output_file
-            chart_output_file: chart_output_file
-            bam: bam
+            bam: bam_to_trimmed_fastq_and_hisat_alignments/aligned_bam
         out:
             [metrics, chart]
