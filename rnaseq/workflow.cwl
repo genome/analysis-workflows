@@ -145,6 +145,6 @@ steps:
             refFlat: refFlat
             ribosomal_intervals: ribosomal_intervals
             strand: strand
-            bam: bam_to_trimmed_fastq_and_hisat_alignments/aligned_bam
+            bam: index_bam/indexed_bam
         out:
             [metrics, chart]
