@@ -12,6 +12,7 @@ arguments: [
     "quant",
     "-t", $(runtime.cores),
     "-b", "100",
+    "--fusion",
     "-o", "kallisto",
 ]
 inputs:
@@ -47,3 +48,7 @@ outputs:
         type: File
         outputBinding:
             glob: "kallisto/abundance.h5"
+    fusion_evidence:
+        type: File
+        outputBinding:
+            glob: "kallisto/fusion.txt"

@@ -36,7 +36,7 @@ inputs:
         type: int
     trimming_min_readlength:
         type: int
-    kallisto_index: 
+    kallisto_index:
        type: File
     gene_transcript_lookup_table:
        type: File
@@ -64,6 +64,9 @@ outputs:
     gene_abundance:
         type: File
         outputSource: transcript_to_gene/gene_abundance
+    fusion_evidence:
+        type: File
+        outputSource: kallisto/fusion_evidence
 steps:
     bam_to_trimmed_fastq_and_hisat_alignments:
         run: bam_to_trimmed_fastq_and_hisat_alignments.cwl
@@ -89,15 +92,15 @@ steps:
             kallisto_index: kallisto_index
             firststrand: firststrand
             secondstrand: secondstrand
-            fastqs: 
+            fastqs:
                 source: bam_to_trimmed_fastq_and_hisat_alignments/fastqs
                 valueFrom: |
                     ${
                       for(var i=0;i<self.length;i++){self[i] = self[i].reverse()}
-                      return(self)                      
+                      return(self)
                      }
         out:
-            [expression_transcript_table,expression_transcript_h5]
+            [expression_transcript_table,expression_transcript_h5,fusion_evidence]
     transcript_to_gene:
         run: transcript_to_gene.cwl
         in:
