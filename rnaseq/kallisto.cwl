@@ -48,7 +48,7 @@ outputs:
         type: File
         outputBinding:
             glob: "kallisto/abundance.h5"
-    fusion_inputs:
+    fusion_evidence:
         type: File
         outputBinding:
             glob: "kallisto/fusion.txt"
