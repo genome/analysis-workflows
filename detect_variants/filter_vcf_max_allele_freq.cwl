@@ -2,13 +2,16 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "AF filter"
-baseCommand: ["/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep"]
+label: "MAX_AF filter"
+baseCommand: ["/usr/bin/perl", "/usr/bin/vcf_check.pl"]
 requirements:
     - class: InlineJavascriptRequirement
 arguments:
-    ["--format", "vcf",
-    "-o", { valueFrom: $(runtime.outdir)/annotated.af_filtered.vcf }]
+    [{ valueFrom: $(inputs.vcf.path) },
+    { valueFrom: $(runtime.outdir)/annotated.max_af_filtered.vcf },
+    "/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep",
+    "--format", "vcf",
+    "-o", { valueFrom: $(runtime.outdir)/annotated.max_af_filtered.vcf }]
 inputs:
     vcf:
         type: File
@@ -23,8 +26,8 @@ inputs:
                     return [
                         "--filter",
                         [
-                            "AF", "<", inputs.maximum_population_allele_frequency,
-                            "or not", "AF"
+                            "MAX_AF", "<", inputs.maximum_population_allele_frequency,
+                            "or not", "MAX_AF"
                         ].join(" ")
                     ]
                 }
@@ -33,4 +36,4 @@ outputs:
     filtered_vcf:
         type: File
         outputBinding:
-            glob: "annotated.af_filtered.vcf"
+            glob: "annotated.max_af_filtered.vcf"
