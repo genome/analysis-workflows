@@ -17,6 +17,7 @@ arguments:
     "--symbol",
     "--term", "SO",
     "--flag_pick",
+    "--transcript_version",
     "-o", { valueFrom: $(runtime.outdir)/annotated.vcf }]
 inputs:
     vcf:
