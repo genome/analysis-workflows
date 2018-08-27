@@ -5,8 +5,6 @@ class: CommandLineTool
 label: "add bam_readcount info to vcf"
 
 baseCommand: ["vcf-readcount-annotator"]
-requirements:
-    - class: InlineJavascriptRequirement
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/annotated.bam_readcount.vcf.gz }]
 inputs:

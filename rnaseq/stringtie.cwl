@@ -14,20 +14,30 @@ arguments: [
     "-n", $(runtime.cores)
 ]
 inputs:
+    firststrand:
+        type: boolean?
+        inputBinding:
+            prefix: "--rf"
+            position: 1
+    secondstrand:
+        type: boolean?
+        inputBinding:
+            prefix: "--fr"
+            position: 1
     reference_annotation:
         type: File
         inputBinding:
             prefix: "-G"
-            position: 1
+            position: 2
     sample_name:
         type: string
         inputBinding:
             prefix: "-l"
-            position: 2
+            position: 3
     bam:
         type: File
         inputBinding:
-            position: 3
+            position: 4
 outputs:
     transcript_gtf:
         type: File
