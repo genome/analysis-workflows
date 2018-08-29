@@ -70,6 +70,12 @@ inputs:
         type: boolean?
     hgvs_annotation:
         type: boolean?
+    filter_gnomADe_maximum_population_allele_frequency:
+        type: float?
+        default: 0.001;
+    filter_mapq0_threshold:
+        type: float?
+        default: 0.15
     cle_vcf_filter:
         type: boolean?
         default: false
@@ -291,18 +297,22 @@ steps:
         out:
             [annotated_bam_readcount_vcf]
     index:
-        run: index.cwl
+        run: index_vcf.cwl
         in:
             vcf: add_normal_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
             [indexed_vcf]
-    cle_annotated_vcf_filter:
-        run: cle_annotated_vcf_filter.cwl
-        in:
-            annotated_vcf: index/indexed_vcf
-            filter: cle_vcf_filter
-        out:
-            [annotated_filtered_vcf]
+    filter_vcf:
+        run: filter_vcf.cwl
+        in: 
+            vcf: index/indexed_vcf
+            filter_gnomADe_maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
+            filter_mapq0_threshold: filter_mapq0_threshold
+            tumor_bam: tumor_cram_to_bam/bam
+            do_cle_vcf_filter: cle_vcf_filter
+            reference: reference
+        out: 
+            [filtered_vcf]
     annotated_filter_bgzip:
         run: bgzip.cwl
         in:
