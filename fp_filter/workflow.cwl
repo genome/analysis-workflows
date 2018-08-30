@@ -64,7 +64,7 @@ steps:
         out:
             [bgzipped_file]
     fp_index:
-        run: ../detect_variants/index.cwl
+        run: ../detect_variants/index_vcf.cwl
         in:
             vcf: fp_bgzip/bgzipped_file
         out:
