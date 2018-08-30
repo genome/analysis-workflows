@@ -61,7 +61,7 @@ inputs:
         type: string?
     synonyms_file:
         type: File?
-    coding_only:
+    annotate_coding_only:
         type: boolean?
         default: true
     hgvs_annotation:
