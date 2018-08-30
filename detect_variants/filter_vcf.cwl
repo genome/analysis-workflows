@@ -44,6 +44,6 @@ steps:
         run: filter_vcf_cle.cwl
         in:
             vcf: filter_vcf_mapq0/mapq0_filtered_vcf
-            filter: cle_vcf_filter
+            filter: do_cle_vcf_filter
         out:
             [cle_filtered_vcf]

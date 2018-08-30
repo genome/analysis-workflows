@@ -316,11 +316,11 @@ steps:
     annotated_filter_bgzip:
         run: bgzip.cwl
         in:
-            file: cle_annotated_vcf_filter/annotated_filtered_vcf
+            file: filter_vcf/filtered_vcf
         out:
             [bgzipped_file]
     annotated_filter_index:
-        run: index.cwl
+        run: index_vcf.cwl
         in:
             vcf: annotated_filter_bgzip/bgzipped_file
         out:

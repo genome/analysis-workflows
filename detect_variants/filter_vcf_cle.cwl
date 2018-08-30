@@ -8,7 +8,7 @@ arguments: [
     $(inputs.annotated_vcf.path), $(runtime.outdir)
 ]
 inputs:
-    annotated_vcf:
+    vcf:
         type: File
     filter:
         type: boolean
@@ -16,7 +16,7 @@ inputs:
             prefix: "filter"
             position: 1
 outputs:
-    annotated_filtered_vcf:
+    cle_filtered_vcf:
         type: File
         outputBinding:
             glob: "annotated_filtered.vcf"
