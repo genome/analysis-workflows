@@ -196,5 +196,7 @@ steps:
             docm_vcf: docm_vcf
             hgvs_annotation: hgvs_annotation
             custom_gnomad_vcf: custom_gnomad_vcf
+            min_mapping_quality: minimum_mapping_quality
+            min_base_quality: minimum_base_quality
         out:
             [varscan_vcf, docm_gatk_vcf, annotated_vcf, final_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv]
