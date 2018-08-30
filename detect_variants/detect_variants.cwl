@@ -30,9 +30,9 @@ inputs:
     strelka_cpu_reserved:
         type: int?
         default: 8
-    min_base_quality:
+    minimum_base_quality:
         type: int?
-    min_mapping_quality:
+    minimum_mapping_quality:
         type: int?
     mutect_scatter_count:
         type: int?
@@ -252,8 +252,8 @@ steps:
                 default: 'TUMOR'
             reference_fasta: reference
             bam: tumor_cram_to_bam/bam
-            min_base_quality: min_base_quality
-            min_mapping_quality: min_mapping_quality
+            min_base_quality: minimum_base_quality
+            min_mapping_quality: minimum_mapping_quality
         out:
             [bam_readcount_tsv]
     normal_bam_readcount:
