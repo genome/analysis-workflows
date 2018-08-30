@@ -29,3 +29,7 @@ outputs:
         type: File
         outputBinding:
             glob: "InsertSizeMetrics.txt"
+    insert_size_histogram:
+        type: File
+        outputBinding:
+            glob: "InsertSizeHistogram.pdf"
