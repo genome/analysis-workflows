@@ -45,8 +45,10 @@ inputs:
         type: string
     minimum_mapping_quality:
         type: int?
+        default: 0
     minimum_base_quality:
         type: int?
+        default: 0
     interval_list:
         type: File
     cosmic_vcf:
