@@ -90,7 +90,7 @@ inputs:
         type: string?
     synonyms_file:
         type: File?
-    coding_only:
+    annotate_coding_only:
         type: boolean?
     hgvs_annotation:
         type: boolean?
@@ -312,7 +312,7 @@ steps:
             docm_vcf: docm_vcf
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
-            coding_only: coding_only
+            annotate_coding_only: annotate_coding_only
             hgvs_annotation: hgvs_annotation
             cle_vcf_filter: cle_vcf_filter
             variants_to_table_fields: variants_to_table_fields

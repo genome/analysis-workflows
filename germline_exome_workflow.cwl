@@ -53,7 +53,7 @@ inputs:
         type: string?
     synonyms_file:
         type: File?
-    coding_only:
+    annotate_coding_only:
         type: boolean?
     hgvs_annotation:
         type: boolean?
@@ -182,7 +182,7 @@ steps:
             contamination_fraction: extract_freemix/freemix_score
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
-            coding_only: coding_only
+            annotate_coding_only: annotate_coding_only
             hgvs: hgvs_annotation
             custom_gnomad_vcf: custom_gnomad_vcf
             limit_variant_intervals: per_base_intervals
