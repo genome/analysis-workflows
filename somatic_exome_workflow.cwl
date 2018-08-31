@@ -76,7 +76,7 @@ inputs:
         default: 8
     varscan_min_var_freq:
         type: float?
-        default: 0.1
+        default: 0.05
     varscan_p_value:
         type: float?
         default: 0.99
