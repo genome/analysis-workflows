@@ -21,7 +21,7 @@ inputs:
     known_indels:
         type: File
         secondaryFiles: [.tbi]
-    dbsnp:
+    dbsnp_vcf:
         type: File
         secondaryFiles: [.tbi]
     bqsr_intervals:
@@ -49,9 +49,6 @@ inputs:
         type: int?
     interval_list:
         type: File
-    dbsnp_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
     cosmic_vcf:
         type: File?
         secondaryFiles: [.tbi]
@@ -253,7 +250,7 @@ steps:
             readgroups: tumor_readgroups
             mills: mills
             known_indels: known_indels
-            dbsnp: dbsnp
+            dbsnp_vcf: dbsnp_vcf
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -275,7 +272,7 @@ steps:
             readgroups: normal_readgroups
             mills: mills
             known_indels: known_indels
-            dbsnp: dbsnp
+            dbsnp_vcf: dbsnp_vcf
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals

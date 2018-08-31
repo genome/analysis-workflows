@@ -17,7 +17,7 @@ inputs:
     known_indels:
         type: File
         secondaryFiles: [.tbi]
-    dbsnp:
+    dbsnp_vcf:
         type: File
         secondaryFiles: [.tbi]
     bqsr_intervals:
@@ -92,7 +92,7 @@ steps:
             readgroups: readgroups
             mills: mills
             known_indels: known_indels
-            dbsnp: dbsnp
+            dbsnp: dbsnp_vcf
             bqsr_intervals: bqsr_intervals
         out: [final_cram,mark_duplicates_metrics_file]
     qc:
