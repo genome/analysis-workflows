@@ -1,5 +1,5 @@
 @HD	VN:1.4	SO:unsorted
-@SQ	SN:chr22	LN:50818468	AS:GRC-human-build38_GRCh38_full_analysis_set_plus_decoy_hla_fix_FP236240_8	M5:ac37ec46683600f808cdd41eac1d55cd	UR:ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/GRCh38_reference_genome/GRCh38_full_analysis_set_plus_decoy_hla.fa	SP:human
+@SQ	SN:chr22	LN:50818468	M5:7fd4fef6fa7f78eb7613b90c4f08d877	UR:/gscmnt/gc6122/cancer-genomics/medseq/annotations/cwl_test_files/GRCh38_full_analysis_set_plus_decoy_hla.fa
 chr22	29604000	29604000	+	r16252
 chr22	29604041	29604041	+	r16253
 chr22	29636758	29636758	+	r16254
