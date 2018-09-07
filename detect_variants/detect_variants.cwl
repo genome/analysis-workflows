@@ -72,7 +72,7 @@ inputs:
         type: boolean?
     filter_gnomADe_maximum_population_allele_frequency:
         type: float?
-        default: 0.001;
+        default: 0.001
     filter_mapq0_threshold:
         type: float?
         default: 0.15
