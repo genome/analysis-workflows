@@ -10,10 +10,10 @@ inputs:
         type: string
     tumor_cram:
         type: File
-        secondaryFiles: [^.crai,.crai]
+        secondaryFiles: [.crai,^.crai]
     normal_cram:
         type: File
-        secondaryFiles: [^.crai,.crai]
+        secondaryFiles: [.crai,^.crai]
     interval_list:
         type: File
     dbsnp_vcf:

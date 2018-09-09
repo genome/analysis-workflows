@@ -8,7 +8,7 @@ requirements:
 inputs:
     cram:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [.crai,^.crai]
     reference:
         type: string
     vcf:
