@@ -11,10 +11,10 @@ requirements:
 inputs:
     tumor_cram:
         type: File
-        secondaryFiles: [.crai]
+        secondaryFiles: [.crai,^.crai]
     normal_cram:
         type: File
-        secondaryFiles: [.crai]
+        secondaryFiles: [.crai,^.crai]
     reference:
         type: string
     interval_list:

@@ -13,10 +13,10 @@ inputs:
         type: string
     tumor_cram:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [.crai]
     normal_cram:
         type: File?
-        secondaryFiles: [^.crai]
+        secondaryFiles: [.crai]
     interval_list:
         type: File
     scatter_count:
