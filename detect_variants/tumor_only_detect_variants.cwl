@@ -178,7 +178,7 @@ steps:
         out:
             [filtered_vcf]
     af_filter:
-        run: gnomADe_AF_filter.cwl
+        run: filter_vcf_gnomADe_allele_freq.cwl
         in:
             vcf: hard_filter/filtered_vcf
             maximum_population_allele_frequency: maximum_population_allele_frequency
