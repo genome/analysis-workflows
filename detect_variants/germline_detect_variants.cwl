@@ -92,7 +92,7 @@ steps:
         out:
             [bgzipped_file]
     index_annotated_vcf:
-        run: index.cwl
+        run: index_vcf.cwl
         in:
             vcf: bgzip_annotated_vcf/bgzipped_file
         out:
@@ -110,7 +110,7 @@ steps:
         out:
             [bgzipped_file]
     index_coding_vcf:
-        run: index.cwl
+        run: index_vcf.cwl
         in:
             vcf: bgzip_coding_vcf/bgzipped_file
         out:
