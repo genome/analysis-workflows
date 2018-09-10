@@ -33,7 +33,7 @@ inputs:
                 }
             position: 2
 outputs:
-    gnomADe_allele_freq_filtered_vcf:
+    filtered_vcf:
         type: File
         outputBinding:
             glob: "annotated.af_filtered.vcf"

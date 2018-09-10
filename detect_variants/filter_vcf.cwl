@@ -31,7 +31,7 @@ steps:
             vcf: vcf
             maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
         out:
-            [gnomADe_allele_freq_filtered_vcf]
+            [filtered_vcf]
     filter_vcf_mapq0:
         run: filter_vcf_mapq0.cwl
         in: 
