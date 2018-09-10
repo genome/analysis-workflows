@@ -14,6 +14,7 @@ inputs:
         type: float
     tumor_bam: 
         type: File
+        secondaryFiles: [.bai]
     do_cle_vcf_filter: 
         type: boolean
     reference: 
