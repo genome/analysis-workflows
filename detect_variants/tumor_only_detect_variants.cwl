@@ -60,9 +60,9 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    min_mapping_quality:
+    readcount_minimum_mapping_quality:
         type: int?
-    min_base_quality:
+    readcount_minimum_base_quality:
         type: int?
 outputs:
     varscan_vcf:
@@ -147,8 +147,8 @@ steps:
             sample: sample_name
             reference_fasta: reference
             bam: cram_to_bam/bam
-            min_mapping_quality: min_mapping_quality
-            min_base_quality: min_base_quality
+            min_mapping_quality: readcount_minimum_mapping_quality
+            min_base_quality: readcount_minimum_base_quality
         out:
             [bam_readcount_tsv]
     add_bam_readcount_to_vcf:
