@@ -58,7 +58,7 @@ steps:
         out:
             [name_sorted_bam]
     mark_duplicates_and_sort:
-        run: mark_duplicates_and_sort.cwl
+        run: ../definitions/tools/mark_duplicates_and_sort.cwl
         in:
             bam: name_sort/name_sorted_bam
         out:
