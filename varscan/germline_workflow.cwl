@@ -50,7 +50,7 @@ steps:
         out:
             [interval_bed]
     varscan:
-        run: varscan_germline.cwl
+        run: ../definitions/tools/varscan_germline.cwl
         in:
             reference: reference
             cram: cram
