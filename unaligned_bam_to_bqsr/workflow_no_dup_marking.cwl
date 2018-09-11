@@ -67,7 +67,7 @@ steps:
         out:
             [bqsr_table]
     apply_bqsr:
-        run: apply_bqsr.cwl
+        run: ../definitions/tools/apply_bqsr.cwl
         in:
             reference: reference
             bam: index_bam/indexed_bam
