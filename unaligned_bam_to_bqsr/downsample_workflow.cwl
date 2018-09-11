@@ -38,7 +38,7 @@ steps:
     downsample:
         scatter: [bam]
         scatterMethod: dotproduct
-        run: downsample.cwl
+        run: ../definitions/tools/downsample.cwl
         in:
             bam: bams
             probability: downsample_probability
