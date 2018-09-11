@@ -6,6 +6,8 @@ baseCommand: ['/usr/bin/perl', '/usr/bin/split_interval_list_helper.pl']
 requirements:
     - class: ResourceRequirement
       ramMin: 6000
+    - class: DockerRequirement
+      dockerPull: mgibio/cle
 arguments:
     [{ valueFrom: OUTPUT=$(runtime.outdir) }]
 inputs:
