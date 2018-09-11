@@ -73,7 +73,7 @@ steps:
         out:
             [bqsr_table]
     apply_bqsr:
-        run: apply_bqsr.cwl
+        run: ../definitions/tools/apply_bqsr.cwl
         in:
             reference: reference
             bam: mark_duplicates_and_sort/sorted_bam
