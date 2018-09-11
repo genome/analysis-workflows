@@ -69,7 +69,7 @@ outputs:
         outputSource: process_somatic_indels/loh
 steps:
     somatic:
-        run: varscan_somatic.cwl
+        run: ../definitions/tools/varscan_somatic.cwl
         in:
             reference: reference
             normal_cram: normal_cram
