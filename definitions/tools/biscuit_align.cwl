@@ -9,6 +9,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 32000
       coresMin: 12
+    - class: DockerRequirement
+      dockerPull: "mgibio/bisulfite"
 arguments: [
     { valueFrom: "-t", position: -10 },
     { valueFrom: $(runtime.cores), position: -9 },
