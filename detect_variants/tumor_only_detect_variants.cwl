@@ -185,7 +185,7 @@ steps:
         out:
             [filtered_vcf]
     coding_variant_filter:
-        run: filter_vcf_coding_variant.cwl
+        run: ../definitions/tools/filter_vcf_coding_variant.cwl
         in:
             vcf: af_filter/filtered_vcf
         out:
