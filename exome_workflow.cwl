@@ -17,7 +17,7 @@ inputs:
     known_indels:
         type: File
         secondaryFiles: [.tbi]
-    dbsnp:
+    dbsnp_vcf:
         type: File
         secondaryFiles: [.tbi]
     bqsr_intervals:
@@ -165,7 +165,7 @@ steps:
             readgroups: readgroups
             mills: mills
             known_indels: known_indels
-            dbsnp: dbsnp
+            dbsnp_vcf: dbsnp_vcf
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals

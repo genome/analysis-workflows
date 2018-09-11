@@ -17,7 +17,7 @@ inputs:
         type: string[]?
     reference:
         type: string
-    dbsnp:
+    dbsnp_vcf:
         type: File
         secondaryFiles: [.tbi]
     mills:

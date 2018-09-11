@@ -17,7 +17,7 @@ inputs:
     known_indels:
         type: File
         secondaryFiles: [.tbi]
-    dbsnp:
+    dbsnp_vcf:
         type: File
         secondaryFiles: [.tbi]
     omni_vcf:
@@ -73,7 +73,7 @@ steps:
             readgroups: readgroups
             mills: mills
             known_indels: known_indels
-            dbsnp: dbsnp
+            dbsnp_vcf: dbsnp_vcf
         out: [final_cram,mark_duplicates_metrics_file]
     qc:
         run: qc/workflow_wgs.cwl
