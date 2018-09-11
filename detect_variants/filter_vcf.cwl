@@ -42,7 +42,7 @@ steps:
         out:
             [mapq0_filtered_vcf]
     filter_vcf_cle:
-        run: filter_vcf_cle.cwl
+        run: ../definitions/tools/filter_vcf_cle.cwl
         in:
             vcf: filter_vcf_mapq0/mapq0_filtered_vcf
             filter: do_cle_vcf_filter
