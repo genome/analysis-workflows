@@ -203,7 +203,7 @@ steps:
         out:
             [indexed_vcf]
     variants_to_table:
-        run: variants_to_table.cwl
+        run: ../definitions/tools/variants_to_table.cwl
         in:
             reference: reference
             vcf: index_filtered/indexed_vcf
