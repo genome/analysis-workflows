@@ -26,7 +26,7 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     filter_vcf_gnomADe_allele_freq:
-        run: filter_vcf_gnomADe_allele_freq.cwl
+        run: ../definitions/tools/filter_vcf_gnomADe_allele_freq.cwl
         in:
             vcf: vcf
             maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
