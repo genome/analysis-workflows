@@ -9,6 +9,8 @@ arguments:
 requirements:
     - class: ResourceRequirement
       ramMin: 16000
+    - class: DockerRequirement
+      dockerPull: mgibio/cle
 inputs:
     cram:
         type: File
