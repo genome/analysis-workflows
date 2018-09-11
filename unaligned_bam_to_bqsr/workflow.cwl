@@ -52,7 +52,7 @@ steps:
         out:
             [merged_bam]
     name_sort:
-        run: name_sort.cwl
+        run: ../definitions/tools/name_sort.cwl
         in:
             bam: merge/merged_bam
         out:
