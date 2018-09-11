@@ -34,9 +34,12 @@ inputs:
     secondstrand:
         type: boolean?
 outputs:
-    fastqs:
-        type: File[]
-        outputSource: trim_fastq/fastqs
+    fastq1:
+        type: File
+        outputSource: trim_fastq/fastq1
+    fastq2:
+        type: File
+        outputSource: trim_fastq/fastq2
     aligned_bam:
         type: File
         outputSource: hisat2_align/aligned_bam
@@ -58,17 +61,13 @@ steps:
             max_uncalled: max_uncalled
             min_readlength: min_readlength
         out:
-            [fastqs]
+            [fastq1, fastq2]
     hisat2_align:
         run: hisat2_align.cwl
         in:
             reference_index: reference_index
-            fastq1: 
-                source: trim_fastq/fastqs
-                valueFrom: $(self[0])
-            fastq2: 
-                source: trim_fastq/fastqs
-                valueFrom: $(self[1])
+            fastq1: trim_fastq/fastq1
+            fastq2: trim_fastq/fastq2
             read_group_id: read_group_id
             read_group_fields: read_group_fields
             firststrand: firststrand
