@@ -67,7 +67,7 @@ steps:
         out:
             [gvcf]
     genotype_gvcfs:
-        run: gatk_genotypegvcfs.cwl
+        run: ../definitions/tools/gatk_genotypegvcfs.cwl
         in:
             reference: reference
             gvcfs: haplotype_caller/gvcf
