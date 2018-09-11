@@ -44,7 +44,7 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     intervals_to_bed:
-        run: intervals_to_bed.cwl
+        run: ../definitions/tools/intervals_to_bed.cwl
         in:
             interval_list: interval_list
         out:
