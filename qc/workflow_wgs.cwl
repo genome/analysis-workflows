@@ -60,7 +60,7 @@ steps:
         out:
             [insert_size_metrics, insert_size_histogram]
     collect_alignment_summary_metrics:
-        run: collect_alignment_summary_metrics.cwl
+        run: ../definitions/tools/collect_alignment_summary_metrics.cwl
         in:
             cram: cram
             reference: reference
