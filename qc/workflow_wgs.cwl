@@ -52,7 +52,7 @@ outputs:
         outputSource: verify_bam_id/verify_bam_id_depth
 steps:
     collect_insert_size_metrics:
-        run: collect_insert_size_metrics.cwl
+        run: ../definitions/tools/collect_insert_size_metrics.cwl
         in:
             cram: cram
             reference: reference
