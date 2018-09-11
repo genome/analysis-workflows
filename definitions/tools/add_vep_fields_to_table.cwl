@@ -5,6 +5,9 @@ class: CommandLineTool
 label: "add VEP annotation to report"
 
 baseCommand: ["/usr/bin/python", "/usr/bin/add_annotations_to_table_helper.py"]
+requirements:
+    - class: DockerRequirement
+      dockerPull: mgibio/cle
 arguments:
     - position: 4
       valueFrom: $(runtime.outdir)
