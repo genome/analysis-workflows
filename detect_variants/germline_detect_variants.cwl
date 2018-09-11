@@ -116,7 +116,7 @@ steps:
         out:
             [indexed_vcf]
     limit_variants:
-        run: select_variants.cwl
+        run: ../definitions/tools/select_variants.cwl
         in:
             reference: reference
             vcf: index_coding_vcf/indexed_vcf
