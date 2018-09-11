@@ -46,7 +46,7 @@ steps:
         out:
             [tagged_bam]
     merge:
-        run: merge.cwl
+        run: ../definitions/tools/merge_bams.cwl
         in:
             bams: align/tagged_bam
         out:
