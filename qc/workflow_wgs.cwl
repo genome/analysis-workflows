@@ -84,7 +84,7 @@ steps:
         out:
             [wgs_metrics]
     samtools_flagstat:
-        run: samtools_flagstat.cwl
+        run: ../definitions/tools/samtools_flagstat.cwl
         in:
             cram: cram
         out: [flagstats]

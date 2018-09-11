@@ -142,7 +142,7 @@ steps:
         out:
             [hs_metrics, per_target_coverage_metrics]
     samtools_flagstat:
-        run: samtools_flagstat.cwl
+        run: ../definitions/tools/samtools_flagstat.cwl
         in:
             cram: cram
         out: [flagstats]
