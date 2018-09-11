@@ -6,6 +6,8 @@ label: "AF filter"
 baseCommand: ["/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep"]
 requirements:
     - class: InlineJavascriptRequirement
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 arguments:
     ["--format", "vcf",
     "-o", { valueFrom: $(runtime.outdir)/annotated.af_filtered.vcf }]
