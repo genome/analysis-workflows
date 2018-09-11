@@ -81,14 +81,14 @@ steps:
         out:
             [bqsr_bam]
     bam_to_cram:
-        run: bam_to_cram.cwl
+        run: ../definitions/tools/bam_to_cram.cwl
         in:
             reference: reference
             bam: apply_bqsr/bqsr_bam
         out:
             [cram]
     index_cram:
-        run: index_cram.cwl
+        run: ../definitions/tools/index_cram.cwl
         in:
             cram: bam_to_cram/cram
         out:
