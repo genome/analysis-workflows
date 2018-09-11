@@ -64,7 +64,7 @@ steps:
         out:
             [sorted_bam, metrics_file]
     bqsr:
-        run: bqsr.cwl
+        run: ../definitions/tools/bqsr.cwl
         in:
             reference: reference
             bam: mark_duplicates_and_sort/sorted_bam
