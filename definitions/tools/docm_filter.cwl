@@ -3,8 +3,8 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "docm filter"
+baseCommand: ["/usr/bin/perl", "/usr/bin/docm_filter.pl"]
 arguments: [
-    "/usr/bin/perl", "/usr/bin/docm_filter.pl",
     $(inputs.docm_out.path), $(inputs.normal_cram.path), $(inputs.tumor_cram.path), $(runtime.outdir)
 ]
 inputs:
