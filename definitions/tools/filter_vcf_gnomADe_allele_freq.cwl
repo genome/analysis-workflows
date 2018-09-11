@@ -6,6 +6,8 @@ label: "gnomADe_AF filter"
 baseCommand: ["/usr/bin/perl", "/usr/bin/vcf_check.pl"]
 requirements:
     - class: InlineJavascriptRequirement
+    - class: DockerRequirement
+      dockerPull: mgibio/cle
 arguments:
     [{ valueFrom: $(inputs.vcf.path) },
     { valueFrom: $(runtime.outdir)/annotated.af_filtered.vcf },
