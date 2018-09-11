@@ -7,6 +7,8 @@ baseCommand: ["/opt/samtools/bin/samtools", "flagstat"]
 requirements:
     - class: ResourceRequirement
       ramMin: 4000
+    - class: DockerRequirement
+      dockerPull: mgibio/cle
 stdout: flagstat.out
 inputs:
     cram:
