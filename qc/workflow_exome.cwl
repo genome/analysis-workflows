@@ -147,7 +147,7 @@ steps:
             cram: cram
         out: [flagstats]
     select_variants:
-        run: ../detect_variants/select_variants.cwl
+        run: ../definitions/tools/select_variants.cwl
         in:
             reference: reference
             vcf: omni_vcf
