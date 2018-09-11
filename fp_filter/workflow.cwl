@@ -70,7 +70,7 @@ steps:
         out:
             [indexed_vcf]
     hard_filter:
-        run: ../detect_variants/select_variants.cwl
+        run: ../definitions/tools/select_variants.cwl
         in:
             reference: reference
             vcf: fp_index/indexed_vcf
