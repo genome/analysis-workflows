@@ -68,7 +68,7 @@ steps:
         out:
             [alignment_summary_metrics]
     collect_gc_bias_metrics:
-        run: collect_gc_bias_metrics.cwl
+        run: ../definitions/tools/collect_gc_bias_metrics.cwl
         in:
             cram: cram
             reference: reference
