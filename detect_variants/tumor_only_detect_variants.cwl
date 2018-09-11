@@ -114,7 +114,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     combine_variants:
-        run: germline_combine_variants.cwl
+        run: ../definitions/tools/germline_combine_variants.cwl
         in:
             reference: reference
             varscan_vcf: varscan/filtered_vcf
@@ -122,7 +122,7 @@ steps:
         out:
             [combined_vcf]
     annotate_variants:
-        run: vep.cwl
+        run: ../definitions/tools/vep.cwl
         in:
             vcf: combine_variants/combined_vcf
             cache_dir: vep_cache_dir
@@ -185,7 +185,7 @@ steps:
         out:
             [filtered_vcf]
     coding_variant_filter:
-        run: filter_vcf_coding_variant.cwl
+        run: ../definitions/tools/filter_vcf_coding_variant.cwl
         in:
             vcf: af_filter/filtered_vcf
         out:

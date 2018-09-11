@@ -4,6 +4,9 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Coding Variant filter"
 baseCommand: ["/usr/bin/perl", "/usr/bin/vcf_check.pl"]
+requirements:
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 arguments:
     [{ valueFrom: $(inputs.vcf.path) },
     { valueFrom: $(runtime.outdir)/annotated.coding_variant_filtered.vcf },
