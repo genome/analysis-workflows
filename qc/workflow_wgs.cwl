@@ -76,7 +76,7 @@ steps:
         out:
             [gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary]
     collect_wgs_metrics:
-        run: collect_wgs_metrics.cwl
+        run: ../definitions/tools/collect_wgs_metrics.cwl
         in:
             cram: cram
             reference: reference
