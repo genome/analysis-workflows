@@ -19,7 +19,7 @@ steps:
         out:
             [processed_vcf]
     bgzip:
-        run: ../detect_variants/bgzip.cwl
+        run: ../definitions/tools/bgzip.cwl
         in:
             file: add_gt/processed_vcf
         out:

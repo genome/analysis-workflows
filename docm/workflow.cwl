@@ -47,7 +47,7 @@ steps:
         out:
             [docm_filter_out]
     bgzip:
-        run: ../detect_variants/bgzip.cwl
+        run: ../definitions/tools/bgzip.cwl
         in:
             file: docm_filter/docm_filter_out
         out:

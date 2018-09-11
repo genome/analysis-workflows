@@ -63,7 +63,7 @@ steps:
         out: 
             [vcf]
     bgzip:
-        run: ../detect_variants/bgzip.cwl
+        run: ../definitions/tools/bgzip.cwl
         in: 
             file: somaticfilter/vcf
         out:
