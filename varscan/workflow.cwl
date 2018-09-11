@@ -115,7 +115,7 @@ steps:
         out:
             [indexed_vcf]
     merge:
-        run: ../detect_variants/merge.cwl
+        run: ../definitions/tools/merge.cwl
         in:
             vcfs: [index_snvs/indexed_vcf, index_indels/indexed_vcf]
         out:
