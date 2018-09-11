@@ -78,7 +78,7 @@ steps:
         out:
             [cpgs,cpg_bedgraph]
     bedgraph_to_bigwig:
-        run: bedgraph_to_bigwig.cwl
+        run: ../definitions/tools/bedgraph_to_bigwig.cwl
         in:
             bedgraph: vcf2bed/cpg_bedgraph
             reference_sizes: reference_sizes
