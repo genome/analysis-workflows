@@ -96,7 +96,7 @@ steps:
         out:
           [bam]
     verify_bam_id:
-        run: verify_bam_id.cwl
+        run: ../definitions/tools/verify_bam_id.cwl
         in:
             bam: cram_to_bam/bam
             vcf: omni_vcf
