@@ -162,7 +162,7 @@ steps:
         out:
             [annotated_bam_readcount_vcf]
     index:
-        run: ..definitions/tools/index_vcf.cwl
+        run: ../definitions/tools/index_vcf.cwl
         in:
             vcf: add_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
