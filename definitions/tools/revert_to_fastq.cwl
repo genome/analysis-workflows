@@ -11,6 +11,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 16000
       tmpdirMin: 25000
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 inputs:
     bam:
         type: File
