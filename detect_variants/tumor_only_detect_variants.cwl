@@ -152,7 +152,7 @@ steps:
         out:
             [bam_readcount_tsv]
     add_bam_readcount_to_vcf:
-        run: add_bam_readcount_to_vcf.cwl
+        run: ../definitions/tools/add_bam_readcount_to_vcf.cwl
         in:
             vcf: annotate_variants/annotated_vcf
             bam_readcount_tsv: bam_readcount/bam_readcount_tsv
