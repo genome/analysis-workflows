@@ -191,7 +191,7 @@ steps:
         out:
             [filtered_vcf]
     bgzip_filtered:
-        run: bgzip.cwl
+        run: ../definitions/tools/bgzip.cwl
         in:
             file: coding_variant_filter/filtered_vcf
         out:

@@ -58,7 +58,7 @@ steps:
         out:
             [filtered_vcf]
     fp_bgzip:
-        run: ../detect_variants/bgzip.cwl
+        run: ../definitions/tools/bgzip.cwl
         in:
             file: fp_filter/filtered_vcf
         out:

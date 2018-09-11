@@ -314,7 +314,7 @@ steps:
         out: 
             [filtered_vcf]
     annotated_filter_bgzip:
-        run: bgzip.cwl
+        run: ../definitions/tools/bgzip.cwl
         in:
             file: filter_vcf/filtered_vcf
         out:
