@@ -114,7 +114,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     combine_variants:
-        run: germline_combine_variants.cwl
+        run: ../definitions/tools/germline_combine_variants.cwl
         in:
             reference: reference
             varscan_vcf: varscan/filtered_vcf
