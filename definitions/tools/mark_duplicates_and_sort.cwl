@@ -9,6 +9,8 @@ requirements:
     - class: ResourceRequirement
       coresMin: 8
       ramMin: 40000
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 arguments:
     - position: 2
       valueFrom: $(runtime.cores)
