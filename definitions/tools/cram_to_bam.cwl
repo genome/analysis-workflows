@@ -7,6 +7,8 @@ baseCommand: ["/opt/samtools/bin/samtools", "view", "-b"]
 requirements:
     - class: ResourceRequirement
       ramMin: 4000
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 arguments:
         ["-o", { valueFrom: $(runtime.outdir)/output.bam }]
 inputs:
