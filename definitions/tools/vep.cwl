@@ -9,6 +9,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 32000
       tmpdirMin: 25000
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 arguments:
     ["--format", "vcf",
     "--vcf",
