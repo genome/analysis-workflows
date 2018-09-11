@@ -3,10 +3,8 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "cle_annotated_vcf_filter"
-arguments: [
-    "/usr/bin/perl", "/usr/bin/docm_and_coding_indel_selection.pl",
-    $(inputs.vcf.path), $(runtime.outdir)
-]
+baseCommand: ["/usr/bin/perl", "/usr/bin/docm_and_coding_indel_selection.pl"]
+arguments: [$(inputs.vcf.path), $(runtime.outdir)]
 inputs:
     vcf:
         type: File
