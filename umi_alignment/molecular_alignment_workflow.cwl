@@ -39,7 +39,7 @@ steps:
         out:
             [aligned_bam, adapter_metrics]
     merge:
-        run: merge.cwl
+        run: ../definitions/tools/merge_bams.cwl
         in:
             bams: align/aligned_bam
         out:
