@@ -8,6 +8,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 8000
     - class: InlineJavascriptRequirement
+    - class: DockerRequirement
+      dockerPull: mgibio/cle
 arguments:
     ["-o", 'genotype.vcf.gz']
 inputs:
