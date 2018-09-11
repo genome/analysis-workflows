@@ -47,7 +47,7 @@ steps:
         out:
             [merged_bam]
     position_sort:
-        run: position_sort.cwl
+        run: ../definitions/tools/position_sort.cwl
         in:
             bam: merge/merged_bam
         out:
