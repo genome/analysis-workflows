@@ -212,7 +212,7 @@ steps:
         out:
             [variants_tsv]
     add_vep_fields_to_table:
-        run: add_vep_fields_to_table.cwl
+        run: ../definitions/tools/add_vep_fields_to_table.cwl
         in:
             vcf: index_filtered/indexed_vcf
             vep_fields: vep_to_table_fields
