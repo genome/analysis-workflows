@@ -58,7 +58,7 @@ steps:
         out:
             [merged_vcf]
     index_full:
-        run: ../detect_variants/index_vcf.cwl
+        run: ../definitions/tools/index_vcf.cwl
         in:
             vcf: merge/merged_vcf
         out:
