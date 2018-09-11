@@ -3,6 +3,9 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "vcf index"
+requirements:
+    - class: DockerRequirement
+      dockerPull: mgibio/cle
 arguments: [
     "cp", $(inputs.vcf.path), "$(runtime.outdir)/$(inputs.vcf.basename)",
     { valueFrom: " && ", shellQuote: false },
