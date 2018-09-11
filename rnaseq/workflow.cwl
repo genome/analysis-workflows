@@ -121,7 +121,7 @@ steps:
         out:
             [gene_abundance]
     merge:
-        run: merge.cwl
+        run: ../definitions/tools/merge_bams.cwl
         in:
             bams: bam_to_trimmed_fastq_and_hisat_alignments/aligned_bam
         out:

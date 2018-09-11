@@ -31,7 +31,7 @@ inputs:
 outputs:
     cram:
         type: File
-        outputSource: bam_to_cram/cram
+        outputSource: index_cram/indexed_cram
         secondaryFiles: [.crai, ^.crai]
     vcf:
         type: File
@@ -59,13 +59,13 @@ steps:
         out:
             [aligned_bam]
     merge:
-        run: merge.cwl
+        run: ../definitions/tools/merge_bams.cwl
         in:
             bams: bam_to_trimmed_fastq_and_biscuit_alignments/aligned_bam
         out:
             [merged_bam]
     pileup:
-        run: pileup.cwl
+        run: ../definitions/tools/biscuit_pileup.cwl
         in:
             bam: merge/merged_bam
             reference: reference_index
@@ -78,16 +78,22 @@ steps:
         out:
             [cpgs,cpg_bedgraph]
     bedgraph_to_bigwig:
-        run: bedgraph_to_bigwig.cwl
+        run: ../definitions/tools/bedgraph_to_bigwig.cwl
         in:
             bedgraph: vcf2bed/cpg_bedgraph
             reference_sizes: reference_sizes
         out:
             [cpg_bigwig]
     bam_to_cram:
-        run: bam_to_cram.cwl
-        in: 
+        run: ../definitions/tools/bam_to_cram.cwl
+        in:
+            reference: reference_index
             bam: merge/merged_bam
-            reference_index: reference_index
         out:
             [cram]
+    index_cram:
+        run: ../definitions/tools/index_cram.cwl
+        in:
+            cram: bam_to_cram/cram
+        out:
+            [indexed_cram]

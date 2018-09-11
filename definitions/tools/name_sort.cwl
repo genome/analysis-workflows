@@ -13,6 +13,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 13000
       coresMin: 8
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 inputs:
     bam:
         type: File

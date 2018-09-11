@@ -67,7 +67,7 @@ steps:
         out:
             [gvcf]
     genotype_gvcfs:
-        run: gatk_genotypegvcfs.cwl
+        run: ../definitions/tools/gatk_genotypegvcfs.cwl
         in:
             reference: reference
             gvcfs: haplotype_caller/gvcf
@@ -86,7 +86,7 @@ steps:
         out:
             [annotated_vcf, vep_summary]
     bgzip_annotated_vcf:
-        run: bgzip.cwl
+        run: ../definitions/tools/bgzip.cwl
         in:
             file: annotate_variants/annotated_vcf
         out:
@@ -104,7 +104,7 @@ steps:
         out:
             [filtered_vcf]
     bgzip_coding_vcf:
-        run: bgzip.cwl
+        run: ../definitions/tools/bgzip.cwl
         in:
             file: coding_variant_filter/filtered_vcf
         out:

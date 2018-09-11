@@ -178,7 +178,7 @@ steps:
         out:
             [filtered_vcf]
     af_filter:
-        run: filter_vcf_gnomADe_allele_freq.cwl
+        run: ../definitions/tools/filter_vcf_gnomADe_allele_freq.cwl
         in:
             vcf: hard_filter/filtered_vcf
             maximum_population_allele_frequency: maximum_population_allele_frequency
@@ -191,7 +191,7 @@ steps:
         out:
             [filtered_vcf]
     bgzip_filtered:
-        run: bgzip.cwl
+        run: ../definitions/tools/bgzip.cwl
         in:
             file: coding_variant_filter/filtered_vcf
         out:

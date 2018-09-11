@@ -28,7 +28,7 @@ outputs:
         outputSource: biscuit_align/aligned_bam
 steps:
     bam_to_fastq:
-        run: bam_to_fastq.cwl
+        run: ../definitions/tools/bam_to_fastq.cwl
         in:
             bam: bam
         out:
@@ -46,7 +46,7 @@ steps:
         out:
             [fastq1, fastq2]
     biscuit_align:
-        run: biscuit_align.cwl
+        run: ../definitions/tools/biscuit_align.cwl
         in:
             reference_index: reference_index
             fastq1: trim_fastq/fastq1

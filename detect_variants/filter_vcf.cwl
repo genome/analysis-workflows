@@ -26,14 +26,14 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     filter_vcf_gnomADe_allele_freq:
-        run: filter_vcf_gnomADe_allele_freq.cwl
+        run: ../definitions/tools/filter_vcf_gnomADe_allele_freq.cwl
         in:
             vcf: vcf
             maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
         out:
             [filtered_vcf]
     filter_vcf_mapq0:
-        run: filter_vcf_mapq0.cwl
+        run: ../definitions/tools/filter_vcf_mapq0.cwl
         in: 
             vcf: filter_vcf_gnomADe_allele_freq/filtered_vcf
             tumor_bam: tumor_bam
@@ -42,7 +42,7 @@ steps:
         out:
             [mapq0_filtered_vcf]
     filter_vcf_cle:
-        run: filter_vcf_cle.cwl
+        run: ../definitions/tools/filter_vcf_cle.cwl
         in:
             vcf: filter_vcf_mapq0/mapq0_filtered_vcf
             filter: do_cle_vcf_filter

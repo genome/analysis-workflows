@@ -2,19 +2,20 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "collect insert size metrics"
-baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/usr/picard/picard.jar", "CollectInsertSizeMetrics"]
+label: "collect alignment summary metrics"
+baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/usr/picard/picard.jar", "CollectAlignmentSummaryMetrics"]
 arguments:
-    ["O=", { valueFrom: $(runtime.outdir)/InsertSizeMetrics.txt },
-    "H=", { valueFrom: $(runtime.outdir)/InsertSizeHistogram.pdf }]
+    ["OUTPUT=", { valueFrom: $(runtime.outdir)/AlignmentSummaryMetrics.txt }]
 requirements:
     - class: ResourceRequirement
       ramMin: 16000
+    - class: DockerRequirement
+      dockerPull: mgibio/cle
 inputs:
     cram:
         type: File
         inputBinding:
-            prefix: "I="
+            prefix: "INPUT="
         secondaryFiles: [^.crai]
     reference:
         type: string
@@ -25,11 +26,7 @@ inputs:
         inputBinding:
             prefix: "METRIC_ACCUMULATION_LEVEL="
 outputs:
-    insert_size_metrics:
+    alignment_summary_metrics:
         type: File
         outputBinding:
-            glob: "InsertSizeMetrics.txt"
-    insert_size_histogram:
-        type: File
-        outputBinding:
-            glob: "InsertSizeHistogram.pdf"
+            glob: "AlignmentSummaryMetrics.txt"

@@ -46,25 +46,25 @@ steps:
         out:
             [tagged_bam]
     merge:
-        run: merge.cwl
+        run: ../definitions/tools/merge_bams.cwl
         in:
             bams: align/tagged_bam
         out:
             [merged_bam]
     name_sort:
-        run: name_sort.cwl
+        run: ../definitions/tools/name_sort.cwl
         in:
             bam: merge/merged_bam
         out:
             [name_sorted_bam]
     mark_duplicates_and_sort:
-        run: mark_duplicates_and_sort.cwl
+        run: ../definitions/tools/mark_duplicates_and_sort.cwl
         in:
             bam: name_sort/name_sorted_bam
         out:
             [sorted_bam, metrics_file]
     bqsr:
-        run: bqsr.cwl
+        run: ../definitions/tools/bqsr.cwl
         in:
             reference: reference
             bam: mark_duplicates_and_sort/sorted_bam
@@ -73,7 +73,7 @@ steps:
         out:
             [bqsr_table]
     apply_bqsr:
-        run: apply_bqsr.cwl
+        run: ../definitions/tools/apply_bqsr.cwl
         in:
             reference: reference
             bam: mark_duplicates_and_sort/sorted_bam
@@ -81,14 +81,14 @@ steps:
         out:
             [bqsr_bam]
     bam_to_cram:
-        run: bam_to_cram.cwl
+        run: ../definitions/tools/bam_to_cram.cwl
         in:
             reference: reference
             bam: apply_bqsr/bqsr_bam
         out:
             [cram]
     index_cram:
-        run: index_cram.cwl
+        run: ../definitions/tools/index_cram.cwl
         in:
             cram: bam_to_cram/cram
         out:

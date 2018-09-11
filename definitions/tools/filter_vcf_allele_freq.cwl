@@ -2,15 +2,14 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "gnomADe_AF filter"
-baseCommand: ["/usr/bin/perl", "/usr/bin/vcf_check.pl"]
+label: "AF filter"
+baseCommand: ["/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep"]
 requirements:
     - class: InlineJavascriptRequirement
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 arguments:
-    [{ valueFrom: $(inputs.vcf.path) },
-    { valueFrom: $(runtime.outdir)/annotated.af_filtered.vcf },
-    "/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep",
-    "--format", "vcf",
+    ["--format", "vcf",
     "-o", { valueFrom: $(runtime.outdir)/annotated.af_filtered.vcf }]
 inputs:
     vcf:
@@ -26,8 +25,8 @@ inputs:
                     return [
                         "--filter",
                         [
-                            "gnomADe_AF", "<", inputs.maximum_population_allele_frequency,
-                            "or not", "gnomADe_AF"
+                            "AF", "<", inputs.maximum_population_allele_frequency,
+                            "or not", "AF"
                         ].join(" ")
                     ]
                 }

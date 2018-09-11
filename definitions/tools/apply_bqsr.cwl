@@ -15,6 +15,8 @@ arguments:
 requirements:
     - class: ResourceRequirement
       ramMin: 18000
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 inputs:
     reference:
         type: string

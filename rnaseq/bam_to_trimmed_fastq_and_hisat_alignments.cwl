@@ -42,7 +42,7 @@ outputs:
         outputSource: hisat2_align/aligned_bam
 steps:
     bam_to_fastq:
-        run: bam_to_fastq.cwl
+        run: ../definitions/tools/bam_to_fastq.cwl
         in:
             bam: bam
         out:

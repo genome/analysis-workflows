@@ -2,16 +2,18 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "MAX_AF filter"
+label: "gnomADe_AF filter"
 baseCommand: ["/usr/bin/perl", "/usr/bin/vcf_check.pl"]
 requirements:
     - class: InlineJavascriptRequirement
+    - class: DockerRequirement
+      dockerPull: mgibio/cle
 arguments:
     [{ valueFrom: $(inputs.vcf.path) },
-    { valueFrom: $(runtime.outdir)/annotated.max_af_filtered.vcf },
+    { valueFrom: $(runtime.outdir)/annotated.af_filtered.vcf },
     "/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep",
     "--format", "vcf",
-    "-o", { valueFrom: $(runtime.outdir)/annotated.max_af_filtered.vcf }]
+    "-o", { valueFrom: $(runtime.outdir)/annotated.af_filtered.vcf }]
 inputs:
     vcf:
         type: File
@@ -26,8 +28,8 @@ inputs:
                     return [
                         "--filter",
                         [
-                            "MAX_AF", "<", inputs.maximum_population_allele_frequency,
-                            "or not", "MAX_AF"
+                            "gnomADe_AF", "<", inputs.maximum_population_allele_frequency,
+                            "or not", "gnomADe_AF"
                         ].join(" ")
                     ]
                 }
@@ -36,4 +38,4 @@ outputs:
     filtered_vcf:
         type: File
         outputBinding:
-            glob: "annotated.max_af_filtered.vcf"
+            glob: "annotated.af_filtered.vcf"
