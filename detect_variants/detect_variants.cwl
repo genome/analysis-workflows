@@ -225,7 +225,7 @@ steps:
         out:
             [combined_vcf]
     annotate_variants:
-        run: vep.cwl
+        run: ../definitions/tools/vep.cwl
         in:
             vcf: combine/combined_vcf
             cache_dir: vep_cache_dir

@@ -74,7 +74,7 @@ steps:
         out:
             [genotype_vcf]
     annotate_variants:
-        run: vep.cwl
+        run: ../definitions/tools/vep.cwl
         in:
             vcf: genotype_gvcfs/genotype_vcf
             cache_dir: vep_cache_dir
@@ -98,7 +98,7 @@ steps:
         out:
             [indexed_vcf]
     coding_variant_filter:
-        run: filter_vcf_coding_variant.cwl
+        run: ../definitions/tools/filter_vcf_coding_variant.cwl
         in:
             vcf: annotate_variants/annotated_vcf
         out:
