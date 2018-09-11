@@ -10,6 +10,8 @@ arguments: [
 ]
 requirements:
     - class: ShellCommandRequirement
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 inputs:
     variants:
         type: File
