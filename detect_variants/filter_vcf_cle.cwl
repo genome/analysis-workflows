@@ -5,10 +5,10 @@ class: CommandLineTool
 label: "cle_annotated_vcf_filter"
 arguments: [
     "/usr/bin/perl", "/usr/bin/docm_and_coding_indel_selection.pl",
-    $(inputs.annotated_vcf.path), $(runtime.outdir)
+    $(inputs.vcf.path), $(runtime.outdir)
 ]
 inputs:
-    annotated_vcf:
+    vcf:
         type: File
     filter:
         type: boolean
@@ -16,7 +16,7 @@ inputs:
             prefix: "filter"
             position: 1
 outputs:
-    annotated_filtered_vcf:
+    cle_filtered_vcf:
         type: File
         outputBinding:
             glob: "annotated_filtered.vcf"

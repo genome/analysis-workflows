@@ -15,7 +15,7 @@ inputs:
         type: string[]
     reference:
         type: string
-    dbsnp:
+    dbsnp_vcf:
         type: File
         secondaryFiles: [.tbi]
     mills:
@@ -63,7 +63,7 @@ steps:
         in:
             reference: reference
             bam: index_bam/indexed_bam
-            known_sites: [dbsnp, mills, known_indels]
+            known_sites: [dbsnp_vcf, mills, known_indels]
         out:
             [bqsr_table]
     apply_bqsr:

@@ -92,13 +92,13 @@ steps:
         out:
             [bgzipped_file]
     index_annotated_vcf:
-        run: index.cwl
+        run: index_vcf.cwl
         in:
             vcf: bgzip_annotated_vcf/bgzipped_file
         out:
             [indexed_vcf]
     coding_variant_filter:
-        run: coding_variant_filter.cwl
+        run: filter_vcf_coding_variant.cwl
         in:
             vcf: annotate_variants/annotated_vcf
         out:
@@ -110,7 +110,7 @@ steps:
         out:
             [bgzipped_file]
     index_coding_vcf:
-        run: index.cwl
+        run: index_vcf.cwl
         in:
             vcf: bgzip_coding_vcf/bgzipped_file
         out:

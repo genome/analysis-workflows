@@ -17,7 +17,7 @@ inputs:
     known_indels:
         type: File
         secondaryFiles: [.tbi]
-    dbsnp:
+    dbsnp_vcf:
         type: File
         secondaryFiles: [.tbi]
     omni_vcf:
@@ -40,9 +40,9 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    min_mapping_quality:
+    readcount_minimum_mapping_quality:
         type: int?
-    min_base_quality:
+    readcount_minimum_base_quality:
         type: int?
 outputs:
     cram:
@@ -114,7 +114,7 @@ steps:
             readgroups: readgroups
             mills: mills
             known_indels: known_indels
-            dbsnp: dbsnp
+            dbsnp_vcf: dbsnp_vcf
             omni_vcf: omni_vcf
             intervals: qc_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level
@@ -140,7 +140,7 @@ steps:
             sample_name: sample_name
             docm_vcf: docm_vcf
             custom_gnomad_vcf: custom_gnomad_vcf
-            min_mapping_quality: min_mapping_quality
-            min_base_quality: min_base_quality
+            readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
+            readcount_minimum_base_quality: readcount_minimum_base_quality
         out:
             [varscan_vcf, docm_gatk_vcf, annotated_vcf, final_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv]

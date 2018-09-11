@@ -13,10 +13,10 @@ inputs:
         type: string
     tumor_cram:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [.crai]
     normal_cram:
         type: File?
-        secondaryFiles: [^.crai]
+        secondaryFiles: [.crai]
     interval_list:
         type: File
     scatter_count:
@@ -75,7 +75,7 @@ steps:
         out:
             [merged_vcf]
     index:
-        run: ../detect_variants/index.cwl
+        run: ../detect_variants/index_vcf.cwl
         in:
             vcf: merge/merged_vcf
         out:
