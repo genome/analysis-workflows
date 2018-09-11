@@ -40,7 +40,7 @@ steps:
     fastq_to_bam:
         scatter: [read1_fastq, read2_fastq, library_name, platform_unit, platform]
         scatterMethod: dotproduct
-        run: fastq_to_bam.cwl
+        run: ../definitions/tools/fastq_to_bam.cwl
         in:
             read1_fastq: read1_fastq
             read2_fastq: read2_fastq
