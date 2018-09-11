@@ -8,6 +8,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 8000
       coresMin: 4
+    - class: DockerRequirement
+      dockerPull: "mgibio/bisulfite"
 arguments: [
     "$(runtime.cores)",
     "$(runtime.outdir)/merged.bam"
