@@ -8,6 +8,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 6000
       tmpdirMin: 25000
+    - class: DockerRequirement
+      dockerPull: mgibio/cle
 arguments:
     ["--bam-readcount", "/usr/bin/bam-readcount",
     "--samtools", "/opt/samtools/bin/samtools",
