@@ -59,7 +59,7 @@ steps:
         out:
             [aligned_bam]
     merge:
-        run: merge.cwl
+        run: ../definitions/tools/merge_bams.cwl
         in:
             bams: bam_to_trimmed_fastq_and_biscuit_alignments/aligned_bam
         out:
