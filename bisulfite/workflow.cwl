@@ -65,7 +65,7 @@ steps:
         out:
             [merged_bam]
     pileup:
-        run: pileup.cwl
+        run: ../definitions/tools/biscuit_pileup.cwl
         in:
             bam: merge/merged_bam
             reference: reference_index
