@@ -72,7 +72,7 @@ steps:
         out:
             [vcf]
     vcf2bed:
-        run: vcf2bed.cwl
+        run: ../definitions/tools/vcf2bed.cwl
         in:
             vcf: pileup/vcf
         out:
