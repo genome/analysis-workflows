@@ -20,7 +20,7 @@ outputs:
         outputSource: align_and_tag/aligned_bam
 steps:
     align_and_tag:
-        run: align_and_tag.cwl
+        run: ../definitions/tools/align_and_tag.cwl
         in:
             bam: bam
             readgroup: readgroup
