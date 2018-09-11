@@ -51,7 +51,7 @@ steps:
         out:
             [grouped_bam]
     call_molecular_consensus:
-        run: call_molecular_consensus.cwl
+        run: ../definitions/tools/call_molecular_consensus.cwl
         in:
             bam: group_reads_by_umi/grouped_bam
         out:

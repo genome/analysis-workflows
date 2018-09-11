@@ -51,7 +51,7 @@ steps:
         out:
             [grouped_bam]
     call_duplex_consensus:
-        run: call_duplex_consensus.cwl
+        run: ../definitions/tools/call_duplex_consensus.cwl
         in:
             bam: group_reads_by_umi/grouped_bam
         out:

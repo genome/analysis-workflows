@@ -23,7 +23,7 @@ steps:
         out:
             [bam]
     index_bam:
-        run: ../detect_variants/index_bam.cwl
+        run: ../definitions/tools/index_bam.cwl
         in:
             bam: cram_to_bam/bam
         out:
