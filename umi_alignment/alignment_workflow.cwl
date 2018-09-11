@@ -34,7 +34,7 @@ steps:
         out:
             [marked_bam, metrics]
     align:
-        run: align.cwl
+        run: ../definitions/tools/umi_align.cwl
         in:
             bam: mark_illumina_adapters/marked_bam
             reference: reference
