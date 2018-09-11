@@ -44,6 +44,12 @@ inputs:
        type: boolean?
     secondstrand:
        type: boolean?
+    refFlat:
+        type: File
+    ribosomal_intervals:
+        type: File
+    strand:
+        type: string
 outputs:
     final_bam:
         type: File
@@ -64,6 +70,12 @@ outputs:
     gene_abundance:
         type: File
         outputSource: transcript_to_gene/gene_abundance
+    metrics:
+        type: File
+        outputSource: generate_qc_metrics/metrics
+    chart:
+        type: File
+        outputSource: generate_qc_metrics/chart
     fusion_evidence:
         type: File
         outputSource: kallisto/fusion_evidence
@@ -130,3 +142,12 @@ steps:
             secondstrand: secondstrand
         out:
             [transcript_gtf,gene_expression_tsv]
+    generate_qc_metrics:
+        run: generate_qc_metrics.cwl
+        in:
+            refFlat: refFlat
+            ribosomal_intervals: ribosomal_intervals
+            strand: strand
+            bam: index_bam/indexed_bam
+        out:
+            [metrics, chart]
