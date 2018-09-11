@@ -78,7 +78,7 @@ steps:
         out:
             [clipped_bam]
     collect_duplex_seq_metrics:
-       run: duplex_seq_metrics.cwl
+       run: ../definitions/tools/duplex_seq_metrics.cwl
        in:
             bam: group_reads_by_umi/grouped_bam
             intervals: target_intervals
