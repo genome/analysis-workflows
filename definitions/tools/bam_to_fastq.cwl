@@ -4,6 +4,9 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Picard: BAM to FASTQ"
 baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/picard/picard.jar", "SamToFastq"]
+requirements:
+    - class: DockerRequirement
+      dockerPull: "mgibio/rnaseq"
 arguments: [ {valueFrom: "F=$(runtime.outdir)/read1.fastq"},
              {valueFrom: "F2=$(runtime.outdir)/read2.fastq"} ]
 requirements:
