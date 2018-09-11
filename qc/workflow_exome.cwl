@@ -85,7 +85,7 @@ steps:
         out:
             [alignment_summary_metrics]
     collect_roi_hs_metrics:
-        run: collect_hs_metrics.cwl
+        run: ../definitions/tools/collect_hs_metrics.cwl
         in:
             cram: cram
             reference: reference
@@ -104,7 +104,7 @@ steps:
         out:
             [hs_metrics]
     collect_per_base_hs_metrics:
-        run: collect_hs_metrics.cwl
+        run: ../definitions/tools/collect_hs_metrics.cwl
         in:
             cram: cram
             reference: reference
@@ -123,7 +123,7 @@ steps:
         out:
             [hs_metrics, per_base_coverage_metrics]
     collect_per_target_hs_metrics:
-        run: collect_hs_metrics.cwl
+        run: ../definitions/tools/collect_hs_metrics.cwl
         in:
             cram: cram
             reference: reference
