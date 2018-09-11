@@ -71,7 +71,7 @@ steps:
         out:
             [filtered_bam]
     clip_overlap:
-        run: clip_overlap.cwl
+        run: ../definitions/tools/clip_overlap.cwl
         in:
             bam: filter_consensus/filtered_bam
             reference: reference
