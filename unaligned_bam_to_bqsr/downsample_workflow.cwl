@@ -15,7 +15,7 @@ inputs:
         type: string[]
     reference:
         type: string
-    dbsnp:
+    dbsnp_vcf:
         type: File
         secondaryFiles: [.tbi]
     mills:
@@ -51,7 +51,7 @@ steps:
             bams: downsample/downsampled_bam
             readgroups: readgroups
             reference: reference
-            dbsnp: dbsnp
+            dbsnp_vcf: dbsnp_vcf
             mills: mills
             known_indels: known_indels
         out:

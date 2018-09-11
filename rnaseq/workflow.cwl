@@ -54,7 +54,7 @@ outputs:
     final_bam:
         type: File
         outputSource: index_bam/indexed_bam
-        secondaryFiles: [.bai, ^.bai]
+        secondaryFiles: [.bai]
     stringtie_transcript_gtf:
         type: File
         outputSource: stringtie/transcript_gtf
@@ -76,6 +76,9 @@ outputs:
     chart:
         type: File
         outputSource: generate_qc_metrics/chart
+    fusion_evidence:
+        type: File
+        outputSource: kallisto/fusion_evidence
 steps:
     bam_to_trimmed_fastq_and_hisat_alignments:
         run: bam_to_trimmed_fastq_and_hisat_alignments.cwl
@@ -109,7 +112,7 @@ steps:
                       return(self)
                      }
         out:
-            [expression_transcript_table,expression_transcript_h5]
+            [expression_transcript_table,expression_transcript_h5,fusion_evidence]
     transcript_to_gene:
         run: transcript_to_gene.cwl
         in:

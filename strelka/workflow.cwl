@@ -11,10 +11,10 @@ requirements:
 inputs:
     tumor_cram:
         type: File
-        secondaryFiles: [.crai]
+        secondaryFiles: [.crai,^.crai]
     normal_cram:
         type: File
-        secondaryFiles: [.crai]
+        secondaryFiles: [.crai,^.crai]
     reference:
         type: string
     interval_list:
@@ -58,7 +58,7 @@ steps:
         out:
             [merged_vcf]
     index_full:
-        run: ../detect_variants/index.cwl
+        run: ../detect_variants/index_vcf.cwl
         in:
             vcf: merge/merged_vcf
         out:

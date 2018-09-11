@@ -17,7 +17,7 @@ inputs:
     known_indels:
         type: File
         secondaryFiles: [.tbi]
-    dbsnp:
+    dbsnp_vcf:
         type: File
         secondaryFiles: [.tbi]
     bqsr_intervals:
@@ -53,16 +53,16 @@ inputs:
         type: string?
     synonyms_file:
         type: File?
-    coding_only:
+    annotate_coding_only:
         type: boolean?
     hgvs_annotation:
         type: boolean?
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    minimum_mapping_quality:
+    qc_minimum_mapping_quality:
         type: int?
-    minimum_base_quality:
+    qc_minimum_base_quality:
         type: int?
 outputs:
     cram:
@@ -106,14 +106,22 @@ outputs:
         outputSource: alignment_and_qc/verify_bam_id_depth
     gvcf:
         type: File[]
-        outputSource: haplotype_caller/gvcf
+        outputSource: detect_variants/gvcf
     final_vcf:
         type: File
-        outputSource: index_annotated_vcf/indexed_vcf
+        outputSource: detect_variants/final_vcf
+        secondaryFiles: [.tbi]
+    coding_vcf:
+        type: File
+        outputSource: detect_variants/coding_vcf
+        secondaryFiles: [.tbi]
+    limited_vcf:
+        type: File
+        outputSource: detect_variants/limited_vcf
         secondaryFiles: [.tbi]
     vep_summary:
         type: File
-        outputSource: annotate_variants/vep_summary
+        outputSource: detect_variants/vep_summary
 steps:
     alignment_and_qc:
         run: exome_alignment.cwl
@@ -123,7 +131,7 @@ steps:
             readgroups: readgroups
             mills: mills
             known_indels: known_indels
-            dbsnp: dbsnp
+            dbsnp_vcf: dbsnp_vcf
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -133,8 +141,8 @@ steps:
             per_base_bait_intervals: per_base_bait_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: minimum_mapping_quality
-            minimum_base_quality: minimum_base_quality
+            minimum_mapping_quality: qc_minimum_mapping_quality
+            minimum_base_quality: qc_minimum_base_quality
         out:
             [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     extract_freemix:
@@ -163,8 +171,8 @@ steps:
                                 return {'freemix_score:': null };
                             }
                         }
-    haplotype_caller:
-        run: detect_variants/gatk_haplotypecaller_iterator.cwl
+    detect_variants:
+        run: detect_variants/germline_detect_variants.cwl
         in:
             reference: reference
             cram: alignment_and_qc/cram
@@ -172,36 +180,11 @@ steps:
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
             contamination_fraction: extract_freemix/freemix_score
-        out:
-            [gvcf]
-    genotype_gvcfs:
-        run: detect_variants/gatk_genotypegvcfs.cwl
-        in:
-            reference: reference
-            gvcfs: haplotype_caller/gvcf
-        out:
-            [genotype_vcf]
-    annotate_variants:
-        run: detect_variants/vep.cwl
-        in:
-            vcf: genotype_gvcfs/genotype_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
-            coding_only: coding_only
+            annotate_coding_only: annotate_coding_only
             hgvs: hgvs_annotation
-            reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
+            limit_variant_intervals: per_base_intervals
         out:
-            [annotated_vcf, vep_summary]
-    bgzip_annotated_vcf:
-        run: detect_variants/bgzip.cwl
-        in:
-            file: annotate_variants/annotated_vcf
-        out:
-            [bgzipped_file]
-    index_annotated_vcf:
-        run: detect_variants/index.cwl
-        in:
-            vcf: bgzip_annotated_vcf/bgzipped_file
-        out:
-            [indexed_vcf]
+            [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]

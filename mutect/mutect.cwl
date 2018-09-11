@@ -21,13 +21,13 @@ inputs:
         inputBinding:
             prefix: "-I:tumor"
             position: 2
-        secondaryFiles: [^.crai]
+        secondaryFiles: [.crai]
     normal_cram:
         type: File?
         inputBinding:
             prefix: "-I:normal"
             position: 3
-        secondaryFiles: [^.crai]
+        secondaryFiles: [.crai]
     interval_list:
         type: File
         inputBinding:

@@ -60,6 +60,10 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    readcount_minimum_mapping_quality:
+        type: int?
+    readcount_minimum_base_quality:
+        type: int?
 outputs:
     varscan_vcf:
         type: File
@@ -143,6 +147,8 @@ steps:
             sample: sample_name
             reference_fasta: reference
             bam: cram_to_bam/bam
+            min_mapping_quality: readcount_minimum_mapping_quality
+            min_base_quality: readcount_minimum_base_quality
         out:
             [bam_readcount_tsv]
     add_bam_readcount_to_vcf:
@@ -156,7 +162,7 @@ steps:
         out:
             [annotated_bam_readcount_vcf]
     index:
-        run: index.cwl
+        run: index_vcf.cwl
         in:
             vcf: add_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
@@ -172,14 +178,14 @@ steps:
         out:
             [filtered_vcf]
     af_filter:
-        run: gnomADe_AF_filter.cwl
+        run: filter_vcf_gnomADe_allele_freq.cwl
         in:
             vcf: hard_filter/filtered_vcf
             maximum_population_allele_frequency: maximum_population_allele_frequency
         out:
             [filtered_vcf]
     coding_variant_filter:
-        run: coding_variant_filter.cwl
+        run: filter_vcf_coding_variant.cwl
         in:
             vcf: af_filter/filtered_vcf
         out:
@@ -191,7 +197,7 @@ steps:
         out:
             [bgzipped_file]
     index_filtered:
-        run: index.cwl
+        run: index_vcf.cwl
         in:
             vcf: bgzip_filtered/bgzipped_file
         out:

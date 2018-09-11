@@ -53,7 +53,7 @@ steps:
         out:
             [bgzipped_file]
     index:
-        run: ../detect_variants/index.cwl
+        run: ../detect_variants/index_vcf.cwl
         in:
             vcf: bgzip/bgzipped_file
         out:

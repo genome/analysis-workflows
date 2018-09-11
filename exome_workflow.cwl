@@ -17,7 +17,7 @@ inputs:
     known_indels:
         type: File
         secondaryFiles: [.tbi]
-    dbsnp:
+    dbsnp_vcf:
         type: File
         secondaryFiles: [.tbi]
     bqsr_intervals:
@@ -61,7 +61,7 @@ inputs:
         type: string?
     synonyms_file:
         type: File?
-    coding_only:
+    annotate_coding_only:
         type: boolean?
         default: true
     hgvs_annotation:
@@ -84,9 +84,13 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    minimum_mapping_quality:
+    qc_minimum_mapping_quality:
         type: int?
-    minimum_base_quality:
+    qc_minimum_base_quality:
+        type: int?
+    readcount_minimum_mapping_quality:
+        type: int?
+    readcount_minimum_base_quality:
         type: int?
 outputs:
     cram:
@@ -161,7 +165,7 @@ steps:
             readgroups: readgroups
             mills: mills
             known_indels: known_indels
-            dbsnp: dbsnp
+            dbsnp_vcf: dbsnp_vcf
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -171,8 +175,8 @@ steps:
             per_base_bait_intervals: per_base_bait_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: minimum_mapping_quality
-            minimum_base_quality: minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
         out:
             [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     detect_variants:
@@ -196,5 +200,7 @@ steps:
             docm_vcf: docm_vcf
             hgvs_annotation: hgvs_annotation
             custom_gnomad_vcf: custom_gnomad_vcf
+            readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
+            readcount_minimum_base_quality: readcount_minimum_base_quality
         out:
             [varscan_vcf, docm_gatk_vcf, annotated_vcf, final_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv]

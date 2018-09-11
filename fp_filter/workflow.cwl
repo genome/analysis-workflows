@@ -8,7 +8,7 @@ requirements:
 inputs:
     cram:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [.crai,^.crai]
     reference:
         type: string
     vcf:
@@ -64,7 +64,7 @@ steps:
         out:
             [bgzipped_file]
     fp_index:
-        run: ../detect_variants/index.cwl
+        run: ../detect_variants/index_vcf.cwl
         in:
             vcf: fp_bgzip/bgzipped_file
         out:

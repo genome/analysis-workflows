@@ -18,14 +18,14 @@ inputs:
             prefix: '--tumorBam='
             separate: false
             position: 3
-        secondaryFiles: [.crai]
+        secondaryFiles: [.crai,^.crai]
     normal_cram:
         type: File
         inputBinding:
             prefix: '--normalBam='
             separate: false
             position: 4
-        secondaryFiles: [.crai]
+        secondaryFiles: [.crai,^.crai]
     reference:
         type: string
         inputBinding:

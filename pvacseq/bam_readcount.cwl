@@ -17,20 +17,30 @@ inputs:
     vcf:
         type: File
         inputBinding:
-            position: -4
+            position: -6
     sample:
         type: string
         inputBinding:
-            position: -3
+            position: -5
     reference_fasta:
         type: string
         inputBinding:
-            position: -2
+            position: -4
     bam:
         type: File
         inputBinding:
-            position: -1
+            position: -3
         secondaryFiles: [.bai]
+    min_base_quality:
+        type: int?
+        default: 20
+        inputBinding:
+            position: -2
+    min_mapping_quality:
+        type: int?
+        default: 0
+        inputBinding:
+            position: -1
 outputs:
     bam_readcount_tsv:
         type: stdout
