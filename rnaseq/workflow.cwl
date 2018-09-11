@@ -127,7 +127,7 @@ steps:
         out:
             [merged_bam]
     index_bam:
-        run: ../detect_variants/index_bam.cwl
+        run: ../definitions/tools/index_bam.cwl
         in:
             bam: merge/merged_bam
         out:
