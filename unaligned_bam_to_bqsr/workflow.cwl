@@ -69,7 +69,7 @@ steps:
             reference: reference
             bam: mark_duplicates_and_sort/sorted_bam
             intervals: bqsr_intervals
-            known_sites: [dbsnp, mills, known_indels]
+            known_sites: [dbsnp_vcf, mills, known_indels]
         out:
             [bqsr_table]
     apply_bqsr:

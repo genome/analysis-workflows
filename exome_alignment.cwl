@@ -92,7 +92,7 @@ steps:
             readgroups: readgroups
             mills: mills
             known_indels: known_indels
-            dbsnp: dbsnp_vcf
+            dbsnp_vcf: dbsnp_vcf
             bqsr_intervals: bqsr_intervals
         out: [final_cram,mark_duplicates_metrics_file]
     qc:
