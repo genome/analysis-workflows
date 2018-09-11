@@ -8,6 +8,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: 8
+    - class: DockerRequirement
+      dockerPull: "mgibio/dna-alignment"
 arguments:
     - position: 3
       valueFrom: $(runtime.cores)
