@@ -143,7 +143,7 @@ steps:
         out:
             [transcript_gtf,gene_expression_tsv]
     generate_qc_metrics:
-        run: generate_qc_metrics.cwl
+        run: ../definitions/tools/generate_qc_metrics.cwl
         in:
             refFlat: refFlat
             ribosomal_intervals: ribosomal_intervals

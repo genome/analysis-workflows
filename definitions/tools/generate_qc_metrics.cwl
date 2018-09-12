@@ -4,6 +4,9 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Picard: RNA Seq Metrics"
 baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/opt/picard/picard.jar", "CollectRnaSeqMetrics"]
+requirements:
+    - class: DockerRequirement
+      dockerPull: mgibio/rnaseq
 arguments: [ {valueFrom: "O=$(runtime.outdir)/rna_metrics.txt"},
              {valueFrom: "CHART=$(runtime.outdir)/rna_metrics.pdf"} ]
 inputs:
