@@ -114,7 +114,7 @@ steps:
         out:
             [expression_transcript_table,expression_transcript_h5,fusion_evidence]
     transcript_to_gene:
-        run: transcript_to_gene.cwl
+        run: ../definitions/tools/transcript_to_gene.cwl
         in:
             transcript_table_h5: kallisto/expression_transcript_h5
             gene_transcript_lookup_table: gene_transcript_lookup_table
