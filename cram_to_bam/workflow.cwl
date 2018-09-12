@@ -16,7 +16,7 @@ outputs:
         secondaryFiles: [.bai]
 steps:
     cram_to_bam:
-        run: cram_to_bam.cwl
+        run: ../definitions/tools/cram_to_bam.cwl
         in:
             cram: cram
             reference: reference
