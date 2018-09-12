@@ -69,7 +69,7 @@ steps:
         out:
             [vcf]
     merge:
-        run: ../definitions/tools/merge.cwl
+        run: ../definitions/tools/merge_vcf.cwl
         in:
             vcfs: mutect/vcf
         out:
