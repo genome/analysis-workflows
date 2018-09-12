@@ -8,6 +8,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 8000
       tmpdirMin: 25000
+    - class: DockerRequirement
+      dockerPull: mgibio/cle
 arguments:
     ["-minN", "2",
      "--setKey", "null",
