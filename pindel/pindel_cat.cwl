@@ -26,7 +26,7 @@ outputs:
         outputSource: cat/pindel_out
 steps:
     pindel:
-        run: pindel.cwl
+        run: ../definitions/tools/pindel.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
