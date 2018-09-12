@@ -64,7 +64,7 @@ steps:
         out:
             [variants]
     bgzip_and_index:
-        run: bgzip_and_index.cwl
+        run: ../definitions/subworkflows/bgzip_and_index.cwl
         in:
             vcf: varscan/variants
         out:
