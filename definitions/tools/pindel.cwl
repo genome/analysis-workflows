@@ -11,6 +11,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 16000
       tmpdirMin: 100000
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 inputs:
     tumor_cram:
         type: File
