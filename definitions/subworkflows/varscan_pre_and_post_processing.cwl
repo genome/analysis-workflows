@@ -69,19 +69,19 @@ steps:
         out:
             [indexed_vcf]
     bgzip_and_index_hc_snvs:
-        run: bgzip_and_index.cwl
+        run: ../../varscan/bgzip_and_index.cwl
         in:
             vcf: varscan/somatic_hc_snvs
         out:
             [indexed_vcf]
     bgzip_and_index_indels:
-        run: bgzip_and_index.cwl
+        run: ../../varscan/bgzip_and_index.cwl
         in:
             vcf: varscan/somatic_indels
         out:
             [indexed_vcf]
     bgzip_and_index_hc_indels:
-        run: bgzip_and_index.cwl
+        run: ../../varscan/bgzip_and_index.cwl
         in:
             vcf: varscan/somatic_hc_indels
         out:

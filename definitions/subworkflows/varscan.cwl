@@ -82,7 +82,7 @@ steps:
         out:
             [snvs, indels]
     process_somatic_snvs:
-        run: ../tools/varscan_processsomatic.cwl
+        run: ../tools/varscan_process_somatic.cwl
         in:
             variants: somatic/snvs
             max_normal_freq: max_normal_freq
