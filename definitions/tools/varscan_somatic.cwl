@@ -7,6 +7,8 @@ baseCommand: "/usr/bin/varscan_helper.sh"
 requirements:
     - class: ResourceRequirement
       ramMin: 12000
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 inputs:
     tumor_cram:
         type: File
