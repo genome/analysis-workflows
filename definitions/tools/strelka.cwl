@@ -8,7 +8,7 @@ requirements:
     ResourceRequirement:
         coresMin: 4
         ramMin: 4000
-    - class: DockerRequirement
+    DockerRequirement:
       dockerPull: "mgibio/cle"
 arguments:
     [ { valueFrom: $(inputs.cpu_reserved), position: 1 },
