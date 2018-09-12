@@ -46,7 +46,7 @@ steps:
             [indels, snvs]
     process:
         scatter: vcf
-        run: ../subworkflows/process_vcf.cwl
+        run: strelka_process_vcf.cwl
         in:
             vcf: [strelka/snvs, strelka/indels]
         out:
@@ -72,7 +72,7 @@ steps:
         out:
             [filtered_vcf]
     filter:
-        run: ../definitions/subworkflows/fp_filter.cwl
+        run: fp_filter.cwl
         in:
             reference: reference
             cram: tumor_cram
@@ -81,6 +81,3 @@ steps:
                 valueFrom: "strelka"
         out:
             [unfiltered_vcf, filtered_vcf]
-
-
-
