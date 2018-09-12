@@ -81,7 +81,7 @@ outputs:
         outputSource: kallisto/fusion_evidence
 steps:
     bam_to_trimmed_fastq_and_hisat_alignments:
-        run: ../definitions/subworkflows/bam_to_trimmed_fastq_and_hisat_alignments.cwl
+        run: ../subworkflows/bam_to_trimmed_fastq_and_hisat_alignments.cwl
         scatter: [bam, read_group_id, read_group_fields]
         scatterMethod: dotproduct
         in:
@@ -99,7 +99,7 @@ steps:
         out:
             [fastqs,aligned_bam]
     kallisto:
-        run: ../definitions/tools/kallisto.cwl
+        run: ../tools/kallisto.cwl
         in:
             kallisto_index: kallisto_index
             firststrand: firststrand
@@ -114,26 +114,26 @@ steps:
         out:
             [expression_transcript_table,expression_transcript_h5,fusion_evidence]
     transcript_to_gene:
-        run: ../definitions/tools/transcript_to_gene.cwl
+        run: ../tools/transcript_to_gene.cwl
         in:
             transcript_table_h5: kallisto/expression_transcript_h5
             gene_transcript_lookup_table: gene_transcript_lookup_table
         out:
             [gene_abundance]
     merge:
-        run: ../definitions/tools/merge_bams.cwl
+        run: ../tools/merge_bams.cwl
         in:
             bams: bam_to_trimmed_fastq_and_hisat_alignments/aligned_bam
         out:
             [merged_bam]
     index_bam:
-        run: ../definitions/tools/index_bam.cwl
+        run: ../tools/index_bam.cwl
         in:
             bam: merge/merged_bam
         out:
             [indexed_bam]
     stringtie:
-        run: ../definitions/tools/stringtie.cwl
+        run: ../tools/stringtie.cwl
         in:
             bam: merge/merged_bam
             reference_annotation: reference_annotation
@@ -143,7 +143,7 @@ steps:
         out:
             [transcript_gtf,gene_expression_tsv]
     generate_qc_metrics:
-        run: ../definitions/tools/generate_qc_metrics.cwl
+        run: ../tools/generate_qc_metrics.cwl
         in:
             refFlat: refFlat
             ribosomal_intervals: ribosomal_intervals
