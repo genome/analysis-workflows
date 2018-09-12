@@ -180,7 +180,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     varscan:
-        run: ../definitions/subworkflows/varscan_workflow.cwl
+        run: ../definitions/subworkflows/varscan_pre_and_post_processing.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
