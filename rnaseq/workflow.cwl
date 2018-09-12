@@ -81,7 +81,7 @@ outputs:
         outputSource: kallisto/fusion_evidence
 steps:
     bam_to_trimmed_fastq_and_hisat_alignments:
-        run: bam_to_trimmed_fastq_and_hisat_alignments.cwl
+        run: ../definitions/subworkflows/bam_to_trimmed_fastq_and_hisat_alignments.cwl
         scatter: [bam, read_group_id, read_group_fields]
         scatterMethod: dotproduct
         in:
