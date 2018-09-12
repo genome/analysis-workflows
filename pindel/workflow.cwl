@@ -33,7 +33,7 @@ outputs:
         secondaryFiles: [".tbi"]
 steps:
     get_chromosome_list:
-        run: get_chromosome_list.cwl
+        run: ../definitions/tools/get_chromosome_list.cwl
         in: 
             interval_list: interval_list
         out:
