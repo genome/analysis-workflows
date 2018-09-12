@@ -29,7 +29,7 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     GATK_haplotype_caller:
-        run: GATK_haplotype_caller.cwl
+        run: ../definitions/tools/somatic_gatk_haplotype_caller.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram

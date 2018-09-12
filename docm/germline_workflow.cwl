@@ -26,7 +26,7 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     gatk_haplotypecaller:
-        run: germline_gatk_haplotypecaller.cwl
+        run: ../definitions/tools/germline_gatk_haplotype_caller.cwl
         in:
             reference: reference
             cram: cram
