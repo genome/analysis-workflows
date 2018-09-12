@@ -39,46 +39,46 @@ steps:
         out:
             [aligned_bam, adapter_metrics]
     merge:
-        run: ../definitions/tools/merge_bams.cwl
+        run: ../tools/merge_bams.cwl
         in:
             bams: align/aligned_bam
         out:
             [merged_bam]
     group_reads_by_umi:
-        run: ../definitions/tools/group_reads.cwl
+        run: ../tools/group_reads.cwl
         in:
             bam: merge/merged_bam
         out:
             [grouped_bam]
     call_duplex_consensus:
-        run: ../definitions/tools/call_duplex_consensus.cwl
+        run: ../tools/call_duplex_consensus.cwl
         in:
             bam: group_reads_by_umi/grouped_bam
         out:
             [consensus_bam]
     align_consensus:
-        run: ../definitions/tools/realign.cwl
+        run: ../tools/realign.cwl
         in:
             bam: call_duplex_consensus/consensus_bam
             reference: reference
         out:
             [consensus_aligned_bam]
     filter_consensus:
-        run: ../definitions/tools/filter_consensus.cwl
+        run: ../tools/filter_consensus.cwl
         in:
             bam: align_consensus/consensus_aligned_bam
             reference: reference
         out:
             [filtered_bam]
     clip_overlap:
-        run: ../definitions/tools/clip_overlap.cwl
+        run: ../tools/clip_overlap.cwl
         in:
             bam: filter_consensus/filtered_bam
             reference: reference
         out:
             [clipped_bam]
     collect_duplex_seq_metrics:
-       run: ../definitions/tools/duplex_seq_metrics.cwl
+       run: ../tools/duplex_seq_metrics.cwl
        in:
             bam: group_reads_by_umi/grouped_bam
             intervals: target_intervals
