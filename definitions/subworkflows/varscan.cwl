@@ -89,7 +89,7 @@ steps:
         out:
             [somatic_hc, somatic, germline_hc, germline, loh_hc, loh]
     process_somatic_indels:
-        run: ../tools/varscan_processsomatic.cwl
+        run: ../tools/varscan_process_somatic.cwl
         in:
             variants: somatic/indels
             max_normal_freq: max_normal_freq
