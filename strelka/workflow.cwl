@@ -35,7 +35,7 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     strelka:
-        run: strelka.cwl
+        run: ../definitions/tools/strelka.cwl
         in:
             tumor_cram: tumor_cram
             normal_cram: normal_cram
