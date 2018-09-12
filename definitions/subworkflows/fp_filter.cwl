@@ -31,21 +31,21 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     cram_to_bam:
-        run: ../definitions/subworkflows/cram_to_bam_and_index.cwl
+        run: cram_to_bam_and_index.cwl
         in:
             cram: cram
             reference: reference
         out:
             [bam]
     normalize_variants:
-        run: ../definitions/tools/normalize_variants.cwl
+        run: ../tools/normalize_variants.cwl
         in:
             reference: reference
             vcf: vcf
         out:
             [normalized_vcf]
     fp_filter:
-        run: ../definitions/tools/fp_filter.cwl
+        run: ../tools/fp_filter.cwl
         in:
             reference: reference
             bam: cram_to_bam/bam
@@ -58,19 +58,19 @@ steps:
         out:
             [filtered_vcf]
     fp_bgzip:
-        run: ../definitions/tools/bgzip.cwl
+        run: ../tools/bgzip.cwl
         in:
             file: fp_filter/filtered_vcf
         out:
             [bgzipped_file]
     fp_index:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: fp_bgzip/bgzipped_file
         out:
             [indexed_vcf]
     hard_filter:
-        run: ../definitions/tools/select_variants.cwl
+        run: ../tools/select_variants.cwl
         in:
             reference: reference
             vcf: fp_index/indexed_vcf
