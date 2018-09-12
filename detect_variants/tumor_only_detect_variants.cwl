@@ -168,7 +168,7 @@ steps:
         out:
             [indexed_vcf]
     hard_filter:
-        run: select_variants.cwl
+        run: ../definitions/tools/select_variants.cwl
         in:
             reference: reference
             vcf: index/indexed_vcf
