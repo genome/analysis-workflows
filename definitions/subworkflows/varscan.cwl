@@ -69,7 +69,7 @@ outputs:
         outputSource: process_somatic_indels/loh
 steps:
     somatic:
-        run: ../definitions/tools/varscan_somatic.cwl
+        run: ../tools/varscan_somatic.cwl
         in:
             reference: reference
             normal_cram: normal_cram
@@ -82,14 +82,14 @@ steps:
         out:
             [snvs, indels]
     process_somatic_snvs:
-        run: ../definitions/tools/varscan_processsomatic.cwl
+        run: ../tools/varscan_processsomatic.cwl
         in:
             variants: somatic/snvs
             max_normal_freq: max_normal_freq
         out:
             [somatic_hc, somatic, germline_hc, germline, loh_hc, loh]
     process_somatic_indels:
-        run: ../definitions/tools/varscan_processsomatic.cwl
+        run: ../tools/varscan_processsomatic.cwl
         in:
             variants: somatic/indels
             max_normal_freq: max_normal_freq
