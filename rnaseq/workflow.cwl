@@ -99,7 +99,7 @@ steps:
         out:
             [fastqs,aligned_bam]
     kallisto:
-        run: kallisto.cwl
+        run: ../definitions/tools/kallisto.cwl
         in:
             kallisto_index: kallisto_index
             firststrand: firststrand
