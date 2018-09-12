@@ -50,7 +50,7 @@ steps:
         out:
             [per_chromosome_pindel_out]
     cat_all:
-        run: cat_all.cwl
+        run: ../definitions/tools/cat_all.cwl
         in:
             chromosome_pindel_outs: pindel_cat/per_chromosome_pindel_out
         out:
