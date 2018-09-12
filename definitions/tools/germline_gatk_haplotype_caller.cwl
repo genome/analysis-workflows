@@ -7,6 +7,8 @@ baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK.jar", "-
 requirements:
     - class: ResourceRequirement
       ramMin: 8000
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 arguments:
     ["-gt_mode", "GENOTYPE_GIVEN_ALLELES",
     "-o", { valueFrom: $(runtime.outdir)/docm_out.vcf }]
