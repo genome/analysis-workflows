@@ -251,7 +251,7 @@ steps:
         out:
             [bam]
     tumor_bam_readcount:
-        run: ../pvacseq/bam_readcount.cwl
+        run: ../definitions/tools/bam_readcount.cwl
         in:
             vcf: combine/combined_vcf
             sample:
