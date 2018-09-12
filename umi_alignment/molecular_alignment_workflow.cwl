@@ -64,7 +64,7 @@ steps:
         out:
             [consensus_aligned_bam]
     filter_consensus:
-        run: filter_consensus.cwl
+        run: ../definitions/tools/filter_consensus.cwl
         in:
             bam: align_consensus/consensus_aligned_bam
             reference: reference
