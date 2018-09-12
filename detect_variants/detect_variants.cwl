@@ -180,7 +180,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     varscan:
-        run: ../varscan/workflow.cwl
+        run: ../definitions/subworkflows/varscan_pre_and_post_processing.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
@@ -237,14 +237,14 @@ steps:
         out:
             [annotated_vcf, vep_summary]
     tumor_cram_to_bam:
-        run: ../cram_to_bam/workflow.cwl
+        run: ../definitions/subworkflows/cram_to_bam_and_index.cwl
         in:
             cram: tumor_cram
             reference: reference
         out:
             [bam]
     normal_cram_to_bam:
-        run: ../cram_to_bam/workflow.cwl
+        run: ../definitions/subworkflows/cram_to_bam_and_index.cwl
         in:
             cram: normal_cram
             reference: reference
