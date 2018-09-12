@@ -16,14 +16,14 @@ outputs:
         secondaryFiles: [.bai]
 steps:
     cram_to_bam:
-        run: ../definitions/tools/cram_to_bam.cwl
+        run: ../tools/cram_to_bam.cwl
         in:
             cram: cram
             reference: reference
         out:
             [bam]
     index_bam:
-        run: ../definitions/tools/index_bam.cwl
+        run: ../tools/index_bam.cwl
         in:
             bam: cram_to_bam/bam
         out:

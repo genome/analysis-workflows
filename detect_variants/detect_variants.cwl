@@ -237,14 +237,14 @@ steps:
         out:
             [annotated_vcf, vep_summary]
     tumor_cram_to_bam:
-        run: ../cram_to_bam/workflow.cwl
+        run: ../definitions/subworkflows/cram_to_bam_and_index.cwl
         in:
             cram: tumor_cram
             reference: reference
         out:
             [bam]
     normal_cram_to_bam:
-        run: ../cram_to_bam/workflow.cwl
+        run: ../definitions/subworkflows/cram_to_bam_and_index.cwl
         in:
             cram: normal_cram
             reference: reference
