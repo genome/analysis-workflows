@@ -39,7 +39,7 @@ steps:
         out:
             [docm_out]
     docm_filter:
-        run: ../definitions/tools/docm_filter.cwl
+        run: ../definitions/tools/somatic_docm_filter.cwl
         in:
             docm_out: GATK_haplotype_caller/docm_out
             normal_cram: normal_cram

@@ -7,6 +7,9 @@ arguments: [
     "/usr/bin/perl", "/usr/bin/single_sample_docm_filter.pl",
     $(inputs.docm_out.path), $(runtime.outdir)
 ]
+requirements:
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 inputs:
     docm_out:
         type: File
