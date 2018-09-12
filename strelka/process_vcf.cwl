@@ -13,7 +13,7 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     add_gt:
-        run: ../definitions/tools/add_gt.cwl
+        run: ../definitions/tools/add_strelka_gt.cwl
         in:
             vcf: vcf
         out:
