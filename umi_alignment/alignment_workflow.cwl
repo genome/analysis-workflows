@@ -21,7 +21,7 @@ outputs:
         outputSource: mark_illumina_adapters/metrics
 steps:
     extract_umis:
-        run: extract_umis.cwl
+        run: ../definitions/tools/extract_umis.cwl
         in:
             bam: bam
             read_structure: read_structure
