@@ -83,7 +83,7 @@ steps:
         out:
             [filtered_vcf]
     remove_end_tags:
-        run: remove_end_tags.cwl
+        run: ../definitions/tools/remove_end_tags.cwl
         in:
             vcf: region_filter/filtered_vcf
         out:

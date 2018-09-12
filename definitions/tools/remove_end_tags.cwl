@@ -12,6 +12,8 @@ arguments: [
 requirements:
     - class: ResourceRequirement
       ramMin: 4000
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 inputs:
     vcf:
         type: File
