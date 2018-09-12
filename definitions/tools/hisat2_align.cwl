@@ -9,6 +9,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: 16
+    - class: DockerRequirement
+      dockerPull: "mgibio/rnaseq"
 arguments: [
     "-p", $(runtime.cores),
     "--dta",

@@ -60,7 +60,7 @@ steps:
         out:
             [fastqs]
     hisat2_align:
-        run: hisat2_align.cwl
+        run: ../definitions/tools/hisat2_align.cwl
         in:
             reference_index: reference_index
             fastq1: 
