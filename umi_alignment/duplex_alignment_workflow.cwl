@@ -31,7 +31,7 @@ outputs:
 steps:
     align:
         scatter: bam
-        run: alignment_workflow.cwl
+        run: ../definitions/subworkflows/alignment_workflow.cwl
         in:
             bam: bam
             read_structure: read_structure
