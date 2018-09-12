@@ -10,6 +10,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 6000
       tmpdirMin: 1000
+    - class: DockerRequirement
+      dockerPull: mgibio/dna-alignment
 inputs:
     bam:
         type: File
