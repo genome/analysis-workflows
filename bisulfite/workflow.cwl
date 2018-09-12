@@ -44,7 +44,7 @@ outputs:
         outputSource: bedgraph_to_bigwig/cpg_bigwig
 steps:
     bam_to_trimmed_fastq_and_biscuit_alignments:
-        run: bam_to_trimmed_fastq_and_biscuit_alignments.cwl
+        run: ../definitions/subworkflows/bam_to_trimmed_fastq_and_biscuit_alignments.cwl
         scatter: [bam, read_group_id]
         scatterMethod: dotproduct
         in:
