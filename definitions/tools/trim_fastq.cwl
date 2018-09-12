@@ -4,6 +4,9 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Trim FASTQ (flexbar)"
 baseCommand: ['/opt/flexbar/flexbar']
+requirements:
+    - class: DockerRequirement
+      dockerPull: "mgibio/bisulfite"
 arguments: [
     "--target", {valueFrom: "$(runtime.outdir)/trimmed_read"},
     "--threads", {valueFrom: "$(runtime.cores)"}
@@ -50,8 +53,15 @@ inputs:
             prefix: "--reads2"
             position: 8
 outputs:
+    fastq1:
+        type: File
+        outputBinding:
+            glob: "trimmed_read_1.fastq"
+    fastq2:
+        type: File
+        outputBinding:
+            glob: "trimmed_read_2.fastq"
     fastqs:
         type: File[]
         outputBinding:
             glob: "trimmed_read_*.fastq"
-
