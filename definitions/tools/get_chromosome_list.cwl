@@ -6,7 +6,7 @@ baseCommand: [
 ]
 requirements:
     - class: InlineJavascriptRequirement
-    - DockerRequirement
+    - class: DockerRequirement
       dockerPull: "ubuntu:xenial"
 stdout: "chromosome.list"
 inputs:
