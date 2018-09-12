@@ -63,7 +63,7 @@ steps:
         out:
             [somatic_snvs, somatic_indels, somatic_hc_snvs, somatic_hc_indels]
     bgzip_and_index_snvs:
-        run: bgzip_and_index.cwl
+        run: ../../varscan/bgzip_and_index.cwl
         in:
             vcf: varscan/somatic_snvs
         out:
