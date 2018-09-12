@@ -2,6 +2,9 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Concordance tool"
 baseCommand: ["python", "/opt/concordance/newConcordance.py"]
+requirements:
+    - class: DockerRequirement
+      dockerPull: "mgibio/concordance"
 inputs:
     bam_1:
         type: File

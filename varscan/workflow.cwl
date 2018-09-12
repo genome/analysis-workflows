@@ -43,7 +43,7 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     intervals_to_bed:
-        run: intervals_to_bed.cwl
+        run: ../definitions/tools/intervals_to_bed.cwl
         in:
             interval_list: interval_list
         out:
@@ -87,7 +87,7 @@ steps:
         out:
             [indexed_vcf]
     merge_snvs:
-        run: set_filter_status.cwl
+        run: ../definitions/tools/set_filter_status.cwl
         in:
             vcf: bgzip_and_index_snvs/indexed_vcf
             filtered_vcf: bgzip_and_index_hc_snvs/indexed_vcf
@@ -101,7 +101,7 @@ steps:
         out:
             [indexed_vcf]
     merge_indels:
-        run: set_filter_status.cwl
+        run: ../definitions/tools/set_filter_status.cwl
         in:
             vcf: bgzip_and_index_indels/indexed_vcf
             filtered_vcf: bgzip_and_index_hc_indels/indexed_vcf

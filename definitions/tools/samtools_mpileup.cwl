@@ -6,6 +6,9 @@ label: "samtools 1.3.1 somatic mpileup"
 baseCommand: "mpileup"
 arguments:
     ["--no-baq"]
+requirements:
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 inputs:
     reference:
         type: string

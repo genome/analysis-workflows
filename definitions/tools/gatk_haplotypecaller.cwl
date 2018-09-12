@@ -8,6 +8,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 8000
     - class: InlineJavascriptRequirement
+    - class: DockerRequirement
+      dockerPull: mgibio/cle
 arguments:
     ["-o", { valueFrom: '${
             if (inputs.intervals.length == 1 && inputs.intervals[0].match(/^[0-9A-Za-z]+$/)) {
