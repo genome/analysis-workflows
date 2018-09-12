@@ -36,7 +36,7 @@ steps:
         out:
             [deletions, insertions, tandems, long_insertions, inversions]
     cat:
-        run: cat_out.cwl
+        run: ../definitions/tools/cat_out.cwl
         in:
             pindel_outs: [pindel/deletions, pindel/insertions, pindel/tandems, pindel/long_insertions, pindel/inversions]
         out:
