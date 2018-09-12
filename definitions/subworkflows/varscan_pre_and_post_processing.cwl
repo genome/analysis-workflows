@@ -127,7 +127,7 @@ steps:
         out:
             [indexed_vcf]
     filter:
-        run: ../../fp_filter/workflow.cwl
+        run: fp_filter.cwl
         in:
             reference: reference
             cram: tumor_cram
