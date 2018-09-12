@@ -162,7 +162,7 @@ steps:
         out:
             [annotated_bam_readcount_vcf]
     index:
-        run: index_vcf.cwl
+        run: ../definitions/tools/index_vcf.cwl
         in:
             vcf: add_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
@@ -197,7 +197,7 @@ steps:
         out:
             [bgzipped_file]
     index_filtered:
-        run: index_vcf.cwl
+        run: ../definitions/tools/index_vcf.cwl
         in:
             vcf: bgzip_filtered/bgzipped_file
         out:
