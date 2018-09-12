@@ -45,7 +45,7 @@ steps:
         out:
             [merged_bam]
     group_reads_by_umi:
-        run: group_reads.cwl
+        run: ../definitions/tools/group_reads.cwl
         in:
             bam: merge/merged_bam
         out:
