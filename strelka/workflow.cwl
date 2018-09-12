@@ -46,7 +46,7 @@ steps:
             [indels, snvs]
     process:
         scatter: vcf
-        run: process_vcf.cwl
+        run: ../definitions/subworkflows/process_vcf.cwl
         in:
             vcf: [strelka/snvs, strelka/indels]
         out:
