@@ -38,7 +38,7 @@ steps:
         out:
             [bam]
     normalize_variants:
-        run: normalize_variants.cwl
+        run: ../definitions/tools/normalize_variants.cwl
         in:
             reference: reference
             vcf: vcf
