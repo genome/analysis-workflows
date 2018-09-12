@@ -42,13 +42,13 @@ outputs:
         outputSource: hisat2_align/aligned_bam
 steps:
     bam_to_fastq:
-        run: ../definitions/tools/bam_to_fastq.cwl
+        run: ../tools/bam_to_fastq.cwl
         in:
             bam: bam
         out:
             [fastq1, fastq2]
     trim_fastq:
-        run: ../definitions/tools/trim_fastq.cwl
+        run: ../tools/trim_fastq.cwl
         in:
             reads1: bam_to_fastq/fastq1
             reads2: bam_to_fastq/fastq2
@@ -60,7 +60,7 @@ steps:
         out:
             [fastqs]
     hisat2_align:
-        run: ../definitions/tools/hisat2_align.cwl
+        run: ../tools/hisat2_align.cwl
         in:
             reference_index: reference_index
             fastq1: 
