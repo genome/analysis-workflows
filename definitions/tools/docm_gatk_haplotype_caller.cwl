@@ -18,23 +18,29 @@ inputs:
         inputBinding:
             prefix: "-R"
             position: 1
+    normal_cram:
+        type: File?
+        inputBinding:
+            prefix: "-I"
+            position: 2
+        secondaryFiles: [^.crai]
     cram:
         type: File
         inputBinding:
             prefix: "-I"
-            position: 2
+            position: 3
         secondaryFiles: [^.crai]
     docm_vcf:
         type: File
         inputBinding:
             prefix: "--alleles"
-            position: 3
+            position: 4
         secondaryFiles: [.tbi]
     interval_list:
         type: File
         inputBinding:
             prefix: "-L"
-            position: 4
+            position: 5
 outputs:
     docm_out:
         type: File
