@@ -48,7 +48,7 @@ steps:
         out:
             [unfiltered_vcf]
     combine:
-        run: combine_variants.cwl
+        run: ../definitions/tools/pon_combine_variants.cwl
         in:
             reference: reference
             interval_list: interval_list
