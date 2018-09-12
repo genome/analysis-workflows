@@ -54,7 +54,7 @@ steps:
         out: [split_interval_lists]
     mutect:
         scatter: interval_list
-        run: mutect.cwl
+        run: ../definitions/tools/mutect.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
