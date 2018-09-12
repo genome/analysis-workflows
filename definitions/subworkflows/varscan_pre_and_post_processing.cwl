@@ -43,7 +43,7 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     intervals_to_bed:
-        run: ../definitions/tools/intervals_to_bed.cwl
+        run: ../tools/intervals_to_bed.cwl
         in:
             interval_list: interval_list
         out:
@@ -63,31 +63,31 @@ steps:
         out:
             [somatic_snvs, somatic_indels, somatic_hc_snvs, somatic_hc_indels]
     bgzip_and_index_snvs:
-        run: bgzip_and_index.cwl
+        run: ../../varscan/bgzip_and_index.cwl
         in:
             vcf: varscan/somatic_snvs
         out:
             [indexed_vcf]
     bgzip_and_index_hc_snvs:
-        run: bgzip_and_index.cwl
+        run: ../../varscan/bgzip_and_index.cwl
         in:
             vcf: varscan/somatic_hc_snvs
         out:
             [indexed_vcf]
     bgzip_and_index_indels:
-        run: bgzip_and_index.cwl
+        run: ../../varscan/bgzip_and_index.cwl
         in:
             vcf: varscan/somatic_indels
         out:
             [indexed_vcf]
     bgzip_and_index_hc_indels:
-        run: bgzip_and_index.cwl
+        run: ../../varscan/bgzip_and_index.cwl
         in:
             vcf: varscan/somatic_hc_indels
         out:
             [indexed_vcf]
     merge_snvs:
-        run: ../definitions/tools/set_filter_status.cwl
+        run: ../tools/set_filter_status.cwl
         in:
             vcf: bgzip_and_index_snvs/indexed_vcf
             filtered_vcf: bgzip_and_index_hc_snvs/indexed_vcf
@@ -95,13 +95,13 @@ steps:
         out:
             [merged_vcf]
     index_snvs:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: merge_snvs/merged_vcf
         out:
             [indexed_vcf]
     merge_indels:
-        run: ../definitions/tools/set_filter_status.cwl
+        run: ../tools/set_filter_status.cwl
         in:
             vcf: bgzip_and_index_indels/indexed_vcf
             filtered_vcf: bgzip_and_index_hc_indels/indexed_vcf
@@ -109,25 +109,25 @@ steps:
         out:
             [merged_vcf]
     index_indels:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: merge_indels/merged_vcf
         out:
             [indexed_vcf]
     merge:
-        run: ../definitions/tools/merge_vcf.cwl
+        run: ../tools/merge_vcf.cwl
         in:
             vcfs: [index_snvs/indexed_vcf, index_indels/indexed_vcf]
         out:
             [merged_vcf]
     index:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: merge/merged_vcf
         out:
             [indexed_vcf]
     filter:
-        run: ../fp_filter/workflow.cwl
+        run: ../../fp_filter/workflow.cwl
         in:
             reference: reference
             cram: tumor_cram
