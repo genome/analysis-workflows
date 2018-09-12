@@ -214,7 +214,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     combine:
-        run: combine_variants.cwl
+        run: ../definitions/tools/combine_variants.cwl
         in:
             reference: reference
             mutect_vcf: mutect/filtered_vcf
