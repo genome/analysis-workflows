@@ -133,7 +133,7 @@ steps:
         out:
             [indexed_bam]
     stringtie:
-        run: stringtie.cwl
+        run: ../definitions/tools/stringtie.cwl
         in:
             bam: merge/merged_bam
             reference_annotation: reference_annotation
