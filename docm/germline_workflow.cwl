@@ -35,7 +35,7 @@ steps:
         out:
             [docm_out]
     docm_filter:
-        run: single_sample_docm_filter.cwl
+        run: ../definitions/tools/single_sample_docm_filter.cwl
         in:
             docm_out: gatk_haplotypecaller/docm_out
         out:
