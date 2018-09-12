@@ -35,7 +35,7 @@ outputs:
 steps:
     haplotype_caller:
         scatter: [intervals]
-        run: ../definitions/tools/gatk_haplotypecaller.cwl
+        run: ../definitions/tools/gatk_haplotype_caller.cwl
         in:
             reference: reference
             cram: cram

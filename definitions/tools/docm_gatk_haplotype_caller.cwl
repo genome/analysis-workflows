@@ -7,6 +7,8 @@ baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK.jar", "-
 requirements:
     - class: ResourceRequirement
       ramMin: 8000
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 arguments:
     ["-gt_mode", "GENOTYPE_GIVEN_ALLELES",
     "-o", { valueFrom: $(runtime.outdir)/docm_out.vcf }]
@@ -17,12 +19,12 @@ inputs:
             prefix: "-R"
             position: 1
     normal_cram:
-        type: File
+        type: File?
         inputBinding:
             prefix: "-I"
             position: 2
         secondaryFiles: [^.crai]
-    tumor_cram:
+    cram:
         type: File
         inputBinding:
             prefix: "-I"

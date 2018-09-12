@@ -29,10 +29,10 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     GATK_haplotype_caller:
-        run: GATK_haplotype_caller.cwl
+        run: ../definitions/tools/docm_gatk_haplotype_caller.cwl
         in:
             reference: reference
-            tumor_cram: tumor_cram
+            cram: tumor_cram
             normal_cram: normal_cram
             docm_vcf: docm_vcf
             interval_list: interval_list
