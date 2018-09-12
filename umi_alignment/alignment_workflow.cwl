@@ -28,7 +28,7 @@ steps:
         out:
             [umi_extracted_bam]
     mark_illumina_adapters:
-        run: mark_illumina_adapters.cwl
+        run: ../definitions/tools/mark_illumina_adapters.cwl
         in:
             bam: extract_umis/umi_extracted_bam
         out:
