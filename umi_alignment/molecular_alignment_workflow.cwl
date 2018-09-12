@@ -57,7 +57,7 @@ steps:
         out:
             [consensus_bam]
     align_consensus:
-        run: realign.cwl
+        run: ../definitions/tools/realign.cwl
         in:
             bam: call_molecular_consensus/consensus_bam
             reference: reference
