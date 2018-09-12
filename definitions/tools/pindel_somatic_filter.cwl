@@ -12,6 +12,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 16000
     - class: ShellCommandRequirement
+    - class: DockerRequirement
+      dockerPull: mgibio/cle
 inputs:
     reference:
         type: string

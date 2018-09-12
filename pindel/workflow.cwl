@@ -56,7 +56,7 @@ steps:
         out:
             [all_chromosome_pindel_head]
     somaticfilter:
-        run: somaticfilter.cwl
+        run: ../definitions/tools/pindel_somatic_filter.cwl
         in:
             reference: reference
             pindel_output_summary: cat_all/all_chromosome_pindel_head
