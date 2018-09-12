@@ -4,6 +4,8 @@ class: CommandLineTool
 baseCommand: ['/bin/cat']
 requirements:
     - class: ShellCommandRequirement
+    - class: DockerRequirement
+      dockerPull: "ubuntu:xenial"
 arguments: [
     { shellQuote: false, valueFrom: "|" },
     "/bin/grep", "ChrID", "/dev/stdin"
