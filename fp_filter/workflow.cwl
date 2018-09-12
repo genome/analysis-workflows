@@ -45,7 +45,7 @@ steps:
         out:
             [normalized_vcf]
     fp_filter:
-        run: fp_filter.cwl
+        run: ../definitions/tools/fp_filter.cwl
         in:
             reference: reference
             bam: cram_to_bam/bam
