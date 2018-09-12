@@ -61,4 +61,7 @@ outputs:
         type: File
         outputBinding:
             glob: "trimmed_read_2.fastq"
-
+    fastqs:
+        type: File[]
+        outputBinding:
+            glob: "trimmed_read_*.fastq"

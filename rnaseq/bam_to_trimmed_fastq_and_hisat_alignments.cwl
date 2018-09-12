@@ -48,7 +48,7 @@ steps:
         out:
             [fastq1, fastq2]
     trim_fastq:
-        run: ../definitions/tools/trim_fastq_list_output.cwl
+        run: ../definitions/tools/trim_fastq.cwl
         in:
             reads1: bam_to_fastq/fastq1
             reads2: bam_to_fastq/fastq2
