@@ -66,7 +66,7 @@ outputs:
         outputSource: qc/verify_bam_id_depth
 steps:
     alignment:
-        run: unaligned_bam_to_bqsr/workflow.cwl
+        run: definitions/tools/bam_to_bqsr_workflow.cwl
         in:
             reference: reference
             bams: bams
