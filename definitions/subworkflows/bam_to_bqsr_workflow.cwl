@@ -38,7 +38,7 @@ steps:
     align:
         scatter: [bam, readgroup]
         scatterMethod: dotproduct
-        run: /align.cwl
+        run: align.cwl
         in:
             bam: bams
             readgroup: readgroups
