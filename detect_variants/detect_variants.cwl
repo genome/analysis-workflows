@@ -303,7 +303,7 @@ steps:
         out:
             [indexed_vcf]
     filter_vcf:
-        run: filter_vcf.cwl
+        run: ../definitions/subworkflows/filter_vcf.cwl
         in: 
             vcf: index/indexed_vcf
             filter_gnomADe_maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
