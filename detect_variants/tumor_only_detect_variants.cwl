@@ -105,7 +105,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     docm:
-        run: ../docm/germline_workflow.cwl
+        run: ../definitions/subworkflows/docm_germline.cwl
         in:
             reference: reference
             cram: cram

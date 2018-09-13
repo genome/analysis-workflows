@@ -26,7 +26,7 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     gatk_haplotypecaller:
-        run: ../definitions/tools/docm_gatk_haplotype_caller.cwl
+        run: ../tools/docm_gatk_haplotype_caller.cwl
         in:
             reference: reference
             cram: cram
@@ -35,19 +35,19 @@ steps:
         out:
             [docm_out]
     docm_filter:
-        run: ../definitions/tools/single_sample_docm_filter.cwl
+        run: ../tools/single_sample_docm_filter.cwl
         in:
             docm_out: gatk_haplotypecaller/docm_out
         out:
             [docm_filter_out]
     bgzip:
-        run: ../definitions/tools/bgzip.cwl
+        run: ../tools/bgzip.cwl
         in:
             file: docm_filter/docm_filter_out
         out:
             [bgzipped_file]
     index:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: bgzip/bgzipped_file
         out:
