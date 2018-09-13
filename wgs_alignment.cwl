@@ -76,7 +76,7 @@ steps:
             dbsnp_vcf: dbsnp_vcf
         out: [final_cram,mark_duplicates_metrics_file]
     qc:
-        run: qc/workflow_wgs.cwl
+        run: definitions/subworkflows/qc_wgs.cwl
         in:
             cram: alignment/final_cram
             reference: reference
