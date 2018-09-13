@@ -275,7 +275,7 @@ steps:
         out:
             [bam_readcount_tsv]
     add_tumor_bam_readcount_to_vcf:
-        run: ../tools/add_bam_readcount_to_vcf.cwl
+        run: ../tools/vcf_readcount_annotator.cwl
         in:
             vcf: annotate_variants/annotated_vcf
             bam_readcount_tsv: tumor_bam_readcount/bam_readcount_tsv
@@ -286,7 +286,7 @@ steps:
         out:
             [annotated_bam_readcount_vcf]
     add_normal_bam_readcount_to_vcf:
-        run: ../tools/add_bam_readcount_to_vcf.cwl
+        run: ../tools/vcf_readcount_annotator.cwl
         in:
             vcf: add_tumor_bam_readcount_to_vcf/annotated_bam_readcount_vcf
             bam_readcount_tsv: normal_bam_readcount/bam_readcount_tsv

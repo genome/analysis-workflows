@@ -38,7 +38,7 @@ steps:
         out:
             [bam_readcount_tsv]
     add_tumor_rna_bam_readcount_to_vcf:
-        run: ../tools/add_bam_readcount_to_vcf.cwl
+        run: ../tools/vcf_readcount_annotator.cwl
         in:
             vcf: detect_variants_vcf
             bam_readcount_tsv: tumor_rna_bam_readcount/bam_readcount_tsv
