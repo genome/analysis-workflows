@@ -38,7 +38,7 @@ steps:
     downsample:
         scatter: [bam]
         scatterMethod: dotproduct
-        run: ../definitions/tools/downsample.cwl
+        run: ../tools/downsample.cwl
         in:
             bam: bams
             probability: downsample_probability
@@ -46,7 +46,7 @@ steps:
         out:
             [downsampled_bam]
     align_workflow:
-        run: workflow.cwl
+        run: bam_to_bqsr_workflow.cwl
         in:
             bams: downsample/downsampled_bam
             readgroups: readgroups
