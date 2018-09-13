@@ -47,14 +47,14 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     split_interval_list:
-        run: ../definitions/tools/split_interval_list.cwl
+        run: ../tools/split_interval_list.cwl
         in:
             interval_list: interval_list
             scatter_count: scatter_count
         out: [split_interval_lists]
     mutect:
         scatter: interval_list
-        run: ../definitions/tools/mutect.cwl
+        run: ../tools/mutect.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
@@ -69,19 +69,19 @@ steps:
         out:
             [vcf]
     merge:
-        run: ../definitions/tools/merge_vcf.cwl
+        run: ../tools/merge_vcf.cwl
         in:
             vcfs: mutect/vcf
         out:
             [merged_vcf]
     index:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: merge/merged_vcf
         out:
             [indexed_vcf]
     filter:
-        run: ../definitions/subworkflows/fp_filter.cwl
+        run: fp_filter.cwl
         in:
             reference: reference
             cram: tumor_cram

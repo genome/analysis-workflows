@@ -153,7 +153,7 @@ outputs:
         outputSource: normal_bam_readcount/bam_readcount_tsv
 steps:
     mutect:
-        run: ../mutect/workflow.cwl
+        run: ../definitions/subworkflows/mutect.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
