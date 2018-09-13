@@ -33,7 +33,7 @@ outputs:
         secondaryFiles: [".tbi"]
 steps:
     get_chromosome_list:
-        run: ../definitions/tools/get_chromosome_list.cwl
+        run: ../tools/get_chromosome_list.cwl
         in: 
             interval_list: interval_list
         out:
@@ -50,32 +50,32 @@ steps:
         out:
             [per_chromosome_pindel_out]
     cat_all:
-        run: ../definitions/tools/cat_all.cwl
+        run: ../tools/cat_all.cwl
         in:
             chromosome_pindel_outs: pindel_cat/per_chromosome_pindel_out
         out:
             [all_chromosome_pindel_head]
     somaticfilter:
-        run: ../definitions/tools/pindel_somatic_filter.cwl
+        run: ../tools/pindel_somatic_filter.cwl
         in:
             reference: reference
             pindel_output_summary: cat_all/all_chromosome_pindel_head
         out: 
             [vcf]
     bgzip:
-        run: ../definitions/tools/bgzip.cwl
+        run: ../tools/bgzip.cwl
         in: 
             file: somaticfilter/vcf
         out:
             [bgzipped_file]
     index:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: bgzip/bgzipped_file
         out:
             [indexed_vcf]
     region_filter:
-        run: ../definitions/tools/select_variants.cwl
+        run: ../tools/select_variants.cwl
         in:
             reference: reference
             vcf: index/indexed_vcf
@@ -83,19 +83,19 @@ steps:
         out:
             [filtered_vcf]
     remove_end_tags:
-        run: ../definitions/tools/remove_end_tags.cwl
+        run: ../tools/remove_end_tags.cwl
         in:
             vcf: region_filter/filtered_vcf
         out:
             [processed_vcf]
     reindex:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: remove_end_tags/processed_vcf
         out:
             [indexed_vcf]
     filter:
-        run: ../definitions/subworkflows/fp_filter.cwl
+        run: fp_filter.cwl
         in:
             reference: reference
             cram: tumor_cram
