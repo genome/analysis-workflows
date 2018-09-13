@@ -52,7 +52,7 @@ outputs:
         outputSource: verify_bam_id/verify_bam_id_depth
 steps:
     collect_insert_size_metrics:
-        run: ../definitions/tools/collect_insert_size_metrics.cwl
+        run: ../tools/collect_insert_size_metrics.cwl
         in:
             cram: cram
             reference: reference
@@ -60,7 +60,7 @@ steps:
         out:
             [insert_size_metrics, insert_size_histogram]
     collect_alignment_summary_metrics:
-        run: ../definitions/tools/collect_alignment_summary_metrics.cwl
+        run: ../tools/collect_alignment_summary_metrics.cwl
         in:
             cram: cram
             reference: reference
@@ -68,7 +68,7 @@ steps:
         out:
             [alignment_summary_metrics]
     collect_gc_bias_metrics:
-        run: ../definitions/tools/collect_gc_bias_metrics.cwl
+        run: ../tools/collect_gc_bias_metrics.cwl
         in:
             cram: cram
             reference: reference
@@ -76,7 +76,7 @@ steps:
         out:
             [gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary]
     collect_wgs_metrics:
-        run: ../definitions/tools/collect_wgs_metrics.cwl
+        run: ../tools/collect_wgs_metrics.cwl
         in:
             cram: cram
             reference: reference
@@ -84,19 +84,19 @@ steps:
         out:
             [wgs_metrics]
     samtools_flagstat:
-        run: ../definitions/tools/samtools_flagstat.cwl
+        run: ../tools/samtools_flagstat.cwl
         in:
             cram: cram
         out: [flagstats]
     cram_to_bam:
-        run: ../definitions/subworkflows/cram_to_bam_and_index.cwl
+        run: cram_to_bam_and_index.cwl
         in:
           cram: cram
           reference: reference
         out:
           [bam]
     verify_bam_id:
-        run: ../definitions/tools/verify_bam_id.cwl
+        run: ../tools/verify_bam_id.cwl
         in:
             bam: cram_to_bam/bam
             vcf: omni_vcf
