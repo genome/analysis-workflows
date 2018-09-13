@@ -67,14 +67,14 @@ steps:
         out:
             [gvcf]
     genotype_gvcfs:
-        run: ../definitions/tools/gatk_genotypegvcfs.cwl
+        run: ../tools/gatk_genotypegvcfs.cwl
         in:
             reference: reference
             gvcfs: haplotype_caller/gvcf
         out:
             [genotype_vcf]
     annotate_variants:
-        run: ../definitions/tools/vep.cwl
+        run: ../tools/vep.cwl
         in:
             vcf: genotype_gvcfs/genotype_vcf
             cache_dir: vep_cache_dir
@@ -86,37 +86,37 @@ steps:
         out:
             [annotated_vcf, vep_summary]
     bgzip_annotated_vcf:
-        run: ../definitions/tools/bgzip.cwl
+        run: ../tools/bgzip.cwl
         in:
             file: annotate_variants/annotated_vcf
         out:
             [bgzipped_file]
     index_annotated_vcf:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: bgzip_annotated_vcf/bgzipped_file
         out:
             [indexed_vcf]
     coding_variant_filter:
-        run: ../definitions/tools/filter_vcf_coding_variant.cwl
+        run: ../tools/filter_vcf_coding_variant.cwl
         in:
             vcf: annotate_variants/annotated_vcf
         out:
             [filtered_vcf]
     bgzip_coding_vcf:
-        run: ../definitions/tools/bgzip.cwl
+        run: ../tools/bgzip.cwl
         in:
             file: coding_variant_filter/filtered_vcf
         out:
             [bgzipped_file]
     index_coding_vcf:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: bgzip_coding_vcf/bgzipped_file
         out:
             [indexed_vcf]
     limit_variants:
-        run: ../definitions/tools/select_variants.cwl
+        run: ../tools/select_variants.cwl
         in:
             reference: reference
             vcf: index_coding_vcf/indexed_vcf

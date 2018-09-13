@@ -29,7 +29,7 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     GATK_haplotype_caller:
-        run: ../definitions/tools/docm_gatk_haplotype_caller.cwl
+        run: ../tools/docm_gatk_haplotype_caller.cwl
         in:
             reference: reference
             cram: tumor_cram
@@ -39,7 +39,7 @@ steps:
         out:
             [docm_out]
     docm_filter:
-        run: ../definitions/tools/somatic_docm_filter.cwl
+        run: ../tools/somatic_docm_filter.cwl
         in:
             docm_out: GATK_haplotype_caller/docm_out
             normal_cram: normal_cram
@@ -47,13 +47,13 @@ steps:
         out:
             [docm_filter_out]
     bgzip:
-        run: ../definitions/tools/bgzip.cwl
+        run: ../tools/bgzip.cwl
         in:
             file: docm_filter/docm_filter_out
         out:
             [bgzipped_file]
     index:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: bgzip/bgzipped_file
         out:

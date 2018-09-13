@@ -153,7 +153,7 @@ outputs:
         outputSource: normal_bam_readcount/bam_readcount_tsv
 steps:
     mutect:
-        run: ../mutect/workflow.cwl
+        run: ../definitions/subworkflows/mutect.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
@@ -194,7 +194,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     pindel:
-        run: ../pindel/workflow.cwl
+        run: ../definitions/subworkflows/pindel_workflow.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
@@ -204,7 +204,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     docm:
-        run: ../docm/workflow.cwl
+        run: ../definitions/subworkflows/docm_cle.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
@@ -303,7 +303,7 @@ steps:
         out:
             [indexed_vcf]
     filter_vcf:
-        run: filter_vcf.cwl
+        run: ../definitions/subworkflows/filter_vcf.cwl
         in: 
             vcf: index/indexed_vcf
             filter_gnomADe_maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency

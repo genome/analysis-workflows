@@ -31,7 +31,7 @@ outputs:
 steps:
     mutect:
         scatter: tumor_cram
-        run: ../mutect/workflow.cwl
+        run: ../definitions/subworkflows/mutect.cwl
         in:
             reference: reference
             tumor_cram: normal_crams

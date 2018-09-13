@@ -26,7 +26,7 @@ outputs:
         outputSource: cat/pindel_out
 steps:
     pindel:
-        run: ../definitions/tools/pindel.cwl
+        run: ../tools/pindel.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
@@ -36,7 +36,7 @@ steps:
         out:
             [deletions, insertions, tandems, long_insertions, inversions]
     cat:
-        run: ../definitions/tools/cat_out.cwl
+        run: ../tools/cat_out.cwl
         in:
             pindel_outs: [pindel/deletions, pindel/insertions, pindel/tandems, pindel/long_insertions, pindel/inversions]
         out:
