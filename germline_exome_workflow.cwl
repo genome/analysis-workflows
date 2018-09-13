@@ -172,7 +172,7 @@ steps:
                             }
                         }
     detect_variants:
-        run: detect_variants/germline_detect_variants.cwl
+        run: definitions/subworkflows/germline_detect_variants.cwl
         in:
             reference: reference
             cram: alignment_and_qc/cram
