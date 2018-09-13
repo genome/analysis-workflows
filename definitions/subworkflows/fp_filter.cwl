@@ -44,12 +44,24 @@ steps:
             vcf: vcf
         out:
             [normalized_vcf]
+    decompose_variants:
+        run: ../tools/vt_decompose.cwl
+        in:
+            vcf: normalize_variants/normalized_vcf
+        out:
+            [decomposed_vcf]
+    index:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: decompose_variants/decomposed_vcf
+        out:
+            [indexed_vcf]
     fp_filter:
         run: ../tools/fp_filter.cwl
         in:
             reference: reference
             bam: cram_to_bam/bam
-            vcf: normalize_variants/normalized_vcf
+            vcf: index/indexed_vcf
             sample_name: sample_name
             min_var_freq: min_var_freq
             output_vcf_basename:
