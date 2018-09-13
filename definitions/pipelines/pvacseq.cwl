@@ -21,6 +21,13 @@ inputs:
         type: int?
     readcount_minimum_mapping_quality:
         type: int?
+    gene_expression_file:
+        type: File
+    transcript_expression_file:
+        type: File
+    expression_tool:
+        type: string?
+        default: 'kallisto'
 outputs:
     annotated_vcf:
         type: File
@@ -47,3 +54,25 @@ steps:
             sample_name: sample_name
         out:
             [annotated_bam_readcount_vcf]
+    add_gene_expression_data_to_vcf:
+        run: ../tools/vcf_expression_annotator.cwl
+        in:
+            vcf: add_tumor_rna_bam_readcount_to_vcf/annotated_bam_readcount_vcf
+            expression_file: gene_expression_file
+            expression_tool: expression_tool
+            data_type:
+                default: 'gene'
+            sample_name: sample_name
+        out:
+            [annotated_expression_vcf]
+    add_transcript_expression_data_to_vcf:
+        run: ../tools/vcf_expression_annotator.cwl
+        in:
+            vcf: add_gene_expression_data_to_vcf/annotated_expression_vcf
+            expression_file: transcript_expression_file
+            expression_tool: expression_tool
+            data_type:
+                default: 'transcript'
+            sample_name: sample_name
+        out:
+            [annotated_expression_vcf]
