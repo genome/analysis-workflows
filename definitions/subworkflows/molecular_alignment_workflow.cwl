@@ -31,7 +31,7 @@ outputs:
 steps:
     align:
         scatter: bam
-        run: ../definitions/subworkflows/alignment_workflow.cwl
+        run: alignment_workflow.cwl
         in:
             bam: bam
             read_structure: read_structure
@@ -39,46 +39,46 @@ steps:
         out:
             [aligned_bam, adapter_metrics]
     merge:
-        run: ../definitions/tools/merge_bams.cwl
+        run: ../tools/merge_bams.cwl
         in:
             bams: align/aligned_bam
         out:
             [merged_bam]
     group_reads_by_umi:
-        run: ../definitions/tools/group_reads.cwl
+        run: ../tools/group_reads.cwl
         in:
             bam: merge/merged_bam
         out:
             [grouped_bam]
     call_molecular_consensus:
-        run: ../definitions/tools/call_molecular_consensus.cwl
+        run: ../tools/call_molecular_consensus.cwl
         in:
             bam: group_reads_by_umi/grouped_bam
         out:
             [consensus_bam]
     align_consensus:
-        run: ../definitions/tools/realign.cwl
+        run: ../tools/realign.cwl
         in:
             bam: call_molecular_consensus/consensus_bam
             reference: reference
         out:
             [consensus_aligned_bam]
     filter_consensus:
-        run: ../definitions/tools/filter_consensus.cwl
+        run: ../tools/filter_consensus.cwl
         in:
             bam: align_consensus/consensus_aligned_bam
             reference: reference
         out:
             [filtered_bam]
     clip_overlap:
-        run: ../definitions/tools/clip_overlap.cwl
+        run: ../tools/clip_overlap.cwl
         in:
             bam: filter_consensus/filtered_bam
             reference: reference
         out:
             [clipped_bam]
     collect_duplex_seq_metrics:
-       run: ../definitions/tools/duplex_seq_metrics.cwl
+       run: ../tools/duplex_seq_metrics.cwl
        in:
             bam: group_reads_by_umi/grouped_bam
             intervals: target_intervals
@@ -86,14 +86,14 @@ steps:
        out:
             [duplex_seq_metrics]
     bam_to_cram:
-        run: ../definitions/tools/bam_to_cram.cwl
+        run: ../tools/bam_to_cram.cwl
         in:
             bam: clip_overlap/clipped_bam
             reference: reference
         out:
             [cram]
     index_cram:
-        run: ../definitions/tools/index_cram.cwl
+        run: ../tools/index_cram.cwl
         in:
             cram: bam_to_cram/cram
         out:
