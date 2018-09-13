@@ -13,13 +13,13 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     bgzip:
-        run: ../definitions/tools/bgzip.cwl
+        run: ../tools/bgzip.cwl
         in:
             file: vcf
         out:
             [bgzipped_file]
     index:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: bgzip/bgzipped_file
         out:
