@@ -69,7 +69,7 @@ outputs:
         outputSource: verify_bam_id/verify_bam_id_depth
 steps:
     collect_insert_size_metrics:
-        run: ../definitions/tools/collect_insert_size_metrics.cwl
+        run: ../tools/collect_insert_size_metrics.cwl
         in:
             cram: cram
             reference: reference
@@ -77,7 +77,7 @@ steps:
         out:
             [insert_size_metrics, insert_size_histogram]
     collect_alignment_summary_metrics:
-        run: ../definitions/tools/collect_alignment_summary_metrics.cwl
+        run: ../tools/collect_alignment_summary_metrics.cwl
         in:
             cram: cram
             reference: reference
@@ -85,7 +85,7 @@ steps:
         out:
             [alignment_summary_metrics]
     collect_roi_hs_metrics:
-        run: ../definitions/tools/collect_hs_metrics.cwl
+        run: ../tools/collect_hs_metrics.cwl
         in:
             cram: cram
             reference: reference
@@ -104,7 +104,7 @@ steps:
         out:
             [hs_metrics]
     collect_per_base_hs_metrics:
-        run: ../definitions/tools/collect_hs_metrics.cwl
+        run: ../tools/collect_hs_metrics.cwl
         in:
             cram: cram
             reference: reference
@@ -123,7 +123,7 @@ steps:
         out:
             [hs_metrics, per_base_coverage_metrics]
     collect_per_target_hs_metrics:
-        run: ../definitions/tools/collect_hs_metrics.cwl
+        run: ../tools/collect_hs_metrics.cwl
         in:
             cram: cram
             reference: reference
@@ -142,12 +142,12 @@ steps:
         out:
             [hs_metrics, per_target_coverage_metrics]
     samtools_flagstat:
-        run: ../definitions/tools/samtools_flagstat.cwl
+        run: ../tools/samtools_flagstat.cwl
         in:
             cram: cram
         out: [flagstats]
     select_variants:
-        run: ../definitions/tools/select_variants.cwl
+        run: ../tools/select_variants.cwl
         in:
             reference: reference
             vcf: omni_vcf
@@ -155,14 +155,14 @@ steps:
         out:
             [filtered_vcf]
     cram_to_bam:
-        run: ../definitions/subworkflows/cram_to_bam_and_index.cwl
+        run: cram_to_bam_and_index.cwl
         in:
           cram: cram
           reference: reference
         out:
           [bam]
     verify_bam_id:
-        run: ../definitions/tools/verify_bam_id.cwl
+        run: ../tools/verify_bam_id.cwl
         in:
             bam: cram_to_bam/bam
             vcf: select_variants/filtered_vcf
