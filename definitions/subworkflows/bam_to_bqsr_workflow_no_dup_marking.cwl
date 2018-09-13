@@ -41,25 +41,25 @@ steps:
         out:
             [tagged_bam]
     merge:
-        run: ../definitions/tools/merge_bams.cwl
+        run: ../tools/merge_bams.cwl
         in:
             bams: align/tagged_bam
         out:
             [merged_bam]
     position_sort:
-        run: ../definitions/tools/position_sort.cwl
+        run: ../tools/position_sort.cwl
         in:
             bam: merge/merged_bam
         out:
             [position_sorted_bam]
     index_bam:
-        run: ../definitions/tools/index_bam.cwl
+        run: ../tools/index_bam.cwl
         in:
             bam: position_sort/position_sorted_bam
         out:
             [indexed_bam]
     bqsr:
-        run: ../definitions/tools/bqsr.cwl
+        run: ../tools/bqsr.cwl
         in:
             reference: reference
             bam: index_bam/indexed_bam
@@ -67,7 +67,7 @@ steps:
         out:
             [bqsr_table]
     apply_bqsr:
-        run: ../definitions/tools/apply_bqsr.cwl
+        run: ../tools/apply_bqsr.cwl
         in:
             reference: reference
             bam: index_bam/indexed_bam
@@ -75,14 +75,14 @@ steps:
         out:
             [bqsr_bam]
     bam_to_cram:
-        run: ../definitions/tools/bam_to_cram.cwl
+        run: ../tools/bam_to_cram.cwl
         in:
             reference: reference
             bam: apply_bqsr/bqsr_bam
         out:
             [cram]
     index_cram:
-        run: ../definitions/tools/index_cram.cwl
+        run: ../tools/index_cram.cwl
         in:
             cram: bam_to_cram/cram
         out:
