@@ -204,7 +204,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     docm:
-        run: ../definitions/subworkflows/docm.cwl
+        run: ../definitions/subworkflows/docm_cle.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
