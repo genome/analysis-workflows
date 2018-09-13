@@ -82,7 +82,7 @@ outputs:
         outputSource: qc/verify_bam_id_depth
 steps:
     alignment:
-        run: ../definitions/subworkflows/molecular_alignment_workflow.cwl
+        run: molecular_alignment_workflow.cwl
         in:
             bam: bam
             sample_name: sample_name
@@ -92,7 +92,7 @@ steps:
         out:
             [aligned_cram, adapter_histogram, duplex_seq_metrics]
     qc:
-        run: ../qc/workflow_exome.cwl
+        run: ../../qc/workflow_exome.cwl
         in:
             cram: alignment/aligned_cram
             reference: reference
