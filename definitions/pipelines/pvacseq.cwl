@@ -28,10 +28,40 @@ inputs:
     expression_tool:
         type: string?
         default: 'kallisto'
+    alleles:
+        type: string[]
+    prediction_algorithms:
+        type: string[]
+    epitope_lengths:
+        type: int[]?
 outputs:
-    annotated_vcf:
-        type: File
-        outputSource: add_tumor_rna_bam_readcount_to_vcf/annotated_bam_readcount_vcf
+    mhc_i_all_epitopes:
+        type: File?
+        outputSource: pvacseq/mhc_i_all_epitopes
+    mhc_i_filtered_epitopes:
+        type: File?
+        outputSource: pvacseq/mhc_i_filtered_epitopes
+    mhc_i_ranked_epitopes:
+        type: File?
+        outputSource: pvacseq/mhc_i_ranked_epitopes
+    mhc_ii_all_epitopes:
+        type: File?
+        outputSource: pvacseq/mhc_ii_all_epitopes
+    mhc_ii_filtered_epitopes:
+        type: File?
+        outputSource: pvacseq/mhc_ii_filtered_epitopes
+    mhc_ii_ranked_epitopes:
+        type: File?
+        outputSource: pvacseq/mhc_ii_ranked_epitopes
+    combined_all_epitopes:
+        type: File?
+        outputSource: pvacseq/combined_all_epitopes
+    combined_filtered_epitopes:
+        type: File?
+        outputSource: pvacseq/combined_filtered_epitopes
+    combined_ranked_epitopes:
+        type: File?
+        outputSource: pvacseq/combined_ranked_epitopes
 steps:
     tumor_rna_bam_readcount:
         run: ../tools/bam_readcount.cwl
@@ -76,3 +106,23 @@ steps:
             sample_name: sample_name
         out:
             [annotated_expression_vcf]
+    pvacseq:
+        run: ../tools/pvacseq.cwl
+        in:
+            input_file: add_transcript_expression_data_to_vcf/annotated_expression_vcf
+            sample_name: sample_name
+            alleles: alleles
+            prediction_algorithms: prediction_algorithms
+            epitope_lengths: epitope_lengths
+        out:
+            [
+                mhc_i_all_epitopes,
+                mhc_i_filtered_epitopes,
+                mhc_i_ranked_epitopes,
+                mhc_ii_all_epitopes,
+                mhc_ii_filtered_epitopes,
+                mhc_ii_ranked_epitopes,
+                combined_all_epitopes,
+                combined_filtered_epitopes,
+                combined_ranked_epitopes,
+            ]
