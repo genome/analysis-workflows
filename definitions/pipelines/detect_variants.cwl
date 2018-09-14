@@ -153,7 +153,7 @@ outputs:
         outputSource: normal_bam_readcount/bam_readcount_tsv
 steps:
     mutect:
-        run: ../definitions/subworkflows/mutect.cwl
+        run: ../subworkflows/mutect.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
@@ -169,7 +169,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     strelka:
-        run: ../definitions/subworkflows/strelka_and_post_processing.cwl
+        run: ../subworkflows/strelka_and_post_processing.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
@@ -180,7 +180,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     varscan:
-        run: ../definitions/subworkflows/varscan_pre_and_post_processing.cwl
+        run: ../subworkflows/varscan_pre_and_post_processing.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
@@ -194,7 +194,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     pindel:
-        run: ../definitions/subworkflows/pindel_workflow.cwl
+        run: ../subworkflows/pindel_workflow.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
@@ -204,7 +204,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     docm:
-        run: ../definitions/subworkflows/docm_cle.cwl
+        run: ../subworkflows/docm_cle.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram
@@ -214,7 +214,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     combine:
-        run: ../definitions/tools/combine_variants.cwl
+        run: ../tools/combine_variants.cwl
         in:
             reference: reference
             mutect_vcf: mutect/filtered_vcf
@@ -225,7 +225,7 @@ steps:
         out:
             [combined_vcf]
     annotate_variants:
-        run: ../definitions/tools/vep.cwl
+        run: ../tools/vep.cwl
         in:
             vcf: combine/combined_vcf
             cache_dir: vep_cache_dir
@@ -237,21 +237,21 @@ steps:
         out:
             [annotated_vcf, vep_summary]
     tumor_cram_to_bam:
-        run: ../definitions/subworkflows/cram_to_bam_and_index.cwl
+        run: ../subworkflows/cram_to_bam_and_index.cwl
         in:
             cram: tumor_cram
             reference: reference
         out:
             [bam]
     normal_cram_to_bam:
-        run: ../definitions/subworkflows/cram_to_bam_and_index.cwl
+        run: ../subworkflows/cram_to_bam_and_index.cwl
         in:
             cram: normal_cram
             reference: reference
         out:
             [bam]
     tumor_bam_readcount:
-        run: ../definitions/tools/bam_readcount.cwl
+        run: ../tools/bam_readcount.cwl
         in:
             vcf: combine/combined_vcf
             sample:
@@ -263,7 +263,7 @@ steps:
         out:
             [bam_readcount_tsv]
     normal_bam_readcount:
-        run: ../definitions/tools/bam_readcount.cwl
+        run: ../tools/bam_readcount.cwl
         in:
             vcf: combine/combined_vcf
             sample:
@@ -275,7 +275,7 @@ steps:
         out:
             [bam_readcount_tsv]
     add_tumor_bam_readcount_to_vcf:
-        run: ../definitions/tools/add_bam_readcount_to_vcf.cwl
+        run: ../tools/add_bam_readcount_to_vcf.cwl
         in:
             vcf: annotate_variants/annotated_vcf
             bam_readcount_tsv: tumor_bam_readcount/bam_readcount_tsv
@@ -286,7 +286,7 @@ steps:
         out:
             [annotated_bam_readcount_vcf]
     add_normal_bam_readcount_to_vcf:
-        run: ../definitions/tools/add_bam_readcount_to_vcf.cwl
+        run: ../tools/add_bam_readcount_to_vcf.cwl
         in:
             vcf: add_tumor_bam_readcount_to_vcf/annotated_bam_readcount_vcf
             bam_readcount_tsv: normal_bam_readcount/bam_readcount_tsv
@@ -297,13 +297,13 @@ steps:
         out:
             [annotated_bam_readcount_vcf]
     index:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: add_normal_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
             [indexed_vcf]
     filter_vcf:
-        run: ../definitions/subworkflows/filter_vcf.cwl
+        run: ../subworkflows/filter_vcf.cwl
         in: 
             vcf: index/indexed_vcf
             filter_gnomADe_maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
@@ -314,19 +314,19 @@ steps:
         out: 
             [filtered_vcf]
     annotated_filter_bgzip:
-        run: ../definitions/tools/bgzip.cwl
+        run: ../tools/bgzip.cwl
         in:
             file: filter_vcf/filtered_vcf
         out:
             [bgzipped_file]
     annotated_filter_index:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: annotated_filter_bgzip/bgzipped_file
         out:
             [indexed_vcf]
     variants_to_table:
-        run: ../definitions/tools/variants_to_table.cwl
+        run: ../tools/variants_to_table.cwl
         in:
             reference: reference
             vcf: annotated_filter_index/indexed_vcf
@@ -335,7 +335,7 @@ steps:
         out:
             [variants_tsv]
     add_vep_fields_to_table:
-        run: ../definitions/tools/add_vep_fields_to_table.cwl
+        run: ../tools/add_vep_fields_to_table.cwl
         in:
             vcf: annotated_filter_index/indexed_vcf
             vep_fields: vep_to_table_fields
