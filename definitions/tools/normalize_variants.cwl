@@ -10,8 +10,7 @@ requirements:
     - class: DockerRequirement
       dockerPull: mgibio/cle
 arguments:
-    ["--splitMultiallelics",
-     "-o", { valueFrom: $(runtime.outdir)/normalized.vcf.gz }]
+    ["-o", { valueFrom: $(runtime.outdir)/normalized.vcf.gz }]
 inputs:
     reference:
         type: string
