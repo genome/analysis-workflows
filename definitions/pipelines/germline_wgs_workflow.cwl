@@ -23,27 +23,33 @@ inputs:
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
-    qc_intervals:
-        type: File
     picard_metric_accumulation_level:
         type: string
-    variant_detection_intervals:
+    emit_reference_confidence:
+        type: string
+    gvcf_gq_bands:
+        type: string[]
+    intervals:
+        type:
+            type: array
+            items:
+                type: array
+                items: string
+    qc_intervals:
+        type: File
+    variant_reporting_intervals:
         type: File
     vep_cache_dir:
         type: string?
     synonyms_file:
         type: File?
-    sample_name:
-        type: string
-    docm_vcf:
-        type: File
+    coding_only:
+        type: boolean?
+    hgvs_annotation:
+        type: boolean?
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    readcount_minimum_mapping_quality:
-        type: int?
-    readcount_minimum_base_quality:
-        type: int?
 outputs:
     cram:
         type: File
@@ -81,33 +87,27 @@ outputs:
     verify_bam_id_depth:
         type: File
         outputSource: alignment_and_qc/verify_bam_id_depth
-    varscan_vcf:
-        type: File
-        outputSource: detect_variants/varscan_vcf
-        secondaryFiles: [.tbi]
-    docm_gatk_vcf:
-        type: File
-        outputSource: detect_variants/docm_gatk_vcf
-    annotated_vcf:
-        type: File
-        outputSource: detect_variants/annotated_vcf
-        secondaryFiles: [.tbi]
+    gvcf:
+        type: File[]
+        outputSource: detect_variants/gvcf
     final_vcf:
         type: File
         outputSource: detect_variants/final_vcf
         secondaryFiles: [.tbi]
-    final_tsv:
+    coding_vcf:
         type: File
-        outputSource: detect_variants/final_tsv
+        outputSource: detect_variants/coding_vcf
+        secondaryFiles: [.tbi]
+    limited_vcf:
+        type: File
+        outputSource: detect_variants/limited_vcf
+        secondaryFiles: [.tbi]
     vep_summary:
         type: File
         outputSource: detect_variants/vep_summary
-    tumor_bam_readcount_tsv:
-        type: File
-        outputSource: detect_variants/tumor_bam_readcount_tsv
 steps:
     alignment_and_qc:
-        run: definitions/pipelines/wgs_alignment.cwl
+        run: wgs_alignment.cwl
         in:
             reference: reference
             bams: bams
@@ -120,27 +120,46 @@ steps:
             picard_metric_accumulation_level: picard_metric_accumulation_level
         out:
             [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+    extract_freemix:
+        in:
+            verify_bam_id_metrics: alignment_and_qc/verify_bam_id_metrics
+        out:
+            [freemix_score]
+        run:
+            class: ExpressionTool
+            requirements:
+                - class: InlineJavascriptRequirement
+            inputs:
+                verify_bam_id_metrics:
+                    type: File
+                    inputBinding:
+                        loadContents: true
+            outputs:
+                freemix_score:
+                    type: string?
+            expression: |
+                        ${
+                            var metrics = inputs.verify_bam_id_metrics.contents.split("\n");
+                            if ( metrics[0].split("\t")[6] == 'FREEMIX' ) {
+                                return {'freemix_score': metrics[1].split("\t")[6]};
+                            } else {
+                                return {'freemix_score:': null };
+                            }
+                        }
     detect_variants:
-        run: detect_variants/tumor_only_detect_variants.cwl
+        run: ../subworkflows/germline_detect_variants.cwl
         in:
             reference: reference
             cram: alignment_and_qc/cram
-            interval_list: variant_detection_intervals
-            #varscan_strand_filter:
-            #varscan_min_coverage:
-            #varscan_min_var_freq:
-            #varscan_p_value:
-            #varscan_min_reads:
-            #maximum_population_allele_frequency:
-            vep_cache_dir: vep_cache_dir
+            emit_reference_confidence: emit_reference_confidence
+            gvcf_gq_bands: gvcf_gq_bands
+            intervals: intervals
+            contamination_fraction: extract_freemix/freemix_score
+            cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
-            #variants_to_table_fields:
-            #variants_to_table_genotype_fields:
-            #vep_to_table_fields:
-            sample_name: sample_name
-            docm_vcf: docm_vcf
+            coding_only: coding_only
+            hgvs: hgvs_annotation
             custom_gnomad_vcf: custom_gnomad_vcf
-            readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
-            readcount_minimum_base_quality: readcount_minimum_base_quality
+            limit_variant_intervals: variant_reporting_intervals
         out:
-            [varscan_vcf, docm_gatk_vcf, annotated_vcf, final_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv]
+            [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]

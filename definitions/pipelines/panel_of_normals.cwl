@@ -31,7 +31,7 @@ outputs:
 steps:
     mutect:
         scatter: tumor_cram
-        run: ../definitions/subworkflows/mutect.cwl
+        run: ../subworkflows/mutect.cwl
         in:
             reference: reference
             tumor_cram: normal_crams
@@ -48,7 +48,7 @@ steps:
         out:
             [unfiltered_vcf]
     combine:
-        run: ../definitions/tools/pon_combine_variants.cwl
+        run: ../tools/pon_combine_variants.cwl
         in:
             reference: reference
             interval_list: interval_list
