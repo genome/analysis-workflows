@@ -91,7 +91,7 @@ outputs:
         outputSource: bam_readcount/bam_readcount_tsv
 steps:
     varscan:
-        run: ../varscan/germline_workflow.cwl
+        run: ../../varscan/germline_workflow.cwl
         in:
             reference: reference
             cram: cram
@@ -105,7 +105,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     docm:
-        run: ../definitions/subworkflows/docm_germline.cwl
+        run: ../subworkflows/docm_germline.cwl
         in:
             reference: reference
             cram: cram
@@ -114,7 +114,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     combine_variants:
-        run: ../definitions/tools/germline_combine_variants.cwl
+        run: ../tools/germline_combine_variants.cwl
         in:
             reference: reference
             varscan_vcf: varscan/filtered_vcf
@@ -122,7 +122,7 @@ steps:
         out:
             [combined_vcf]
     annotate_variants:
-        run: ../definitions/tools/vep.cwl
+        run: ../tools/vep.cwl
         in:
             vcf: combine_variants/combined_vcf
             cache_dir: vep_cache_dir
@@ -134,14 +134,14 @@ steps:
         out:
             [annotated_vcf, vep_summary]
     cram_to_bam:
-        run: ../definitions/subworkflows/cram_to_bam_and_index.cwl
+        run: ../subworkflows/cram_to_bam_and_index.cwl
         in:
             cram: cram
             reference: reference
         out:
             [bam]
     bam_readcount:
-        run: ../definitions/tools/bam_readcount.cwl
+        run: ../tools/bam_readcount.cwl
         in:
             vcf: combine_variants/combined_vcf
             sample: sample_name
@@ -152,7 +152,7 @@ steps:
         out:
             [bam_readcount_tsv]
     add_bam_readcount_to_vcf:
-        run: ../definitions/tools/add_bam_readcount_to_vcf.cwl
+        run: ../tools/add_bam_readcount_to_vcf.cwl
         in:
             vcf: annotate_variants/annotated_vcf
             bam_readcount_tsv: bam_readcount/bam_readcount_tsv
@@ -162,13 +162,13 @@ steps:
         out:
             [annotated_bam_readcount_vcf]
     index:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: add_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
             [indexed_vcf]
     hard_filter:
-        run: ../definitions/tools/select_variants.cwl
+        run: ../tools/select_variants.cwl
         in:
             reference: reference
             vcf: index/indexed_vcf
@@ -178,32 +178,32 @@ steps:
         out:
             [filtered_vcf]
     af_filter:
-        run: ../definitions/tools/filter_vcf_gnomADe_allele_freq.cwl
+        run: ../tools/filter_vcf_gnomADe_allele_freq.cwl
         in:
             vcf: hard_filter/filtered_vcf
             maximum_population_allele_frequency: maximum_population_allele_frequency
         out:
             [filtered_vcf]
     coding_variant_filter:
-        run: ../definitions/tools/filter_vcf_coding_variant.cwl
+        run: ../tools/filter_vcf_coding_variant.cwl
         in:
             vcf: af_filter/filtered_vcf
         out:
             [filtered_vcf]
     bgzip_filtered:
-        run: ../definitions/tools/bgzip.cwl
+        run: ../tools/bgzip.cwl
         in:
             file: coding_variant_filter/filtered_vcf
         out:
             [bgzipped_file]
     index_filtered:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: bgzip_filtered/bgzipped_file
         out:
             [indexed_vcf]
     variants_to_table:
-        run: ../definitions/tools/variants_to_table.cwl
+        run: ../tools/variants_to_table.cwl
         in:
             reference: reference
             vcf: index_filtered/indexed_vcf
@@ -212,7 +212,7 @@ steps:
         out:
             [variants_tsv]
     add_vep_fields_to_table:
-        run: ../definitions/tools/add_vep_fields_to_table.cwl
+        run: ../tools/add_vep_fields_to_table.cwl
         in:
             vcf: index_filtered/indexed_vcf
             vep_fields: vep_to_table_fields
