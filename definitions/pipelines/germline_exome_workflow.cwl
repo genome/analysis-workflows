@@ -124,7 +124,7 @@ outputs:
         outputSource: detect_variants/vep_summary
 steps:
     alignment_and_qc:
-        run: exome_alignment.cwl
+        run: ../../exome_alignment.cwl
         in:
             reference: reference
             bams: bams
@@ -172,7 +172,7 @@ steps:
                             }
                         }
     detect_variants:
-        run: definitions/subworkflows/germline_detect_variants.cwl
+        run: ../subworkflows/germline_detect_variants.cwl
         in:
             reference: reference
             cram: alignment_and_qc/cram
