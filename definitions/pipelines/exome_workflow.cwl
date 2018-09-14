@@ -158,7 +158,7 @@ outputs:
         outputSource: detect_variants/tumor_bam_readcount_tsv
 steps:
     alignment_and_qc:
-        run: ../../exome_alignment.cwl
+        run: exome_alignment.cwl
         in:
             reference: reference
             bams: bams
