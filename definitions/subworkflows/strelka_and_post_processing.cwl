@@ -35,7 +35,7 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     strelka:
-        run: ../definitions/tools/strelka.cwl
+        run: ../tools/strelka.cwl
         in:
             tumor_cram: tumor_cram
             normal_cram: normal_cram
@@ -46,25 +46,25 @@ steps:
             [indels, snvs]
     process:
         scatter: vcf
-        run: process_vcf.cwl
+        run: strelka_process_vcf.cwl
         in:
             vcf: [strelka/snvs, strelka/indels]
         out:
             [processed_vcf]
     merge:
-        run: ../definitions/tools/merge_vcf.cwl
+        run: ../tools/merge_vcf.cwl
         in:
             vcfs: process/processed_vcf
         out:
             [merged_vcf]
     index_full:
-        run: ../definitions/tools/index_vcf.cwl
+        run: ../tools/index_vcf.cwl
         in:
             vcf: merge/merged_vcf
         out:
             [indexed_vcf]
     region_filter:
-        run: ../definitions/tools/select_variants.cwl
+        run: ../tools/select_variants.cwl
         in:
             reference: reference
             vcf: index_full/indexed_vcf
@@ -72,7 +72,7 @@ steps:
         out:
             [filtered_vcf]
     filter:
-        run: ../definitions/subworkflows/fp_filter.cwl
+        run: fp_filter.cwl
         in:
             reference: reference
             cram: tumor_cram
@@ -81,6 +81,3 @@ steps:
                 valueFrom: "strelka"
         out:
             [unfiltered_vcf, filtered_vcf]
-
-
-
