@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "exome alignment and germline variant detection"
+label: "wgs alignment and germline variant detection"
 requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
@@ -20,20 +20,6 @@ inputs:
     dbsnp_vcf:
         type: File
         secondaryFiles: [.tbi]
-    bqsr_intervals:
-        type: string[]?
-    bait_intervals:
-        type: File
-    target_intervals:
-        type: File
-    per_target_intervals:
-        type: File
-    per_target_bait_intervals:
-        type: File
-    per_base_intervals:
-        type: File
-    per_base_bait_intervals:
-        type: File
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -49,21 +35,21 @@ inputs:
             items:
                 type: array
                 items: string
+    qc_intervals:
+        type: File
+    variant_reporting_intervals:
+        type: File
     vep_cache_dir:
         type: string?
     synonyms_file:
         type: File?
-    annotate_coding_only:
+    coding_only:
         type: boolean?
     hgvs_annotation:
         type: boolean?
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    qc_minimum_mapping_quality:
-        type: int?
-    qc_minimum_base_quality:
-        type: int?
 outputs:
     cram:
         type: File
@@ -80,21 +66,18 @@ outputs:
     alignment_summary_metrics:
         type: File
         outputSource: alignment_and_qc/alignment_summary_metrics
-    hs_metrics:
+    gc_bias_metrics:
         type: File
-        outputSource: alignment_and_qc/hs_metrics
-    per_target_coverage_metrics:
-        type: File?
-        outputSource: alignment_and_qc/per_target_coverage_metrics
-    per_target_hs_metrics:
-        type: File?
-        outputSource: alignment_and_qc/per_target_hs_metrics
-    per_base_coverage_metrics:
-        type: File?
-        outputSource: alignment_and_qc/per_base_coverage_metrics
-    per_base_hs_metrics:
-        type: File?
-        outputSource: alignment_and_qc/per_base_hs_metrics
+        outputSource: alignment_and_qc/gc_bias_metrics
+    gc_bias_metrics_chart:
+        type: File
+        outputSource: alignment_and_qc/gc_bias_metrics_chart
+    gc_bias_metrics_summary:
+        type: File
+        outputSource: alignment_and_qc/gc_bias_metrics_summary
+    wgs_metrics:
+        type: File
+        outputSource: alignment_and_qc/wgs_metrics
     flagstats:
         type: File
         outputSource: alignment_and_qc/flagstats
@@ -124,7 +107,7 @@ outputs:
         outputSource: detect_variants/vep_summary
 steps:
     alignment_and_qc:
-        run: exome_alignment.cwl
+        run: ../../wgs_alignment.cwl
         in:
             reference: reference
             bams: bams
@@ -132,19 +115,11 @@ steps:
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
-            bqsr_intervals: bqsr_intervals
-            bait_intervals: bait_intervals
-            target_intervals: target_intervals
-            per_target_intervals: per_target_intervals
-            per_target_bait_intervals: per_target_bait_intervals
-            per_base_intervals: per_base_intervals
-            per_base_bait_intervals: per_base_bait_intervals
             omni_vcf: omni_vcf
-            picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            intervals: qc_intervals
+            picard_metric_accumulation_level: picard_metric_accumulation_level
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     extract_freemix:
         in:
             verify_bam_id_metrics: alignment_and_qc/verify_bam_id_metrics
@@ -172,7 +147,7 @@ steps:
                             }
                         }
     detect_variants:
-        run: definitions/subworkflows/germline_detect_variants.cwl
+        run: ../subworkflows/germline_detect_variants.cwl
         in:
             reference: reference
             cram: alignment_and_qc/cram
@@ -182,9 +157,9 @@ steps:
             contamination_fraction: extract_freemix/freemix_score
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
-            annotate_coding_only: annotate_coding_only
+            coding_only: coding_only
             hgvs: hgvs_annotation
             custom_gnomad_vcf: custom_gnomad_vcf
-            limit_variant_intervals: per_base_intervals
+            limit_variant_intervals: variant_reporting_intervals
         out:
             [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]
