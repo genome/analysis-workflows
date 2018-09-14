@@ -45,6 +45,10 @@ inputs:
         type: int?
         inputBinding:
             prefix: "-b"
+    allele_specific_binding_thresholds:
+        type: boolean?
+        inputBinding:
+            prefix: "--allele-specific-binding-thresholds"
     iedb_retries:
         type: int?
         inputBinding:
@@ -58,6 +62,10 @@ inputs:
         inputBinding:
             prefix: "-l"
         default: 21
+    normal_sample_name:
+        type: string?
+        inputBinding:
+            prefix: "--normal-sample-name"
     net_chop_method:
         type:
             - "null"
@@ -69,10 +77,6 @@ inputs:
         type: boolean?
         inputBinding:
             prefix: "--netmhc-stab"
-    top_result_per_mutation:
-        type: boolean?
-        inputBinding:
-            prefix: "-t"
     top_score_metric:
         type:
             - "null"
@@ -103,6 +107,11 @@ inputs:
         type: boolean?
         inputBinding:
             prefix: "--exclude-NAs"
+    phased_proximal_variants_vcf:
+        type: File
+        secondaryFiles: [".tbi"]
+        inputBinding:
+            prefix: "-p"
     minimum_fold_change:
         type: int?
         inputBinding:
@@ -135,6 +144,10 @@ inputs:
         type: int?
         inputBinding:
             prefix: "--expn-val"
+    pass_only:
+        type: boolean?
+        inputBinding:
+            prefix: "--pass-only"
 outputs:
     mhc_i_all_epitopes:
         type: File?
