@@ -96,7 +96,7 @@ steps:
             bqsr_intervals: bqsr_intervals
         out: [final_cram,mark_duplicates_metrics_file]
     qc:
-        run: qc/workflow_exome.cwl
+        run: definitions/subworkflows/qc_exome.cwl
         in:
             cram: alignment/final_cram
             reference: reference

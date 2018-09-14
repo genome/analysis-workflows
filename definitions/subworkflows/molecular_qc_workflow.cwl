@@ -92,7 +92,7 @@ steps:
         out:
             [aligned_cram, adapter_histogram, duplex_seq_metrics]
     qc:
-        run: ../../qc/workflow_exome.cwl
+        run: qc_exome.cwl
         in:
             cram: alignment/aligned_cram
             reference: reference
