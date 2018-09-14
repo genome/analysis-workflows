@@ -107,7 +107,7 @@ outputs:
         outputSource: detect_variants/tumor_bam_readcount_tsv
 steps:
     alignment_and_qc:
-        run: wgs_alignment.cwl
+        run: definitions/pipelines/wgs_alignment.cwl
         in:
             reference: reference
             bams: bams
