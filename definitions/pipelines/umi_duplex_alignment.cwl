@@ -40,7 +40,7 @@ steps:
     fastq_to_bam:
         scatter: [read1_fastq, read2_fastq, library_name, platform_unit, platform]
         scatterMethod: dotproduct
-        run: ../definitions/tools/fastq_to_bam.cwl
+        run: ../tools/fastq_to_bam.cwl
         in:
             read1_fastq: read1_fastq
             read2_fastq: read2_fastq
@@ -51,7 +51,7 @@ steps:
         out:
             [bam]
     alignment_workflow:
-        run: ../definitions/subworkflows/duplex_alignment_workflow.cwl
+        run: ../subworkflows/duplex_alignment_workflow.cwl
         in:
             bam: fastq_to_bam/bam
             sample_name: sample_name
