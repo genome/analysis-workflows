@@ -85,7 +85,7 @@ outputs:
         outputSource: qc/verify_bam_id_depth
 steps:
     alignment:
-        run: definitions/subworkflows/bam_to_bqsr_workflow.cwl
+        run: ../subworkflows/bam_to_bqsr_workflow.cwl
         in:
             reference: reference
             bams: bams
@@ -96,7 +96,7 @@ steps:
             bqsr_intervals: bqsr_intervals
         out: [final_cram,mark_duplicates_metrics_file]
     qc:
-        run: definitions/subworkflows/qc_exome.cwl
+        run: ../subworkflows/qc_exome.cwl
         in:
             cram: alignment/final_cram
             reference: reference
