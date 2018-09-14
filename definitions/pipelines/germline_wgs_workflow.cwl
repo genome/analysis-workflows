@@ -107,7 +107,7 @@ outputs:
         outputSource: detect_variants/vep_summary
 steps:
     alignment_and_qc:
-        run: ../../wgs_alignment.cwl
+        run: wgs_alignment.cwl
         in:
             reference: reference
             bams: bams
