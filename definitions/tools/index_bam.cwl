@@ -3,9 +3,6 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "samtools index"
-requirements:
-    - class: DockerRequirement
-      dockerPull: mgibio/cle
 arguments: [
     "cp", $(inputs.bam.path), "$(runtime.outdir)/$(inputs.bam.basename)",
     { valueFrom: " && ", shellQuote: false },
@@ -13,6 +10,8 @@ arguments: [
 ]
 requirements:
     - class: ShellCommandRequirement
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 inputs:
     bam:
         type: File
