@@ -91,7 +91,7 @@ outputs:
         outputSource: bam_readcount/bam_readcount_tsv
 steps:
     varscan:
-        run: ../../varscan/germline_workflow.cwl
+        run: ../subworkflows/varscan_germline.cwl
         in:
             reference: reference
             cram: cram

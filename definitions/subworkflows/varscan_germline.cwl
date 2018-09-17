@@ -44,13 +44,13 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     intervals_to_bed:
-        run: ../definitions/tools/intervals_to_bed.cwl
+        run: ../tools/intervals_to_bed.cwl
         in:
             interval_list: interval_list
         out:
             [interval_bed]
     varscan:
-        run: ../definitions/tools/varscan_germline.cwl
+        run: ../tools/varscan_germline.cwl
         in:
             reference: reference
             cram: cram
@@ -64,13 +64,13 @@ steps:
         out:
             [variants]
     bgzip_and_index:
-        run: ../definitions/subworkflows/bgzip_and_index.cwl
+        run: bgzip_and_index.cwl
         in:
             vcf: varscan/variants
         out:
             [indexed_vcf]
     filter:
-        run: ../definitions/subworkflows/fp_filter.cwl
+        run: fp_filter.cwl
         in:
             reference: reference
             cram: cram
