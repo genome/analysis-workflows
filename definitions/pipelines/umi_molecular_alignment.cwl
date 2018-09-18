@@ -51,7 +51,7 @@ steps:
         out:
             [bam]
     alignment_workflow:
-        run: ../subworkflows/molecular_alignment_workflow.cwl
+        run: ../subworkflows/molecular_alignment.cwl
         in:
             bam: fastq_to_bam/bam
             sample_name: sample_name
