@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "wgs alignment and germline variant detection"
+label: "wgs alignment and tumor-only variant detection"
 requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
