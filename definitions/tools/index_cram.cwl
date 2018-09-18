@@ -3,9 +3,6 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: 'samtools index cram'
-requirements:
-    - class: DockerRequirement
-      dockerPull: "mgibio/cle"
 arguments: [
     "cp", $(inputs.cram.path), "$(runtime.outdir)/$(inputs.cram.basename)",
     { valueFrom: " && ", shellQuote: false },
@@ -15,6 +12,8 @@ arguments: [
 ]
 requirements:
     - class: ShellCommandRequirement
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 inputs:
     cram:
         type: File
