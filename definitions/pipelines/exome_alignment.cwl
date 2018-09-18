@@ -85,7 +85,7 @@ outputs:
         outputSource: qc/verify_bam_id_depth
 steps:
     alignment:
-        run: ../subworkflows/bam_to_bqsr_workflow.cwl
+        run: ../subworkflows/bam_to_bqsr.cwl
         in:
             reference: reference
             bams: bams
