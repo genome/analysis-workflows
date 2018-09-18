@@ -57,3 +57,6 @@ varscan_strand_filter: 0
 vep_cache_dir: /gscmnt/gc2764/cad/ssiebert/toil_test/inputs/VEP_cache
 bqsr_intervals:
 - chr17
+dbsnp_vcf:
+  class: File
+  path: detect_variants/Homo_sapiens_assembly38.dbsnp138.vcf.gz
