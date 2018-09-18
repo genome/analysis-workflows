@@ -75,12 +75,12 @@ outputs:
     hs_metrics:
         type: File
         outputBinding:
-            glob: "$(input.output_prefix)-HsMetrics.txt"
+            glob: "$(inputs.output_prefix)-HsMetrics.txt"
     per_target_coverage_metrics:
         type: File?
         outputBinding:
-            glob: "$(input.output_prefix)-PerTargetCoverage.txt"
+            glob: "$(inputs.output_prefix)-PerTargetCoverage.txt"
     per_base_coverage_metrics:
         type: File?
         outputBinding:
-            glob: "$(input.output_prefix)-PerBaseCoverage.txt"
+            glob: "$(inputs.output_prefix)-PerBaseCoverage.txt"
