@@ -108,7 +108,7 @@ inputs:
         inputBinding:
             prefix: "--exclude-NAs"
     phased_proximal_variants_vcf:
-        type: File
+        type: File?
         secondaryFiles: [".tbi"]
         inputBinding:
             prefix: "-p"
