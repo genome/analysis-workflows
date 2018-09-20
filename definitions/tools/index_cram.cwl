@@ -13,7 +13,7 @@ arguments: [
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/samtools-cwl:1.0.0"
 inputs:
     cram:
         type: File

@@ -8,7 +8,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 4000
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/samtools-cwl:1.0.0"
 arguments:
         ["-o", { valueFrom: $(runtime.outdir)/output.bam }]
 inputs:
