@@ -10,7 +10,7 @@ requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/cle"
 arguments: [
-    $(runtime.outdir),
+    { valueFrom: $(runtime.outdir), position: -3 },
     { valueFrom: " && ", shellQuote: false },
     "/bin/cat", "$(runtime.outdir)/$(inputs.sample)_bam_readcount_snv.tsv", "$(runtime.outdir)/$(inputs.sample)_bam_readcount_indel.tsv"
 ]
@@ -19,19 +19,19 @@ inputs:
     vcf:
         type: File
         inputBinding:
-            position: -6
+            position: -7
     sample:
         type: string
         inputBinding:
-            position: -5
+            position: -6
     reference_fasta:
         type: string
         inputBinding:
-            position: -4
+            position: -5
     bam:
         type: File
         inputBinding:
-            position: -3
+            position: -4
         secondaryFiles: [.bai]
     min_base_quality:
         type: int?
