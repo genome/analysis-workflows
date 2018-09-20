@@ -8,6 +8,8 @@ requirements:
     - class: ResourceRequirement
       ramMin: 8000
       tmpdirMin: 25000
+    - class: DockerRequirement
+      dockerPull: "mgibio/cle"
 arguments:
     ["-genotypeMergeOptions", "PRIORITIZE",
      "--rod_priority_list", "varscan,docm",
