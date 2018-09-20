@@ -10,7 +10,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 16000
     - class: DockerRequirement
-      dockerPull: mgibio/cle
+      dockerPull: "mgibio/picard-cwl:2.18.1"
 inputs:
     cram:
         type: File
