@@ -9,7 +9,7 @@ arguments: [
 ]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/perl_helper-cwl:1.0.0"
 inputs:
     docm_out:
         type: File
