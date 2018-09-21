@@ -10,7 +10,7 @@ requirements:
       ramMin: 32000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "johnegarza/vep-nonlocal"
 arguments:
     ["--format", "vcf",
     "--vcf",

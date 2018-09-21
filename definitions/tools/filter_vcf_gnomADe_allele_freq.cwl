@@ -7,7 +7,7 @@ baseCommand: ["/usr/bin/perl", "/usr/bin/vcf_check.pl"]
 requirements:
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
-      dockerPull: mgibio/cle
+      dockerPull: "johnegarza/vep-nonlocal"
 arguments:
     [{ valueFrom: $(inputs.vcf.path) },
     { valueFrom: $(runtime.outdir)/annotated.af_filtered.vcf },
