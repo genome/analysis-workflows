@@ -10,7 +10,7 @@ requirements:
 arguments:
     [{ valueFrom: $(inputs.vcf.path) },
     { valueFrom: $(runtime.outdir)/annotated.coding_variant_filtered.vcf },
-    "/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep",
+    "/usr/bin/perl", "/opt/vep/src/ensembl-vep/filter_vep",
     "--format", "vcf",
     "-o", { valueFrom: $(runtime.outdir)/annotated.coding_variant_filtered.vcf },
     "--ontology",

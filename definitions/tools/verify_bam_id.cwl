@@ -10,7 +10,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 4000
     - class: DockerRequirement
-      dockerPull: mgibio/cle
+      dockerPull: "mgibio/verify_bam_id-cwl:1.1.3"
 inputs:
     vcf:
         type: File
