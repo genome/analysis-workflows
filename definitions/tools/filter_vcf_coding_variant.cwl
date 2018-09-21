@@ -6,7 +6,7 @@ label: "Coding Variant filter"
 baseCommand: ["/usr/bin/perl", "/usr/bin/vcf_check.pl"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "johnegarza/vep-nonlocal"
 arguments:
     [{ valueFrom: $(inputs.vcf.path) },
     { valueFrom: $(runtime.outdir)/annotated.coding_variant_filtered.vcf },
