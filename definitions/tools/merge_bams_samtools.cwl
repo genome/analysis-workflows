@@ -9,7 +9,7 @@ requirements:
       ramMin: 8000
       coresMin: 4
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/samtools-cwl:1.0.0"
 arguments: ["merged.bam"]
 inputs:
     bams:

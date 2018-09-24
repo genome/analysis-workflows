@@ -6,7 +6,7 @@ label: "bgzip VCF"
 baseCommand: ["/opt/htslib/bin/bgzip"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/samtools-cwl:1.0.0"
 stdout: $(inputs.file.basename).gz
 arguments:
     ["-c"]
