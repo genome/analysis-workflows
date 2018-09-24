@@ -194,7 +194,7 @@ steps:
         out:
             [unfiltered_vcf, filtered_vcf]
     pindel:
-        run: ../subworkflows/pindel_workflow.cwl
+        run: ../subworkflows/pindel.cwl
         in:
             reference: reference
             tumor_cram: tumor_cram

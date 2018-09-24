@@ -46,7 +46,7 @@ steps:
         out:
             [downsampled_bam]
     align_workflow:
-        run: bam_to_bqsr_workflow.cwl
+        run: bam_to_bqsr.cwl
         in:
             bams: downsample/downsampled_bam
             readgroups: readgroups

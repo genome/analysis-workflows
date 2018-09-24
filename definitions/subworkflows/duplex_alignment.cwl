@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "umi molecular alignment workflow"
+label: "umi duplex alignment workflow"
 requirements:
     - class: SubworkflowFeatureRequirement
     - class: ScatterFeatureRequirement
@@ -18,10 +18,10 @@ inputs:
     target_intervals:
        type: File?
 outputs:
-    aligned_cram:
+    aligned_bam:
         type: File
-        secondaryFiles: [.crai, ^.crai]
-        outputSource: index_cram/indexed_cram
+        secondaryFiles: [^.bai]
+        outputSource: clip_overlap/clipped_bam
     adapter_histogram:
         type: File[]
         outputSource: align/adapter_metrics
@@ -31,7 +31,7 @@ outputs:
 steps:
     align:
         scatter: bam
-        run: alignment_workflow.cwl
+        run: umi_alignment.cwl
         in:
             bam: bam
             read_structure: read_structure
@@ -50,8 +50,8 @@ steps:
             bam: merge/merged_bam
         out:
             [grouped_bam]
-    call_molecular_consensus:
-        run: ../tools/call_molecular_consensus.cwl
+    call_duplex_consensus:
+        run: ../tools/call_duplex_consensus.cwl
         in:
             bam: group_reads_by_umi/grouped_bam
         out:
@@ -59,7 +59,7 @@ steps:
     align_consensus:
         run: ../tools/realign.cwl
         in:
-            bam: call_molecular_consensus/consensus_bam
+            bam: call_duplex_consensus/consensus_bam
             reference: reference
         out:
             [consensus_aligned_bam]
@@ -85,16 +85,3 @@ steps:
             description: sample_name
        out:
             [duplex_seq_metrics]
-    bam_to_cram:
-        run: ../tools/bam_to_cram.cwl
-        in:
-            bam: clip_overlap/clipped_bam
-            reference: reference
-        out:
-            [cram]
-    index_cram:
-        run: ../tools/index_cram.cwl
-        in:
-            cram: bam_to_cram/cram
-        out:
-            [indexed_cram]

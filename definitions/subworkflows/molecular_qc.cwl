@@ -82,7 +82,7 @@ outputs:
         outputSource: qc/verify_bam_id_depth
 steps:
     alignment:
-        run: molecular_alignment_workflow.cwl
+        run: molecular_alignment.cwl
         in:
             bam: bam
             sample_name: sample_name
