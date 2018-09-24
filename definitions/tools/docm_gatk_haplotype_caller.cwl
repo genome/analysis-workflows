@@ -8,7 +8,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 8000
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/gatk-cwl:3.6.0"
 arguments:
     ["-gt_mode", "GENOTYPE_GIVEN_ALLELES",
     "-o", { valueFrom: $(runtime.outdir)/docm_out.vcf }]
