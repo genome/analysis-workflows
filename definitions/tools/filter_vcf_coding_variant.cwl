@@ -6,11 +6,11 @@ label: "Coding Variant filter"
 baseCommand: ["/usr/bin/perl", "/usr/bin/vcf_check.pl"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/vep_helper-cwl:1.0.0"
 arguments:
     [{ valueFrom: $(inputs.vcf.path) },
     { valueFrom: $(runtime.outdir)/annotated.coding_variant_filtered.vcf },
-    "/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep",
+    "/usr/bin/perl", "/opt/vep/src/ensembl-vep/filter_vep",
     "--format", "vcf",
     "-o", { valueFrom: $(runtime.outdir)/annotated.coding_variant_filtered.vcf },
     "--ontology",

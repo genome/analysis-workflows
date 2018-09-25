@@ -56,4 +56,4 @@ varscan_min_reads: 5
 varscan_min_var_freq: 0.02
 varscan_p_value: 0.99
 varscan_strand_filter: 0
-vep_cache_dir: /gscmnt/gc2764/cad/ssiebert/toil_test/inputs/VEP_cache
+vep_cache_dir: /gscmnt/gc2764/cad/jgarza/cancer-genomics-workflow/example_data/exome_workflow
