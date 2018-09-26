@@ -144,6 +144,13 @@ inputs:
         type: int?
         inputBinding:
             prefix: "--expn-val"
+    maximum_transcript_support_level:
+        type:
+            - "null"
+            - type: enum
+              symbols: [1, 2, 3, 4, 5]
+        inputBinding:
+            prefix: "--maximum-transcript-support-level"
     pass_only:
         type: boolean?
         inputBinding:
