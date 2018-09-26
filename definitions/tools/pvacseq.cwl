@@ -15,6 +15,8 @@ arguments:
       valueFrom: "--iedb-install-directory"
     - position: 7
       valueFrom: "/"
+    - position: 8
+      valueFrom: "--pass-only"
 inputs:
     input_file:
         type: File
