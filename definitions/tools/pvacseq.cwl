@@ -148,7 +148,7 @@ inputs:
         type:
             - "null"
             - type: enum
-              symbols: [1, 2, 3, 4, 5]
+              symbols: ["1", "2", "3", "4", "5"]
         inputBinding:
             prefix: "--maximum-transcript-support-level"
     pass_only:
