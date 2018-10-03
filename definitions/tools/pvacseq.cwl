@@ -15,6 +15,8 @@ arguments:
       valueFrom: "--iedb-install-directory"
     - position: 7
       valueFrom: "/"
+    - position: 8
+      valueFrom: "--pass-only"
 inputs:
     input_file:
         type: File
@@ -113,7 +115,7 @@ inputs:
         inputBinding:
             prefix: "-p"
     minimum_fold_change:
-        type: int?
+        type: float?
         inputBinding:
             prefix: "-c"
     normal_cov:
@@ -129,15 +131,15 @@ inputs:
         inputBinding:
             prefix: "--trna-cov"
     normal_vaf:
-        type: int?
+        type: float?
         inputBinding:
             prefix: "--normal-vaf"
     tdna_vaf:
-        type: int?
+        type: float?
         inputBinding:
             prefix: "--tdna-vaf"
     trna_vaf:
-        type: int?
+        type: float?
         inputBinding:
             prefix: "--trna-vaf"
     expn_val:
