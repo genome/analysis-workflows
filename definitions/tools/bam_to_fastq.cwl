@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Picard: BAM to FASTQ"
-baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/picard/picard.jar", "SamToFastq", "VALIDATION_STRINGENCY=LENIENT"]
+baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/picard/picard.jar", "SamToFastq", "VALIDATION_STRINGENCY=SILENT"]
 requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/rnaseq"
