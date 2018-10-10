@@ -161,36 +161,36 @@ outputs:
     mhc_i_all_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_I/$(input.sample_name).all_epitopes.tsv"
+            glob: "MHC_Class_I/$(inputs.sample_name).all_epitopes.tsv"
     mhc_i_filtered_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_I/$(input.sample_name).filtered.tsv"
+            glob: "MHC_Class_I/$(inputs.sample_name).filtered.tsv"
     mhc_i_ranked_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_I/$(input.sample_name).filtered.condensed.ranked.tsv"
+            glob: "MHC_Class_I/$(inputs.sample_name).filtered.condensed.ranked.tsv"
     mhc_ii_all_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_II/$(input.sample_name).all_epitopes.tsv"
+            glob: "MHC_Class_II/$(inputs.sample_name).all_epitopes.tsv"
     mhc_ii_filtered_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_II/$(input.sample_name).filtered.tsv"
+            glob: "MHC_Class_II/$(inputs.sample_name).filtered.tsv"
     mhc_ii_ranked_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_II/$(input.sample_name).filtered.condensed.ranked.tsv"
+            glob: "MHC_Class_II/$(inputs.sample_name).filtered.condensed.ranked.tsv"
     combined_all_epitopes:
         type: File?
         outputBinding:
-            glob: "combined/$(input.sample_name).all_epitopes.tsv"
+            glob: "combined/$(inputs.sample_name).all_epitopes.tsv"
     combined_filtered_epitopes:
         type: File?
         outputBinding:
-            glob: "combined/$(input.sample_name).filtered.tsv"
+            glob: "combined/$(inputs.sample_name).filtered.tsv"
     combined_ranked_epitopes:
         type: File?
         outputBinding:
-            glob: "combined/$(input.sample_name).filtered.condensed.ranked.tsv"
+            glob: "combined/$(inputs.sample_name).filtered.condensed.ranked.tsv"
