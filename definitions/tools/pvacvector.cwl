@@ -69,7 +69,7 @@ outputs:
     vector_fasta:
         type: File
         outputBinding:
-            glob: "Test_results.fa"
+            glob: "$(inputs.sample_name)_results.fa"
     vector_jpg:
         type: File?
         outputBinding:
