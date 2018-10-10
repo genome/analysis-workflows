@@ -10,7 +10,7 @@ baseCommand: [
 ]
 requirements:
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:1.10"
+      dockerPull: "griffithlab/pvactools:1.1.0"
 arguments:
     - position: 5
       valueFrom: $(runtime.outdir)
