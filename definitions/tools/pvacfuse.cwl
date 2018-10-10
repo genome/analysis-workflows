@@ -110,7 +110,7 @@ outputs:
     mhc_i_all_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_I/$(input.sample_name).combined.parsed.tsv"
+            glob: "MHC_Class_I/$(input.sample_name).all_epitopes.tsv"
     mhc_i_filtered_epitopes:
         type: File?
         outputBinding:
@@ -122,7 +122,7 @@ outputs:
     mhc_ii_all_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_II/$(input.sample_name).combined.parsed.tsv"
+            glob: "MHC_Class_II/$(input.sample_name).all_epitopes.tsv"
     mhc_ii_filtered_epitopes:
         type: File?
         outputBinding:
@@ -134,7 +134,7 @@ outputs:
     combined_all_epitopes:
         type: File?
         outputBinding:
-            glob: "combined/$(input.sample_name).combined.parsed.tsv"
+            glob: "combined/$(input.sample_name).all_epitopes.tsv"
     combined_filtered_epitopes:
         type: File?
         outputBinding:
