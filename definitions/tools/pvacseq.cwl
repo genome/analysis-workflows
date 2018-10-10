@@ -14,7 +14,7 @@ arguments:
     - position: 6
       valueFrom: "--iedb-install-directory"
     - position: 7
-      valueFrom: "/"
+      valueFrom: "/opt/iedb"
     - position: 8
       valueFrom: "--pass-only"
 inputs:
