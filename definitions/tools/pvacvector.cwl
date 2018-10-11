@@ -10,10 +10,14 @@ baseCommand: [
 ]
 requirements:
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:1.10"
+      dockerPull: "griffithlab/pvactools:1.1.1"
 arguments:
     - position: 5
       valueFrom: $(runtime.outdir)
+    - position: 6
+      valueFrom: "--iedb-install-directory"
+    - position: 7
+      valueFrom: "/opt/iedb"
 inputs:
     input_file:
         type: File
@@ -65,7 +69,7 @@ outputs:
     vector_fasta:
         type: File
         outputBinding:
-            glob: "Test_results.fa"
+            glob: "$(inputs.sample_name)_results.fa"
     vector_jpg:
         type: File?
         outputBinding:

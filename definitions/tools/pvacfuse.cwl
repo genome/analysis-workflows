@@ -10,10 +10,14 @@ baseCommand: [
 ]
 requirements:
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:1.1.0"
+      dockerPull: "griffithlab/pvactools:1.1.1"
 arguments:
     - position: 5
       valueFrom: $(runtime.outdir)
+    - position: 6
+      valueFrom: "--iedb-install-directory"
+    - position: 7
+      valueFrom: "/opt/iedb"
 inputs:
     input_file:
         type: File
@@ -106,36 +110,36 @@ outputs:
     mhc_i_all_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_I/$(input.sample_name).combined.parsed.tsv"
+            glob: "MHC_Class_I/$(inputs.sample_name).all_epitopes.tsv"
     mhc_i_filtered_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_I/$(input.sample_name).filtered.tsv"
+            glob: "MHC_Class_I/$(inputs.sample_name).filtered.tsv"
     mhc_i_ranked_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_I/$(input.sample_name).filtered.condensed.ranked.tsv"
+            glob: "MHC_Class_I/$(inputs.sample_name).filtered.condensed.ranked.tsv"
     mhc_ii_all_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_II/$(input.sample_name).combined.parsed.tsv"
+            glob: "MHC_Class_II/$(inputs.sample_name).all_epitopes.tsv"
     mhc_ii_filtered_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_II/$(input.sample_name).filtered.tsv"
+            glob: "MHC_Class_II/$(inputs.sample_name).filtered.tsv"
     mhc_ii_ranked_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_II/$(input.sample_name).filtered.condensed.ranked.tsv"
+            glob: "MHC_Class_II/$(inputs.sample_name).filtered.condensed.ranked.tsv"
     combined_all_epitopes:
         type: File?
         outputBinding:
-            glob: "combined/$(input.sample_name).combined.parsed.tsv"
+            glob: "combined/$(inputs.sample_name).all_epitopes.tsv"
     combined_filtered_epitopes:
         type: File?
         outputBinding:
-            glob: "combined/$(input.sample_name).filtered.tsv"
+            glob: "combined/$(inputs.sample_name).filtered.tsv"
     combined_ranked_epitopes:
         type: File?
         outputBinding:
-            glob: "combined/$(input.sample_name).filtered.condensed.ranked.tsv"
+            glob: "combined/$(inputs.sample_name).filtered.condensed.ranked.tsv"
