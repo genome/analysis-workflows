@@ -2,14 +2,14 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "strelka 2.7.1"
+label: "strelka 2.9.9"
 baseCommand: ["/usr/bin/perl", "/usr/bin/strelka_helper.pl"]
 requirements:
     ResourceRequirement:
         coresMin: 4
         ramMin: 4000
     DockerRequirement:
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/strelka-cwl:2.9.9"
 arguments:
     [ { valueFrom: $(inputs.cpu_reserved), position: 1 },
       { valueFrom: $(runtime.outdir), position: 2 }]
