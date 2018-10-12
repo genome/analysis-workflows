@@ -22,13 +22,11 @@ inputs:
     bam:
         type: File
         inputBinding:
-            prefix: "-i"
-            position: -2
+            position: -1
     reference: 
         type: string
         inputBinding:
-            prefix: "-r"
-            position: -1
+            position: -2
 outputs:
     vcf:
         type: stdout
