@@ -6,14 +6,14 @@ label: "StringTie"
 baseCommand: ["/usr/bin/stringtie"]
 requirements:
     - class: ResourceRequirement
-      ramMin: 6000
-      coresMin: 16
+      ramMin: 16000
+      coresMin: 12
     - class: DockerRequirement
       dockerPull: "mgibio/rnaseq"
 arguments: [
     "-o", "$(runtime.outdir)/stringtie_transcripts.gtf",
     "-A", "$(runtime.outdir)/stringtie_gene_expression.tsv",
-    "-n", $(runtime.cores)
+    "-p", $(runtime.cores)
 ]
 inputs:
     firststrand:
