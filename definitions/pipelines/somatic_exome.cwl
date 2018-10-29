@@ -5,6 +5,7 @@ class: Workflow
 label: "exome alignment and somatic variant detection"
 requirements:
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     reference: string
     tumor_bams:
@@ -111,6 +112,8 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    output_dir: 
+        type: string
 outputs:
     tumor_cram:
         type: File
@@ -243,6 +246,9 @@ outputs:
     normal_bam_readcount_tsv:
         type: File
         outputSource: detect_variants/normal_bam_readcount_tsv
+    final_outputs:
+        type: string[]
+        outputSource: gatherer/gathered_files
 steps:
     tumor_alignment_and_qc:
         run: exome_alignment.cwl
@@ -323,4 +329,25 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_unfiltered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv, normal_bam_readcount_tsv]
-
+    gatherer:
+        run: ../tools/gatherer.cwl
+        in:
+            output_dir: output_dir
+            all_files:
+                source: [tumor_alignment_and_qc/cram, tumor_alignment_and_qc/mark_duplicates_metrics, tumor_alignment_and_qc/insert_size_metrics, tumor_alignment_and_qc/alignment_summary_metrics, tumor_alignment_and_qc/hs_metrics, tumor_alignment_and_qc/per_target_coverage_metrics, tumor_alignment_and_qc/per_target_hs_metrics, tumor_alignment_and_qc/per_base_coverage_metrics, tumor_alignment_and_qc/per_base_hs_metrics, tumor_alignment_and_qc/flagstats, tumor_alignment_and_qc/verify_bam_id_metrics, tumor_alignment_and_qc/verify_bam_id_depth, normal_alignment_and_qc/cram, normal_alignment_and_qc/mark_duplicates_metrics, normal_alignment_and_qc/insert_size_metrics, normal_alignment_and_qc/alignment_summary_metrics, normal_alignment_and_qc/hs_metrics, normal_alignment_and_qc/per_target_coverage_metrics, normal_alignment_and_qc/per_target_hs_metrics, normal_alignment_and_qc/per_base_coverage_metrics, normal_alignment_and_qc/per_base_hs_metrics, normal_alignment_and_qc/flagstats, normal_alignment_and_qc/verify_bam_id_metrics, normal_alignment_and_qc/verify_bam_id_depth, detect_variants/mutect_unfiltered_vcf, detect_variants/mutect_filtered_vcf, detect_variants/strelka_unfiltered_vcf, detect_variants/strelka_filtered_vcf, detect_variants/varscan_unfiltered_vcf, detect_variants/varscan_filtered_vcf, detect_variants/pindel_unfiltered_vcf, detect_variants/pindel_filtered_vcf, detect_variants/docm_unfiltered_vcf, detect_variants/docm_filtered_vcf, detect_variants/final_vcf, detect_variants/final_filtered_vcf, detect_variants/final_tsv, detect_variants/vep_summary, detect_variants/tumor_bam_readcount_tsv, detect_variants/normal_bam_readcount_tsv]
+                valueFrom: ${
+                                function flatten(inArr, outArr) {
+                                    var arrLen = inArr.length;
+                                    for (var i = 0; i < arrLen; i++) {
+                                        if (Array.isArray(inArr[i])) {
+                                            flatten(inArr[i], outArr);
+                                        }
+                                        else {
+                                            outArr.push(inArr[i]);
+                                        }
+                                    }
+                                    return outArr;
+                                }
+                                return flatten(self, []);
+                            }
+        out: [gathered_files]
