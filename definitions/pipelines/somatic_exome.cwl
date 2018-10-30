@@ -348,6 +348,16 @@ steps:
                                     }
                                     return outArr;
                                 }
-                                return flatten(self, []);
+                                var no_secondaries = flatten(self, []);
+                                var all_files = []; 
+                                var arrLen = no_secondaries.length;
+                                for (var i = 0; i < arrLen; i++) {
+                                    all_files.push(no_secondaries[i]);
+                                    var secondaryLen = no_secondaries[i].secondaryFiles.length;
+                                    for (var j = 0; j < secondaryLen; j++) {
+                                        all_files.push(no_secondaries[i].secondaryFiles[j]);
+                                    }
+                                }
+                                return all_files;
                             }
         out: [gathered_files]
