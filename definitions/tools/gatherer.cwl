@@ -9,9 +9,7 @@ requirements:
     - class: DockerRequirement
       dockerPull: "ubuntu:xenial"
 
-arguments: [
-    { shellQuote: false, valueFrom: "-t" }
-]
+arguments: ["-t"]
 
 inputs:
     output_dir:
