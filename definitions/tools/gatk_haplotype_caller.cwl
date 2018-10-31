@@ -10,15 +10,6 @@ requirements:
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
       dockerPull: mgibio/cle
-arguments:
-    ["-o", { valueFrom: '${
-            if (inputs.intervals.length == 1 && inputs.intervals[0].match(/^[0-9A-Za-z]+$/)) {
-                return inputs.intervals[0] + ".g.vcf.gz";
-            } else {
-                return "output.g.vcf.gz";
-            }
-        }'
-    }]
 inputs:
     reference:
         type: string
@@ -63,9 +54,15 @@ inputs:
         inputBinding:
             prefix: "-contamination"
             position: 7
+    output_file_name:
+        type: string
+        default: "output.g.vcf.gz"
+        inputBinding:
+            prefix: "-o"
+            position: 8
 outputs:
     gvcf:
         type: File
         outputBinding:
-            glob: "*.g.vcf.gz"
+            glob: $(inputs.output_file_name)
         secondaryFiles: [.tbi]
