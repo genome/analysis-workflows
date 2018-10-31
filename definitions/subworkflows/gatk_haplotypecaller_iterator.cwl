@@ -4,6 +4,7 @@ cwlVersion: v1.0
 class: Workflow
 label: "scatter GATK HaplotypeCaller over intervals"
 requirements:
+    - class: InlineJavascriptRequirement
     - class: ScatterFeatureRequirement
 inputs:
     reference:
