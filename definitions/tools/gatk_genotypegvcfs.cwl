@@ -3,13 +3,13 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "GATK HaplotypeCaller"
-baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK-3.5.jar", "-T", "GenotypeGVCFs"]
+baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "GenotypeGVCFs"]
 requirements:
     - class: ResourceRequirement
       ramMin: 8000
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
-      dockerPull: mgibio/cle
+      dockerPull: "mgibio/gatk-cwl:3.6.0"
 arguments:
     ["-o", 'genotype.vcf.gz']
 inputs:
