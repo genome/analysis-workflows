@@ -24,6 +24,8 @@ inputs:
         type: string[]?
     bait_intervals:
         type: File
+    final_name:
+        type: string?
     target_intervals:
         type: File
     per_target_intervals:
@@ -94,6 +96,7 @@ steps:
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
             bqsr_intervals: bqsr_intervals
+            final_name: final_name
         out: [final_cram,mark_duplicates_metrics_file]
     qc:
         run: ../subworkflows/qc_exome.cwl

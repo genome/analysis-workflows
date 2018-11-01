@@ -20,6 +20,8 @@ inputs:
     dbsnp_vcf:
         type: File
         secondaryFiles: [.tbi]
+    final_name:
+        type: string?
     mills:
         type: File
         secondaryFiles: [.tbi]
@@ -85,6 +87,7 @@ steps:
         in:
             reference: reference
             bam: apply_bqsr/bqsr_bam
+            name: final_name
         out:
             [cram]
     index_cram:

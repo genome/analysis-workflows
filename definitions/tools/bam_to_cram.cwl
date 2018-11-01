@@ -7,7 +7,7 @@ baseCommand: ["/opt/samtools/bin/samtools", "view", "-C"]
 requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/samtools-cwl:1.0.0"
-stdout: "final.cram"
+stdout: $(inputs.name)
 inputs:
     reference:
         type: string
@@ -18,6 +18,9 @@ inputs:
         type: File
         inputBinding:
             position: 2
+    name:
+        type: string?
+        default: 'final.cram'
 outputs:
     cram:
         type: stdout

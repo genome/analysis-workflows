@@ -11,10 +11,16 @@ inputs:
         type: File[]
     tumor_readgroups:
         type: string[]
+    tumor_cram_name:
+        type: string?
+        default: 'tumor.cram'
     normal_bams:
         type: File[]
     normal_readgroups:
         type: string[]
+    normal_cram_name:
+        type: string?
+        default: 'normal.cram'
     mills:
         type: File
         secondaryFiles: [.tbi]
@@ -264,6 +270,7 @@ steps:
             picard_metric_accumulation_level: picard_metric_accumulation_level   
             minimum_mapping_quality: qc_minimum_mapping_quality
             minimum_base_quality: qc_minimum_base_quality
+            final_name: tumor_cram_name
         out:
             [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     normal_alignment_and_qc:
@@ -286,6 +293,7 @@ steps:
             picard_metric_accumulation_level: picard_metric_accumulation_level   
             minimum_mapping_quality: qc_minimum_mapping_quality
             minimum_base_quality: qc_minimum_base_quality
+            final_name: normal_cram_name
         out:
             [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     detect_variants:
