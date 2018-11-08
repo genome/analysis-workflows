@@ -9,7 +9,7 @@ requirements:
       ramMin: 4000
     - class: DockerRequirement
       dockerPull: "mgibio/samtools-cwl:1.0.0"
-stdout: flagstat.out
+stdout: "$(inputs.cram.basename).flagstat"
 inputs:
     cram:
         type: File

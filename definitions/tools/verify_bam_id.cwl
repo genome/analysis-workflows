@@ -5,7 +5,7 @@ class: CommandLineTool
 label: "verify BAM ID"
 baseCommand: "/usr/local/bin/verifyBamID"
 arguments:
-    ["--out", { valueFrom: $(runtime.outdir)/VerifyBamId }]
+    ["--out", { valueFrom: $(runtime.outdir)/$(inputs.bam.nameroot).VerifyBamId }]
 requirements:
     - class: ResourceRequirement
       ramMin: 4000
@@ -24,9 +24,9 @@ outputs:
     verify_bam_id_metrics:
         type: File
         outputBinding:
-            glob: "VerifyBamId.selfSM"
+            glob: "$(inputs.bam.nameroot).VerifyBamId.selfSM"
     verify_bam_id_depth:
         type: File
         outputBinding:
-            glob: "VerifyBamId.depthSM"
+            glob: "$(inputs.bam.nameroot).VerifyBamId.depthSM"
 

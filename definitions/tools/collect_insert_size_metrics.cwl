@@ -5,8 +5,8 @@ class: CommandLineTool
 label: "collect insert size metrics"
 baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/usr/picard/picard.jar", "CollectInsertSizeMetrics"]
 arguments:
-    ["O=", { valueFrom: $(runtime.outdir)/InsertSizeMetrics.txt },
-    "H=", { valueFrom: $(runtime.outdir)/InsertSizeHistogram.pdf }]
+    ["O=", { valueFrom: $(runtime.outdir)/$(inputs.cram.nameroot).InsertSizeMetrics.txt },
+    "H=", { valueFrom: $(runtime.outdir)/$(inputs.cram.nameroot).InsertSizeHistogram.pdf }]
 requirements:
     - class: ResourceRequirement
       ramMin: 16000
@@ -30,8 +30,8 @@ outputs:
     insert_size_metrics:
         type: File
         outputBinding:
-            glob: "InsertSizeMetrics.txt"
+            glob: "$(inputs.cram.nameroot).InsertSizeMetrics.txt"
     insert_size_histogram:
         type: File
         outputBinding:
-            glob: "InsertSizeHistogram.pdf"
+            glob: "$(inputs.cram.nameroot).InsertSizeHistogram.pdf"

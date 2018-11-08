@@ -10,7 +10,7 @@ requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/samtools-cwl:1.0.0"
 arguments:
-        ["-o", { valueFrom: $(runtime.outdir)/output.bam }]
+        ["-o", { valueFrom: $(runtime.outdir)/$(inputs.cram.nameroot).bam }]
 inputs:
     reference:
         type: string
@@ -26,4 +26,4 @@ outputs:
     bam:
         type: File
         outputBinding:
-            glob: "output.bam"
+            glob: "$(inputs.cram.nameroot).bam"
