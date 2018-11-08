@@ -67,6 +67,8 @@ inputs:
     hgvs_annotation:
         type: boolean?
         default: true
+    vep_pick:
+        type: boolean?
     variants_to_table_fields:
         type: string[]?
         default: [CHROM,POS,REF,ALT,set]
@@ -193,6 +195,7 @@ steps:
             maximum_population_allele_frequency: maximum_population_allele_frequency
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
+            vep_pick: vep_pick
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields

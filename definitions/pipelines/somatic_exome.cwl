@@ -102,6 +102,8 @@ inputs:
         type: boolean?
     hgvs_annotation:
         type: boolean?
+    vep_pick:
+        type: boolean?
     cle_vcf_filter:
         type: boolean
         default: false
@@ -324,6 +326,7 @@ steps:
             synonyms_file: synonyms_file
             annotate_coding_only: annotate_coding_only
             hgvs_annotation: hgvs_annotation
+            vep_pick: vep_pick
             cle_vcf_filter: cle_vcf_filter
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields

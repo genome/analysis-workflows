@@ -18,7 +18,6 @@ arguments:
     "--plugin", "Wildtype",
     "--symbol",
     "--term", "SO",
-    "--flag_pick",
     "--transcript_version",
     "--tsl",
     "-o", { valueFrom: $(runtime.outdir)/annotated.vcf }]
@@ -52,6 +51,20 @@ inputs:
             prefix: "--coding_only"
             position: 3
         default: false
+    pick:
+        type: boolean
+        default: false
+        inputBinding:
+            valueFrom: |
+                ${
+                    if (inputs.pick) {
+                        return ['--pick']
+                    }
+                    else {
+                        return ['--flag-pick']
+                    }
+                }
+            position: 7
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]

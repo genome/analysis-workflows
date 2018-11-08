@@ -43,6 +43,8 @@ inputs:
     hgvs_annotation:
         type: boolean?
         default: true
+    vep_pick:
+        type: boolean?
     variants_to_table_fields:
         type: string[]?
         default: [CHROM,POS,REF,ALT,set]
@@ -131,6 +133,7 @@ steps:
             hgvs: hgvs_annotation
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
+            pick: vep_pick
         out:
             [annotated_vcf, vep_summary]
     cram_to_bam:
