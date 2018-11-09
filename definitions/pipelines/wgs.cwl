@@ -34,7 +34,10 @@ inputs:
     synonyms_file:
         type: File?
     vep_pick:
-        type: boolean?
+        type:
+            - "null"
+            - type: enum
+              symbols: ["pick", "flag_pick", "pick_allele", "per_gene", "pick_allele_gene", "flag_pick_allele", "flag_pick_allele_gene"]
     sample_name:
         type: string
     docm_vcf:

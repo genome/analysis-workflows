@@ -103,7 +103,10 @@ inputs:
     hgvs_annotation:
         type: boolean?
     vep_pick:
-        type: boolean?
+        type:
+            - "null"
+            - type: enum
+              symbols: ["pick", "flag_pick", "pick_allele", "per_gene", "pick_allele_gene", "flag_pick_allele", "flag_pick_allele_gene"]
     cle_vcf_filter:
         type: boolean
         default: false

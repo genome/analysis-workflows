@@ -52,18 +52,14 @@ inputs:
             position: 3
         default: false
     pick:
-        type: boolean
-        default: false
+        type:
+            - "null"
+            - type: enum
+              symbols: ["pick", "flag_pick", "pick_allele", "per_gene", "pick_allele_gene", "flag_pick_allele", "flag_pick_allele_gene"]
+        default: "flag_pick"
         inputBinding:
-            valueFrom: |
-                ${
-                    if (inputs.pick) {
-                        return ['--pick']
-                    }
-                    else {
-                        return ['--flag-pick']
-                    }
-                }
+            prefix: '--'
+            separate: false
             position: 7
     custom_gnomad_vcf:
         type: File?
