@@ -9,7 +9,7 @@ requirements:
       ramMin: 8000
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
-      dockerPull: "mgibio/gatk-cwl:3.6.0"
+      dockerPull: "mgibio/gatk-cwl:3.5.0"
 arguments:
     ["-o", 'genotype.vcf.gz']
 inputs:

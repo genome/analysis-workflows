@@ -8,7 +8,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 8000
     - class: DockerRequirement
-      dockerPull: "mgibio/gatk-cwl:3.6.0"
+      dockerPull: "mgibio/gatk-cwl:3.5.0"
 inputs:
     reference:
         type: string
