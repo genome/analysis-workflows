@@ -180,7 +180,7 @@ steps:
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
             contamination_fraction: extract_freemix/freemix_score
-            cache_dir: vep_cache_dir
+            vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             annotate_coding_only: annotate_coding_only
             hgvs: hgvs_annotation
