@@ -78,7 +78,8 @@ inputs:
             valueFrom: |
                 ${
                     if (inputs.custom_clinvar_vcf) {
-                        return ["--custom", inputs.custom_clinvar_vcf.path + "clinvar,vcf,exact,0,CLINSIGN,PHENOTYPE,SCORE,RCVACC,TESTEDINGTR,PHENOTYPELIST,NUMSUBMIT,GUIDELINES"]
+                        return ["--custom", inputs.custom_clinvar_vcf.path + ",clinvar,vcf,exact,0,CLINSIGN,PHENOTYPE,SCORE,RCVACC,TESTEDINGTR,PHENOTYPELIST,NUMSUBMIT,GUIDELINES"]
+
                     }
                     else {
                         return []
