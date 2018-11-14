@@ -13,7 +13,8 @@ requirements:
 arguments: [
     "-o", "$(runtime.outdir)/stringtie_transcripts.gtf",
     "-A", "$(runtime.outdir)/stringtie_gene_expression.tsv",
-    "-p", $(runtime.cores)
+    "-p", $(runtime.cores),
+    "-e"
 ]
 inputs:
     firststrand:
