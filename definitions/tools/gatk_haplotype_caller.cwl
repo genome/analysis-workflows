@@ -3,22 +3,12 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "GATK HaplotypeCaller"
-baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK-3.5.jar", "-T", "HaplotypeCaller"]
+baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "HaplotypeCaller"]
 requirements:
     - class: ResourceRequirement
       ramMin: 8000
-    - class: InlineJavascriptRequirement
     - class: DockerRequirement
-      dockerPull: mgibio/cle
-arguments:
-    ["-o", { valueFrom: '${
-            if (inputs.intervals.length == 1 && inputs.intervals[0].match(/^[0-9A-Za-z]+$/)) {
-                return inputs.intervals[0] + ".g.vcf.gz";
-            } else {
-                return "output.g.vcf.gz";
-            }
-        }'
-    }]
+      dockerPull: "mgibio/gatk-cwl:3.5.0"
 inputs:
     reference:
         type: string
@@ -63,9 +53,15 @@ inputs:
         inputBinding:
             prefix: "-contamination"
             position: 7
+    output_file_name:
+        type: string
+        default: "output.g.vcf.gz"
+        inputBinding:
+            prefix: "-o"
+            position: 8
 outputs:
     gvcf:
         type: File
         outputBinding:
-            glob: "*.g.vcf.gz"
+            glob: $(inputs.output_file_name)
         secondaryFiles: [.tbi]
