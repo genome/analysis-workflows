@@ -7,7 +7,7 @@ label: "run pVACseq"
 baseCommand: ["pvacseq", "run"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:1.1.2"
+      dockerPull: "griffithlab/pvactools:1.1.3"
 arguments:
     - position: 5
       valueFrom: $(runtime.outdir)
