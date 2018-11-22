@@ -40,16 +40,12 @@ inputs:
        type: File
     gene_transcript_lookup_table:
        type: File
-    firststrand:
-       type: boolean?
-    secondstrand:
-       type: boolean?
+    strand:
+       type: string?
     refFlat:
         type: File
     ribosomal_intervals:
         type: File
-    strand:
-        type: string
 outputs:
     final_bam:
         type: File
@@ -94,16 +90,14 @@ steps:
             max_uncalled: trimming_max_uncalled
             min_readlength: trimming_min_readlength
             reference_index: reference_index
-            firststrand: firststrand
-            secondstrand: secondstrand
+            strand: strand
         out:
             [fastqs,aligned_bam]
     kallisto:
         run: ../tools/kallisto.cwl
         in:
             kallisto_index: kallisto_index
-            firststrand: firststrand
-            secondstrand: secondstrand
+            strand: strand
             fastqs:
                 source: bam_to_trimmed_fastq_and_hisat_alignments/fastqs
                 valueFrom: |
@@ -138,8 +132,7 @@ steps:
             bam: merge/merged_bam
             reference_annotation: reference_annotation
             sample_name: sample_name
-            firststrand: firststrand
-            secondstrand: secondstrand
+            strand: strand
         out:
             [transcript_gtf,gene_expression_tsv]
     generate_qc_metrics:

@@ -5,14 +5,14 @@ class: CommandLineTool
 label: "Picard: BAM to FASTQ"
 baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/picard/picard.jar", "SamToFastq", "VALIDATION_STRINGENCY=SILENT"]
 requirements:
+    - class: ResourceRequirement
+      coresMin: 1
+      ramMin: 6000
+      tmpdirMin: 25000
     - class: DockerRequirement
       dockerPull: "mgibio/rnaseq"
 arguments: [ {valueFrom: "F=$(runtime.outdir)/read1.fastq"},
              {valueFrom: "F2=$(runtime.outdir)/read2.fastq"} ]
-requirements:
-    - class: ResourceRequirement
-      ramMin: 6000
-      tmpdirMin: 25000
 inputs:
     bam:
         type: File

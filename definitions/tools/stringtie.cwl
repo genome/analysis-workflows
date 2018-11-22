@@ -17,15 +17,23 @@ arguments: [
     "-e"
 ]
 inputs:
-    firststrand:
-        type: boolean?
+    strand:
+        type: string?
         inputBinding:
-            prefix: "--rf"
-            position: 1
-    secondstrand:
-        type: boolean?
-        inputBinding:
-            prefix: "--fr"
+            valueFrom: |
+                ${
+                    if (inputs.strand) {
+                        if (inputs.strand == 'first') {
+                            return ['--rf'];
+                        } else if (inputs.strand == 'second') {
+                            return ['--fr'];
+                        } else {
+                            return [];
+                        }
+                    } else {
+                            return []
+                    }
+                }
             position: 1
     reference_annotation:
         type: File

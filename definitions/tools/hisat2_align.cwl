@@ -49,15 +49,23 @@ inputs:
                 prefix: "--rg"
         inputBinding:
             position: -4
-    firststrand:
-        type: boolean?
+    strand:
+        type: string?
         inputBinding:
-            prefix: "--rna-strandness RF"
-            position: -6
-    secondstrand:
-        type: boolean?
-        inputBinding:
-            prefix: "--rna-strandness FR"
+            valueFrom: |
+                ${
+                    if (inputs.strand) {
+                        if (inputs.strand == 'first') {
+                            return ['--rna-strandness RF'];
+                        } else if (inputs.strand == 'second') {
+                            return ['--rna-strandness FR'];
+                        } else {
+                            return [];
+                        }
+                    } else {
+                            return []
+                    }
+                }
             position: -6
 outputs:
     aligned_bam:
