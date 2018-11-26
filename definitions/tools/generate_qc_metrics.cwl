@@ -5,6 +5,10 @@ class: CommandLineTool
 label: "Picard: RNA Seq Metrics"
 baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/opt/picard/picard.jar", "CollectRnaSeqMetrics"]
 requirements:
+requirements:
+    - class: ResourceRequirement
+      ramMin: 18000
+      coresMin: 1
     - class: DockerRequirement
       dockerPull: mgibio/rnaseq
 arguments: [ {valueFrom: "O=$(runtime.outdir)/rna_metrics.txt"},
