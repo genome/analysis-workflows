@@ -5,7 +5,6 @@ class: CommandLineTool
 label: "Picard: RNA Seq Metrics"
 baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/opt/picard/picard.jar", "CollectRnaSeqMetrics"]
 requirements:
-requirements:
     - class: ResourceRequirement
       ramMin: 18000
       coresMin: 1
