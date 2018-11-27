@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Kallisto: Quant"
-baseCommand: ["/usr/bin/kallisto"] 
+baseCommand: ["/usr/bin/kallisto"]
 requirements:
     - class: ResourceRequirement
       ramMin: 32000
@@ -26,20 +26,28 @@ inputs:
     fastqs:
         type:
             type: array
-            items: 
+            items:
                 type: array
                 items: File
         inputBinding:
             position: 3
-    firststrand:
-        type: boolean?
+    strand:
+        type: string?
         inputBinding:
-            prefix: --fr-stranded
-            position: 1
-    secondstrand:
-        type: boolean?
-        inputBinding:
-            prefix: --rf-stranded
+            valueFrom: |
+                ${
+                    if (inputs.strand) {
+                        if (inputs.strand == 'first') {
+                            return ['--fr-stranded'];
+                        } else if (inputs.strand == 'second') {
+                            return ['--rf-stranded'];
+                        } else {
+                            return [];
+                        }
+                    } else {
+                            return [];
+                    }
+                }
             position: 1
 outputs:
     expression_transcript_table:

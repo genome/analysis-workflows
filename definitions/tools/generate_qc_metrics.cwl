@@ -5,6 +5,9 @@ class: CommandLineTool
 label: "Picard: RNA Seq Metrics"
 baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/opt/picard/picard.jar", "CollectRnaSeqMetrics"]
 requirements:
+    - class: ResourceRequirement
+      ramMin: 18000
+      coresMin: 1
     - class: DockerRequirement
       dockerPull: mgibio/rnaseq
 arguments: [ {valueFrom: "O=$(runtime.outdir)/rna_metrics.txt"},
@@ -21,10 +24,22 @@ inputs:
             prefix: "RIBOSOMAL_INTERVALS="
             separate: false
     strand:
-        type: string
+        type: string?
         inputBinding:
-            prefix: "STRAND="
-            separate: false
+            valueFrom: |
+                ${
+                    if (inputs.strand) {
+                        if (inputs.strand == 'first') {
+                            return ['STRAND=FIRST_READ_TRANSCRIPTION_STRAND'];
+                        } else if (inputs.strand == 'second') {
+                            return ['STRAND=SECOND_READ_TRANSCRIPTION_STRAND'];
+                        } else {
+                            return ['STRAND=NONE'];
+                        }
+                    } else {
+                            return ['STRAND=NONE']
+                    }
+                }
     bam:
         type: File
         inputBinding:

@@ -4,9 +4,6 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Trim FASTQ (flexbar)"
 baseCommand: ['/opt/flexbar/flexbar']
-requirements:
-    - class: DockerRequirement
-      dockerPull: "mgibio/bisulfite"
 arguments: [
     "--target", {valueFrom: "$(runtime.outdir)/trimmed_read"},
     "--threads", {valueFrom: "$(runtime.cores)"}
@@ -16,6 +13,8 @@ requirements:
       ramMin: 16000
       tmpdirMin: 25000
       coresMin: 4
+    - class: DockerRequirement
+      dockerPull: "mgibio/bisulfite"
 inputs:
     adapters:
         type: File
