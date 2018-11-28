@@ -5,7 +5,7 @@ class: CommandLineTool
 label: "collect HS metrics"
 baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/usr/picard/picard.jar", "CollectHsMetrics"]
 arguments:
-    ["O=", { valueFrom: $(runtime.outdir)/$(inputs.output_prefix)-HsMetrics.txt }]
+    ["O=", { valueFrom: $(runtime.outdir)/$(inputs.cram.nameroot).$(inputs.output_prefix)-HsMetrics.txt }]
 requirements:
     - class: ResourceRequirement
       ramMin: 16000
@@ -41,7 +41,7 @@ inputs:
             valueFrom: |
                         ${
                             if(self) {
-                                return inputs.output_prefix + "-PerTargetCoverage.txt"
+                                return inputs.cram.nameroot + "." + inputs.output_prefix + "-PerTargetCoverage.txt"
                             } else {
                                 return false;
                             }
@@ -53,7 +53,7 @@ inputs:
             valueFrom: |
                         ${
                             if(self) {
-                                return inputs.output_prefix + "-PerBaseCoverage.txt"
+                                return inputs.cram.nameroot + "." + inputs.output_prefix + "-PerBaseCoverage.txt"
                             } else {
                                 return false;
                             }
@@ -75,12 +75,12 @@ outputs:
     hs_metrics:
         type: File
         outputBinding:
-            glob: "$(inputs.output_prefix)-HsMetrics.txt"
+            glob: "$(inputs.cram.nameroot).$(inputs.output_prefix)-HsMetrics.txt"
     per_target_coverage_metrics:
         type: File?
         outputBinding:
-            glob: "$(inputs.output_prefix)-PerTargetCoverage.txt"
+            glob: "$(inputs.cram.nameroot).$(inputs.output_prefix)-PerTargetCoverage.txt"
     per_base_coverage_metrics:
         type: File?
         outputBinding:
-            glob: "$(inputs.output_prefix)-PerBaseCoverage.txt"
+            glob: "$(inputs.cram.nameroot).$(inputs.output_prefix)-PerBaseCoverage.txt"

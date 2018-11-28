@@ -5,7 +5,7 @@ class: CommandLineTool
 label: "collect alignment summary metrics"
 baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/usr/picard/picard.jar", "CollectAlignmentSummaryMetrics"]
 arguments:
-    ["OUTPUT=", { valueFrom: $(runtime.outdir)/AlignmentSummaryMetrics.txt }]
+    ["OUTPUT=", { valueFrom: $(runtime.outdir)/$(inputs.cram.nameroot).AlignmentSummaryMetrics.txt }]
 requirements:
     - class: ResourceRequirement
       ramMin: 16000
@@ -29,4 +29,4 @@ outputs:
     alignment_summary_metrics:
         type: File
         outputBinding:
-            glob: "AlignmentSummaryMetrics.txt"
+            glob: "$(inputs.cram.nameroot).AlignmentSummaryMetrics.txt"
