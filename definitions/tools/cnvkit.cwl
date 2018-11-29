@@ -7,7 +7,7 @@ baseCommand: ["/usr/bin/python", "/usr/local/bin/cnvkit.py", "batch"]
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "etal/cnvkit"
+      dockerPull: "etal/cnvkit:0.9.5"
 
 inputs:
     tumor_bam:
@@ -36,10 +36,10 @@ inputs:
             prefix: "--access"
     method:
         type: string?
+        default: "hybrid"
         inputBinding:
             position: 6
             prefix: "--method"
-            default: "hybrid"
     threads:
         type: int?
         inputBinding:
