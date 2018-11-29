@@ -185,6 +185,6 @@ steps:
             annotate_coding_only: annotate_coding_only
             hgvs: hgvs_annotation
             custom_gnomad_vcf: custom_gnomad_vcf
-            limit_variant_intervals: per_base_intervals
+            limit_variant_intervals: target_intervals
         out:
             [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]
