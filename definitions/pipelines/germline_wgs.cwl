@@ -50,6 +50,8 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    output_dir:
+        type: string
 outputs:
     cram:
         type: File
@@ -105,6 +107,9 @@ outputs:
     vep_summary:
         type: File
         outputSource: detect_variants/vep_summary
+    final_outputs:
+        type: string[]
+        outputSource: gatherer/gathered_files
 steps:
     alignment_and_qc:
         run: wgs_alignment.cwl
@@ -163,3 +168,35 @@ steps:
             limit_variant_intervals: variant_reporting_intervals
         out:
             [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]
+    gatherer:
+        run: ../tools/gatherer.cwl
+        in:
+            output_dir: output_dir
+            all_files:
+                source: [alignment_and_qc/gc_bias_metrics_chart, alignment_and_qc/alignment_summary_metrics, alignment_and_qc/flagstats, detect_variants/coding_vcf, alignment_and_qc/wgs_metrics, detect_variants/limited_vcf, detect_variants/vep_summary, detect_variants/final_vcf, alignment_and_qc/gc_bias_metrics_summary, alignment_and_qc/gc_bias_metrics, alignment_and_qc/insert_size_metrics, alignment_and_qc/mark_duplicates_metrics, alignment_and_qc/verify_bam_id_depth, alignment_and_qc/verify_bam_id_metrics, alignment_and_qc/insert_size_histogram, alignment_and_qc/cram, detect_variants/gvcf]
+                valueFrom: ${
+                                function flatten(inArr, outArr) {
+                                    var arrLen = inArr.length;
+                                    for (var i = 0; i < arrLen; i++) {
+                                        if (Array.isArray(inArr[i])) {
+                                            flatten(inArr[i], outArr);
+                                        }
+                                        else {
+                                            outArr.push(inArr[i]);
+                                        }
+                                    }
+                                    return outArr;
+                                }
+                                var no_secondaries = flatten(self, []);
+                                var all_files = []; 
+                                var arrLen = no_secondaries.length;
+                                for (var i = 0; i < arrLen; i++) {
+                                    all_files.push(no_secondaries[i]);
+                                    var secondaryLen = no_secondaries[i].secondaryFiles.length;
+                                    for (var j = 0; j < secondaryLen; j++) {
+                                        all_files.push(no_secondaries[i].secondaryFiles[j]);
+                                    }
+                                }
+                                return all_files;
+                            }
+        out: [gathered_files]
