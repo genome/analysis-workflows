@@ -40,20 +40,15 @@ inputs:
         inputBinding:
             position: 6
             prefix: "--method"
-    threads:
-        type: int?
-        inputBinding:
-            position: 7
-            prefix: "-p"
     diagram:
         type: boolean?
         inputBinding:
-            position: 8
+            position: 7
             prefix: "--diagram"
     scatter_plot:
         type: boolean?
         inputBinding:
-            position: 9
+            position: 8
             prefix: "--scatter"
     drop_low_coverage:
         type: boolean?
