@@ -70,6 +70,11 @@ inputs:
         type: boolean?
     hgvs_annotation:
         type: boolean?
+    vep_pick:
+        type:
+            - "null"
+            - type: enum
+              symbols: ["pick", "flag_pick", "pick_allele", "per_gene", "pick_allele_gene", "flag_pick_allele", "flag_pick_allele_gene"]
     filter_gnomADe_maximum_population_allele_frequency:
         type: float?
         default: 0.001
@@ -234,6 +239,7 @@ steps:
             hgvs: hgvs_annotation
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
+            pick: vep_pick
         out:
             [annotated_vcf, vep_summary]
     tumor_cram_to_bam:

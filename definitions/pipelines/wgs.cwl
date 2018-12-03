@@ -33,6 +33,11 @@ inputs:
         type: string?
     synonyms_file:
         type: File?
+    vep_pick:
+        type:
+            - "null"
+            - type: enum
+              symbols: ["pick", "flag_pick", "pick_allele", "per_gene", "pick_allele_gene", "flag_pick_allele", "flag_pick_allele_gene"]
     sample_name:
         type: string
     docm_vcf:
@@ -134,6 +139,7 @@ steps:
             #maximum_population_allele_frequency:
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
+            vep_pick: vep_pick
             #variants_to_table_fields:
             #variants_to_table_genotype_fields:
             #vep_to_table_fields:

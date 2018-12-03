@@ -18,7 +18,6 @@ arguments:
     "--plugin", "Wildtype",
     "--symbol",
     "--term", "SO",
-    "--flag_pick",
     "--transcript_version",
     "--tsl",
     "-o", { valueFrom: $(runtime.outdir)/annotated.vcf }]
@@ -52,6 +51,16 @@ inputs:
             prefix: "--coding_only"
             position: 3
         default: false
+    pick:
+        type:
+            - "null"
+            - type: enum
+              symbols: ["pick", "flag_pick", "pick_allele", "per_gene", "pick_allele_gene", "flag_pick_allele", "flag_pick_allele_gene"]
+        default: "flag_pick"
+        inputBinding:
+            prefix: '--'
+            separate: false
+            position: 7
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
