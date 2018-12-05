@@ -46,6 +46,6 @@ steps:
     bgzip_and_index:
         run: bgzip_and_index.cwl
         in:
-            vcf: phased_vcf/phased_vcf
+            vcf: phase_vcf/phased_vcf
         out:
             [indexed_vcf]
