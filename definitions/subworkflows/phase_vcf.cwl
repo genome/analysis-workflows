@@ -3,6 +3,8 @@
 cwlVersion: v1.0
 class: Workflow
 label: "phase VCF"
+requirements:
+    - class: SubworkflowFeatureRequirement
 inputs:
     somatic_vcf:
         type: File
