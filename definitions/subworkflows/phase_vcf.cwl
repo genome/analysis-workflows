@@ -9,7 +9,7 @@ inputs:
     germline_vcf:
         type: File
     reference:
-        type: String
+        type: string
     reference_dict:
         type: File
     bam:
