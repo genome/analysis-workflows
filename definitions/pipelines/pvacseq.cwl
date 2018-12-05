@@ -180,7 +180,7 @@ steps:
             fasta_size: fasta_size
             downstream_sequence_length: downstream_sequence_length
             exclude_nas: exclude_nas
-            phased_proximal_variants_file: phased_proximal_variants_file
+            phased_proximal_variants_vcf: phased_proximal_variants_file
             maximum_transcript_support_level: maximum_transcript_support_level
             normal_cov: normal_cov
             tdna_cov: tdna_cov
