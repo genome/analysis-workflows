@@ -27,6 +27,8 @@ inputs:
         type: File
     picard_metric_accumulation_level:
         type: string
+    bqsr_intervals:
+        type: string[]?
 outputs:
     cram:
         type: File
@@ -74,6 +76,7 @@ steps:
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
+            bqsr_intervals: bqsr_intervals
         out: [final_cram,mark_duplicates_metrics_file]
     qc:
         run: ../subworkflows/qc_wgs.cwl

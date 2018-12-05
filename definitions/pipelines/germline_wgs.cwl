@@ -50,6 +50,8 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    bqsr_intervals:
+        type: string[]?
 outputs:
     cram:
         type: File
@@ -118,6 +120,7 @@ steps:
             omni_vcf: omni_vcf
             intervals: qc_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level
+            bqsr_intervals: bqsr_intervals
         out:
             [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     extract_freemix:
