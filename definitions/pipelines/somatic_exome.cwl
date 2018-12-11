@@ -344,6 +344,15 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_unfiltered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv, normal_bam_readcount_tsv]
+    cnvkit:
+        run: ../subworkflows/cram_to_cnvkit.cwl
+        in: 
+            normal_cram: tumor_alignment_and_qc/cram
+            tumor_cram: normal_alignment_and_qc/cram
+            reference: reference
+            bait_intervals: bait_intervals
+        out:
+            [intervals_antitarget, intervals_target, normal_antitarget_coverage, normal_target_coverage, reference_coverage, cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios]
     gatherer:
         run: ../tools/gatherer.cwl
         in:
