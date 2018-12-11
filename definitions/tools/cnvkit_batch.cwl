@@ -25,7 +25,7 @@ inputs:
             position: 3
             prefix: "--targets"
     reference:
-        type: File
+        type: string
         inputBinding:
             position: 4
             prefix: "--fasta"
