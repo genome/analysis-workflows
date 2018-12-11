@@ -71,6 +71,7 @@ inputs:
         type: int
     mutect_artifact_detection_mode:
         type: boolean
+        default: false
     mutect_max_alt_allele_in_normal_fraction:
         type: float?
     mutect_max_alt_alleles_in_normal_count:
