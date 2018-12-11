@@ -97,7 +97,7 @@ outputs:
         type: File
         outputBinding:
             glob: $(inputs.tumor_bam.nameroot).cnr
-    tumor_segmented_ration:
+    tumor_segmented_ratios:
         type: File
         outputBinding:
             glob: $(inputs.tumor_bam.nameroot).cns
