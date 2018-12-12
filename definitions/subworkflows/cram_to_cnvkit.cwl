@@ -21,7 +21,7 @@ inputs:
     scatter_plot:
         type: boolean?
     drop_low_coverage:
-        boolean?
+        type: boolean?
 outputs:
     intervals_antitarget:
         type: File?
