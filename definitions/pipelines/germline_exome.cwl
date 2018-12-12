@@ -64,6 +64,9 @@ inputs:
         type: int?
     qc_minimum_base_quality:
         type: int?
+    custom_clinvar_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
 outputs:
     cram:
         type: File
@@ -186,5 +189,6 @@ steps:
             hgvs: hgvs_annotation
             custom_gnomad_vcf: custom_gnomad_vcf
             limit_variant_intervals: target_intervals
+            custom_clinvar_vcf: custom_clinvar_vcf
         out:
             [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]

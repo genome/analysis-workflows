@@ -35,6 +35,9 @@ inputs:
         secondaryFiles: [.tbi]
     limit_variant_intervals:
         type: File
+    custom_clinvar_vcf:
+        type: File
+        secondaryFiles: [.tbi]
 outputs:
     gvcf:
         type: File[]
@@ -83,6 +86,7 @@ steps:
             hgvs: hgvs_annotation
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
+            custom_clinvar_vcf: custom_clinvar_vcf
         out:
             [annotated_vcf, vep_summary]
     bgzip_annotated_vcf:
