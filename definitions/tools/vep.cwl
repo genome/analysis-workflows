@@ -80,6 +80,21 @@ inputs:
                     }
                 }
             position: 6
+    custom_clinvar_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
+        inputBinding:
+            valueFrom: |
+                ${
+                    if (inputs.custom_clinvar_vcf) {
+                        return ["--custom", inputs.custom_clinvar_vcf.path + ",clinvar,vcf,exact,0,CLINSIGN,PHENOTYPE,SCORE,RCVACC,TESTEDINGTR,PHENOTYPELIST,NUMSUBMIT,GUIDELINES"]
+
+                    }
+                    else {
+                        return []
+                    }
+                }
+            position: 7
     hgvs:
         type: boolean?
         inputBinding:
