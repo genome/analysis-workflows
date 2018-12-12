@@ -261,6 +261,39 @@ outputs:
     final_outputs:
         type: string[]
         outputSource: gatherer/gathered_files
+    intervals_antitarget:
+        type: File?
+        outputSource: cnvkit/intervals_antitarget
+    intervals_target:
+        type: File?
+        outputSource: cnvkit/intervals_target
+    normal_antitarget_coverage:
+        type: File
+        outputSource: cnvkit/normal_antitarget_coverage
+    normal_target_coverage:
+        type: File
+        outputSource: cnvkit/normal_target_coverage
+    reference_coverage:
+        type: File?
+        outputSource: cnvkit/reference_coverage
+    cn_diagram:
+        type: File?
+        outputSource: cnvkit/cn_diagram
+    cn_scatter_plot:
+        type: File?
+        outputSource: cnvkit/cn_scatter_plot
+    tumor_antitarget_coverage:
+        type: File
+        outputSource: cnvkit/tumor_antitarget_coverage
+    tumor_target_coverage:
+        type: File
+        outputSource: cnvkit/tumor_target_coverage
+    tumor_bin_level_ratios:
+        type: File
+        outputSource: cnvkit/tumor_bin_level_ratios
+    tumor_segmented_ratios:
+        type: File
+        outputSource: cnvkit/tumor_segmented_ratios
 steps:
     tumor_alignment_and_qc:
         run: exome_alignment.cwl
