@@ -8,7 +8,7 @@ inputs:
     bcl_directory:
         type: string
     chemistry:
-        type: string
+        type: string?
     reference:
         type: string
     sample_name:
