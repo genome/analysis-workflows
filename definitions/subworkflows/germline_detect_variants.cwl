@@ -36,7 +36,7 @@ inputs:
     limit_variant_intervals:
         type: File
     custom_clinvar_vcf:
-        type: File
+        type: File?
         secondaryFiles: [.tbi]
 outputs:
     gvcf:
