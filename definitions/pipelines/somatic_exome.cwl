@@ -256,6 +256,39 @@ outputs:
     normal_bam_readcount_tsv:
         type: File
         outputSource: detect_variants/normal_bam_readcount_tsv
+    intervals_antitarget:
+        type: File?
+        outputSource: cnvkit/intervals_antitarget
+    intervals_target:
+        type: File?
+        outputSource: cnvkit/intervals_target
+    normal_antitarget_coverage:
+        type: File
+        outputSource: cnvkit/normal_antitarget_coverage
+    normal_target_coverage:
+        type: File
+        outputSource: cnvkit/normal_target_coverage
+    reference_coverage:
+        type: File?
+        outputSource: cnvkit/reference_coverage
+    cn_diagram:
+        type: File?
+        outputSource: cnvkit/cn_diagram
+    cn_scatter_plot:
+        type: File?
+        outputSource: cnvkit/cn_scatter_plot
+    tumor_antitarget_coverage:
+        type: File
+        outputSource: cnvkit/tumor_antitarget_coverage
+    tumor_target_coverage:
+        type: File
+        outputSource: cnvkit/tumor_target_coverage
+    tumor_bin_level_ratios:
+        type: File
+        outputSource: cnvkit/tumor_bin_level_ratios
+    tumor_segmented_ratios:
+        type: File
+        outputSource: cnvkit/tumor_segmented_ratios
 steps:
     tumor_alignment_and_qc:
         run: exome_alignment.cwl
@@ -339,3 +372,12 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_unfiltered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv, normal_bam_readcount_tsv]
+    cnvkit:
+        run: ../subworkflows/cram_to_cnvkit.cwl
+        in: 
+            normal_cram: tumor_alignment_and_qc/cram
+            tumor_cram: normal_alignment_and_qc/cram
+            reference: reference
+            bait_intervals: bait_intervals
+        out:
+            [intervals_antitarget, intervals_target, normal_antitarget_coverage, normal_target_coverage, reference_coverage, cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios]
