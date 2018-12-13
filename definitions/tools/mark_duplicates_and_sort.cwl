@@ -10,7 +10,7 @@ requirements:
       coresMin: 8
       ramMin: 40000
     - class: DockerRequirement
-      dockerPull: "zlskidmore/mark_dups_test:latest"
+      dockerPull: "mgibio/mark_duplicates-cwl:1.0.1"
 arguments:
     - position: 2
       valueFrom: $(runtime.cores)
