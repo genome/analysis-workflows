@@ -4,6 +4,9 @@ cwlVersion: v1.0
 class: Workflow
 label: "Exome QC workflow"
 requirements:
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/labelled_file.yml
     - class: SubworkflowFeatureRequirement
 inputs:
     cram:
@@ -18,14 +21,6 @@ inputs:
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
-    per_target_intervals:
-        type: File
-    per_target_bait_intervals:
-        type: File
-    per_base_intervals:
-        type: File
-    per_base_bait_intervals:
-        type: File
     picard_metric_accumulation_level:
         type: string?
         default: ALL_READS
@@ -33,6 +28,12 @@ inputs:
         type: int?
     minimum_base_quality:
         type: int?
+    per_base_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]
+    per_target_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]
+    summary_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]
 outputs:
     insert_size_metrics:
         type: File
@@ -47,17 +48,20 @@ outputs:
         type: File
         outputSource: collect_roi_hs_metrics/hs_metrics
     per_target_coverage_metrics:
-        type: File?
-        outputSource: collect_per_target_hs_metrics/per_target_coverage_metrics
+        type: File[]
+        outputSource: collect_detailed_hs_metrics/per_target_coverage_metrics
     per_target_hs_metrics:
-        type: File?
-        outputSource: collect_per_target_hs_metrics/hs_metrics
+        type: File[]
+        outputSource: collect_detailed_hs_metrics/per_target_hs_metrics
     per_base_coverage_metrics:
-        type: File?
-        outputSource: collect_per_base_hs_metrics/per_base_coverage_metrics
+        type: File[]
+        outputSource: collect_detailed_hs_metrics/per_base_coverage_metrics
     per_base_hs_metrics:
-        type: File?
-        outputSource: collect_per_base_hs_metrics/hs_metrics
+        type: File[]
+        outputSource: collect_detailed_hs_metrics/per_base_hs_metrics
+    summary_hs_metrics:
+        type: File[]
+        outputSource: collect_detailed_hs_metrics/summary_hs_metrics
     flagstats:
         type: File
         outputSource: samtools_flagstat/flagstats
@@ -103,44 +107,18 @@ steps:
             minimum_base_quality: minimum_base_quality
         out:
             [hs_metrics]
-    collect_per_base_hs_metrics:
-        run: ../tools/collect_hs_metrics.cwl
+    collect_detailed_hs_metrics:
+        run: hs_metrics.cwl
         in:
             cram: cram
-            reference: reference
-            metric_accumulation_level:
-                valueFrom: "ALL_READS"
-            bait_intervals: per_base_bait_intervals
-            target_intervals: per_base_intervals
-            per_target_coverage:
-                default: false
-            per_base_coverage:
-                default: true
-            output_prefix:
-                valueFrom: "base"
             minimum_mapping_quality: minimum_mapping_quality
             minimum_base_quality: minimum_base_quality
-        out:
-            [hs_metrics, per_base_coverage_metrics]
-    collect_per_target_hs_metrics:
-        run: ../tools/collect_hs_metrics.cwl
-        in:
-            cram: cram
+            per_base_intervals: per_base_intervals
+            per_target_intervals: per_target_intervals
             reference: reference
-            metric_accumulation_level:
-                valueFrom: "ALL_READS"
-            bait_intervals: per_target_bait_intervals
-            target_intervals: per_target_intervals
-            per_target_coverage:
-                default: true
-            per_base_coverage:
-                default: false
-            output_prefix:
-                valueFrom: "target"
-            minimum_mapping_quality: minimum_mapping_quality
-            minimum_base_quality: minimum_base_quality
+            summary_intervals: summary_intervals
         out:
-            [hs_metrics, per_target_coverage_metrics]
+            [per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics]
     samtools_flagstat:
         run: ../tools/samtools_flagstat.cwl
         in:
