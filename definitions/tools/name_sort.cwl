@@ -8,7 +8,7 @@ arguments:
     ["-t", { valueFrom: $(runtime.cores) },
     "-m", "12G",
     "-n",
-    "-o", { valueFrom: $(runtime.outdir)/NameSorted.bam }]
+    "-o", { valueFrom: "$(inputs.bam.nameroot).NameSorted.bam" }]
 requirements:
     - class: ResourceRequirement
       ramMin: 13000
@@ -24,4 +24,4 @@ outputs:
     name_sorted_bam:
         type: File
         outputBinding:
-            glob: "NameSorted.bam"
+            glob: "$(inputs.bam.nameroot).NameSorted.bam"

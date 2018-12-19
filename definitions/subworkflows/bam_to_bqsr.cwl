@@ -51,6 +51,7 @@ steps:
         run: ../tools/merge_bams_samtools.cwl
         in:
             bams: align/tagged_bam
+            name: final_name
         out:
             [merged_bam]
     name_sort:
