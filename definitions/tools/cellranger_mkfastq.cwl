@@ -33,8 +33,8 @@ outputs:
     samplesheet_csv:
         type: File
         outputBinding:
-            glob: "$(inputs.unique_id)/outs/input_samplesheet.csv"
+            glob: "cellranger_output/outs/input_samplesheet.csv"
     fastq_dir:
         type: Directory
         outputBinding:
-            glob: "$(inputs.unique_id)/outs/fastq_path/"
+            glob: "cellranger_output/outs/fastq_path/"

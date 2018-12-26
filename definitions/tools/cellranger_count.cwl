@@ -47,4 +47,4 @@ outputs:
     out_dir:
         type: Directory
         outputBinding:
-            glob: "$(inputs.unique_id)/outs/"
+            glob: "cellranger_output/outs/"
