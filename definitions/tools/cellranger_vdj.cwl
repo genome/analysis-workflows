@@ -40,7 +40,7 @@ inputs:
         inputBinding:
             prefix: --id=
             position: 4
-            separate: falsei
+            separate: false
         doc: "Unique name for the run"
 outputs:
     out_dir:
