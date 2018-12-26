@@ -30,7 +30,7 @@ inputs:
            separate: false
         doc: "Directory containing fastq files"
     reference:
-        type: string
+        type: Directory
         inputBinding:
             prefix: --transcriptome=
             position: 3

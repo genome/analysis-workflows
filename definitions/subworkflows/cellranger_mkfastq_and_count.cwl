@@ -6,15 +6,15 @@ label: "running cellranger mkfastq and count"
 
 inputs:
     bcl_directory:
-        type: string
+        type: Directory
     chemistry:
         type: string?
     reference:
-        type: string
+        type: Directory
     sample_name:
         type: string
     simple_sample_csv:
-        type: string
+        type: File
 
 steps:
     mkfastq:

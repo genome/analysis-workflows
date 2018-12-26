@@ -15,14 +15,14 @@ requirements:
 
 inputs:
     bcl_directory:
-        type: string
+        type: Directory
         inputBinding:
             prefix: --run=
             position: 1
             separate: false
         doc: "Directory of the Illumina BCL run"
     simple_sample_csv:  
-        type: string
+        type: File
         inputBinding:
             prefix: --simple-csv=
             position: 3

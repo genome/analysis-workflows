@@ -22,7 +22,7 @@ inputs:
             separate: false
         doc: "Directory containing fastq files"
     reference:
-        type: string
+        type: Directory
         inputBinding:
             prefix: --reference=
             position: 2
