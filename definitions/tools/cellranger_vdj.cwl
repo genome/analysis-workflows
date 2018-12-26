@@ -4,7 +4,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Run Cell Ranger V(D)J"
 
-baseCommand: ["cellranger", "vdj", "--localmem=64", "--localcores=8"]
+baseCommand: ["cellranger", "vdj", "--localmem=64", "--localcores=8", "--id=cellranger_output"]
 
 requirements:
     - class: DockerRequirement
@@ -35,13 +35,6 @@ inputs:
             position: 3
             separate: false
         doc: "Sample name, must be same as name specified in sample sheet in previous mkfastq step" 
-    unique_id:
-        type: string
-        inputBinding:
-            prefix: --id=
-            position: 4
-            separate: false
-        doc: "Unique name for the run"
 outputs:
     out_dir:
         type: Directory

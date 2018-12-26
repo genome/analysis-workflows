@@ -4,7 +4,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Run Cell Ranger mkfastq"
 
-baseCommand: ["cellranger", "mkfastq", "--localmem=64", "--localcores=8"]
+baseCommand: ["cellranger", "mkfastq", "--localmem=64", "--localcores=8", "--id=cellranger_output"]
 
 requirements:
     - class: DockerRequirement
@@ -21,13 +21,6 @@ inputs:
             position: 1
             separate: false
         doc: "Directory of the Illumina BCL run"
-    unique_id:
-        type: string
-        inputBinding:
-            prefix: --id=
-            position: 2
-            separate: false
-        doc: "Unique name for the run"
     simple_sample_csv:  
         type: string
         inputBinding:

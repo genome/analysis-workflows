@@ -15,8 +15,6 @@ inputs:
         type: string
     simple_sample_csv:
         type: string
-    unique_id:
-        type: string
 
 steps:
     mkfastq:
@@ -24,7 +22,6 @@ steps:
         in:
             bcl_directory: bcl_directory
             simple_sample_csv: simple_sample_csv
-            unique_id: unique_id
         out: [samplesheet_csv, fastq_dir]
     count:
         run: ../tools/cellranger_count.cwl
@@ -33,7 +30,6 @@ steps:
             fastq_directory: mkfastq/fastq_dir
             reference: reference
             sample_name: sample_name
-            unique_id: unique_id
         out: [out_dir]
 
 outputs:
