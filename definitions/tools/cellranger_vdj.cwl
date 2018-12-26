@@ -45,4 +45,4 @@ inputs:
 outputs:
     out_dir:
         type: Directory
-        glob: "$(inputs.unique_id)/outs/"]
+        glob: "$(inputs.unique_id)/outs/"
