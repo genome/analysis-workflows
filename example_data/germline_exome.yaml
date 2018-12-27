@@ -27,18 +27,25 @@ mills:
 omni_vcf:
   class: File
   path: exome_workflow/chr17_test_omni.vcf.gz
-per_base_bait_intervals:
-  class: File
-  path: exome_workflow/chr17_test_bait.interval_list
 per_base_intervals:
-  class: File
-  path: exome_workflow/chr17_test_target.interval_list
+  - label: testing
+    file:
+      class: File
+      path: exome_workflow/chr17_test_target.interval_list
 per_target_intervals:
-  class: File
-  path: exome_workflow/chr17_test_target.interval_list
-per_target_bait_intervals:
-  class: File
-  path: exome_workflow/chr17_test_bait.interval_list
+  - label: targets
+    file:
+      class: File
+      path: exome_workflow/chr17_test_target.interval_list
+summary_intervals:
+  - label: baits 
+    file:
+      class: File
+      path: exome_workflow/chr17_test_bait.interval_list
+  - label: genes
+    file:
+      class: File
+      path: exome_workflow/chr17_test_genes.interval_list
 picard_metric_accumulation_level: ALL_READS
 readgroups:
 - "@RG\tID:2895499223\tPU:H7HY2CCXX.3.ATCACGGT\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:Illumina\tCN:WUGSC"
