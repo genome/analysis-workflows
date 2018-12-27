@@ -4,6 +4,9 @@ cwlVersion: v1.0
 class: Workflow
 label: "gathered exome alignment and somatic variant detection"
 requirements:
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/labelled_file.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
@@ -37,14 +40,12 @@ inputs:
         type: File
     target_intervals:
         type: File
-    per_target_intervals:
-        type: File
-    per_target_bait_intervals:
-        type: File
     per_base_intervals:
-        type: File
-    per_base_bait_intervals:
-        type: File
+        type: ../types/labelled_file.yml#labelled_file[]
+    per_target_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]
+    summary_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -146,10 +147,9 @@ steps:
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
-            per_target_intervals: per_target_intervals
-            per_target_bait_intervals: per_target_bait_intervals
             per_base_intervals: per_base_intervals
-            per_base_bait_intervals: per_base_bait_intervals
+            per_target_intervals: per_target_intervals
+            summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
             qc_minimum_mapping_quality: qc_minimum_mapping_quality
@@ -180,13 +180,13 @@ steps:
             vep_to_table_fields: vep_to_table_fields
             custom_gnomad_vcf: custom_gnomad_vcf
         out:
-            [tumor_cram, tumor_mark_duplicates_metrics, tumor_insert_size_metrics, tumor_alignment_summary_metrics, tumor_hs_metrics, tumor_per_target_coverage_metrics, tumor_per_base_coverage_metrics, tumor_per_base_hs_metrics, tumor_flagstats, tumor_verify_bam_id_metrics, tumor_verify_bam_id_depth, normal_cram, normal_mark_duplicates_metrics, normal_insert_size_metrics, normal_alignment_summary_metrics, normal_hs_metrics, normal_per_target_coverage_metrics, normal_per_target_hs_metrics, normal_per_base_coverage_metrics, normal_per_base_hs_metrics, normal_flagstats, normal_verify_bam_id_metrics, normal_verify_bam_id_depth, mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_unfiltered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv, normal_bam_readcount_tsv]
+            [tumor_cram, tumor_mark_duplicates_metrics, tumor_insert_size_metrics, tumor_alignment_summary_metrics, tumor_hs_metrics, tumor_per_target_coverage_metrics, tumor_per_base_coverage_metrics, tumor_per_base_hs_metrics, tumor_summary_hs_metrics, tumor_flagstats, tumor_verify_bam_id_metrics, tumor_verify_bam_id_depth, normal_cram, normal_mark_duplicates_metrics, normal_insert_size_metrics, normal_alignment_summary_metrics, normal_hs_metrics, normal_per_target_coverage_metrics, normal_per_target_hs_metrics, normal_per_base_coverage_metrics, normal_per_base_hs_metrics, normal_summary_hs_metrics, normal_flagstats, normal_verify_bam_id_metrics, normal_verify_bam_id_depth, mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_unfiltered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv, normal_bam_readcount_tsv]
     gatherer:
         run: ../tools/gatherer.cwl
         in:
             output_dir: output_dir
             all_files:
-                source: [somatic_exome/tumor_cram, somatic_exome/tumor_mark_duplicates_metrics, somatic_exome/tumor_insert_size_metrics, somatic_exome/tumor_alignment_summary_metrics, somatic_exome/tumor_hs_metrics, somatic_exome/tumor_per_target_coverage_metrics, somatic_exome/tumor_per_base_coverage_metrics, somatic_exome/tumor_per_base_hs_metrics, somatic_exome/tumor_flagstats, somatic_exome/tumor_verify_bam_id_metrics, somatic_exome/tumor_verify_bam_id_depth, somatic_exome/normal_cram, somatic_exome/normal_mark_duplicates_metrics, somatic_exome/normal_insert_size_metrics, somatic_exome/normal_alignment_summary_metrics, somatic_exome/normal_hs_metrics, somatic_exome/normal_per_target_coverage_metrics, somatic_exome/normal_per_target_hs_metrics, somatic_exome/normal_per_base_coverage_metrics, somatic_exome/normal_per_base_hs_metrics, somatic_exome/normal_flagstats, somatic_exome/normal_verify_bam_id_metrics, somatic_exome/normal_verify_bam_id_depth, somatic_exome/mutect_unfiltered_vcf, somatic_exome/mutect_filtered_vcf, somatic_exome/strelka_unfiltered_vcf, somatic_exome/strelka_filtered_vcf, somatic_exome/varscan_unfiltered_vcf, somatic_exome/varscan_filtered_vcf, somatic_exome/pindel_unfiltered_vcf, somatic_exome/pindel_filtered_vcf, somatic_exome/docm_unfiltered_vcf, somatic_exome/docm_filtered_vcf, somatic_exome/final_vcf, somatic_exome/final_filtered_vcf, somatic_exome/final_tsv, somatic_exome/vep_summary, somatic_exome/tumor_bam_readcount_tsv, somatic_exome/normal_bam_readcount_tsv]
+                source: [somatic_exome/tumor_cram, somatic_exome/tumor_mark_duplicates_metrics, somatic_exome/tumor_insert_size_metrics, somatic_exome/tumor_alignment_summary_metrics, somatic_exome/tumor_hs_metrics, somatic_exome/tumor_per_target_coverage_metrics, somatic_exome/tumor_per_base_coverage_metrics, somatic_exome/tumor_per_base_hs_metrics, somatic_exome/tumor_summary_hs_metrics, somatic_exome/tumor_flagstats, somatic_exome/tumor_verify_bam_id_metrics, somatic_exome/tumor_verify_bam_id_depth, somatic_exome/normal_cram, somatic_exome/normal_mark_duplicates_metrics, somatic_exome/normal_insert_size_metrics, somatic_exome/normal_alignment_summary_metrics, somatic_exome/normal_hs_metrics, somatic_exome/normal_per_target_coverage_metrics, somatic_exome/normal_per_target_hs_metrics, somatic_exome/normal_per_base_coverage_metrics, somatic_exome/normal_per_base_hs_metrics, somatic_exome/normal_summary_hs_metrics, somatic_exome/normal_flagstats, somatic_exome/normal_verify_bam_id_metrics, somatic_exome/normal_verify_bam_id_depth, somatic_exome/mutect_unfiltered_vcf, somatic_exome/mutect_filtered_vcf, somatic_exome/strelka_unfiltered_vcf, somatic_exome/strelka_filtered_vcf, somatic_exome/varscan_unfiltered_vcf, somatic_exome/varscan_filtered_vcf, somatic_exome/pindel_unfiltered_vcf, somatic_exome/pindel_filtered_vcf, somatic_exome/docm_unfiltered_vcf, somatic_exome/docm_filtered_vcf, somatic_exome/final_vcf, somatic_exome/final_filtered_vcf, somatic_exome/final_tsv, somatic_exome/vep_summary, somatic_exome/tumor_bam_readcount_tsv, somatic_exome/normal_bam_readcount_tsv]
                 valueFrom: ${
                                 function flatten(inArr, outArr) {
                                     var arrLen = inArr.length;

@@ -4,6 +4,9 @@ cwlVersion: v1.0
 class: Workflow
 label: "wgs alignment and germline variant detection"
 requirements:
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/labelled_file.yml
     - class: SubworkflowFeatureRequirement
 inputs:
     reference: string
@@ -52,6 +55,16 @@ inputs:
         secondaryFiles: [.tbi]
     bqsr_intervals:
         type: string[]?
+    minimum_mapping_quality:
+        type: int?
+    minimum_base_quality:
+        type: int?
+    per_base_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]
+    per_target_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]
+    summary_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
@@ -110,6 +123,21 @@ outputs:
     vep_summary:
         type: File
         outputSource: detect_variants/vep_summary
+    per_base_coverage_metrics:
+        type: File[]
+        outputSource: alignment_and_qc/per_base_coverage_metrics
+    per_base_hs_metrics:
+        type: File[]
+        outputSource: alignment_and_qc/per_base_hs_metrics
+    per_target_coverage_metrics:
+        type: File[]
+        outputSource: alignment_and_qc/per_target_coverage_metrics
+    per_target_hs_metrics:
+        type: File[]
+        outputSource: alignment_and_qc/per_target_hs_metrics
+    summary_hs_metrics:
+        type: File[]
+        outputSource: alignment_and_qc/summary_hs_metrics
 steps:
     alignment_and_qc:
         run: wgs_alignment.cwl
@@ -124,8 +152,13 @@ steps:
             intervals: qc_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level
             bqsr_intervals: bqsr_intervals
+            minimum_mapping_quality: minimum_mapping_quality
+            minimum_base_quality: minimum_base_quality
+            per_base_intervals: per_base_intervals
+            per_target_intervals: per_target_intervals
+            summary_intervals: summary_intervals
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics]
     extract_freemix:
         in:
             verify_bam_id_metrics: alignment_and_qc/verify_bam_id_metrics

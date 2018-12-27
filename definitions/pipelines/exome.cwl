@@ -4,6 +4,9 @@ cwlVersion: v1.0
 class: Workflow
 label: "exome alignment and tumor-only variant detection"
 requirements:
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/labelled_file.yml
     - class: SubworkflowFeatureRequirement
 inputs:
     reference: string
@@ -26,14 +29,12 @@ inputs:
         type: File
     target_intervals:
         type: File
-    per_target_intervals:
-        type: File
-    per_target_bait_intervals:
-        type: File
     per_base_intervals:
-        type: File
-    per_base_bait_intervals:
-        type: File
+        type: ../types/labelled_file.yml#labelled_file[]
+    per_target_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]
+    summary_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -117,17 +118,20 @@ outputs:
         type: File
         outputSource: alignment_and_qc/hs_metrics
     per_target_coverage_metrics:
-        type: File?
+        type: File[]
         outputSource: alignment_and_qc/per_target_coverage_metrics
     per_target_hs_metrics:
-        type: File?
+        type: File[]
         outputSource: alignment_and_qc/per_target_hs_metrics
     per_base_coverage_metrics:
-        type: File?
+        type: File[]
         outputSource: alignment_and_qc/per_base_coverage_metrics
     per_base_hs_metrics:
-        type: File?
+        type: File[]
         outputSource: alignment_and_qc/per_base_hs_metrics
+    summary_hs_metrics:
+        type: File[]
+        outputSource: alignment_and_qc/summary_hs_metrics
     flagstats:
         type: File
         outputSource: alignment_and_qc/flagstats
@@ -174,16 +178,15 @@ steps:
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
-            per_target_intervals: per_target_intervals
-            per_target_bait_intervals: per_target_bait_intervals
             per_base_intervals: per_base_intervals
-            per_base_bait_intervals: per_base_bait_intervals
+            per_target_intervals: per_target_intervals
+            summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
             qc_minimum_mapping_quality: qc_minimum_mapping_quality
             qc_minimum_base_quality: qc_minimum_base_quality
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     detect_variants:
         run: tumor_only_detect_variants.cwl
         in:
