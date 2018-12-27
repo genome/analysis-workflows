@@ -65,6 +65,9 @@ inputs:
         type: ../types/labelled_file.yml#labelled_file[]
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
+    custom_clinvar_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
 outputs:
     cram:
         type: File
@@ -197,5 +200,6 @@ steps:
             hgvs: hgvs_annotation
             custom_gnomad_vcf: custom_gnomad_vcf
             limit_variant_intervals: variant_reporting_intervals
+            custom_clinvar_vcf: custom_clinvar_vcf
         out:
             [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]
