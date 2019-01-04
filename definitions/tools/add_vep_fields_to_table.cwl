@@ -7,7 +7,7 @@ label: "add VEP annotation to report"
 baseCommand: ["/usr/bin/python", "/usr/bin/add_annotations_to_table_helper.py"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/annotation_table-cwl:1.0.2"
+      dockerPull: "mgibio/annotation_table-cwl:1.0.3"
 arguments:
     - position: 4
       valueFrom: $(runtime.outdir)
