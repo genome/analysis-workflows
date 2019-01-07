@@ -10,9 +10,7 @@ requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/bam_readcount_helper-cwl:1.0.0"
 arguments: [
-    { valueFrom: $(runtime.outdir), position: -3 },
-    { valueFrom: " && ", shellQuote: false },
-    "/bin/cat", "$(runtime.outdir)/$(inputs.sample)_bam_readcount_snv.tsv", "$(runtime.outdir)/$(inputs.sample)_bam_readcount_indel.tsv"
+    { valueFrom: $(runtime.outdir), position: -3 }
 ]
 stdout: $(inputs.sample)_bam_readcount.tsv
 inputs:
@@ -44,5 +42,11 @@ inputs:
         inputBinding:
             position: -1
 outputs:
-    bam_readcount_tsv:
-        type: stdout
+    snv_bam_readcount_tsv:
+        type: File
+        outputBinding:
+            glob: "$(inputs.sample)_bam_readcount_snv.tsv"
+    indel_bam_readcount_tsv:
+        type: File
+        outputBinding:
+            glob: "$(inputs.sample)_bam_readcount_indel.tsv"

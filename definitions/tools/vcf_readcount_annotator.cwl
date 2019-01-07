@@ -7,7 +7,7 @@ label: "add bam_readcount info to vcf"
 baseCommand: ["vcf-readcount-annotator"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/vcf_annotation_tools-cwl:1.4.6"
+      dockerPull: "mgibio/vcf_annotation_tools-cwl:2.0.0"
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/annotated.bam_readcount.vcf.gz }]
 inputs:
@@ -20,11 +20,20 @@ inputs:
         inputBinding:
             position: 2
     data_type:
-        type: string
+        type:
+            - type: enum
+              symbols: ["DNA", "RNA"]
         inputBinding:
             position: 3
+    variant_type:
+        type:
+            - "null"
+            - type: enum
+              symbols: ["snv", "indel", "all"]
+        inputBinding:
+            prefix: "-t"
     sample_name:
-        type: string
+        type: string?
         inputBinding:
             prefix: "-s"
 outputs:

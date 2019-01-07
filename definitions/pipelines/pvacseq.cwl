@@ -131,21 +131,35 @@ steps:
             min_base_quality: readcount_minimum_base_quality
             min_mapping_quality: readcount_minimum_mapping_quality
         out:
-            [bam_readcount_tsv]
-    add_tumor_rna_bam_readcount_to_vcf:
+            [snv_bam_readcount_tsv, indel_bam_readcount_tsv]
+    add_tumor_rna_snv_bam_readcount_to_vcf:
         run: ../tools/vcf_readcount_annotator.cwl
         in:
             vcf: detect_variants_vcf
-            bam_readcount_tsv: tumor_rna_bam_readcount/bam_readcount_tsv
+            bam_readcount_tsv: tumor_rna_bam_readcount/snv_bam_readcount_tsv
             data_type:
                 default: 'RNA'
+            variant_type:
+                default: 'snv'
+            sample_name: sample_name
+        out:
+            [annotated_bam_readcount_vcf]
+    add_tumor_rna_indel_bam_readcount_to_vcf:
+        run: ../tools/vcf_readcount_annotator.cwl
+        in:
+            vcf: add_tumor_rna_snv_bam_readcount_to_vcf/annotated_bam_readcount_vcf
+            bam_readcount_tsv: tumor_rna_bam_readcount/indel_bam_readcount_tsv
+            data_type:
+                default: 'RNA'
+            variant_type:
+                default: 'indel'
             sample_name: sample_name
         out:
             [annotated_bam_readcount_vcf]
     add_gene_expression_data_to_vcf:
         run: ../tools/vcf_expression_annotator.cwl
         in:
-            vcf: add_tumor_rna_bam_readcount_to_vcf/annotated_bam_readcount_vcf
+            vcf: add_tumor_rna_indel_bam_readcount_to_vcf/annotated_bam_readcount_vcf
             expression_file: gene_expression_file
             expression_tool: expression_tool
             data_type:

@@ -257,12 +257,18 @@ outputs:
     vep_summary:
         type: File
         outputSource: detect_variants/vep_summary
-    tumor_bam_readcount_tsv:
+    tumor_snv_bam_readcount_tsv:
         type: File
-        outputSource: detect_variants/tumor_bam_readcount_tsv
-    normal_bam_readcount_tsv:
+        outputSource: detect_variants/tumor_snv_bam_readcount_tsv
+    tumor_indel_bam_readcount_tsv:
         type: File
-        outputSource: detect_variants/normal_bam_readcount_tsv
+        outputSource: detect_variants/tumor_indel_bam_readcount_tsv
+    normal_snv_bam_readcount_tsv:
+        type: File
+        outputSource: detect_variants/normal_snv_bam_readcount_tsv
+    normal_indel_bam_readcount_tsv:
+        type: File
+        outputSource: detect_variants/normal_indel_bam_readcount_tsv
     intervals_antitarget:
         type: File?
         outputSource: cnvkit/intervals_antitarget
@@ -376,7 +382,7 @@ steps:
             vep_to_table_fields: vep_to_table_fields
             custom_gnomad_vcf: custom_gnomad_vcf
         out:
-            [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_unfiltered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv, normal_bam_readcount_tsv]
+            [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_unfiltered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
     cnvkit:
         run: ../subworkflows/cram_to_cnvkit.cwl
         in: 

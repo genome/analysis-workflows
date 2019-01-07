@@ -150,12 +150,18 @@ outputs:
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
-    tumor_bam_readcount_tsv:
+    tumor_snv_bam_readcount_tsv:
         type: File
-        outputSource: tumor_bam_readcount/bam_readcount_tsv
-    normal_bam_readcount_tsv:
+        outputSource: tumor_bam_readcount/snv_bam_readcount_tsv
+    tumor_indel_bam_readcount_tsv:
         type: File
-        outputSource: normal_bam_readcount/bam_readcount_tsv
+        outputSource: tumor_bam_readcount/indel_bam_readcount_tsv
+    normal_snv_bam_readcount_tsv:
+        type: File
+        outputSource: normal_bam_readcount/snv_bam_readcount_tsv
+    normal_indel_bam_readcount_tsv:
+        type: File
+        outputSource: normal_bam_readcount/indel_bam_readcount_tsv
 steps:
     mutect:
         run: ../subworkflows/mutect.cwl
@@ -267,7 +273,7 @@ steps:
             min_base_quality: readcount_minimum_base_quality
             min_mapping_quality: readcount_minimum_mapping_quality
         out:
-            [bam_readcount_tsv]
+            [snv_bam_readcount_tsv, indel_bam_readcount_tsv]
     normal_bam_readcount:
         run: ../tools/bam_readcount.cwl
         in:
@@ -279,33 +285,63 @@ steps:
             min_base_quality: readcount_minimum_base_quality
             min_mapping_quality: readcount_minimum_mapping_quality
         out:
-            [bam_readcount_tsv]
-    add_tumor_bam_readcount_to_vcf:
+            [snv_bam_readcount_tsv, indel_bam_readcount_tsv]
+    add_tumor_snv_bam_readcount_to_vcf:
         run: ../tools/vcf_readcount_annotator.cwl
         in:
             vcf: annotate_variants/annotated_vcf
-            bam_readcount_tsv: tumor_bam_readcount/bam_readcount_tsv
+            bam_readcount_tsv: tumor_bam_readcount/snv_bam_readcount_tsv
             data_type:
                 default: 'DNA'
             sample_name:
                 default: 'TUMOR'
+            variant_type:
+                default: 'snv'
         out:
             [annotated_bam_readcount_vcf]
-    add_normal_bam_readcount_to_vcf:
+    add_tumor_indel_bam_readcount_to_vcf:
         run: ../tools/vcf_readcount_annotator.cwl
         in:
-            vcf: add_tumor_bam_readcount_to_vcf/annotated_bam_readcount_vcf
-            bam_readcount_tsv: normal_bam_readcount/bam_readcount_tsv
+            vcf: add_tumor_snv_bam_readcount_to_vcf/annotated_bam_readcount_vcf
+            bam_readcount_tsv: tumor_bam_readcount/indel_bam_readcount_tsv
+            data_type:
+                default: 'DNA'
+            sample_name:
+                default: 'TUMOR'
+            variant_type:
+                default: 'indel'
+        out:
+            [annotated_bam_readcount_vcf]
+    add_normal_snv_bam_readcount_to_vcf:
+        run: ../tools/vcf_readcount_annotator.cwl
+        in:
+            vcf: add_tumor_indel_bam_readcount_to_vcf/annotated_bam_readcount_vcf
+            bam_readcount_tsv: normal_bam_readcount/snv_bam_readcount_tsv
             data_type:
                 default: 'DNA'
             sample_name:
                 default: 'NORMAL'
+            variant_type:
+                default: 'snv'
+        out:
+            [annotated_bam_readcount_vcf]
+    add_normal_indel_bam_readcount_to_vcf:
+        run: ../tools/vcf_readcount_annotator.cwl
+        in:
+            vcf: add_normal_snv_bam_readcount_to_vcf/annotated_bam_readcount_vcf
+            bam_readcount_tsv: normal_bam_readcount/indel_bam_readcount_tsv
+            data_type:
+                default: 'DNA'
+            sample_name:
+                default: 'NORMAL'
+            variant_type:
+                default: 'indel'
         out:
             [annotated_bam_readcount_vcf]
     index:
         run: ../tools/index_vcf.cwl
         in:
-            vcf: add_normal_bam_readcount_to_vcf/annotated_bam_readcount_vcf
+            vcf: add_normal_indel_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
             [indexed_vcf]
     filter_vcf:
