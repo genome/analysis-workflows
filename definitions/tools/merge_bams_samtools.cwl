@@ -16,6 +16,8 @@ inputs:
         type: File[]
         inputBinding:
             position: 1
+    name:
+        type: string
 outputs:
     merged_bam:
         type: File
