@@ -15,7 +15,7 @@ arguments:
       prefix: "--runDir"
 inputs:
     normal_bam:
-        type: File
+        type: File?
         inputBinding:
             position: 2
             prefix: "--normalBam"
@@ -41,6 +41,11 @@ inputs:
         inputBinding:
             position: 6
             prefix: "--exome"
+    output_contigs:
+        type: boolean?
+        inputBinding:
+            position: 7
+            prefix: "--outputContig"
 outputs:
     diploid_variants:
         type: File
@@ -58,3 +63,7 @@ outputs:
         type: File
         outputBinding:
             glob: results/variants/candidateSmallIndels.vcf.gz
+    tumor_only_variants:
+        type: File?
+        outputBinding:
+            glob: results/variants/tumorSV.vcf.gz
