@@ -46,3 +46,4 @@ outputs:
         type: File
         outputBinding:
             glob: "$(inputs.cohort_name)-smoove.genotyped.vcf.gz"
+        secondaryFiles: [.tbi]
