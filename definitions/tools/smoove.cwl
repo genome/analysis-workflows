@@ -29,7 +29,7 @@ inputs:
             position: 2
         doc: "Used for naming the output file"
     reference:
-        type: File
+        type: string
         inputBinding:
             prefix: --fasta
             position: 3
