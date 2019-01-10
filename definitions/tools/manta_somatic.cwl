@@ -48,22 +48,27 @@ inputs:
             prefix: "--outputContig"
 outputs:
     diploid_variants:
-        type: File
+        type: File?
         outputBinding:
             glob: results/variants/diploidSV.vcf.gz
+        secondaryFiles: [.tbi]
     somatic_variants:
-        type: File
+        type: File?
         outputBinding:
             glob: results/variants/somaticSV.vcf.gz
+        secondaryFiles: [.tbi]
     all_candidates:
         type: File
         outputBinding:
             glob: results/variants/candidateSV.vcf.gz
+        secondaryFiles: [.tbi]
     small_candidates:
         type: File
         outputBinding:
             glob: results/variants/candidateSmallIndels.vcf.gz
+        secondaryFiles: [.tbi]
     tumor_only_variants:
         type: File?
         outputBinding:
             glob: results/variants/tumorSV.vcf.gz
+        secondaryFiles: [.tbi]
