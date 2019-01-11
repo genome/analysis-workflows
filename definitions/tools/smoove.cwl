@@ -23,10 +23,11 @@ inputs:
             position: 1
         doc: "Array of bams to run through lumpy, can be single or small cohort" 
     cohort_name:
-        type: string
+        type: string?
         inputBinding:
             prefix: --name
             position: 2
+        default: "SV"
         doc: "Used for naming the output file"
     reference:
         type: string
