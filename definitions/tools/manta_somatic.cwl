@@ -8,43 +8,45 @@ requirements:
     - class: DockerRequirement
       dockerPull: mgibio/manta_somatic-cwl:1.5.0
     - class: InlineJavascriptRequirement
-baseCommand: ["/usr/bin/python", "/usr/bin/manta_helper.py"]
-arguments: 
-    - position: 5
-      valueFrom: $(runtime.outdir)
-      prefix: "--runDir"
+    - class: ShellCommandRequirement
+baseCommand: ["/usr/bin/python", "/usr/bin/manta/bin/configManta.py"]
+arguments: [
+    { position: -1, valueFrom: $(runtime.outdir), prefix: "--runDir" },
+    { shellQuote: false, valueFrom: "&&" },
+    "/usr/bin/python", "runWorkflow.py", "-m", "local"
+]
 inputs:
     normal_bam:
         type: File?
         inputBinding:
-            position: 2
+            position: -2
             prefix: "--normalBam"
         secondaryFiles: ${if (self.nameext === ".bam") {return self.basename + ".bai"} else {return self.basename + ".crai"}}
     tumor_bam:
         type: File
         inputBinding:
-            position: 3
+            position: -3
             prefix: "--tumorBam"
         secondaryFiles: ${if (self.nameext === ".bam") {return self.basename + ".bai"} else {return self.basename + ".crai"}}
     reference:
         type: string
         inputBinding:
-            position: 4
+            position: -4
             prefix: "--referenceFasta"
     call_regions:
         type: File?
         inputBinding:
-            position: 5
+            position: -5
             prefix: "--callRegions"
     non_wgs:
         type: boolean?
         inputBinding:
-            position: 6
+            position: -6
             prefix: "--exome"
     output_contigs:
         type: boolean?
         inputBinding:
-            position: 7
+            position: -7
             prefix: "--outputContig"
 outputs:
     diploid_variants:
