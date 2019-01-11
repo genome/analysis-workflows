@@ -8,6 +8,10 @@ requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
       dockerPull: "etal/cnvkit:0.9.5"
+    - class: ResourceRequirement
+      coresMin: 1
+      ramMin: 4000
+      tmpdirMin: 10000
 
 inputs:
     tumor_bam:
@@ -15,17 +19,17 @@ inputs:
         inputBinding:
             position: 1
     normal_bam:
-        type: File
+        type: File?
         inputBinding:
             position: 2
             prefix: "--normal"
     bait_intervals:
-        type: File
+        type: File?
         inputBinding:
             position: 3
             prefix: "--targets"
     reference:
-        type: string
+        type: string?
         inputBinding:
             position: 4
             prefix: "--fasta"
@@ -55,7 +59,14 @@ inputs:
         inputBinding:
             position: 10
             prefix: "--drop-low-coverage"
-
+    male_reference:
+        type: boolean?
+        inputBinding:
+            prefix: "-y"
+    reference_cnn:
+        type: File?
+        inputBinding:
+            prefix: "-r"
 outputs:
     intervals_antitarget:
         type: File?
