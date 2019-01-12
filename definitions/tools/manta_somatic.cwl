@@ -2,13 +2,17 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "Set up and execute manta using helper script"
+label: "Set up and execute manta"
 
 requirements:
     - class: DockerRequirement
       dockerPull: mgibio/manta_somatic-cwl:1.5.0
     - class: InlineJavascriptRequirement
     - class: ShellCommandRequirement
+    - class: ResourceRequirement
+      coresMin: 2
+      ramMin: 4000
+      tmpdirMin: 10000
 baseCommand: ["/usr/bin/python", "/usr/bin/manta/bin/configManta.py"]
 arguments: [
     { position: -1, valueFrom: $(runtime.outdir), prefix: "--runDir" },
@@ -48,6 +52,11 @@ inputs:
         inputBinding:
             position: -7
             prefix: "--outputContig"
+    jobs:
+        type: int?
+        inputBinding:
+            position: 1
+            prefix: "-j"
 outputs:
     diploid_variants:
         type: File?
