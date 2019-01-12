@@ -12,7 +12,7 @@ requirements:
       coresMin: 1
       ramMin: 4000
       tmpdirMin: 10000
-
+    - class: InlineJavascriptRequirement
 inputs:
     tumor_bam:
         type: File
@@ -71,19 +71,47 @@ outputs:
     intervals_antitarget:
         type: File?
         outputBinding:
-            glob: $(inputs.bait_intervals.nameroot).antitarget.bed
+            glob: |
+                    ${  
+                        var glob_base = ".antitarget.bed";
+                        if (inputs.bait_intervals) {
+                            glob_base = inputs.bait_intervals.nameroot + glob_base;
+                        }   
+                        return glob_base;
+                    }  
     intervals_target:
         type: File?
         outputBinding:
-            glob: $(inputs.bait_intervals.nameroot).target.bed
+            glob: |
+                    ${
+                        var glob_base = ".target.bed";
+                        if (inputs.bait_intervals) {
+                            glob_base = inputs.bait_intervals.nameroot + glob_base;
+                        }
+                        return glob_base;
+                    }
     normal_antitarget_coverage:
         type: File
         outputBinding:
-            glob: $(inputs.normal_bam.nameroot).antitargetcoverage.cnn
+            glob: |
+                    ${
+                        var glob_base = ".antitargetcoverage.cnn";
+                        if (inputs.normal_bam) {
+                            glob_base = inputs.normal_bam.nameroot + glob_base;
+                        }
+                        return glob_base;
+                    }
     normal_target_coverage:
         type: File
         outputBinding:
-            glob: $(inputs.normal_bam.nameroot).targetcoverage.cnn
+            glob: |
+                    ${
+                        var glob_base = ".targetcoverage.cnn";
+                        if (inputs.normal_bam) {
+                            glob_base = inputs.normal_bam.nameroot + glob_base;
+                        }
+                        return glob_base;
+                    }
     reference_coverage:
         type: File?
         outputBinding:
