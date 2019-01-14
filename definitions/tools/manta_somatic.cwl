@@ -2,18 +2,23 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "Set up and execute manta using helper script"
+label: "Set up and execute manta"
 
 requirements:
     - class: DockerRequirement
       dockerPull: mgibio/manta_somatic-cwl:1.5.0
     - class: InlineJavascriptRequirement
     - class: ShellCommandRequirement
+    - class: ResourceRequirement
+      coresMin: 12
+      ramMin: 24000
+      tmpdirMin: 10000
 baseCommand: ["/usr/bin/python", "/usr/bin/manta/bin/configManta.py"]
 arguments: [
     { position: -1, valueFrom: $(runtime.outdir), prefix: "--runDir" },
     { shellQuote: false, valueFrom: "&&" },
-    "/usr/bin/python", "runWorkflow.py", "-m", "local"
+    "/usr/bin/python", "runWorkflow.py", "-m", "local",
+    { position: 1, valueFrom: $(runtime.cores), prefix: "-j" }
 ]
 inputs:
     normal_bam:
