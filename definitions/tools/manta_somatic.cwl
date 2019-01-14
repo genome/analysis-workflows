@@ -10,14 +10,15 @@ requirements:
     - class: InlineJavascriptRequirement
     - class: ShellCommandRequirement
     - class: ResourceRequirement
-      coresMin: 2
-      ramMin: 4000
+      coresMin: 12
+      ramMin: 24000
       tmpdirMin: 10000
 baseCommand: ["/usr/bin/python", "/usr/bin/manta/bin/configManta.py"]
 arguments: [
     { position: -1, valueFrom: $(runtime.outdir), prefix: "--runDir" },
     { shellQuote: false, valueFrom: "&&" },
-    "/usr/bin/python", "runWorkflow.py", "-m", "local"
+    "/usr/bin/python", "runWorkflow.py", "-m", "local",
+    { position: 1, valueFrom: $(runtime.cores), prefix: "-j" }
 ]
 inputs:
     normal_bam:
@@ -52,11 +53,6 @@ inputs:
         inputBinding:
             position: -7
             prefix: "--outputContig"
-    jobs:
-        type: int?
-        inputBinding:
-            position: 1
-            prefix: "-j"
 outputs:
     diploid_variants:
         type: File?
