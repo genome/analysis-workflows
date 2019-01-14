@@ -91,7 +91,7 @@ outputs:
                         return glob_base;
                     }
     normal_antitarget_coverage:
-        type: File
+        type: File?
         outputBinding:
             glob: |
                     ${
@@ -102,7 +102,7 @@ outputs:
                         return glob_base;
                     }
     normal_target_coverage:
-        type: File
+        type: File?
         outputBinding:
             glob: |
                     ${
