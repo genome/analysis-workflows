@@ -5,7 +5,7 @@ class: Workflow
 label: "Subworkflow to allow calling different SV callers which require bam files as inputs"
 
 requirements:
-  - class: InlineJavascriptRequirement
+    - class: MultipleInputFeatureRequirement
 
 inputs:
     cram:
@@ -131,9 +131,9 @@ steps:
     run_smoove:
         run: ../tools/smoove.cwl
         in:
-            bams: 
-                source: index_bam/indexed_bam
-                valueFrom: ${ return [self]; }
+            bams:
+                source: [index_bam/indexed_bam]
+                linkMerge: merge_nested
             exclude_regions: smoove_exclude_regions
             reference: reference
         out:
