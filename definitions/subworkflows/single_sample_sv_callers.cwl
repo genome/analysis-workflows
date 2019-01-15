@@ -87,7 +87,7 @@ outputs:
     manta_tumor_only_variants:
         type: File?
         outputSource: run_manta/tumor_only_variants
-    smoove_output_variant:
+    smoove_output_variants:
         type: File
         outputSource: run_smoove/output_vcf
 
