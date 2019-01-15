@@ -133,7 +133,7 @@ steps:
         in:
             bams:
                 source: [index_bam/indexed_bam]
-                linkMerge: merge_nested
+                linkMerge: merge_flattened
             exclude_regions: smoove_exclude_regions
             reference: reference
         out:
