@@ -6,7 +6,7 @@ label: "Normalize variants"
 baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "LeftAlignAndTrimVariants"]
 requirements:
     - class: ResourceRequirement
-      ramMin: 8000
+      ramMin: 9000
     - class: DockerRequirement
       dockerPull: "mgibio/gatk-cwl:3.6.0"
 arguments:

@@ -8,7 +8,7 @@ arguments:
     ["O=", { valueFrom: $(runtime.outdir)/$(inputs.cram.nameroot).$(inputs.output_prefix)-HsMetrics.txt }]
 requirements:
     - class: ResourceRequirement
-      ramMin: 16000
+      ramMin: 18000
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
       dockerPull: "mgibio/picard-cwl:2.18.1"

@@ -6,7 +6,7 @@ label: "GATK HaplotypeCaller"
 baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "GenotypeGVCFs"]
 requirements:
     - class: ResourceRequirement
-      ramMin: 8000
+      ramMin: 9000
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
       dockerPull: "mgibio/gatk-cwl:3.5.0"

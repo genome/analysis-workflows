@@ -8,7 +8,7 @@ arguments:
     ["OUTPUT=", { valueFrom: $(runtime.outdir)/$(inputs.cram.nameroot).AlignmentSummaryMetrics.txt }]
 requirements:
     - class: ResourceRequirement
-      ramMin: 16000
+      ramMin: 18000
     - class: DockerRequirement
       dockerPull: "mgibio/picard-cwl:2.18.1"
 inputs:
