@@ -72,10 +72,6 @@ inputs:
         type: boolean?
         inputBinding:
             prefix: "--netmhc-stab"
-    top_result_per_mutation:
-        type: boolean?
-        inputBinding:
-            prefix: "-t"
     top_score_metric:
         type:
             - "null"
