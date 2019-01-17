@@ -10,7 +10,7 @@ baseCommand: [
 ]
 requirements:
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:1.1.5"
+      dockerPull: "griffithlab/pvactools:1.2.0"
 arguments:
     - position: 5
       valueFrom: $(runtime.outdir)
@@ -48,6 +48,13 @@ inputs:
         type: int?
         inputBinding:
             prefix: "-b"
+    top_score_metric:
+        type:
+            - "null"
+            - type: enum
+              symbols: ["lowest", "median"]
+        inputBinding:
+            prefix: "-m"
     iedb_retries:
         type: int?
         inputBinding:
@@ -65,6 +72,10 @@ inputs:
         inputBinding:
             prefix: "-n"
         default: 21
+    n_threads:
+        type: int?
+        inputBinding:
+            prefix: "--n-threads"
 outputs:
     vector_fasta:
         type: File

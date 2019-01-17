@@ -10,7 +10,7 @@ baseCommand: [
 ]
 requirements:
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:1.1.5"
+      dockerPull: "griffithlab/pvactools:1.2.0"
 arguments:
     - position: 5
       valueFrom: $(runtime.outdir)
@@ -72,10 +72,6 @@ inputs:
         type: boolean?
         inputBinding:
             prefix: "--netmhc-stab"
-    top_result_per_mutation:
-        type: boolean?
-        inputBinding:
-            prefix: "-t"
     top_score_metric:
         type:
             - "null"
@@ -106,6 +102,10 @@ inputs:
         type: boolean?
         inputBinding:
             prefix: "--exclude-NAs"
+    n_threads:
+        type: int?
+        inputBinding:
+            prefix: "--n-threads"
 outputs:
     mhc_i_all_epitopes:
         type: File?

@@ -7,7 +7,7 @@ label: "run pVACseq"
 baseCommand: ["pvacseq", "run"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:1.1.5"
+      dockerPull: "griffithlab/pvactools:1.2.0"
 arguments:
     - position: 5
       valueFrom: $(runtime.outdir)
@@ -157,6 +157,10 @@ inputs:
         type: boolean?
         inputBinding:
             prefix: "--pass-only"
+    n_threads:
+        type: int?
+        inputBinding:
+            prefix: "--n-threads"
 outputs:
     mhc_i_all_epitopes:
         type: File?
