@@ -48,6 +48,13 @@ inputs:
         type: int?
         inputBinding:
             prefix: "-b"
+    top_score_metric:
+        type:
+            - "null"
+            - type: enum
+              symbols: ["lowest", "median"]
+        inputBinding:
+            prefix: "-m"
     iedb_retries:
         type: int?
         inputBinding:
