@@ -65,6 +65,10 @@ inputs:
         inputBinding:
             prefix: "-n"
         default: 21
+    n_threads:
+        type: int?
+        inputBinding:
+            prefix: "--n-threads"
 outputs:
     vector_fasta:
         type: File

@@ -102,6 +102,10 @@ inputs:
         type: boolean?
         inputBinding:
             prefix: "--exclude-NAs"
+    n_threads:
+        type: int?
+        inputBinding:
+            prefix: "--n-threads"
 outputs:
     mhc_i_all_epitopes:
         type: File?
