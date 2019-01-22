@@ -24,6 +24,7 @@ inputs:
         type:
             type: array
             items: string
+        default: ['Consequence','SYMBOL','Feature','HGVSc','HGVSp']
         inputBinding:
             prefix: ""
             itemSeparator: ","
