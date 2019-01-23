@@ -25,7 +25,7 @@ inputs:
             separate: false
             position: 2
     tsv:
-        type: File
+        type: File?
         inputBinding:
             prefix: "-t"
 outputs:
