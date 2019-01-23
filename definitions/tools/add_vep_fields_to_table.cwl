@@ -20,9 +20,7 @@ inputs:
             type: array
             items: string
         inputBinding:
-            prefix: ""
             itemSeparator: " "
-            separate: false
             position: 2
     tsv:
         type: File?
