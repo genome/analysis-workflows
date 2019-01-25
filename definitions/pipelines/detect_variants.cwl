@@ -263,7 +263,7 @@ steps:
         out:
             [bam]
     tumor_bam_readcount:
-        run: ../subworkflows/bam_readcount.cwl
+        run: ../tools/bam_readcount.cwl
         in:
             vcf: annotate_variants/annotated_vcf
             sample:
@@ -273,9 +273,9 @@ steps:
             min_base_quality: readcount_minimum_base_quality
             min_mapping_quality: readcount_minimum_mapping_quality
         out:
-            [snv_bam_readcount_tsv, indel_bam_readcount_tsv, normalized_vcf]
+            [snv_bam_readcount_tsv, indel_bam_readcount_tsv]
     normal_bam_readcount:
-        run: ../subworkflows/bam_readcount.cwl
+        run: ../tools/bam_readcount.cwl
         in:
             vcf: annotate_variants/annotated_vcf
             sample:
@@ -289,7 +289,7 @@ steps:
     add_tumor_snv_bam_readcount_to_vcf:
         run: ../tools/vcf_readcount_annotator.cwl
         in:
-            vcf: tumor_bam_readcount/normalized_vcf
+            vcf: annotate_variants/annotated_vcf
             bam_readcount_tsv: tumor_bam_readcount/snv_bam_readcount_tsv
             data_type:
                 default: 'DNA'

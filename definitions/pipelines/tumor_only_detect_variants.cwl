@@ -150,7 +150,7 @@ steps:
         out:
             [bam]
     bam_readcount:
-        run: ../subworkflows/bam_readcount.cwl
+        run: ../tools/bam_readcount.cwl
         in:
             vcf: annotate_variants/annotated_vcf
             sample: sample_name
@@ -159,11 +159,11 @@ steps:
             min_mapping_quality: readcount_minimum_mapping_quality
             min_base_quality: readcount_minimum_base_quality
         out:
-            [snv_bam_readcount_tsv, indel_bam_readcount_tsv, normalized_vcf]
+            [snv_bam_readcount_tsv, indel_bam_readcount_tsv]
     add_snv_bam_readcount_to_vcf:
         run: ../tools/vcf_readcount_annotator.cwl
         in:
-            vcf: bam_readcount/normalized_vcf
+            vcf: annotate_variants/annotated_vcf
             bam_readcount_tsv: bam_readcount/snv_bam_readcount_tsv
             sample_name: sample_name
             data_type:
