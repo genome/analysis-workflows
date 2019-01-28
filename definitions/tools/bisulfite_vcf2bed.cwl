@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "Biscuit vcf2bed wrapper"
+label: "convert a biscuit pileup vcf to a bed and bedgraph file, via a wrapper script"
 baseCommand: ["/usr/bin/bsvcf2bed"]
 requirements:
     - class: ResourceRequirement
