@@ -10,7 +10,7 @@ arguments:
     "S=", { valueFrom: $(runtime.outdir)/GcBiasMetricsSummary.txt } ]
 requirements:
     - class: ResourceRequirement
-      ramMin: 16000
+      ramMin: 18000
     - class: DockerRequirement
       dockerPull: mgibio/cle
 inputs:
