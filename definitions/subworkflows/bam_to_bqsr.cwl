@@ -22,6 +22,7 @@ inputs:
         secondaryFiles: [.tbi]
     final_name:
         type: string?
+        default: 'final.cram'
     mills:
         type: File
         secondaryFiles: [.tbi]
