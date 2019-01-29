@@ -7,7 +7,7 @@ label: "add bam_readcount info to vcf"
 baseCommand: ["vcf-readcount-annotator"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/vcf_annotation_tools-cwl:2.0.0"
+      dockerPull: "mgibio/vcf_annotation_tools-cwl:3.0.0"
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/annotated.bam_readcount.vcf.gz }]
 inputs:
