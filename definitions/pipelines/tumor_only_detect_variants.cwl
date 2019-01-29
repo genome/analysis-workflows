@@ -160,34 +160,21 @@ steps:
             min_base_quality: readcount_minimum_base_quality
         out:
             [snv_bam_readcount_tsv, indel_bam_readcount_tsv]
-    add_snv_bam_readcount_to_vcf:
-        run: ../tools/vcf_readcount_annotator.cwl
+    add_bam_readcount_to_vcf:
+        run: ../subworkflows/vcf_readcount_annotator.cwl
         in:
             vcf: annotate_variants/annotated_vcf
-            bam_readcount_tsv: bam_readcount/snv_bam_readcount_tsv
-            sample_name: sample_name
+            snv_bam_readcount_tsv: bam_readcount/snv_bam_readcount_tsv
+            indel_bam_readcount_tsv: bam_readcount/indel_bam_readcount_tsv
             data_type:
                 default: 'DNA'
-            variant_type:
-                default: 'snv'
-        out:
-            [annotated_bam_readcount_vcf]
-    add_indel_bam_readcount_to_vcf:
-        run: ../tools/vcf_readcount_annotator.cwl
-        in:
-            vcf: add_snv_bam_readcount_to_vcf/annotated_bam_readcount_vcf
-            bam_readcount_tsv: bam_readcount/indel_bam_readcount_tsv
             sample_name: sample_name
-            data_type:
-                default: 'DNA'
-            variant_type:
-                default: 'indel'
         out:
             [annotated_bam_readcount_vcf]
     index:
         run: ../tools/index_vcf.cwl
         in:
-            vcf: add_indel_bam_readcount_to_vcf/annotated_bam_readcount_vcf
+            vcf: add_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
             [indexed_vcf]
     hard_filter:
