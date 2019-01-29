@@ -307,7 +307,7 @@ steps:
             data_type:
                 default: 'DNA'
             sample_name:
-                default: 'TUMOR'
+                default: 'NORMAL'
         out:
             [annotated_bam_readcount_vcf]
     index:
