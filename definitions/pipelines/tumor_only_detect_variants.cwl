@@ -126,10 +126,16 @@ steps:
             docm_vcf: docm/filtered_vcf
         out:
             [combined_vcf]
+    decompose:
+        run: ../tools/vt_decompose.cwl
+        in:
+            vcf: combine_variants/combined_vcf
+        out:
+            [decomposed_vcf]
     annotate_variants:
         run: ../tools/vep.cwl
         in:
-            vcf: combine_variants/combined_vcf
+            vcf: decompose/decomposed_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: coding_only
