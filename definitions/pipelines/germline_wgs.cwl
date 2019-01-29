@@ -270,7 +270,7 @@ steps:
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
             contamination_fraction: extract_freemix/freemix_score
-            cache_dir: vep_cache_dir
+            vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: coding_only
             custom_gnomad_vcf: custom_gnomad_vcf
