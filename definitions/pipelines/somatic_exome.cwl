@@ -98,12 +98,10 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     vep_cache_dir:
-        type: string?
+        type: string
     synonyms_file:
         type: File?
     annotate_coding_only:
-        type: boolean?
-    hgvs_annotation:
         type: boolean?
     vep_pick:
         type:
@@ -125,6 +123,9 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    vep_everything_flag:
+        type: boolean?
+        default: true
 outputs:
     tumor_cram:
         type: File
@@ -368,13 +369,13 @@ steps:
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             annotate_coding_only: annotate_coding_only
-            hgvs_annotation: hgvs_annotation
             vep_pick: vep_pick
             cle_vcf_filter: cle_vcf_filter
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
             custom_gnomad_vcf: custom_gnomad_vcf
+            vep_everything_flag: vep_everything_flag
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_unfiltered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv, normal_bam_readcount_tsv]
     cnvkit:
