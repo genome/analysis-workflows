@@ -6,7 +6,6 @@ label: "run bam-readcount"
 
 baseCommand: ["/usr/bin/python", "/usr/bin/bam_readcount_helper.py"]
 requirements:
-    - class: ShellCommandRequirement
     - class: DockerRequirement
       dockerPull: "mgibio/bam_readcount_helper-cwl:1.0.0"
 arguments: [
