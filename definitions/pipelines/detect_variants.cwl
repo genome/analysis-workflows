@@ -68,8 +68,6 @@ inputs:
         type: File?
     annotate_coding_only:
         type: boolean?
-    hgvs_annotation:
-        type: boolean?
     vep_pick:
         type:
             - "null"
@@ -96,6 +94,9 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    vep_everything_flag:
+        type: boolean?
+        default: true
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -236,10 +237,10 @@ steps:
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only
-            hgvs: hgvs_annotation
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
+            everything: vep_everything_flag
         out:
             [annotated_vcf, vep_summary]
     tumor_cram_to_bam:

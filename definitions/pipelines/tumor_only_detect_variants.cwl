@@ -40,9 +40,6 @@ inputs:
     coding_only:
         type: boolean?
         default: true
-    hgvs_annotation:
-        type: boolean?
-        default: true
     vep_pick:
         type:
             - "null"
@@ -69,6 +66,9 @@ inputs:
         type: int?
     readcount_minimum_base_quality:
         type: int?
+    vep_everything_flag:
+        type: boolean?
+        default: true
 outputs:
     varscan_vcf:
         type: File
@@ -133,10 +133,10 @@ steps:
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: coding_only
-            hgvs: hgvs_annotation
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
+            everything: vep_everything_flag
         out:
             [annotated_vcf, vep_summary]
     cram_to_bam:

@@ -28,8 +28,6 @@ inputs:
         type: File?
     coding_only:
         type: boolean?
-    hgvs_annotation:
-        type: boolean?
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
@@ -38,6 +36,9 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    vep_everything_flag:
+        type: boolean?
+        default: true
 outputs:
     gvcf:
         type: File[]
@@ -83,10 +84,10 @@ steps:
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: coding_only
-            hgvs: hgvs_annotation
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             custom_clinvar_vcf: custom_clinvar_vcf
+            everything: vep_everything_flag
         out:
             [annotated_vcf, vep_summary]
     bgzip_annotated_vcf:

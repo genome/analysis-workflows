@@ -18,7 +18,6 @@ arguments:
     "--plugin", "Wildtype",
     "--term", "SO",
     "--transcript_version",
-    "--everything", 
     "-o", { valueFrom: $(runtime.outdir)/annotated.vcf }]
 inputs:
     vcf:
@@ -89,7 +88,12 @@ inputs:
         inputBinding:
             prefix: "--fasta" 
             position: 8
-            
+    everything:
+        type: boolean?
+        default: true
+        inputBinding:
+            prefix: "--everything" 
+            position: 9
 outputs:
     annotated_vcf:
         type: File
