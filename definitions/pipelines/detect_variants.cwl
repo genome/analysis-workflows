@@ -63,7 +63,7 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     vep_cache_dir:
-        type: string?
+        type: string
     synonyms_file:
         type: File?
     annotate_coding_only:

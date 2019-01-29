@@ -23,7 +23,7 @@ inputs:
     contamination_fraction:
         type: string?
     vep_cache_dir:
-        type: string?
+        type: string
     synonyms_file:
         type: File?
     coding_only:

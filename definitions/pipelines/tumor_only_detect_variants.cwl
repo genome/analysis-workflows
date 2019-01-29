@@ -34,7 +34,7 @@ inputs:
         type: float?
         default: 0.001
     vep_cache_dir:
-        type: string?
+        type: string
     synonyms_file:
         type: File?
     coding_only:
