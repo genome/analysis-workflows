@@ -18,6 +18,8 @@ arguments:
     "--plugin", "Wildtype",
     "--term", "SO",
     "--transcript_version",
+    "--offline",
+    "--cache",
     "-o", { valueFrom: $(runtime.outdir)/annotated.vcf }]
 inputs:
     vcf:
@@ -28,10 +30,7 @@ inputs:
     cache_dir:
         type: string
         inputBinding:
-            valueFrom: |
-                ${
-                    return ["--offline", "--cache", "--dir", inputs.cache_dir ]
-                }
+            prefix: "--dir"
             position: 4
     synonyms_file:
         type: File?
@@ -61,7 +60,7 @@ inputs:
             valueFrom: |
                 ${
                     if (inputs.custom_gnomad_vcf) {
-                        return ['--check_existing', '--custom', inputs.custom_gnomad_vcf.path + ',custom_gnomAD,vcf,exact,0,AF,AF_AFR,AF_AMR,AF_ASJ,AF_EAS,AF_FIN,AF_NFE,AF_OTH,AF_SAS']
+                        return ['--check_existing', '--custom', inputs.custom_gnomad_vcf.path + ',gnomADe,vcf,exact,0,AF,AF_AFR,AF_AMR,AF_ASJ,AF_EAS,AF_FIN,AF_NFE,AF_OTH,AF_SAS']
                     }
                     else {
                         return []
@@ -75,7 +74,7 @@ inputs:
             valueFrom: |
                 ${
                     if (inputs.custom_clinvar_vcf) {
-                        return ["--custom", inputs.custom_clinvar_vcf.path + ",custom_clinvar,vcf,exact,0,CLINSIGN,PHENOTYPE,SCORE,RCVACC,TESTEDINGTR,PHENOTYPELIST,NUMSUBMIT,GUIDELINES"]
+                        return ["--custom", inputs.custom_clinvar_vcf.path + ",clinvar,vcf,exact,0,CLINSIGN,PHENOTYPE,SCORE,RCVACC,TESTEDINGTR,PHENOTYPELIST,NUMSUBMIT,GUIDELINES"]
 
                     }
                     else {
