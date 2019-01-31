@@ -63,12 +63,10 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     vep_cache_dir:
-        type: string?
+        type: string
     synonyms_file:
         type: File?
     annotate_coding_only:
-        type: boolean?
-    hgvs_annotation:
         type: boolean?
     vep_pick:
         type:
@@ -242,7 +240,6 @@ steps:
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only
-            hgvs: hgvs_annotation
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick

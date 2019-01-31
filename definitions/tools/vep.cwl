@@ -16,10 +16,11 @@ arguments:
     "--vcf",
     "--plugin", "Downstream",
     "--plugin", "Wildtype",
-    "--symbol",
     "--term", "SO",
     "--transcript_version",
-    "--tsl",
+    "--offline",
+    "--cache",
+    "--everything",
     "-o", { valueFrom: $(runtime.outdir)/annotated.vcf }]
 inputs:
     vcf:
@@ -28,17 +29,9 @@ inputs:
             prefix: "-i"
             position: 1
     cache_dir:
-        type: string?
+        type: string
         inputBinding:
-            valueFrom: |
-                ${
-                    if (inputs.cache_dir) {
-                        return ["--offline", "--cache", "--dir", inputs.cache_dir ]
-                    }
-                    else {
-                        return "--database"
-                    }
-                }
+            prefix: "--dir"
             position: 4
     synonyms_file:
         type: File?
@@ -71,12 +64,7 @@ inputs:
                         return ['--check_existing', '--custom', inputs.custom_gnomad_vcf.path + ',gnomADe,vcf,exact,0,AF,AF_AFR,AF_AMR,AF_ASJ,AF_EAS,AF_FIN,AF_NFE,AF_OTH,AF_SAS']
                     }
                     else {
-                        if (inputs.cache_dir) {
-                            return ['--max_af', '--af_gnomad', '--af_1kg']
-                        }
-                        else {
-                            return []
-                        }
+                        return []
                     }
                 }
             position: 6
@@ -95,26 +83,11 @@ inputs:
                     }
                 }
             position: 7
-    hgvs:
-        type: boolean?
-        inputBinding:
-            valueFrom: |
-                ${
-                    if (inputs.hgvs) {
-                        if (inputs.cache_dir) {
-                            return ["--hgvs", "--fasta", inputs.reference]
-                        }
-                        else {
-                            return ["--hgvs"]
-                        }
-                    }
-                    else {
-                        return []
-                    }
-                }
-            position: 5
     reference:
         type: string?
+        inputBinding:
+            prefix: "--fasta" 
+            position: 8
 outputs:
     annotated_vcf:
         type: File

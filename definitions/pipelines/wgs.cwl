@@ -33,7 +33,7 @@ inputs:
     variant_detection_intervals:
         type: File
     vep_cache_dir:
-        type: string?
+        type: string
     synonyms_file:
         type: File?
     vep_pick:

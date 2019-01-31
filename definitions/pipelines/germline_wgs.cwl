@@ -43,12 +43,10 @@ inputs:
     variant_reporting_intervals:
         type: File
     vep_cache_dir:
-        type: string?
+        type: string
     synonyms_file:
         type: File?
     coding_only:
-        type: boolean?
-    hgvs_annotation:
         type: boolean?
     custom_gnomad_vcf:
         type: File?
@@ -269,10 +267,9 @@ steps:
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
             contamination_fraction: extract_freemix/freemix_score
-            cache_dir: vep_cache_dir
+            vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: coding_only
-            hgvs: hgvs_annotation
             custom_gnomad_vcf: custom_gnomad_vcf
             limit_variant_intervals: variant_reporting_intervals
             custom_clinvar_vcf: custom_clinvar_vcf

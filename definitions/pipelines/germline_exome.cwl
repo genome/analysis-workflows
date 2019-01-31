@@ -51,12 +51,10 @@ inputs:
                 type: array
                 items: string
     vep_cache_dir:
-        type: string?
+        type: string
     synonyms_file:
         type: File?
     annotate_coding_only:
-        type: boolean?
-    hgvs_annotation:
         type: boolean?
     custom_gnomad_vcf:
         type: File?
@@ -189,7 +187,6 @@ steps:
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             annotate_coding_only: annotate_coding_only
-            hgvs: hgvs_annotation
             custom_gnomad_vcf: custom_gnomad_vcf
             limit_variant_intervals: target_intervals
             custom_clinvar_vcf: custom_clinvar_vcf

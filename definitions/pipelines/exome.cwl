@@ -59,13 +59,10 @@ inputs:
         type: float?
         default: 0.001
     vep_cache_dir:
-        type: string?
+        type: string
     synonyms_file:
         type: File?
     annotate_coding_only:
-        type: boolean?
-        default: true
-    hgvs_annotation:
         type: boolean?
         default: true
     vep_pick:
@@ -207,7 +204,6 @@ steps:
             vep_to_table_fields: vep_to_table_fields
             sample_name: sample_name
             docm_vcf: docm_vcf
-            hgvs_annotation: hgvs_annotation
             custom_gnomad_vcf: custom_gnomad_vcf
             readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
             readcount_minimum_base_quality: readcount_minimum_base_quality

@@ -98,12 +98,10 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     vep_cache_dir:
-        type: string?
+        type: string
     synonyms_file:
         type: File?
     annotate_coding_only:
-        type: boolean?
-    hgvs_annotation:
         type: boolean?
     vep_pick:
         type:
@@ -368,7 +366,6 @@ steps:
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             annotate_coding_only: annotate_coding_only
-            hgvs_annotation: hgvs_annotation
             vep_pick: vep_pick
             cle_vcf_filter: cle_vcf_filter
             variants_to_table_fields: variants_to_table_fields
