@@ -66,9 +66,6 @@ inputs:
         type: int?
     readcount_minimum_base_quality:
         type: int?
-    vep_everything_flag:
-        type: boolean?
-        default: true
 outputs:
     varscan_vcf:
         type: File
@@ -136,7 +133,6 @@ steps:
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
-            everything: vep_everything_flag
         out:
             [annotated_vcf, vep_summary]
     cram_to_bam:

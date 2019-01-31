@@ -36,9 +36,6 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    vep_everything_flag:
-        type: boolean?
-        default: true
 outputs:
     gvcf:
         type: File[]
@@ -87,7 +84,6 @@ steps:
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             custom_clinvar_vcf: custom_clinvar_vcf
-            everything: vep_everything_flag
         out:
             [annotated_vcf, vep_summary]
     bgzip_annotated_vcf:

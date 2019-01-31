@@ -65,9 +65,6 @@ inputs:
     annotate_coding_only:
         type: boolean?
         default: true
-    vep_everything_flag:
-        type: boolean?
-        default: true
     vep_pick:
         type:
             - "null"
@@ -207,7 +204,6 @@ steps:
             vep_to_table_fields: vep_to_table_fields
             sample_name: sample_name
             docm_vcf: docm_vcf
-            vep_everything_flag: vep_everything_flag
             custom_gnomad_vcf: custom_gnomad_vcf
             readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
             readcount_minimum_base_quality: readcount_minimum_base_quality

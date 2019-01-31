@@ -58,9 +58,6 @@ inputs:
         type: ../types/labelled_file.yml#labelled_file[]
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
-    vep_everything_flag:
-        type: boolean?
-        default: true
 outputs:
     cram:
         type: File
@@ -180,6 +177,5 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
             readcount_minimum_base_quality: readcount_minimum_base_quality
-            vep_everything_flag: vep_everything_flag
         out:
             [varscan_vcf, docm_gatk_vcf, annotated_vcf, final_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv]

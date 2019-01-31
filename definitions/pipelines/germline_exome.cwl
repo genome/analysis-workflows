@@ -66,9 +66,6 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    vep_everything_flag:
-        type: boolean?
-        default: true
 outputs:
     cram:
         type: File
@@ -193,6 +190,5 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             limit_variant_intervals: target_intervals
             custom_clinvar_vcf: custom_clinvar_vcf
-            vep_everything_flag: vep_everything_flag
         out:
             [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]

@@ -94,9 +94,6 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    vep_everything_flag:
-        type: boolean?
-        default: true
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -240,7 +237,6 @@ steps:
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
-            everything: vep_everything_flag
         out:
             [annotated_vcf, vep_summary]
     tumor_cram_to_bam:
