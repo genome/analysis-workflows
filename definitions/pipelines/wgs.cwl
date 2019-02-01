@@ -116,9 +116,12 @@ outputs:
     vep_summary:
         type: File
         outputSource: detect_variants/vep_summary
-    tumor_bam_readcount_tsv:
+    tumor_snv_bam_readcount_tsv:
         type: File
-        outputSource: detect_variants/tumor_bam_readcount_tsv
+        outputSource: detect_variants/tumor_snv_bam_readcount_tsv
+    tumor_indel_bam_readcount_tsv:
+        type: File
+        outputSource: detect_variants/tumor_indel_bam_readcount_tsv
     per_base_coverage_metrics:
         type: File[]
         outputSource: alignment_and_qc/per_base_coverage_metrics
@@ -178,4 +181,4 @@ steps:
             readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
             readcount_minimum_base_quality: readcount_minimum_base_quality
         out:
-            [varscan_vcf, docm_gatk_vcf, annotated_vcf, final_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv]
+            [varscan_vcf, docm_gatk_vcf, annotated_vcf, final_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv]

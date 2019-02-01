@@ -88,9 +88,12 @@ outputs:
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
-    tumor_bam_readcount_tsv:
+    tumor_snv_bam_readcount_tsv:
         type: File
-        outputSource: bam_readcount/bam_readcount_tsv
+        outputSource: bam_readcount/snv_bam_readcount_tsv
+    tumor_indel_bam_readcount_tsv:
+        type: File
+        outputSource: bam_readcount/indel_bam_readcount_tsv
 steps:
     varscan:
         run: ../subworkflows/varscan_germline.cwl
@@ -151,22 +154,23 @@ steps:
     bam_readcount:
         run: ../tools/bam_readcount.cwl
         in:
-            vcf: combine_variants/combined_vcf
+            vcf: annotate_variants/annotated_vcf
             sample: sample_name
             reference_fasta: reference
             bam: cram_to_bam/bam
             min_mapping_quality: readcount_minimum_mapping_quality
             min_base_quality: readcount_minimum_base_quality
         out:
-            [bam_readcount_tsv]
+            [snv_bam_readcount_tsv, indel_bam_readcount_tsv]
     add_bam_readcount_to_vcf:
-        run: ../tools/vcf_readcount_annotator.cwl
+        run: ../subworkflows/vcf_readcount_annotator.cwl
         in:
             vcf: annotate_variants/annotated_vcf
-            bam_readcount_tsv: bam_readcount/bam_readcount_tsv
-            sample_name: sample_name
+            snv_bam_readcount_tsv: bam_readcount/snv_bam_readcount_tsv
+            indel_bam_readcount_tsv: bam_readcount/indel_bam_readcount_tsv
             data_type:
                 default: 'DNA'
+            sample_name: sample_name
         out:
             [annotated_bam_readcount_vcf]
     index:

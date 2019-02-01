@@ -122,7 +122,7 @@ outputs:
         outputSource: pvacseq/combined_ranked_epitopes
 steps:
     tumor_rna_bam_readcount:
-        run: ../tools/bam_readcount.cwl
+        run: ../subworkflows/bam_readcount.cwl
         in:
             vcf: detect_variants_vcf
             sample: sample_name
@@ -131,12 +131,13 @@ steps:
             min_base_quality: readcount_minimum_base_quality
             min_mapping_quality: readcount_minimum_mapping_quality
         out:
-            [bam_readcount_tsv]
+            [snv_bam_readcount_tsv, indel_bam_readcount_tsv, normalized_vcf]
     add_tumor_rna_bam_readcount_to_vcf:
-        run: ../tools/vcf_readcount_annotator.cwl
+        run: ../subworkflows/vcf_readcount_annotator.cwl
         in:
-            vcf: detect_variants_vcf
-            bam_readcount_tsv: tumor_rna_bam_readcount/bam_readcount_tsv
+            vcf: tumor_rna_bam_readcount/normalized_vcf
+            snv_bam_readcount_tsv: tumor_rna_bam_readcount/snv_bam_readcount_tsv
+            indel_bam_readcount_tsv: tumor_rna_bam_readcount/indel_bam_readcount_tsv
             data_type:
                 default: 'RNA'
             sample_name: sample_name
