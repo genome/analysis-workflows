@@ -1,0 +1,20 @@
+instrument_data_bams:
+    - class: File
+      path: bisulfite/test1.bam
+    - class: File
+      path: bisulfite/test2.bam
+reference_index: "/gscmnt/gc2708/info/medseq/tmp/toiltest/bsref/GRCh38DH/all_sequences.fa"
+reference_sizes:
+    class: File
+    path: /gscmnt/gc2708/info/medseq/tmp/toiltest/bsref/GRCh38DH/all_sequences.genome
+read_group_id: 
+    - '@RG\tID:2895626107'
+    - '@RG\tID:2895626112'
+trimming_adapters:
+    class: File
+    path: /gscmnt/gc2560/core/illumina_adapters/illumina_multiplex.fa
+trimming_adapter_trim_end: 'RIGHT'
+trimming_adapter_min_overlap: 7
+trimming_max_uncalled: 300
+trimming_min_readlength: 25
+sample_name: ASDF
