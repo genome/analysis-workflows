@@ -11,7 +11,7 @@ requirements:
       ramMin: 16000
       coresMin: 4
     - class: DockerRequirement
-      dockerPull: "mgibio/bisulfite"
+      dockerPull: "mgibio/bisulfite:v1.3"
 arguments: [
     { valueFrom: "-q", position: -10 },
     { valueFrom: $(runtime.cores), position: -9 },
