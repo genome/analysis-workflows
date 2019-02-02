@@ -11,7 +11,7 @@ requirements:
       ramMin: 16000
       coresMin: 4
     - class: DockerRequirement
-      dockerPull: "mgibio/bisulfite"
+      dockerPull: "mgibio/bisulfite:v1.3"
 arguments: [
     { valueFrom: "-q", position: -10 },
     { valueFrom: $(runtime.cores), position: -9 },
@@ -24,13 +24,11 @@ inputs:
     bam:
         type: File
         inputBinding:
-            prefix: "-i"
-            position: -2
+            position: -1
     reference: 
         type: string
         inputBinding:
-            prefix: "-r"
-            position: -1
+            position: -2
 outputs:
     vcf:
         type: stdout

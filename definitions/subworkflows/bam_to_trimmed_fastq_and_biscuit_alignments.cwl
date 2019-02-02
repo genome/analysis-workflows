@@ -25,7 +25,7 @@ inputs:
 outputs:
     aligned_bam:
         type: File
-        outputSource: biscuit_align/aligned_bam
+        outputSource: biscuit_markdup/markdup_bam
 steps:
     bam_to_fastq:
         run: ../tools/bam_to_fastq.cwl
@@ -54,3 +54,15 @@ steps:
             read_group_id: read_group_id
         out:
             [aligned_bam]
+    index_bam:
+        run: ../tools/index_bam.cwl
+        in:
+            bam: biscuit_align/aligned_bam
+        out:
+            [indexed_bam]
+    biscuit_markdup:
+        run: ../tools/biscuit_markdup.cwl
+        in:
+           bam: index_bam/indexed_bam
+        out:
+            [markdup_bam]

@@ -9,7 +9,7 @@ requirements:
       ramMin: 16000
       coresMin: 2
     - class: DockerRequirement
-      dockerPull: "mgibio/bisulfite"
+      dockerPull: "mgibio/bisulfite:v1.3"
 #Creates a gzipped bed and a bedgraph that leaves out MT, random, GL contigs, etc
 arguments: [
     "$(runtime.outdir)/cpgs.bed.gz",
