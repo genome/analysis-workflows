@@ -8,13 +8,14 @@ requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
       ramMin: 16000
+      coresMin: 4
     - class: DockerRequirement
-      dockerPull: "mgibio/bisulfite"
+      dockerPull: "mgibio/bisulfite:v1.3"
 
 arguments:
     ["/dev/stdout",
     { shellQuote: false, valueFrom: "|" },
-    "/usr/bin/sambamba", "sort", "-t", $(runtime.cores), "-m", "8G", "-o", "$(runtime.outdir)/markdup.bam", "/dev/stdin"
+    "/usr/bin/sambamba", "sort", "-t", $(runtime.cores), "-m", "15G", "-o", "$(runtime.outdir)/markdup.bam", "/dev/stdin"
     ]
 inputs:
     bam:
