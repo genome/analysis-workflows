@@ -7,7 +7,7 @@ baseCommand: ["/usr/bin/biscuit", "markdup"]
 requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
-      ramMin: 16000
+      ramMin: 24000
       coresMin: 4
     - class: DockerRequirement
       dockerPull: "mgibio/bisulfite:v1.3"
