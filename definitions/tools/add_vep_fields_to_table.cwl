@@ -21,7 +21,6 @@ inputs:
             items: string
         default: ['Consequence','SYMBOL','Feature','HGVSc','HGVSp']
         inputBinding:
-            itemSeparator: " "
             position: 2
     tsv:
         type: File?
