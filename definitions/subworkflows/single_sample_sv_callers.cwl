@@ -6,7 +6,7 @@ label: "Subworkflow to allow calling different SV callers which require bam file
 
 requirements:
     - class: MultipleInputFeatureRequirement
-
+    - class: SubworkflowFeatureRequirement
 inputs:
     cram:
         type: File
