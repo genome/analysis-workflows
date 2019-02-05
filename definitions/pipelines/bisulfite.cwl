@@ -75,6 +75,7 @@ steps:
         run: ../tools/bisulfite_vcf2bed.cwl
         in:
             vcf: pileup/vcf
+            reference: reference_index
         out:
             [cpgs,cpg_bedgraph]
     bedgraph_to_bigwig:

@@ -19,6 +19,10 @@ inputs:
     vcf:
         type: File
         inputBinding:
+            position: -2
+    reference:
+        type: string
+        inputBinding:
             position: -1
 outputs:
     cpgs:
