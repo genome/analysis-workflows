@@ -123,6 +123,9 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    custom_clinvar_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
 outputs:
     tumor_cram:
         type: File
@@ -378,6 +381,7 @@ steps:
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
             custom_gnomad_vcf: custom_gnomad_vcf
+            custom_clinvar_vcf: custom_clinvar_vcf
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_unfiltered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
     cnvkit:

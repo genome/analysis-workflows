@@ -94,6 +94,9 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    custom_clinvar_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -249,6 +252,7 @@ steps:
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
+            custom_clivnar_vcf: custom_clinvar_vcf
         out:
             [annotated_vcf, vep_summary]
     tumor_cram_to_bam:
