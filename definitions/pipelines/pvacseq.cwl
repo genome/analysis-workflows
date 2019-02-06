@@ -93,6 +93,9 @@ inputs:
     netmhc_stab:
         type: boolean?
 outputs:
+    annotated_vcf:
+        type: File?
+        outputSource: add_transcript_expression_data_to_vcf/annotated_expression_vcf
     mhc_i_all_epitopes:
         type: File?
         outputSource: pvacseq/mhc_i_all_epitopes
