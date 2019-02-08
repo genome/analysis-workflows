@@ -92,7 +92,22 @@ inputs:
         type: float?
     netmhc_stab:
         type: boolean?
+    variants_to_table_fields:
+        type: string[]?
+        default: [CHROM,POS,ID,REF,ALT]
+    variants_to_table_genotype_fields:
+        type: string[]?
+        default: [GT,AD,AF,DP,RAD,RAF,RDP,GX,TX]
+    vep_to_table_fields:
+        type: string[]?
+        default: [HGVSc,HGVSp]
 outputs:
+    annotated_vcf:
+        type: File?
+        outputSource: add_transcript_expression_data_to_vcf/annotated_expression_vcf
+    annotated_tsv:
+        type: File
+        outputSource: add_vep_fields_to_table/annotated_variants_tsv
     mhc_i_all_epitopes:
         type: File?
         outputSource: pvacseq/mhc_i_all_epitopes
@@ -205,3 +220,19 @@ steps:
                 combined_filtered_epitopes,
                 combined_ranked_epitopes,
             ]
+    variants_to_table:
+        run: ../tools/variants_to_table.cwl
+        in:
+            reference: reference_fasta
+            vcf: add_transcript_expression_data_to_vcf/annotated_expression_vcf
+            fields: variants_to_table_fields
+            genotype_fields: variants_to_table_genotype_fields
+        out:
+            [variants_tsv]
+    add_vep_fields_to_table:
+        run: ../tools/add_vep_fields_to_table.cwl
+        in:
+            vcf: add_transcript_expression_data_to_vcf/annotated_expression_vcf
+            vep_fields: vep_to_table_fields
+            tsv: variants_to_table/variants_tsv
+        out: [annotated_variants_tsv]
