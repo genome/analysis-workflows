@@ -30,6 +30,7 @@ inputs:
 
     manta_call_regions:
         type: File?
+        secondaryFiles: [.tbi]
     manta_non_wgs:
         type: boolean?
     manta_output_contigs:
