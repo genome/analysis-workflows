@@ -6,17 +6,13 @@ label: "Subworkflow to allow calling different SV callers which require bam file
 
 requirements:
     - class: MultipleInputFeatureRequirement
-
+    - class: SubworkflowFeatureRequirement
 inputs:
     cram:
         type: File
     reference:
         type: string
 
-    cnvkit_access:
-        type: File?
-    cnvkit_bait_intervals:
-        type: File?
     cnvkit_diagram:
         type: boolean?
     cnvkit_drop_low_coverage:
@@ -24,9 +20,13 @@ inputs:
     cnvkit_method:
         type: string?
     cnvkit_reference_cnn:
-        type: File?
+        type: File
     cnvkit_scatter_plot:
         type: boolean?
+    cnvkit_male_reference:
+        type: boolean?
+    cnvkit_vcf_name:
+        type: string?
 
     manta_call_regions:
         type: File?
@@ -39,21 +39,6 @@ inputs:
         type: File?
 
 outputs:
-    intervals_antitarget:
-        type: File?
-        outputSource: run_cnvkit/intervals_antitarget
-    intervals_target:
-        type: File?
-        outputSource: run_cnvkit/intervals_target
-    normal_antitarget_coverage:
-        type: File?
-        outputSource: run_cnvkit/normal_antitarget_coverage
-    normal_target_coverage:
-        type: File?
-        outputSource: run_cnvkit/normal_target_coverage
-    reference_coverage:
-        type: File?
-        outputSource: run_cnvkit/reference_coverage
     cn_diagram:
         type: File?
         outputSource: run_cnvkit/cn_diagram
@@ -72,6 +57,9 @@ outputs:
     tumor_segmented_ratios:
         type: File
         outputSource: run_cnvkit/tumor_segmented_ratios
+    cnvkit_vcf:
+        type: File
+        outputSource: run_cnvkit/cnvkit_vcf
     manta_diploid_variants:
         type: File?
         outputSource: run_manta/diploid_variants
@@ -106,18 +94,18 @@ steps:
         out:
             [indexed_bam]
     run_cnvkit:
-        run: ../tools/cnvkit_batch.cwl
+        run: cnvkit_single_sample.cwl
         in:
-            access: cnvkit_access
-            bait_intervals: cnvkit_bait_intervals
             diagram: cnvkit_diagram
             drop_low_coverage: cnvkit_drop_low_coverage
             method: cnvkit_method
             reference_cnn: cnvkit_reference_cnn
             tumor_bam: index_bam/indexed_bam
             scatter_plot: cnvkit_scatter_plot
+            male_reference: cnvkit_male_reference
+            cnvkit_vcf_name: cnvkit_vcf_name
         out:
-            [intervals_antitarget, intervals_target, normal_antitarget_coverage, normal_target_coverage, reference_coverage, cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios]
+            [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf]
     run_manta:
         run: ../tools/manta_somatic.cwl
         in:

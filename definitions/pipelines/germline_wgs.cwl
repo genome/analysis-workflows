@@ -66,10 +66,6 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    cnvkit_access: 
-        type: File?
-    cnvkit_bait_intervals:
-        type: File?
     cnvkit_diagram:
         type: boolean?
     cnvkit_drop_low_coverage: 
@@ -77,9 +73,13 @@ inputs:
     cnvkit_method:
         type: string? 
     cnvkit_reference_cnn: 
-        type: File?
+        type: File
     cnvkit_scatter_plot:
         type: boolean?
+    cnvkit_male_reference:
+        type: boolean?
+    cnvkit_vcf_name:
+        type: string?
     manta_call_regions:
         type: File?
     manta_non_wgs:
@@ -159,21 +159,6 @@ outputs:
         type: File[]
         outputSource: alignment_and_qc/summary_hs_metrics
 
-    intervals_antitarget:
-        type: File?
-        outputSource: variant_callers/intervals_antitarget
-    intervals_target:
-        type: File?
-        outputSource: variant_callers/intervals_target
-    normal_antitarget_coverage:
-        type: File?
-        outputSource: variant_callers/normal_antitarget_coverage
-    normal_target_coverage:
-        type: File?
-        outputSource: variant_callers/normal_target_coverage
-    reference_coverage:
-        type: File?
-        outputSource: variant_callers/reference_coverage
     cn_diagram:
         type: File?
         outputSource: variant_callers/cn_diagram
@@ -192,6 +177,9 @@ outputs:
     tumor_segmented_ratios:
         type: File
         outputSource: variant_callers/tumor_segmented_ratios
+    cnvkit_vcf:
+        type: File
+        outputSource: variant_callers/cnvkit_vcf
     manta_diploid_variants:
         type: File?
         outputSource: variant_callers/manta_diploid_variants
@@ -280,16 +268,16 @@ steps:
         in:
             cram: alignment_and_qc/cram
             reference: reference
-            cnvkit_access: cnvkit_access
-            cnvkit_bait_intervals: cnvkit_bait_intervals
             cnvkit_diagram: cnvkit_diagram
             cnvkit_drop_low_coverage: cnvkit_drop_low_coverage
             cnvkit_method: cnvkit_method
             cnvkit_reference_cnn: cnvkit_reference_cnn
             cnvkit_scatter_plot: cnvkit_scatter_plot
+            cnvkit_male_reference: cnvkit_male_reference
+            cnvkit_vcf_name: cnvkit_vcf_name
             manta_call_regions: manta_call_regions
             manta_non_wgs: manta_non_wgs
             manta_output_contigs: manta_output_contigs
             smoove_exclude_regions: smoove_exclude_regions
         out: 
-           [intervals_antitarget, intervals_target, normal_antitarget_coverage, normal_target_coverage, reference_coverage, cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, manta_diploid_variants, manta_somatic_variants, manta_all_candidates, manta_small_candidates, manta_tumor_only_variants, smoove_output_variants] 
+           [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf, manta_diploid_variants, manta_somatic_variants, manta_all_candidates, manta_small_candidates, manta_tumor_only_variants, smoove_output_variants] 
