@@ -22,6 +22,7 @@ inputs:
         type: File
     cnvkit_vcf_name:
         type: string?
+        default: $(inputs.tumor_bam.nameroot).cnvkit.vcf
 outputs:
     cn_diagram:
         type: File?
