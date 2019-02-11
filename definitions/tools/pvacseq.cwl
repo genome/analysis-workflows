@@ -143,7 +143,7 @@ inputs:
         inputBinding:
             prefix: "--trna-vaf"
     expn_val:
-        type: int?
+        type: float?
         inputBinding:
             prefix: "--expn-val"
     maximum_transcript_support_level:

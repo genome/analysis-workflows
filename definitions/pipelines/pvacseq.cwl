@@ -82,7 +82,7 @@ inputs:
     trna_vaf:
         type: float?
     expn_val:
-        type: int?
+        type: float?
     net_chop_method:
         type:
             - "null"
