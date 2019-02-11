@@ -131,6 +131,7 @@ inputs:
         secondaryFiles: [.tbi]
     manta_non_wgs:
         type: boolean?
+        default: true
     manta_output_contigs:
         type: boolean?
 outputs:
