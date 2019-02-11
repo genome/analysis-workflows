@@ -20,6 +20,7 @@ arguments:
 inputs:
     input_file:
         type: File
+        secondaryFiles: ['.tbi']
         inputBinding:
             position: 1
     sample_name:
