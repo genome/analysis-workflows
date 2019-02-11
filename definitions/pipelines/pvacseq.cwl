@@ -183,7 +183,7 @@ steps:
     pvacseq:
         run: ../tools/pvacseq.cwl
         in:
-            input_file: add_transcript_expression_data_to_vcf/annotated_expression_vcf
+            input_vcf: add_transcript_expression_data_to_vcf/annotated_expression_vcf
             sample_name: sample_name
             alleles: alleles
             prediction_algorithms: prediction_algorithms

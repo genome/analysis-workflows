@@ -18,7 +18,7 @@ arguments:
     - position: 8
       valueFrom: "--pass-only"
 inputs:
-    input_file:
+    input_vcf:
         type: File
         secondaryFiles: ['.tbi']
         inputBinding:
