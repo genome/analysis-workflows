@@ -180,7 +180,7 @@ steps:
         out:
             [annotated_expression_vcf]
     bgzip_and_index:
-        run: ../subworkflow/bgzip_and_index.cwl
+        run: ../subworkflows/bgzip_and_index.cwl
         in:
             vcf: add_transcript_expression_data_to_vcf/annotated_expression_vcf
         out:
