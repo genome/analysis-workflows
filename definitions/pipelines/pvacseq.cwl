@@ -8,7 +8,6 @@ requirements:
 inputs:
     detect_variants_vcf:
         type: File
-        secondaryFiles: ['.tbi']
     sample_name:
         type: string?
         default: 'TUMOR'
@@ -180,10 +179,16 @@ steps:
             sample_name: sample_name
         out:
             [annotated_expression_vcf]
+    bgzip_and_index:
+        run: ../subworkflow/bgzip_and_index.cwl
+        in:
+            vcf: add_transcript_expression_data_to_vcf/annotated_expression_vcf
+        out:
+            [indexed_vcf]
     pvacseq:
         run: ../tools/pvacseq.cwl
         in:
-            input_vcf: add_transcript_expression_data_to_vcf/annotated_expression_vcf
+            input_vcf: bgzip_and_index/indexed_vcf
             sample_name: sample_name
             alleles: alleles
             prediction_algorithms: prediction_algorithms
