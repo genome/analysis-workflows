@@ -63,7 +63,6 @@ inputs:
         type: int?
         inputBinding:
             prefix: "-l"
-        default: 21
     normal_sample_name:
         type: string?
         inputBinding:
