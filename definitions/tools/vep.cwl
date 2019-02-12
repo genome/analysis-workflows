@@ -7,13 +7,15 @@ baseCommand: ["/usr/bin/perl", "-I", "/opt/lib/perl/VEP/Plugins", "/usr/bin/vari
 requirements:
     - class: InlineJavascriptRequirement
     - class: ResourceRequirement
-      ramMin: 32000
+      coresMin: 4
+      ramMin: 64000
       tmpdirMin: 25000
     - class: DockerRequirement
       dockerPull: "mgibio/vep_helper-cwl:1.0.0"
 arguments:
     ["--format", "vcf",
     "--vcf",
+    "--fork", "4",
     "--plugin", "Downstream",
     "--plugin", "Wildtype",
     "--term", "SO",
