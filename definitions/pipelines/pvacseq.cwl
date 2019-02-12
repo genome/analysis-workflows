@@ -179,8 +179,8 @@ steps:
             sample_name: sample_name
         out:
             [annotated_expression_vcf]
-    bgzip_and_index:
-        run: ../subworkflows/bgzip_and_index.cwl
+    index:
+        run: ../tools/index_vcf.cwl
         in:
             vcf: add_transcript_expression_data_to_vcf/annotated_expression_vcf
         out:
@@ -188,7 +188,7 @@ steps:
     pvacseq:
         run: ../tools/pvacseq.cwl
         in:
-            input_vcf: bgzip_and_index/indexed_vcf
+            input_vcf: index/indexed_vcf
             sample_name: sample_name
             alleles: alleles
             prediction_algorithms: prediction_algorithms
@@ -229,7 +229,7 @@ steps:
         run: ../tools/variants_to_table.cwl
         in:
             reference: reference_fasta
-            vcf: bgzip_and_index/indexed_vcf
+            vcf: index/indexed_vcf
             fields: variants_to_table_fields
             genotype_fields: variants_to_table_genotype_fields
         out:
@@ -237,7 +237,7 @@ steps:
     add_vep_fields_to_table:
         run: ../tools/add_vep_fields_to_table.cwl
         in:
-            vcf: bgzip_and_index/indexed_vcf
+            vcf: index/indexed_vcf
             vep_fields: vep_to_table_fields
             tsv: variants_to_table/variants_tsv
         out: [annotated_variants_tsv]
