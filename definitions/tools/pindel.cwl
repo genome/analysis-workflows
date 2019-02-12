@@ -9,7 +9,7 @@ arguments: [
 ]
 requirements:
     - class: ResourceRequirement
-      ramMin: 16000
+      ramMin: 32000
       tmpdirMin: 100000
     - class: DockerRequirement
       dockerPull: "mgibio/cle"
