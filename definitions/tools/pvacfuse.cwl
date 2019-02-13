@@ -5,7 +5,7 @@ class: CommandLineTool
 label: "run pVACfuse"
 
 baseCommand: [
-    "pvacfuse",
+    "/opt/conda/bin/pvacfuse",
     "run"
 ]
 requirements:

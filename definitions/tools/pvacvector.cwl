@@ -5,7 +5,7 @@ class: CommandLineTool
 label: "run pVACvector"
 
 baseCommand: [
-    "pvacvector",
+    "/opt/conda/bin/pvacvector",
     "run"
 ]
 requirements:

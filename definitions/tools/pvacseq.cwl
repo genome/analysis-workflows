@@ -4,7 +4,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "run pVACseq"
 
-baseCommand: ["pvacseq", "run"]
+baseCommand: ["/opt/conda/bin/pvacseq", "run"]
 requirements:
     - class: DockerRequirement
       dockerPull: "griffithlab/pvactools:1.3.0"
