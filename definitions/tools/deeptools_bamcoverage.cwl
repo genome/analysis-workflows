@@ -5,6 +5,9 @@ class: CommandLineTool
 label: "deepTools bamCoverage"
 baseCommand: ['/usr/local/bin/bamCoverage']
 requirements:
+    - class: ResourceRequirement
+      ramMin: 4000
+      coresMin: 4
     - class: DockerRequirement
       dockerPull: "quay.io/biocontainers/deeptools:3.1.3--py35h470a237_0"
 arguments:
