@@ -11,8 +11,7 @@ requirements:
     - class: DockerRequirement
       dockerPull: mgibio/gatk-cwl:3.6.0
 arguments:
-    ["--assumeIdenticalSamples",
-     "-L", { valueFrom: $(inputs.vcf) },
+    ["-L", { valueFrom: $(inputs.vcf) },
      "-o", { valueFrom: $(runtime.outdir)/phased.vcf }]
 inputs:
     reference:
