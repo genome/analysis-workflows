@@ -36,6 +36,7 @@ inputs:
         type: int?
         inputBinding:
             prefix: '-bs'
+        default: 20
     region:
         type: string?
         inputBinding:
@@ -52,11 +53,12 @@ inputs:
         type: int?
         inputBinding:
             prefix: '--effectiveGenomeSize'
+        default: 2451960000
     normalize_using:
         type:
             type: enum
             symbols: ["RPKM", "CPM", "BPM", "RPGC", "None"]
-        default: "None"
+        default: "RPGC"
         inputBinding:
             prefix: '--normalizeUsing'
     exact_scaling:
@@ -71,6 +73,7 @@ inputs:
         inputBinding:
             prefix: '-ignore'
             itemSeparator: ' '
+        default: ['X', 'Y', 'MT']
     skip_non_covered_regions:
         type: boolean?
         inputBinding:
@@ -83,6 +86,7 @@ inputs:
         type: boolean?
         inputBinding:
             prefix: '-e'
+        default: true
     ignore_duplicates:
         type: boolean?
         inputBinding:
@@ -91,6 +95,7 @@ inputs:
         type: int?
         inputBinding:
             prefix: '--minMappingQuality'
+        default: 1
     center_reads:
         type: boolean?
         inputBinding:
