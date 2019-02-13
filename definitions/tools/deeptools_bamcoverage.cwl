@@ -72,7 +72,6 @@ inputs:
               items: string
         inputBinding:
             prefix: '-ignore'
-            itemSeparator: ' '
         default: ['X', 'Y', 'MT']
     skip_non_covered_regions:
         type: boolean?
