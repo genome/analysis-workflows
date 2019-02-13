@@ -9,7 +9,7 @@ requirements:
       ramMin: 8000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: mgibio/cle
+      dockerPull: mgibio/gatk-cwl:3.6.0
 arguments:
     ["--assumeIdenticalSamples",
      "-o", { valueFrom: $(runtime.outdir)/combined_somatic_plus_germline.vcf }]
