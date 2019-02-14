@@ -17,6 +17,11 @@ inputs:
         type: File
     tumor_cram:
         type: File
+    ignore_docm:
+        type: boolean
+        inputBinding:
+            prefix: "ignoreDOCM"
+            position: 1
 outputs:
     docm_filter_out:
         type: File

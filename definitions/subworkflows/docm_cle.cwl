@@ -17,6 +17,8 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+    ignore_docm:
+        type: boolean
     interval_list:
         type: File
 outputs:
@@ -44,6 +46,7 @@ steps:
             docm_out: GATK_haplotype_caller/docm_out
             normal_cram: normal_cram
             tumor_cram: tumor_cram
+            ignore_docm: ignore_docm
         out:
             [docm_filter_out]
     bgzip:
