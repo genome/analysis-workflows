@@ -62,6 +62,9 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+    ignore_docm:
+        type: boolean?
+        default: true
     vep_cache_dir:
         type: string
     synonyms_file:
@@ -222,6 +225,7 @@ steps:
             tumor_cram: tumor_cram
             normal_cram: normal_cram
             docm_vcf: docm_vcf
+            ignore_docm: ignore_docm
             interval_list: interval_list
         out:
             [unfiltered_vcf, filtered_vcf]

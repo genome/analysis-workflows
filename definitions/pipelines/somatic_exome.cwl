@@ -97,6 +97,9 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+    ignore_docm:
+        type: boolean
+        default: true
     vep_cache_dir:
         type: string
     synonyms_file:
@@ -372,6 +375,7 @@ steps:
             varscan_max_normal_freq: varscan_max_normal_freq
             pindel_insert_size: pindel_insert_size
             docm_vcf: docm_vcf
+            ignore_docm: ignore_docm
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             annotate_coding_only: annotate_coding_only
