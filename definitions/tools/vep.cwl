@@ -82,12 +82,18 @@ inputs:
                         return []
                     }
                 }
-            position: 7
+            position: 8
     reference:
         type: string?
         inputBinding:
             prefix: "--fasta" 
-            position: 8
+            position: 9
+    assembly:
+        type: string?
+        default: "GRCh38"
+        inputBinding:
+            prefix: "--assembly"
+            position: 10
 outputs:
     annotated_vcf:
         type: File

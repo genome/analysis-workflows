@@ -36,6 +36,9 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    vep_assembly:
+        type: string?
+        default: "GRCh38"
 outputs:
     gvcf:
         type: File[]
@@ -84,6 +87,7 @@ steps:
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             custom_clinvar_vcf: custom_clinvar_vcf
+            assembly: vep_assembly
         out:
             [annotated_vcf, vep_summary]
     bgzip_annotated_vcf:

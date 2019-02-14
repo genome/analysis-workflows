@@ -97,6 +97,10 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    vep_assembly:
+        type: string?
+        default: "GRCh38"
+        doc: Used to explicitly define which assembly version to use; required when there are two or more in the same directory
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -253,6 +257,7 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
             custom_clivnar_vcf: custom_clinvar_vcf
+            assembly: vep_assembly
         out:
             [annotated_vcf, vep_summary]
     tumor_cram_to_bam:

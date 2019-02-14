@@ -95,6 +95,10 @@ inputs:
         type: int?
     readcount_minimum_base_quality:
         type: int?
+    vep_assembly:
+        type: string?
+        default: "GRCh38"
+        doc: Used to explicitly define which version of the assembly to use; required if there are two or more in the same directory
 outputs:
     cram:
         type: File
@@ -210,5 +214,6 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
             readcount_minimum_base_quality: readcount_minimum_base_quality
+            vep_assembly: vep_assembly
         out:
             [varscan_vcf, docm_gatk_vcf, annotated_vcf, final_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv]

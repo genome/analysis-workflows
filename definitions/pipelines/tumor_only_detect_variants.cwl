@@ -66,6 +66,10 @@ inputs:
         type: int?
     readcount_minimum_base_quality:
         type: int?
+    vep_assembly:
+        type: string?
+        default: "GRCh38"
+        doc: Used to explicitly define which version of the assembly to use; required when there are two or more in the same directory
 outputs:
     varscan_vcf:
         type: File
@@ -142,6 +146,7 @@ steps:
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
+            assembly: vep_assembly
         out:
             [annotated_vcf, vep_summary]
     cram_to_bam:
