@@ -95,9 +95,9 @@ inputs:
         default: 400
     docm_vcf:
         type: File
-        secondaryFiles: [.tbi]_
+        secondaryFiles: [.tbi]
     filter_docm_variants:
-        type: Integer
+        type: int
         default: 1
     vep_cache_dir:
         type: string?

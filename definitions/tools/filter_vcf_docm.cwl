@@ -24,7 +24,7 @@ inputs:
         inputBinding:
             position: -2
     filter_docm_variants:
-        type: String
+        type: int
         inputBinding:
             position: -1
 outputs:

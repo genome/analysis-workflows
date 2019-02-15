@@ -20,7 +20,7 @@ inputs:
     interval_list:
         type: File
     filter_docm_variants:
-        type: Integer
+        type: int
 outputs:
     docm_variants_vcf:
         type: File
@@ -44,7 +44,7 @@ steps:
         out:
             [decomposed_vcf]
     docm_filter:
-        run: ../tools/somatic_docm_filter.cwl
+        run: ../tools/filter_vcf_docm.cwl
         in:
             docm_raw_variants: decompose/decomposed_vcf
             normal_cram: normal_cram

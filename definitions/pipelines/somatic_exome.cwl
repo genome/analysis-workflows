@@ -98,7 +98,7 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     filter_docm_variants:
-        type: Integer?
+        type: int?
         default: 1
     vep_cache_dir:
         type: string
