@@ -19,11 +19,10 @@ inputs:
         secondaryFiles: [.tbi]
     interval_list:
         type: File
+    filter_docm_variants:
+        type: Integer
 outputs:
-    unfiltered_vcf:
-        type: File
-        outputSource: GATK_haplotype_caller/docm_out
-    filtered_vcf:
+    docm_variants_vcf:
         type: File
         outputSource: index/indexed_vcf
         secondaryFiles: [.tbi]
@@ -37,19 +36,26 @@ steps:
             docm_vcf: docm_vcf
             interval_list: interval_list
         out:
-            [docm_out]
+            [docm_raw_variants]
+    decompose:
+        run: ../tools/vt_decompose.cwl
+        in:
+            vcf: GATK_haplotype_caller/docm_raw_variants
+        out:
+            [decomposed_vcf]
     docm_filter:
         run: ../tools/somatic_docm_filter.cwl
         in:
-            docm_out: GATK_haplotype_caller/docm_out
+            docm_raw_variants: decompose/decomposed_vcf
             normal_cram: normal_cram
             tumor_cram: tumor_cram
+            filter_docm_variants: filter_docm_variants
         out:
-            [docm_filter_out]
+            [docm_filtered_variants]
     bgzip:
         run: ../tools/bgzip.cwl
         in:
-            file: docm_filter/docm_filter_out
+            file: docm_filter/docm_filtered_variants
         out:
             [bgzipped_file]
     index:
