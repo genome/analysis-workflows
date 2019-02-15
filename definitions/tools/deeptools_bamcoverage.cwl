@@ -53,7 +53,7 @@ inputs:
         inputBinding:
             prefix: '-v'
     effective_genome_size:
-        type: int?
+        type: long?
         inputBinding:
             prefix: '--effectiveGenomeSize'
         default: 2451960000
