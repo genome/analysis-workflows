@@ -4,19 +4,24 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "run pVACseq"
 
-baseCommand: ["/opt/conda/bin/pvacseq", "run"]
+baseCommand: [
+    "ln", "-s"
+]
+arguments: [
+    { valueFrom: "$TMPDIR", shellQuote: false },
+    "/tmp/pvacseq",
+    { valueFrom: " && ", shellQuote: false },
+    "export", "TMPDIR=/tmp/pvacseq",
+    { valueFrom: " && ", shellQuote: false },
+    "/opt/conda/bin/pvacseq", "run",
+    "--iedb-install-directory", "/opt/iedb",
+    "--pass-only",
+    { position: 5, valueFrom: $(runtime.outdir) },
+]
 requirements:
+    - class: ShellCommandRequirement
     - class: DockerRequirement
       dockerPull: "griffithlab/pvactools:1.3.0"
-arguments:
-    - position: 5
-      valueFrom: $(runtime.outdir)
-    - position: 6
-      valueFrom: "--iedb-install-directory"
-    - position: 7
-      valueFrom: "/opt/iedb"
-    - position: 8
-      valueFrom: "--pass-only"
 inputs:
     input_vcf:
         type: File
