@@ -91,6 +91,8 @@ inputs:
         type: float?
     netmhc_stab:
         type: boolean?
+    n_threads:
+        type: int?
     variants_to_table_fields:
         type: string[]?
         default: [CHROM,POS,ID,REF,ALT]
@@ -213,6 +215,7 @@ steps:
             net_chop_method: net_chop_method
             net_chop_threshold: net_chop_threshold
             netmhc_stab: netmhc_stab
+            n_threads: n_threads
         out:
             [
                 mhc_i_all_epitopes,
