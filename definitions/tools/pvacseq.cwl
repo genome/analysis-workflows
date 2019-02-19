@@ -158,10 +158,6 @@ inputs:
               symbols: ["1", "2", "3", "4", "5"]
         inputBinding:
             prefix: "--maximum-transcript-support-level"
-    pass_only:
-        type: boolean?
-        inputBinding:
-            prefix: "--pass-only"
     n_threads:
         type: int?
         inputBinding:
