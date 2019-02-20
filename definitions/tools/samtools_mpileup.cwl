@@ -8,7 +8,7 @@ arguments:
     ["--no-baq"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/cle:v1.3.1"
 inputs:
     reference:
         type: string

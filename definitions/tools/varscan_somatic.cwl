@@ -8,7 +8,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 12000
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/cle:v1.3.1"
 inputs:
     tumor_cram:
         type: File

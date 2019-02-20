@@ -11,7 +11,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 18000
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/cle:v1.3.1"
 inputs:
     bam:
         type: File
