@@ -9,7 +9,7 @@ requirements:
       ramMin: 20000
       tmpdirMin: 100000
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/cle:v1.3.1"
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/mutect.vcf.gz }]
 inputs:
