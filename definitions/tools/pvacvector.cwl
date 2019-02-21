@@ -5,21 +5,25 @@ class: CommandLineTool
 label: "run pVACvector"
 
 baseCommand: [
+    "ln", "-s"
+]
+arguments: [
+    { valueFrom: "$TMPDIR", shellQuote: false },
+    "/tmp/pvacseq",
+    { valueFrom: " && ", shellQuote: false },
+    "export", "TMPDIR=/tmp/pvacseq",
+    { valueFrom: " && ", shellQuote: false },
     "/opt/conda/bin/pvacvector",
-    "run"
+    "run",
+    "--iedb-install-directory", "/opt/iedb",
+    { position: 5, valueFrom: $(runtime.outdir) },
 ]
 requirements:
+    - class: ShellCommandRequirement
     - class: DockerRequirement
       dockerPull: "griffithlab/pvactools:1.3.1"
     - class: ResourceRequirement
       ramMin: 16000
-arguments:
-    - position: 5
-      valueFrom: $(runtime.outdir)
-    - position: 6
-      valueFrom: "--iedb-install-directory"
-    - position: 7
-      valueFrom: "/opt/iedb"
 inputs:
     input_file:
         type: File
