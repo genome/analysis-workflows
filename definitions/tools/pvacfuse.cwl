@@ -11,6 +11,8 @@ baseCommand: [
 requirements:
     - class: DockerRequirement
       dockerPull: "griffithlab/pvactools:1.3.1"
+    - class: ResourceRequirement
+      ramMin: 16000
 arguments:
     - position: 5
       valueFrom: $(runtime.outdir)
@@ -106,6 +108,7 @@ inputs:
         type: int?
         inputBinding:
             prefix: "--n-threads"
+        default: 8
 outputs:
     mhc_i_all_epitopes:
         type: File?
