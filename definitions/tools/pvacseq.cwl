@@ -21,7 +21,7 @@ arguments: [
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:1.3.0"
+      dockerPull: "griffithlab/pvactools:1.3.1"
 inputs:
     input_vcf:
         type: File
