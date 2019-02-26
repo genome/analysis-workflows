@@ -8,6 +8,8 @@ requirements:
     - class: DockerRequirement
       dockerPull: etal/cnvkit:0.9.5
     - class: ShellCommandRequirement
+    - class: ResourceRequirement
+      ramMin: 4000
 baseCommand: ["/usr/bin/python", "/usr/local/bin/cnvkit.py", "call"]
 arguments: [
     { position: -1, valueFrom: $(inputs.male_reference), prefix: "-y" },

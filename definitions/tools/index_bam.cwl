@@ -12,6 +12,8 @@ requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
       dockerPull: "mgibio/samtools-cwl:1.0.0"
+    - class: ResourceRequirement
+      ramMin: 4000
 inputs:
     bam:
         type: File

@@ -8,6 +8,8 @@ requirements:
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
       dockerPull: "mgibio/vep_helper-cwl:1.0.0"
+    - class: ResourceRequirement
+      ramMin: 4000
 arguments:
     [{ valueFrom: $(inputs.vcf.path) },
     { valueFrom: $(runtime.outdir)/annotated.af_filtered.vcf },

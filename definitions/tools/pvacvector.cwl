@@ -11,6 +11,8 @@ baseCommand: [
 requirements:
     - class: DockerRequirement
       dockerPull: "griffithlab/pvactools:1.3.0"
+    - class: ResourceRequirement
+      ramMin: 4000
 arguments:
     - position: 5
       valueFrom: $(runtime.outdir)

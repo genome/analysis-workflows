@@ -6,6 +6,8 @@ label: "use the binomial/llr somatic filter to weed out low confidence variants"
 requirements:
     - class: DockerRequirement
       dockerPull: mgibio/somatic-llr-filter:v0.1
+    - class: ResourceRequirement
+      ramMin: 4000
 baseCommand: ["/opt/conda/bin/python3","/usr/bin/somatic_llr_filter.py"]
 arguments: 
     ["--overwrite", #we expect to have to overwrite the SOMATIC field
