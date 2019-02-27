@@ -7,7 +7,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 6000
     - class: DockerRequirement
-      dockerPull: mgibio/cle
+      dockerPull: mgibio/cle:v1.3.1
 arguments:
     [{ valueFrom: OUTPUT=$(runtime.outdir) }]
 inputs:
