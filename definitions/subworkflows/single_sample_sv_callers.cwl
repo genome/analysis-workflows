@@ -79,9 +79,6 @@ outputs:
     smoove_output_variants:
         type: File
         outputSource: run_smoove/output_vcf
-    merged_annotated_vcf:
-        type: File
-        outputSource: run_merge/merged_annotated_vcf
 steps:
     cram_to_bam:
         run: ../tools/cram_to_bam.cwl
