@@ -39,20 +39,6 @@ inputs:
     smoove_exclude_regions:
         type: File?
 
-    survivor_max_distance_to_merge:
-        type: int
-    survivor_minimum_sv_calls:
-        type: int
-    survivor_same_type:
-        type: int
-    survivor_estimate_sv_distance:
-        type: int
-    survivor_minimum_sv_size:
-        type: int
-
-    sv_pop_freq_db:
-        type: File
-
 outputs:
     cn_diagram:
         type: File?
@@ -143,18 +129,3 @@ steps:
             reference: reference
         out:
             [output_vcf]
-    run_merge:
-        run: merge_svs.cwl
-        in:
-            vcfs:
-                source: [run_smoove/output_vcf, run_cnvkit/cnvkit_vcf, run_manta/tumor_only_variants]
-                linkMerge: merge_flattened
-            max_distance_to_merge: survivor_max_distance_to_merge
-            minimum_sv_calls: survivor_minimum_sv_calls
-            same_type: survivor_same_type
-            same_strand: survivor_same_type
-            estimate_sv_distance: survivor_estimate_sv_distance
-            minimum_sv_size: survivor_minimum_sv_size
-            sv_db: sv_pop_freq_db
-        out:
-            [merged_annotated_vcf]
