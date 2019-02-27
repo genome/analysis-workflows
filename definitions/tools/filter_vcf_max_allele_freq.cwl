@@ -7,7 +7,7 @@ baseCommand: ["/usr/bin/perl", "/usr/bin/vcf_check.pl"]
 requirements:
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
-      dockerPull: mgibio/cle
+      dockerPull: mgibio/cle:v1.3.1
 arguments:
     [{ valueFrom: $(inputs.vcf.path) },
     { valueFrom: $(runtime.outdir)/annotated.max_af_filtered.vcf },

@@ -7,7 +7,7 @@ baseCommand: ["/usr/bin/perl", "/opt/vep/ensembl-vep/filter_vep"]
 requirements:
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/cle:v1.3.1"
 arguments:
     ["--format", "vcf",
     "-o", { valueFrom: $(runtime.outdir)/annotated.af_filtered.vcf }]

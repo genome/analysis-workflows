@@ -9,7 +9,7 @@ requirements:
       ramMin: 9000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: mgibio/cle
+      dockerPull: mgibio/cle:v1.3.1
 arguments:
     ["-minN", "2",
      "--setKey", "null",
