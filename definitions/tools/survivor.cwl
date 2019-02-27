@@ -34,17 +34,17 @@ inputs:
         type: int
         inputBinding:
             position: 4
-        doc: "Require merged SVs to be of the same type, 1=yes"
+        doc: "Require merged SVs to be of the same type, 1=yes, 0=no"
     same_strand:
         type: int
         inputBinding:
             position: 5
-        doc: "Require merged SVs to be on the same strand, 1=yes"
+        doc: "Require merged SVs to be on the same strand, 1=yes, 0=no"
     estimate_sv_distance:
         type: int
         inputBinding:
             position: 6
-        doc: "Estimate distance based on the size of SV, 1=yes"
+        doc: "Estimate distance based on the size of SV, 1=yes, 0=no"
     minimum_sv_size:
         type: int
         inputBinding:
