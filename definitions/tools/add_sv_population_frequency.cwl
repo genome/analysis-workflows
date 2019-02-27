@@ -19,7 +19,7 @@ requirements:
 inputs:
     vcf:
         type: File
-        doc: "vcf to add populationa allele frequence to"
+        doc: "vcf to add population allele frequencies to"
     sv_db:
         type: File
         doc: "bed file containing allele frequencies for a population"

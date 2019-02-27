@@ -44,7 +44,7 @@ inputs:
         type: int
         inputBinding:
             position: 6
-        doc: "Estimate distance based on the sixe of SV, 1=yes"
+        doc: "Estimate distance based on the size of SV, 1=yes"
     minimum_sv_size:
         type: int
         inputBinding:
