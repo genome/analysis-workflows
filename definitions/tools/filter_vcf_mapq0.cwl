@@ -2,10 +2,13 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "filter_vcf for variants with high percentage of mapq0 reads"
+label: "filter vcf for variants with high percentage of mapq0 reads"
 requirements:
     - class: DockerRequirement
-      dockerPull: mgibio/cle:v1.3.1
+      dockerPull: mgibio/mapq0-filter:v0.1
+    - class: ResourceRequirement
+      ramMin: 8000
+      tmpdirMin: 10000
 arguments: 
     ["/bin/bash", "/usr/bin/mapq0_vcf_filter.sh",
     {valueFrom: "$(runtime.outdir)/mapq_filtered.vcf.gz"}]
