@@ -10,6 +10,8 @@ arguments: [
 requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/perl_helper-cwl:1.0.0"
+    - class: ResourceRequirement
+      ramMin: 4000
 inputs:
     docm_out:
         type: File

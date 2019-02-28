@@ -8,6 +8,8 @@ requirements:
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
       dockerPull: mgibio/cle:v1.3.1
+    - class: ResourceRequirement
+      ramMin: 4000
 arguments:
     [{ valueFrom: $(inputs.vcf.path) },
     { valueFrom: $(runtime.outdir)/annotated.max_af_filtered.vcf },

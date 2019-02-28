@@ -12,6 +12,8 @@ requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
       dockerPull: "mgibio/cle:v1.3.1"
+    - class: ResourceRequirement
+      ramMin: 4000
 inputs:
     variants:
         type: File

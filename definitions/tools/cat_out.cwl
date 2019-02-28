@@ -5,6 +5,8 @@ baseCommand: ['/bin/cat']
 requirements:
     - class: DockerRequirement
       dockerPull: "ubuntu:xenial"
+    - class: ResourceRequirement
+      ramMin: 4000
 stdout: "per_chromosome_pindel.out"
 inputs:
     pindel_outs:
