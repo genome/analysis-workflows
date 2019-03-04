@@ -3,12 +3,12 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "collect HS metrics"
-baseCommand: ["/usr/bin/java", "-Xmx32g", "-jar", "/usr/picard/picard.jar", "CollectHsMetrics"]
+baseCommand: ["/usr/bin/java", "-Xmx48g", "-jar", "/usr/picard/picard.jar", "CollectHsMetrics"]
 arguments:
     ["O=", { valueFrom: $(runtime.outdir)/$(inputs.cram.nameroot).$(inputs.output_prefix)-HsMetrics.txt }]
 requirements:
     - class: ResourceRequirement
-      ramMin: 36000
+      ramMin: 52000
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
       dockerPull: "mgibio/picard-cwl:2.18.1"
