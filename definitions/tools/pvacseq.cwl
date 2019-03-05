@@ -24,6 +24,7 @@ requirements:
       dockerPull: "griffithlab/pvactools:1.3.2"
     - class: ResourceRequirement
       ramMin: 16000
+      coresMin: 8
 inputs:
     input_vcf:
         type: File
