@@ -6,6 +6,8 @@ requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
       dockerPull: "ubuntu:xenial"
+    - class: ResourceRequirement
+      ramMin: 4000
 arguments: [
     { shellQuote: false, valueFrom: "|" },
     "/bin/grep", "ChrID", "/dev/stdin"

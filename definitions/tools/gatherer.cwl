@@ -8,6 +8,8 @@ requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
       dockerPull: "ubuntu:xenial"
+    - class: ResourceRequirement
+      ramMin: 4000
 
 arguments: ["-t"]
 

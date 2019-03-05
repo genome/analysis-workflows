@@ -82,6 +82,9 @@ inputs:
     cle_vcf_filter:
         type: boolean?
         default: false
+    filter_somatic_llr_threshold:
+        type: float?
+        default: 5
     variants_to_table_fields:
         type: string[]?
         default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
@@ -329,6 +332,7 @@ steps:
             vcf: index/indexed_vcf
             filter_gnomADe_maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
             filter_mapq0_threshold: filter_mapq0_threshold
+            filter_somatic_llr_threshold: filter_somatic_llr_threshold
             tumor_bam: tumor_cram_to_bam/bam
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference

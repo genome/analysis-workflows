@@ -8,6 +8,8 @@ baseCommand: ["/usr/bin/python", "/usr/bin/bam_readcount_helper.py"]
 requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/bam_readcount_helper-cwl:1.0.0"
+    - class: ResourceRequirement
+      ramMin: 4000
 arguments: [
     { valueFrom: $(runtime.outdir), position: -3 }
 ]

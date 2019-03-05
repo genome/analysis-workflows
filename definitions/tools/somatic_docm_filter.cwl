@@ -6,7 +6,9 @@ label: "docm filter"
 baseCommand: ["/usr/bin/perl", "/usr/bin/docm_filter.pl"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/cle:v1.3.1"
+    - class: ResourceRequirement
+      ramMin: 4000
 arguments: [
     $(inputs.docm_out.path), $(inputs.normal_cram.path), $(inputs.tumor_cram.path), $(runtime.outdir)
 ]
