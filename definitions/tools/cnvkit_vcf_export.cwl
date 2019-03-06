@@ -10,6 +10,8 @@ requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
       ramMin: 4000
+    - class: StepInputExpressionRequirement
+    - class: InlineJavascriptRequirement
 baseCommand: ["/usr/bin/python", "/usr/local/bin/cnvkit.py", "call"]
 arguments: [
     { position: -1, valueFrom: $(inputs.male_reference), prefix: "-y" },
@@ -35,10 +37,22 @@ inputs:
             prefix: "--cnr"
     output_name:
         type: string
-        default: "cnvkit_output.vcf"
+        default: "default"
         inputBinding:
             position: 3
             prefix: "-o"
+            valueFrom: |
+                ${  
+                    if(inputs.output_name != "default") {
+                        return inputs.output_name;
+                    }   
+                    else {
+                        return inputs.tumor_bam.nameroot + ".cnvkit.vcf"
+                    }   
+                }   
+
+    tumor_bam:
+        type: File
 outputs:
     cnvkit_vcf:
         type: File
