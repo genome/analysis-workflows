@@ -10,9 +10,9 @@ requirements:
 inputs:
     reference:
         type: string
-    cram:
+    bam:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.bai]
     interval_list:
         type: File
     strand_filter:
@@ -53,7 +53,7 @@ steps:
         run: ../tools/varscan_germline.cwl
         in:
             reference: reference
-            cram: cram
+            bam: bam
             roi_bed: intervals_to_bed/interval_bed
             strand_filter: strand_filter
             min_coverage: min_coverage
@@ -73,7 +73,7 @@ steps:
         run: fp_filter.cwl
         in:
             reference: reference
-            cram: cram
+            bam: bam
             vcf: bgzip_and_index/indexed_vcf
             variant_caller:
                 valueFrom: "varscan"

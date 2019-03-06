@@ -5,7 +5,7 @@ class: CommandLineTool
 label: "pindel v0.2.5b8"
 arguments: [
     "/usr/bin/perl", "/usr/bin/pindel_helper.pl",
-    $(inputs.normal_cram.path), $(inputs.tumor_cram.path), $(inputs.insert_size)
+    $(inputs.normal_bam.path), $(inputs.tumor_bam.path), $(inputs.insert_size)
 ]
 requirements:
     - class: ResourceRequirement
@@ -14,12 +14,12 @@ requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/cle:v1.3.1"
 inputs:
-    tumor_cram:
+    tumor_bam:
         type: File
-        secondaryFiles: ["^.crai"]
-    normal_cram:
+        secondaryFiles: ["^.bai"]
+    normal_bam:
         type: File
-        secondaryFiles: ["^.crai"]
+        secondaryFiles: ["^.bai"]
     reference:
         type: string
         inputBinding:

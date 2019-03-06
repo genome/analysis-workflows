@@ -9,12 +9,12 @@ requirements:
     - class: MultipleInputFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
-    tumor_cram:
+    tumor_bam:
         type: File
-        secondaryFiles: [.crai,^.crai]
-    normal_cram:
+        secondaryFiles: [.bai,^.bai]
+    normal_bam:
         type: File
-        secondaryFiles: [.crai,^.crai]
+        secondaryFiles: [.bai,^.bai]
     reference:
         type: string
     interval_list:
@@ -37,8 +37,8 @@ steps:
     strelka:
         run: ../tools/strelka.cwl
         in:
-            tumor_cram: tumor_cram
-            normal_cram: normal_cram
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
             reference: reference
             exome_mode: exome_mode
             cpu_reserved: cpu_reserved
@@ -75,7 +75,7 @@ steps:
         run: fp_filter.cwl
         in:
             reference: reference
-            cram: tumor_cram
+            bam: tumor_bam
             vcf: region_filter/filtered_vcf
             variant_caller: 
                 valueFrom: "strelka"

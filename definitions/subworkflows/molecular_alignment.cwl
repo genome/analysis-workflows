@@ -18,10 +18,10 @@ inputs:
     target_intervals:
        type: File?
 outputs:
-    aligned_cram:
+    aligned_bam:
         type: File
-        secondaryFiles: [.crai, ^.crai]
-        outputSource: index_cram/indexed_cram
+        secondaryFiles: [.bai, ^.bai]
+        outputSource: index_bam/indexed_bam
     adapter_histogram:
         type: File[]
         outputSource: align/adapter_metrics
@@ -85,16 +85,9 @@ steps:
             description: sample_name
        out:
             [duplex_seq_metrics]
-    bam_to_cram:
-        run: ../tools/bam_to_cram.cwl
+    index_bam:
+        run: ../tools/index_bam.cwl
         in:
             bam: clip_overlap/clipped_bam
-            reference: reference
         out:
-            [cram]
-    index_cram:
-        run: ../tools/index_cram.cwl
-        in:
-            cram: bam_to_cram/cram
-        out:
-            [indexed_cram]
+            [indexed_bam]

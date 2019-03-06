@@ -10,16 +10,16 @@ requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/cle:v1.3.1"
 inputs:
-    tumor_cram:
+    tumor_bam:
         type: File
         inputBinding:
             position: 1
-        secondaryFiles: [^.crai]
-    normal_cram:
+        secondaryFiles: [^.bai]
+    normal_bam:
         type: File
         inputBinding:
             position: 2
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.bai]
     reference:
         type: string
         inputBinding:

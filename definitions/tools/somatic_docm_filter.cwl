@@ -10,14 +10,14 @@ requirements:
     - class: ResourceRequirement
       ramMin: 4000
 arguments: [
-    $(inputs.docm_out.path), $(inputs.normal_cram.path), $(inputs.tumor_cram.path), $(runtime.outdir)
+    $(inputs.docm_out.path), $(inputs.normal_bam.path), $(inputs.tumor_bam.path), $(runtime.outdir)
 ]
 inputs:
     docm_out:
         type: File
-    normal_cram:
+    normal_bam:
         type: File
-    tumor_cram:
+    tumor_bam:
         type: File
 outputs:
     docm_filter_out:

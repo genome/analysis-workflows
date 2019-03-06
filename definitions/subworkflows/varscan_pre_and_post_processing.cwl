@@ -10,12 +10,12 @@ requirements:
 inputs:
     reference:
         type: string
-    tumor_cram:
+    tumor_bam:
         type: File
-        secondaryFiles: [^.crai]
-    normal_cram:
+        secondaryFiles: [^.bai]
+    normal_bam:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.bai]
     interval_list:
         type: File
     strand_filter:
@@ -52,8 +52,8 @@ steps:
         run: varscan.cwl
         in:
             reference: reference
-            tumor_cram: tumor_cram
-            normal_cram: normal_cram
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
             roi_bed: intervals_to_bed/interval_bed
             strand_filter: strand_filter
             min_coverage: min_coverage
@@ -130,7 +130,7 @@ steps:
         run: fp_filter.cwl
         in:
             reference: reference
-            cram: tumor_cram
+            bam: tumor_bam
             vcf: index/indexed_vcf
             min_var_freq: min_var_freq
             variant_caller: 

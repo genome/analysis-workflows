@@ -15,16 +15,16 @@ inputs:
         type: File[]
     tumor_readgroups:
         type: string[]
-    tumor_cram_name:
+    tumor_name:
         type: string?
-        default: 'tumor.cram'
+        default: 'tumor'
     normal_bams:
         type: File[]
     normal_readgroups:
         type: string[]
-    normal_cram_name:
+    normal_name:
         type: string?
-        default: 'normal.cram'
+        default: 'normal'
     mills:
         type: File
         secondaryFiles: [.tbi]
@@ -137,7 +137,7 @@ inputs:
 outputs:
     tumor_cram:
         type: File
-        outputSource: tumor_alignment_and_qc/cram
+        outputSource: tumor_index_cram/indexed_cram
     tumor_mark_duplicates_metrics:
         type: File
         outputSource: tumor_alignment_and_qc/mark_duplicates_metrics
@@ -176,7 +176,7 @@ outputs:
         outputSource: tumor_alignment_and_qc/verify_bam_id_depth
     normal_cram:
         type: File
-        outputSource: normal_alignment_and_qc/cram
+        outputSource: normal_index_cram/indexed_cram
     normal_mark_duplicates_metrics:
         type: File
         outputSource: normal_alignment_and_qc/mark_duplicates_metrics
@@ -352,9 +352,11 @@ steps:
             picard_metric_accumulation_level: picard_metric_accumulation_level   
             minimum_mapping_quality: qc_minimum_mapping_quality
             minimum_base_quality: qc_minimum_base_quality
-            final_name: tumor_cram_name
+            final_name:
+                source: tumor_name
+                valueFrom: "$(self).bam"
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     normal_alignment_and_qc:
         run: exome_alignment.cwl
         in:
@@ -374,15 +376,17 @@ steps:
             picard_metric_accumulation_level: picard_metric_accumulation_level   
             minimum_mapping_quality: qc_minimum_mapping_quality
             minimum_base_quality: qc_minimum_base_quality
-            final_name: normal_cram_name
+            final_name:
+                source: normal_name
+                valueFrom: "$(self).bam"
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     detect_variants:
         run: detect_variants.cwl
         in:
             reference: reference
-            tumor_cram: tumor_alignment_and_qc/cram
-            normal_cram: normal_alignment_and_qc/cram
+            tumor_bam: tumor_alignment_and_qc/bam
+            normal_bam: normal_alignment_and_qc/bam
             interval_list: interval_list
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
@@ -414,10 +418,10 @@ steps:
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_unfiltered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
     cnvkit:
-        run: ../subworkflows/cram_to_cnvkit.cwl
+        run: ../tools/cnvkit_batch.cwl
         in: 
-            normal_cram: tumor_alignment_and_qc/cram
-            tumor_cram: normal_alignment_and_qc/cram
+            tumor_bam: tumor_alignment_and_qc/bam
+            normal_bam: normal_alignment_and_qc/bam
             reference: reference
             bait_intervals: bait_intervals
         out:
@@ -425,11 +429,38 @@ steps:
     manta: 
         run: ../tools/manta_somatic.cwl
         in:
-            normal_bam: normal_alignment_and_qc/cram
-            tumor_bam: tumor_alignment_and_qc/cram
+            normal_bam: normal_alignment_and_qc/bam
+            tumor_bam: tumor_alignment_and_qc/bam
             reference: reference
             call_regions: manta_call_regions
             non_wgs: manta_non_wgs
             output_contigs: manta_output_contigs
         out:
             [diploid_variants, somatic_variants, all_candidates, small_candidates, tumor_only_variants]
+    tumor_bam_to_cram:
+        run: ../tools/bam_to_cram.cwl
+        in:
+            bam: tumor_alignment_and_qc/bam
+            reference: reference
+        out:
+            [cram]
+    tumor_index_cram:
+         run: ../tools/index_cram.cwl
+         in:
+            cram: tumor_bam_to_cram/cram
+         out:
+            [indexed_cram]
+    normal_bam_to_cram:
+        run: ../tools/bam_to_cram.cwl
+        in:
+            bam: normal_alignment_and_qc/bam
+            reference: reference
+        out:
+            [cram]
+    normal_index_cram:
+         run: ../tools/index_cram.cwl
+         in:
+            cram: normal_bam_to_cram/cram
+         out:
+            [indexed_cram]
+

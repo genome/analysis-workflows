@@ -43,9 +43,9 @@ inputs:
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
 outputs:
-    cram:
+    bam:
         type: File
-        outputSource: alignment/final_cram
+        outputSource: alignment/final_bam
     mark_duplicates_metrics:
         type: File
         outputSource: alignment/mark_duplicates_metrics_file
@@ -108,11 +108,11 @@ steps:
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
             bqsr_intervals: bqsr_intervals
-        out: [final_cram,mark_duplicates_metrics_file]
+        out: [final_bam,mark_duplicates_metrics_file]
     qc:
         run: ../subworkflows/qc_wgs.cwl
         in:
-            cram: alignment/final_cram
+            bam: alignment/final_bam
             reference: reference
             omni_vcf: omni_vcf
             intervals: intervals
