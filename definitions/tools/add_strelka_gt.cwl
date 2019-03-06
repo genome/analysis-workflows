@@ -5,7 +5,9 @@ class: CommandLineTool
 label: "add GT tags"
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/cle:v1.3.1"
+    - class: ResourceRequirement
+      ramMin: 4000
 arguments: [
     "/usr/bin/perl", "/usr/bin/add_strelka_gt.pl",
     $(inputs.vcf.path), $(runtime.outdir)

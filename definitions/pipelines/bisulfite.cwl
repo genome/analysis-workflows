@@ -72,9 +72,10 @@ steps:
         out:
             [vcf]
     vcf2bed:
-        run: ../tools/vcf2bed.cwl
+        run: ../tools/bisulfite_vcf2bed.cwl
         in:
             vcf: pileup/vcf
+            reference: reference_index
         out:
             [cpgs,cpg_bedgraph]
     bedgraph_to_bigwig:

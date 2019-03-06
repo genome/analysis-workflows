@@ -8,9 +8,9 @@ arguments:
     ["O=", { valueFrom: $(runtime.outdir)/WgsMetrics.txt }]
 requirements:
     - class: ResourceRequirement
-      ramMin: 16000
+      ramMin: 18000
     - class: DockerRequirement
-      dockerPull: mgibio/cle
+      dockerPull: mgibio/cle:v1.3.1
 inputs:
     cram:
         type: File

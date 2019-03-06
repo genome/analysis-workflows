@@ -10,12 +10,14 @@ requirements:
       coresMin: 8
       ramMin: 40000
     - class: DockerRequirement
-      dockerPull: "mgibio/mark_duplicates-cwl:1.0.0"
+      dockerPull: "mgibio/mark_duplicates-cwl:1.0.1"
 arguments:
     - position: 2
       valueFrom: $(runtime.cores)
     - position: 3
       valueFrom: $(runtime.outdir)/MarkedSorted.bam
+    - position: 4
+      valueFrom: "$(inputs.bam.nameroot).mark_dups_metrics.txt"
 inputs:
     bam:
         type: File
@@ -30,4 +32,4 @@ outputs:
     metrics_file:
         type: File
         outputBinding:
-            glob: "mark_dups_metrics.txt"
+            glob: "$(inputs.bam.nameroot).mark_dups_metrics.txt"

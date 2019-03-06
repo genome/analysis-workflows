@@ -9,10 +9,10 @@ arguments: [
 ]
 requirements:
     - class: ResourceRequirement
-      ramMin: 16000
+      ramMin: 64000
       tmpdirMin: 100000
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/cle:v1.3.1"
 inputs:
     tumor_cram:
         type: File

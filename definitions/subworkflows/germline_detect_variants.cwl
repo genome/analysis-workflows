@@ -23,18 +23,19 @@ inputs:
     contamination_fraction:
         type: string?
     vep_cache_dir:
-        type: string?
+        type: string
     synonyms_file:
         type: File?
     coding_only:
-        type: boolean?
-    hgvs_annotation:
         type: boolean?
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
     limit_variant_intervals:
         type: File
+    custom_clinvar_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
 outputs:
     gvcf:
         type: File[]
@@ -80,9 +81,9 @@ steps:
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: coding_only
-            hgvs: hgvs_annotation
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
+            custom_clinvar_vcf: custom_clinvar_vcf
         out:
             [annotated_vcf, vep_summary]
     bgzip_annotated_vcf:

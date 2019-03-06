@@ -2,14 +2,14 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "Biscuit vcf2bed wrapper"
+label: "convert a biscuit pileup vcf to a bed and bedgraph file, via a wrapper script"
 baseCommand: ["/usr/bin/bsvcf2bed"]
 requirements:
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: 2
     - class: DockerRequirement
-      dockerPull: "mgibio/bisulfite"
+      dockerPull: "mgibio/bisulfite:v1.3"
 #Creates a gzipped bed and a bedgraph that leaves out MT, random, GL contigs, etc
 arguments: [
     "$(runtime.outdir)/cpgs.bed.gz",
@@ -18,6 +18,10 @@ arguments: [
 inputs:
     vcf:
         type: File
+        inputBinding:
+            position: -2
+    reference:
+        type: string
         inputBinding:
             position: -1
 outputs:

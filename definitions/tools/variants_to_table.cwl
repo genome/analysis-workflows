@@ -30,6 +30,7 @@ inputs:
         items: string
         inputBinding:
             prefix: "-F"
+      default: ['CHROM','POS','ID','REF','ALT','set']
       inputBinding:
         position: 3
     genotype_fields:
@@ -38,6 +39,7 @@ inputs:
         items: string
         inputBinding:
             prefix: "-GF"
+      default: ['GT','AD','DP','AF']
       inputBinding:
         position: 4
 outputs:

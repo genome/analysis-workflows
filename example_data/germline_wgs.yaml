@@ -1,0 +1,47 @@
+---
+bams:
+- class: File
+  path: exome_workflow/2895499223.bam
+- class: File
+  path: exome_workflow/2895499237.bam
+bqsr_intervals: ["chr17"]
+custom_gnomad_vcf:
+  class: File
+  path: exome_workflow/chr17_test_gnomADe.vcf.gz
+dbsnp_vcf:
+  class: File
+  path: exome_workflow/chr17_test_dbsnp.vcf.gz
+emit_reference_confidence: "GVCF"
+gvcf_gq_bands: []
+intervals: [["chr17"]]
+known_indels:
+  class: File
+  path: exome_workflow/chr17_test_known_indels.vcf.gz
+mills:
+  class: File
+  path: exome_workflow/chr17_test_mills.vcf.gz
+omni_vcf:
+  class: File
+  path: exome_workflow/chr17_test_omni.vcf.gz
+per_base_intervals:
+    [ {label: "chr17", file: { class: File, path: 'exome_workflow/chr17_test_target.interval_list' }} ]
+per_target_intervals:
+    [ {label: "chr17", file: { class: File, path: 'exome_workflow/chr17_test_target.interval_list' }} ]
+picard_metric_accumulation_level: ALL_READS
+qc_intervals:
+    class: File
+    path: exome_workflow/chr17_test_bait.interval_list
+reference: "/gscmnt/gc2764/cad/jgarza/pipeline_data/exome_workflow/chr17_test.fa"
+readgroups:
+- "@RG\tID:2895499223\tPU:H7HY2CCXX.3.ATCACGGT\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:Illumina\tCN:WUGSC"
+- "@RG\tID:2895499237\tPU:H7HY2CCXX.4.ATCACGGT\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:Illumina\tCN:WUGSC"
+summary_intervals:
+    [ {label: "genes", file: { class: File, path: 'exome_workflow/chr17_test_genes.interval_list' }} ]
+synonyms_file:
+  class: File
+  path: exome_workflow/chromAlias.ensembl.txt
+variant_reporting_intervals:
+    class: File
+    path: exome_workflow/chr17_test_genes.interval_list
+vep_cache_dir: /gscmnt/gc2764/cad/jgarza/shared/exome_workflow
+

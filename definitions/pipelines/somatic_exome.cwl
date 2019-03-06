@@ -4,6 +4,9 @@ cwlVersion: v1.0
 class: Workflow
 label: "exome alignment and somatic variant detection"
 requirements:
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/labelled_file.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
@@ -37,14 +40,12 @@ inputs:
         type: File
     target_intervals:
         type: File
-    per_target_intervals:
-        type: File
-    per_target_bait_intervals:
-        type: File
     per_base_intervals:
-        type: File
-    per_base_bait_intervals:
-        type: File
+        type: ../types/labelled_file.yml#labelled_file[]
+    per_target_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]
+    summary_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -71,6 +72,7 @@ inputs:
         type: int
     mutect_artifact_detection_mode:
         type: boolean
+        default: false
     mutect_max_alt_allele_in_normal_fraction:
         type: float?
     mutect_max_alt_alleles_in_normal_count:
@@ -96,12 +98,10 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     vep_cache_dir:
-        type: string?
+        type: string
     synonyms_file:
         type: File?
     annotate_coding_only:
-        type: boolean?
-    hgvs_annotation:
         type: boolean?
     vep_pick:
         type:
@@ -123,8 +123,17 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    output_dir: 
-        type: string
+    custom_clinvar_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
+    manta_call_regions:
+        type: File?
+        secondaryFiles: [.tbi]
+    manta_non_wgs:
+        type: boolean?
+        default: true
+    manta_output_contigs:
+        type: boolean?
 outputs:
     tumor_cram:
         type: File
@@ -142,17 +151,20 @@ outputs:
         type: File
         outputSource: tumor_alignment_and_qc/hs_metrics
     tumor_per_target_coverage_metrics:
-        type: File?
+        type: File[]
         outputSource: tumor_alignment_and_qc/per_target_coverage_metrics
     tumor_per_target_hs_metrics:
-        type: File?
+        type: File[]
         outputSource: tumor_alignment_and_qc/per_target_hs_metrics
     tumor_per_base_coverage_metrics:
-        type: File?
+        type: File[]
         outputSource: tumor_alignment_and_qc/per_base_coverage_metrics
     tumor_per_base_hs_metrics:
-        type: File?
+        type: File[]
         outputSource: tumor_alignment_and_qc/per_base_hs_metrics
+    tumor_summary_hs_metrics:
+        type: File[]
+        outputSource: tumor_alignment_and_qc/summary_hs_metrics
     tumor_flagstats:
         type: File
         outputSource: tumor_alignment_and_qc/flagstats
@@ -178,17 +190,20 @@ outputs:
         type: File
         outputSource: normal_alignment_and_qc/hs_metrics
     normal_per_target_coverage_metrics:
-        type: File?
+        type: File[]
         outputSource: normal_alignment_and_qc/per_target_coverage_metrics
     normal_per_target_hs_metrics:
-        type: File?
+        type: File[]
         outputSource: normal_alignment_and_qc/per_target_hs_metrics
     normal_per_base_coverage_metrics:
-        type: File?
+        type: File[]
         outputSource: normal_alignment_and_qc/per_base_coverage_metrics
     normal_per_base_hs_metrics:
-        type: File?
+        type: File[]
         outputSource: normal_alignment_and_qc/per_base_hs_metrics
+    normal_summary_hs_metrics:
+        type: File[]
+        outputSource: normal_alignment_and_qc/summary_hs_metrics
     normal_flagstats:
         type: File
         outputSource: normal_alignment_and_qc/flagstats
@@ -251,15 +266,72 @@ outputs:
     vep_summary:
         type: File
         outputSource: detect_variants/vep_summary
-    tumor_bam_readcount_tsv:
+    tumor_snv_bam_readcount_tsv:
         type: File
-        outputSource: detect_variants/tumor_bam_readcount_tsv
-    normal_bam_readcount_tsv:
+        outputSource: detect_variants/tumor_snv_bam_readcount_tsv
+    tumor_indel_bam_readcount_tsv:
         type: File
-        outputSource: detect_variants/normal_bam_readcount_tsv
-    final_outputs:
-        type: string[]
-        outputSource: gatherer/gathered_files
+        outputSource: detect_variants/tumor_indel_bam_readcount_tsv
+    normal_snv_bam_readcount_tsv:
+        type: File
+        outputSource: detect_variants/normal_snv_bam_readcount_tsv
+    normal_indel_bam_readcount_tsv:
+        type: File
+        outputSource: detect_variants/normal_indel_bam_readcount_tsv
+    intervals_antitarget:
+        type: File?
+        outputSource: cnvkit/intervals_antitarget
+    intervals_target:
+        type: File?
+        outputSource: cnvkit/intervals_target
+    normal_antitarget_coverage:
+        type: File
+        outputSource: cnvkit/normal_antitarget_coverage
+    normal_target_coverage:
+        type: File
+        outputSource: cnvkit/normal_target_coverage
+    reference_coverage:
+        type: File?
+        outputSource: cnvkit/reference_coverage
+    cn_diagram:
+        type: File?
+        outputSource: cnvkit/cn_diagram
+    cn_scatter_plot:
+        type: File?
+        outputSource: cnvkit/cn_scatter_plot
+    tumor_antitarget_coverage:
+        type: File
+        outputSource: cnvkit/tumor_antitarget_coverage
+    tumor_target_coverage:
+        type: File
+        outputSource: cnvkit/tumor_target_coverage
+    tumor_bin_level_ratios:
+        type: File
+        outputSource: cnvkit/tumor_bin_level_ratios
+    tumor_segmented_ratios:
+        type: File
+        outputSource: cnvkit/tumor_segmented_ratios
+    diploid_variants:
+        type: File?
+        outputSource: manta/diploid_variants
+        secondaryFiles: [.tbi]
+    somatic_variants:
+        type: File?
+        outputSource: manta/somatic_variants
+        secondaryFiles: [.tbi]
+    all_candidates:
+        type: File
+        outputSource: manta/all_candidates
+        secondaryFiles: [.tbi]
+    small_candidates:
+        type: File
+        outputSource: manta/small_candidates
+        secondaryFiles: [.tbi]
+    tumor_only_variants:
+        type: File?
+        outputSource: manta/tumor_only_variants
+        secondaryFiles: [.tbi]
+
 steps:
     tumor_alignment_and_qc:
         run: exome_alignment.cwl
@@ -273,17 +345,16 @@ steps:
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
-            per_target_intervals: per_target_intervals
-            per_target_bait_intervals: per_target_bait_intervals
             per_base_intervals: per_base_intervals
-            per_base_bait_intervals: per_base_bait_intervals
+            per_target_intervals: per_target_intervals
+            summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
             minimum_mapping_quality: qc_minimum_mapping_quality
             minimum_base_quality: qc_minimum_base_quality
             final_name: tumor_cram_name
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     normal_alignment_and_qc:
         run: exome_alignment.cwl
         in:
@@ -296,17 +367,16 @@ steps:
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
-            per_target_intervals: per_target_intervals
-            per_target_bait_intervals: per_target_bait_intervals
             per_base_intervals: per_base_intervals
-            per_base_bait_intervals: per_base_bait_intervals
+            per_target_intervals: per_target_intervals
+            summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
             minimum_mapping_quality: qc_minimum_mapping_quality
             minimum_base_quality: qc_minimum_base_quality
             final_name: normal_cram_name
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     detect_variants:
         run: detect_variants.cwl
         in:
@@ -334,44 +404,32 @@ steps:
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             annotate_coding_only: annotate_coding_only
-            hgvs_annotation: hgvs_annotation
             vep_pick: vep_pick
             cle_vcf_filter: cle_vcf_filter
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
             custom_gnomad_vcf: custom_gnomad_vcf
+            custom_clinvar_vcf: custom_clinvar_vcf
         out:
-            [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_unfiltered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv, normal_bam_readcount_tsv]
-    gatherer:
-        run: ../tools/gatherer.cwl
+            [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_unfiltered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
+    cnvkit:
+        run: ../subworkflows/cram_to_cnvkit.cwl
+        in: 
+            normal_cram: tumor_alignment_and_qc/cram
+            tumor_cram: normal_alignment_and_qc/cram
+            reference: reference
+            bait_intervals: bait_intervals
+        out:
+            [intervals_antitarget, intervals_target, normal_antitarget_coverage, normal_target_coverage, reference_coverage, cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios]
+    manta: 
+        run: ../tools/manta_somatic.cwl
         in:
-            output_dir: output_dir
-            all_files:
-                source: [tumor_alignment_and_qc/cram, tumor_alignment_and_qc/mark_duplicates_metrics, tumor_alignment_and_qc/insert_size_metrics, tumor_alignment_and_qc/alignment_summary_metrics, tumor_alignment_and_qc/hs_metrics, tumor_alignment_and_qc/per_target_coverage_metrics, tumor_alignment_and_qc/per_target_hs_metrics, tumor_alignment_and_qc/per_base_coverage_metrics, tumor_alignment_and_qc/per_base_hs_metrics, tumor_alignment_and_qc/flagstats, tumor_alignment_and_qc/verify_bam_id_metrics, tumor_alignment_and_qc/verify_bam_id_depth, normal_alignment_and_qc/cram, normal_alignment_and_qc/mark_duplicates_metrics, normal_alignment_and_qc/insert_size_metrics, normal_alignment_and_qc/alignment_summary_metrics, normal_alignment_and_qc/hs_metrics, normal_alignment_and_qc/per_target_coverage_metrics, normal_alignment_and_qc/per_target_hs_metrics, normal_alignment_and_qc/per_base_coverage_metrics, normal_alignment_and_qc/per_base_hs_metrics, normal_alignment_and_qc/flagstats, normal_alignment_and_qc/verify_bam_id_metrics, normal_alignment_and_qc/verify_bam_id_depth, detect_variants/mutect_unfiltered_vcf, detect_variants/mutect_filtered_vcf, detect_variants/strelka_unfiltered_vcf, detect_variants/strelka_filtered_vcf, detect_variants/varscan_unfiltered_vcf, detect_variants/varscan_filtered_vcf, detect_variants/pindel_unfiltered_vcf, detect_variants/pindel_filtered_vcf, detect_variants/docm_unfiltered_vcf, detect_variants/docm_filtered_vcf, detect_variants/final_vcf, detect_variants/final_filtered_vcf, detect_variants/final_tsv, detect_variants/vep_summary, detect_variants/tumor_bam_readcount_tsv, detect_variants/normal_bam_readcount_tsv]
-                valueFrom: ${
-                                function flatten(inArr, outArr) {
-                                    var arrLen = inArr.length;
-                                    for (var i = 0; i < arrLen; i++) {
-                                        if (Array.isArray(inArr[i])) {
-                                            flatten(inArr[i], outArr);
-                                        }
-                                        else {
-                                            outArr.push(inArr[i]);
-                                        }
-                                    }
-                                    return outArr;
-                                }
-                                var no_secondaries = flatten(self, []);
-                                var all_files = []; 
-                                var arrLen = no_secondaries.length;
-                                for (var i = 0; i < arrLen; i++) {
-                                    all_files.push(no_secondaries[i]);
-                                    var secondaryLen = no_secondaries[i].secondaryFiles.length;
-                                    for (var j = 0; j < secondaryLen; j++) {
-                                        all_files.push(no_secondaries[i].secondaryFiles[j]);
-                                    }
-                                }
-                                return all_files;
-                            }
-        out: [gathered_files]
+            normal_bam: normal_alignment_and_qc/cram
+            tumor_bam: tumor_alignment_and_qc/cram
+            reference: reference
+            call_regions: manta_call_regions
+            non_wgs: manta_non_wgs
+            output_contigs: manta_output_contigs
+        out:
+            [diploid_variants, somatic_variants, all_candidates, small_candidates, tumor_only_variants]

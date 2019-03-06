@@ -9,9 +9,9 @@ arguments:
     ["OUTPUT=", { valueFrom: $(runtime.outdir)/downsampled.bam }]
 requirements:
     - class: ResourceRequirement
-      ramMin: 16000
+      ramMin: 18000
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/cle:v1.3.1"
 inputs:
     bam:
         type: File

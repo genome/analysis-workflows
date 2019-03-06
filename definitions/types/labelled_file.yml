@@ -1,0 +1,8 @@
+type: record
+name: labelled_file
+label: a file with a label
+fields:
+    label:
+        type: string
+    file:
+        type: File

@@ -8,7 +8,6 @@ requirements:
 inputs:
     detect_variants_vcf:
         type: File
-        secondaryFiles: ['.tbi']
     sample_name:
         type: string?
         default: 'TUMOR'
@@ -61,7 +60,7 @@ inputs:
         type: string?
     exclude_nas:
         type: boolean?
-    phased_proximal_variants_file:
+    phased_proximal_variants_vcf:
         type: File?
         secondaryFiles: ['.tbi']
     maximum_transcript_support_level:
@@ -82,7 +81,7 @@ inputs:
     trna_vaf:
         type: float?
     expn_val:
-        type: int?
+        type: float?
     net_chop_method:
         type:
             - "null"
@@ -92,7 +91,24 @@ inputs:
         type: float?
     netmhc_stab:
         type: boolean?
+    n_threads:
+        type: int?
+    variants_to_table_fields:
+        type: string[]?
+        default: [CHROM,POS,ID,REF,ALT]
+    variants_to_table_genotype_fields:
+        type: string[]?
+        default: [GT,AD,AF,DP,RAD,RAF,RDP,GX,TX]
+    vep_to_table_fields:
+        type: string[]?
+        default: [HGVSc,HGVSp]
 outputs:
+    annotated_vcf:
+        type: File?
+        outputSource: add_transcript_expression_data_to_vcf/annotated_expression_vcf
+    annotated_tsv:
+        type: File
+        outputSource: add_vep_fields_to_table/annotated_variants_tsv
     mhc_i_all_epitopes:
         type: File?
         outputSource: pvacseq/mhc_i_all_epitopes
@@ -122,7 +138,7 @@ outputs:
         outputSource: pvacseq/combined_ranked_epitopes
 steps:
     tumor_rna_bam_readcount:
-        run: ../tools/bam_readcount.cwl
+        run: ../subworkflows/bam_readcount.cwl
         in:
             vcf: detect_variants_vcf
             sample: sample_name
@@ -131,12 +147,13 @@ steps:
             min_base_quality: readcount_minimum_base_quality
             min_mapping_quality: readcount_minimum_mapping_quality
         out:
-            [bam_readcount_tsv]
+            [snv_bam_readcount_tsv, indel_bam_readcount_tsv, normalized_vcf]
     add_tumor_rna_bam_readcount_to_vcf:
-        run: ../tools/vcf_readcount_annotator.cwl
+        run: ../subworkflows/vcf_readcount_annotator.cwl
         in:
-            vcf: detect_variants_vcf
-            bam_readcount_tsv: tumor_rna_bam_readcount/bam_readcount_tsv
+            vcf: tumor_rna_bam_readcount/normalized_vcf
+            snv_bam_readcount_tsv: tumor_rna_bam_readcount/snv_bam_readcount_tsv
+            indel_bam_readcount_tsv: tumor_rna_bam_readcount/indel_bam_readcount_tsv
             data_type:
                 default: 'RNA'
             sample_name: sample_name
@@ -164,10 +181,16 @@ steps:
             sample_name: sample_name
         out:
             [annotated_expression_vcf]
+    index:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: add_transcript_expression_data_to_vcf/annotated_expression_vcf
+        out:
+            [indexed_vcf]
     pvacseq:
         run: ../tools/pvacseq.cwl
         in:
-            input_file: add_transcript_expression_data_to_vcf/annotated_expression_vcf
+            input_vcf: index/indexed_vcf
             sample_name: sample_name
             alleles: alleles
             prediction_algorithms: prediction_algorithms
@@ -180,7 +203,7 @@ steps:
             fasta_size: fasta_size
             downstream_sequence_length: downstream_sequence_length
             exclude_nas: exclude_nas
-            phased_proximal_variants_file: phased_proximal_variants_file
+            phased_proximal_variants_vcf: phased_proximal_variants_vcf
             maximum_transcript_support_level: maximum_transcript_support_level
             normal_cov: normal_cov
             tdna_cov: tdna_cov
@@ -192,6 +215,7 @@ steps:
             net_chop_method: net_chop_method
             net_chop_threshold: net_chop_threshold
             netmhc_stab: netmhc_stab
+            n_threads: n_threads
         out:
             [
                 mhc_i_all_epitopes,
@@ -204,3 +228,19 @@ steps:
                 combined_filtered_epitopes,
                 combined_ranked_epitopes,
             ]
+    variants_to_table:
+        run: ../tools/variants_to_table.cwl
+        in:
+            reference: reference_fasta
+            vcf: index/indexed_vcf
+            fields: variants_to_table_fields
+            genotype_fields: variants_to_table_genotype_fields
+        out:
+            [variants_tsv]
+    add_vep_fields_to_table:
+        run: ../tools/add_vep_fields_to_table.cwl
+        in:
+            vcf: index/indexed_vcf
+            vep_fields: vep_to_table_fields
+            tsv: variants_to_table/variants_tsv
+        out: [annotated_variants_tsv]

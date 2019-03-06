@@ -63,12 +63,10 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     vep_cache_dir:
-        type: string?
+        type: string
     synonyms_file:
         type: File?
     annotate_coding_only:
-        type: boolean?
-    hgvs_annotation:
         type: boolean?
     vep_pick:
         type:
@@ -84,6 +82,9 @@ inputs:
     cle_vcf_filter:
         type: boolean?
         default: false
+    filter_somatic_llr_threshold:
+        type: float?
+        default: 5
     variants_to_table_fields:
         type: string[]?
         default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
@@ -94,6 +95,9 @@ inputs:
         type: string[]?
         default: [HGVSc,HGVSp]
     custom_gnomad_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
+    custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
 outputs:
@@ -150,12 +154,18 @@ outputs:
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
-    tumor_bam_readcount_tsv:
+    tumor_snv_bam_readcount_tsv:
         type: File
-        outputSource: tumor_bam_readcount/bam_readcount_tsv
-    normal_bam_readcount_tsv:
+        outputSource: tumor_bam_readcount/snv_bam_readcount_tsv
+    tumor_indel_bam_readcount_tsv:
         type: File
-        outputSource: normal_bam_readcount/bam_readcount_tsv
+        outputSource: tumor_bam_readcount/indel_bam_readcount_tsv
+    normal_snv_bam_readcount_tsv:
+        type: File
+        outputSource: normal_bam_readcount/snv_bam_readcount_tsv
+    normal_indel_bam_readcount_tsv:
+        type: File
+        outputSource: normal_bam_readcount/indel_bam_readcount_tsv
 steps:
     mutect:
         run: ../subworkflows/mutect.cwl
@@ -229,17 +239,23 @@ steps:
             docm_vcf: docm/filtered_vcf
         out:
             [combined_vcf]
+    decompose:
+        run: ../tools/vt_decompose.cwl
+        in:
+            vcf: combine/combined_vcf
+        out:
+            [decomposed_vcf]
     annotate_variants:
         run: ../tools/vep.cwl
         in:
-            vcf: combine/combined_vcf
+            vcf: decompose/decomposed_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only
-            hgvs: hgvs_annotation
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
+            custom_clivnar_vcf: custom_clinvar_vcf
         out:
             [annotated_vcf, vep_summary]
     tumor_cram_to_bam:
@@ -259,7 +275,7 @@ steps:
     tumor_bam_readcount:
         run: ../tools/bam_readcount.cwl
         in:
-            vcf: combine/combined_vcf
+            vcf: annotate_variants/annotated_vcf
             sample:
                 default: 'TUMOR'
             reference_fasta: reference
@@ -267,11 +283,11 @@ steps:
             min_base_quality: readcount_minimum_base_quality
             min_mapping_quality: readcount_minimum_mapping_quality
         out:
-            [bam_readcount_tsv]
+            [snv_bam_readcount_tsv, indel_bam_readcount_tsv]
     normal_bam_readcount:
         run: ../tools/bam_readcount.cwl
         in:
-            vcf: combine/combined_vcf
+            vcf: annotate_variants/annotated_vcf
             sample:
                 default: 'NORMAL'
             reference_fasta: reference
@@ -279,12 +295,13 @@ steps:
             min_base_quality: readcount_minimum_base_quality
             min_mapping_quality: readcount_minimum_mapping_quality
         out:
-            [bam_readcount_tsv]
+            [snv_bam_readcount_tsv, indel_bam_readcount_tsv]
     add_tumor_bam_readcount_to_vcf:
-        run: ../tools/vcf_readcount_annotator.cwl
+        run: ../subworkflows/vcf_readcount_annotator.cwl
         in:
             vcf: annotate_variants/annotated_vcf
-            bam_readcount_tsv: tumor_bam_readcount/bam_readcount_tsv
+            snv_bam_readcount_tsv: tumor_bam_readcount/snv_bam_readcount_tsv
+            indel_bam_readcount_tsv: tumor_bam_readcount/indel_bam_readcount_tsv
             data_type:
                 default: 'DNA'
             sample_name:
@@ -292,10 +309,11 @@ steps:
         out:
             [annotated_bam_readcount_vcf]
     add_normal_bam_readcount_to_vcf:
-        run: ../tools/vcf_readcount_annotator.cwl
+        run: ../subworkflows/vcf_readcount_annotator.cwl
         in:
             vcf: add_tumor_bam_readcount_to_vcf/annotated_bam_readcount_vcf
-            bam_readcount_tsv: normal_bam_readcount/bam_readcount_tsv
+            snv_bam_readcount_tsv: normal_bam_readcount/snv_bam_readcount_tsv
+            indel_bam_readcount_tsv: normal_bam_readcount/indel_bam_readcount_tsv
             data_type:
                 default: 'DNA'
             sample_name:
@@ -314,6 +332,7 @@ steps:
             vcf: index/indexed_vcf
             filter_gnomADe_maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
             filter_mapq0_threshold: filter_mapq0_threshold
+            filter_somatic_llr_threshold: filter_somatic_llr_threshold
             tumor_bam: tumor_cram_to_bam/bam
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference

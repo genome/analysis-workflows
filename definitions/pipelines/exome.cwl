@@ -4,6 +4,9 @@ cwlVersion: v1.0
 class: Workflow
 label: "exome alignment and tumor-only variant detection"
 requirements:
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/labelled_file.yml
     - class: SubworkflowFeatureRequirement
 inputs:
     reference: string
@@ -26,14 +29,12 @@ inputs:
         type: File
     target_intervals:
         type: File
-    per_target_intervals:
-        type: File
-    per_target_bait_intervals:
-        type: File
     per_base_intervals:
-        type: File
-    per_base_bait_intervals:
-        type: File
+        type: ../types/labelled_file.yml#labelled_file[]
+    per_target_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]
+    summary_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -58,13 +59,10 @@ inputs:
         type: float?
         default: 0.001
     vep_cache_dir:
-        type: string?
+        type: string
     synonyms_file:
         type: File?
     annotate_coding_only:
-        type: boolean?
-        default: true
-    hgvs_annotation:
         type: boolean?
         default: true
     vep_pick:
@@ -117,17 +115,20 @@ outputs:
         type: File
         outputSource: alignment_and_qc/hs_metrics
     per_target_coverage_metrics:
-        type: File?
+        type: File[]
         outputSource: alignment_and_qc/per_target_coverage_metrics
     per_target_hs_metrics:
-        type: File?
+        type: File[]
         outputSource: alignment_and_qc/per_target_hs_metrics
     per_base_coverage_metrics:
-        type: File?
+        type: File[]
         outputSource: alignment_and_qc/per_base_coverage_metrics
     per_base_hs_metrics:
-        type: File?
+        type: File[]
         outputSource: alignment_and_qc/per_base_hs_metrics
+    summary_hs_metrics:
+        type: File[]
+        outputSource: alignment_and_qc/summary_hs_metrics
     flagstats:
         type: File
         outputSource: alignment_and_qc/flagstats
@@ -158,9 +159,12 @@ outputs:
     vep_summary:
         type: File
         outputSource: detect_variants/vep_summary
-    tumor_bam_readcount_tsv:
+    tumor_snv_bam_readcount_tsv:
         type: File
-        outputSource: detect_variants/tumor_bam_readcount_tsv
+        outputSource: detect_variants/tumor_snv_bam_readcount_tsv
+    tumor_indel_bam_readcount_tsv:
+        type: File
+        outputSource: detect_variants/tumor_indel_bam_readcount_tsv
 steps:
     alignment_and_qc:
         run: exome_alignment.cwl
@@ -174,16 +178,15 @@ steps:
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
-            per_target_intervals: per_target_intervals
-            per_target_bait_intervals: per_target_bait_intervals
             per_base_intervals: per_base_intervals
-            per_base_bait_intervals: per_base_bait_intervals
+            per_target_intervals: per_target_intervals
+            summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
             qc_minimum_mapping_quality: qc_minimum_mapping_quality
             qc_minimum_base_quality: qc_minimum_base_quality
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     detect_variants:
         run: tumor_only_detect_variants.cwl
         in:
@@ -204,9 +207,8 @@ steps:
             vep_to_table_fields: vep_to_table_fields
             sample_name: sample_name
             docm_vcf: docm_vcf
-            hgvs_annotation: hgvs_annotation
             custom_gnomad_vcf: custom_gnomad_vcf
             readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
             readcount_minimum_base_quality: readcount_minimum_base_quality
         out:
-            [varscan_vcf, docm_gatk_vcf, annotated_vcf, final_vcf, final_tsv, vep_summary, tumor_bam_readcount_tsv]
+            [varscan_vcf, docm_gatk_vcf, annotated_vcf, final_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv]

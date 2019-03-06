@@ -13,7 +13,7 @@ requirements:
       ramMin: 12000
       coresMin: 8
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/cle:v1.3.1"
 inputs:
     bam:
         type: File

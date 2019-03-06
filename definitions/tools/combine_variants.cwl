@@ -6,10 +6,10 @@ label: "CombineVariants (GATK 3.6)"
 baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "CombineVariants"]
 requirements:
     - class: ResourceRequirement
-      ramMin: 8000
+      ramMin: 9000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: mgibio/cle
+      dockerPull: mgibio/cle:v1.3.1
 arguments:
     ["-genotypeMergeOptions", "PRIORITIZE",
      "--rod_priority_list", "mutect,varscan,strelka,pindel,docm",
