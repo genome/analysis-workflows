@@ -6,7 +6,9 @@ label: "vcf merge"
 baseCommand: ["/opt/bcftools/bin/bcftools", "concat"]
 requirements:
     - class: DockerRequirement
-      dockerPull: mgibio/cle
+      dockerPull: mgibio/cle:v1.3.1
+    - class: ResourceRequirement
+      ramMin: 4000
 arguments:
     - "--allow-overlaps"
     - "--remove-duplicates"

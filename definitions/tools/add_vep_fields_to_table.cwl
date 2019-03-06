@@ -8,6 +8,8 @@ baseCommand: ["vep-annotation-reporter"]
 requirements:
     - class: DockerRequirement
       dockerPull: "griffithlab/vatools:3.0.0"
+    - class: ResourceRequirement
+      ramMin: 4000
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/variants.annotated.tsv }]
 inputs:

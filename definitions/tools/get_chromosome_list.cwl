@@ -8,6 +8,8 @@ requirements:
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
       dockerPull: "ubuntu:xenial"
+    - class: ResourceRequirement
+      ramMin: 4000
 stdout: "chromosome.list"
 inputs:
     interval_list:

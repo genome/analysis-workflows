@@ -8,7 +8,6 @@ requirements:
 inputs:
     detect_variants_vcf:
         type: File
-        secondaryFiles: ['.tbi']
     sample_name:
         type: string?
         default: 'TUMOR'
@@ -82,7 +81,7 @@ inputs:
     trna_vaf:
         type: float?
     expn_val:
-        type: int?
+        type: float?
     net_chop_method:
         type:
             - "null"
@@ -92,7 +91,24 @@ inputs:
         type: float?
     netmhc_stab:
         type: boolean?
+    n_threads:
+        type: int?
+    variants_to_table_fields:
+        type: string[]?
+        default: [CHROM,POS,ID,REF,ALT]
+    variants_to_table_genotype_fields:
+        type: string[]?
+        default: [GT,AD,AF,DP,RAD,RAF,RDP,GX,TX]
+    vep_to_table_fields:
+        type: string[]?
+        default: [HGVSc,HGVSp]
 outputs:
+    annotated_vcf:
+        type: File?
+        outputSource: add_transcript_expression_data_to_vcf/annotated_expression_vcf
+    annotated_tsv:
+        type: File
+        outputSource: add_vep_fields_to_table/annotated_variants_tsv
     mhc_i_all_epitopes:
         type: File?
         outputSource: pvacseq/mhc_i_all_epitopes
@@ -165,10 +181,16 @@ steps:
             sample_name: sample_name
         out:
             [annotated_expression_vcf]
+    index:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: add_transcript_expression_data_to_vcf/annotated_expression_vcf
+        out:
+            [indexed_vcf]
     pvacseq:
         run: ../tools/pvacseq.cwl
         in:
-            input_file: add_transcript_expression_data_to_vcf/annotated_expression_vcf
+            input_vcf: index/indexed_vcf
             sample_name: sample_name
             alleles: alleles
             prediction_algorithms: prediction_algorithms
@@ -193,6 +215,7 @@ steps:
             net_chop_method: net_chop_method
             net_chop_threshold: net_chop_threshold
             netmhc_stab: netmhc_stab
+            n_threads: n_threads
         out:
             [
                 mhc_i_all_epitopes,
@@ -205,3 +228,19 @@ steps:
                 combined_filtered_epitopes,
                 combined_ranked_epitopes,
             ]
+    variants_to_table:
+        run: ../tools/variants_to_table.cwl
+        in:
+            reference: reference_fasta
+            vcf: index/indexed_vcf
+            fields: variants_to_table_fields
+            genotype_fields: variants_to_table_genotype_fields
+        out:
+            [variants_tsv]
+    add_vep_fields_to_table:
+        run: ../tools/add_vep_fields_to_table.cwl
+        in:
+            vcf: index/indexed_vcf
+            vep_fields: vep_to_table_fields
+            tsv: variants_to_table/variants_tsv
+        out: [annotated_variants_tsv]

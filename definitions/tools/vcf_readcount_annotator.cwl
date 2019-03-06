@@ -8,6 +8,8 @@ baseCommand: ["vcf-readcount-annotator"]
 requirements:
     - class: DockerRequirement
       dockerPull: "griffithlab/vatools:3.0.0"
+    - class: ResourceRequirement
+      ramMin: 4000
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/annotated.bam_readcount.vcf.gz }]
 inputs:

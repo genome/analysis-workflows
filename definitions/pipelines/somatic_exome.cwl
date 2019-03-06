@@ -123,6 +123,17 @@ inputs:
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    custom_clinvar_vcf:
+        type: File?
+        secondaryFiles: [.tbi]
+    manta_call_regions:
+        type: File?
+        secondaryFiles: [.tbi]
+    manta_non_wgs:
+        type: boolean?
+        default: true
+    manta_output_contigs:
+        type: boolean?
 outputs:
     tumor_cram:
         type: File
@@ -300,6 +311,27 @@ outputs:
     tumor_segmented_ratios:
         type: File
         outputSource: cnvkit/tumor_segmented_ratios
+    diploid_variants:
+        type: File?
+        outputSource: manta/diploid_variants
+        secondaryFiles: [.tbi]
+    somatic_variants:
+        type: File?
+        outputSource: manta/somatic_variants
+        secondaryFiles: [.tbi]
+    all_candidates:
+        type: File
+        outputSource: manta/all_candidates
+        secondaryFiles: [.tbi]
+    small_candidates:
+        type: File
+        outputSource: manta/small_candidates
+        secondaryFiles: [.tbi]
+    tumor_only_variants:
+        type: File?
+        outputSource: manta/tumor_only_variants
+        secondaryFiles: [.tbi]
+
 steps:
     tumor_alignment_and_qc:
         run: exome_alignment.cwl
@@ -378,6 +410,7 @@ steps:
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
             custom_gnomad_vcf: custom_gnomad_vcf
+            custom_clinvar_vcf: custom_clinvar_vcf
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_unfiltered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
     cnvkit:
@@ -389,3 +422,14 @@ steps:
             bait_intervals: bait_intervals
         out:
             [intervals_antitarget, intervals_target, normal_antitarget_coverage, normal_target_coverage, reference_coverage, cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios]
+    manta: 
+        run: ../tools/manta_somatic.cwl
+        in:
+            normal_bam: normal_alignment_and_qc/cram
+            tumor_bam: tumor_alignment_and_qc/cram
+            reference: reference
+            call_regions: manta_call_regions
+            non_wgs: manta_non_wgs
+            output_contigs: manta_output_contigs
+        out:
+            [diploid_variants, somatic_variants, all_candidates, small_candidates, tumor_only_variants]

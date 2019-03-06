@@ -4,22 +4,31 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "run pVACseq"
 
-baseCommand: ["pvacseq", "run"]
+baseCommand: [
+    "ln", "-s"
+]
+arguments: [
+    { valueFrom: "$TMPDIR", shellQuote: false },
+    "/tmp/pvacseq",
+    { valueFrom: " && ", shellQuote: false },
+    "export", "TMPDIR=/tmp/pvacseq",
+    { valueFrom: " && ", shellQuote: false },
+    "/opt/conda/bin/pvacseq", "run",
+    "--iedb-install-directory", "/opt/iedb",
+    "--pass-only",
+    { position: 5, valueFrom: $(runtime.outdir) },
+]
 requirements:
+    - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:1.2.0"
-arguments:
-    - position: 5
-      valueFrom: $(runtime.outdir)
-    - position: 6
-      valueFrom: "--iedb-install-directory"
-    - position: 7
-      valueFrom: "/opt/iedb"
-    - position: 8
-      valueFrom: "--pass-only"
+      dockerPull: "griffithlab/pvactools:1.3.2"
+    - class: ResourceRequirement
+      ramMin: 16000
+      coresMin: 8
 inputs:
-    input_file:
+    input_vcf:
         type: File
+        secondaryFiles: ['.tbi']
         inputBinding:
             position: 1
     sample_name:
@@ -63,7 +72,6 @@ inputs:
         type: int?
         inputBinding:
             prefix: "-l"
-        default: 21
     normal_sample_name:
         type: string?
         inputBinding:
@@ -143,7 +151,7 @@ inputs:
         inputBinding:
             prefix: "--trna-vaf"
     expn_val:
-        type: int?
+        type: float?
         inputBinding:
             prefix: "--expn-val"
     maximum_transcript_support_level:
@@ -153,14 +161,11 @@ inputs:
               symbols: ["1", "2", "3", "4", "5"]
         inputBinding:
             prefix: "--maximum-transcript-support-level"
-    pass_only:
-        type: boolean?
-        inputBinding:
-            prefix: "--pass-only"
     n_threads:
         type: int?
         inputBinding:
             prefix: "--n-threads"
+        default: 8
 outputs:
     mhc_i_all_epitopes:
         type: File?
