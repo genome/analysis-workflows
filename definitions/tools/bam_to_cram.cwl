@@ -9,7 +9,7 @@ requirements:
       dockerPull: "mgibio/samtools-cwl:1.0.0"
     - class: ResourceRequirement
       ramMin: 4000
-stdout: $(inputs.name)
+stdout: "$(inputs.bam.nameroot).cram"
 inputs:
     reference:
         type: string
@@ -20,9 +20,6 @@ inputs:
         type: File
         inputBinding:
             position: 2
-    name:
-        type: string?
-        default: 'final.cram'
 outputs:
     cram:
         type: stdout
