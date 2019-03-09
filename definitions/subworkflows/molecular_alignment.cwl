@@ -25,7 +25,7 @@ outputs:
     grouped_cram:
         type: File
         secondaryFiles: [.crai, ^.crai]
-        outputSource: grouped_index_cram/grouped_indexed_cram
+        outputSource: grouped_index_cram/indexed_cram
     adapter_histogram:
         type: File[]
         outputSource: align/adapter_metrics
@@ -87,7 +87,7 @@ steps:
             bam: group_reads_by_umi/grouped_bam
             reference: reference
         out:
-            [grouped_clipped_bam]
+            [clipped_bam]
     collect_duplex_seq_metrics:
        run: ../tools/duplex_seq_metrics.cwl
        in:
@@ -99,16 +99,16 @@ steps:
     grouped_bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
-            bam: grouped_clip_overlap/grouped_clipped_bam
+            bam: grouped_clip_overlap/clipped_bam
             reference: reference
         out:
-            [grouped_cram]
+            [cram]
     grouped_index_cram:
         run: ../tools/index_cram.cwl
         in: 
-            cram: grouped_bam_to_cram/grouped_cram
+            cram: grouped_bam_to_cram/cram
         out:
-            [grouped_indexed_cram]
+            [indexed_cram]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
