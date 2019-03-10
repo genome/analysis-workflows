@@ -22,7 +22,6 @@ inputs:
         type: File
     cnvkit_vcf_name:
         type: string?
-        default: $(inputs.tumor_bam.nameroot).cnvkit.vcf
 outputs:
     cn_diagram:
         type: File?
@@ -67,5 +66,6 @@ steps:
             male_reference: male_reference
             cnr_file: cnvkit_main/tumor_bin_level_ratios
             output_name: cnvkit_vcf_name
+            tumor_bam: tumor_bam
         out:
             [cnvkit_vcf]
