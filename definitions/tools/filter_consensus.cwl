@@ -5,10 +5,7 @@ class: CommandLineTool
 label: 'filter consensus reads'
 baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/fgbio-0.5.0.jar", "FilterConsensusReads"]
 arguments:
-    ["--min-reads", "10", "5", "3", "--max-read-error-rate", "0.05",
-    "--max-base-error-rate", "0.1", "--min-base-quality", "50",
-    "--max-no-call-fraction", "0.05",
-    "--output", { valueFrom: "$(runtime.outdir)/consensus_filtered.bam"} ]
+    [ "--output", { valueFrom: "$(runtime.outdir)/consensus_filtered.bam"} ]
 requirements:
     - class: ResourceRequirement
       ramMin: 6000
@@ -24,6 +21,27 @@ inputs:
         type: string
         inputBinding:
             prefix: "--ref"
+    min_reads:
+        type: int[]
+        inputBinding:
+            itemSeparator: ' '
+            prefix: "--min-reads"
+    max_read_error_rate:
+        type: float?
+        inputBinding:
+            prefix: "--max-read-error-rate"
+    max_base_error_rate:
+        type: float?
+        inputBinding:
+            prefix: "--max-base-error-rate"
+    min_base_quality:
+        type: int
+        inputBinding:
+            prefix: "--min-base-quality"
+    max_no_call_fraction:
+        type: float?
+        inputBinding:
+            prefix: "--max-no-call-fraction"
 outputs:
     filtered_bam:
         type: File
