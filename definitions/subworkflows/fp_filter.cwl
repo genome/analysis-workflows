@@ -6,9 +6,9 @@ label: "fp_filter workflow"
 requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
-    cram:
+    bam:
         type: File
-        secondaryFiles: [.crai,^.crai]
+        secondaryFiles: [.bai,^.bai]
     reference:
         type: string
     vcf:
@@ -30,13 +30,6 @@ outputs:
         outputSource: hard_filter/filtered_vcf
         secondaryFiles: [.tbi]
 steps:
-    cram_to_bam:
-        run: cram_to_bam_and_index.cwl
-        in:
-            cram: cram
-            reference: reference
-        out:
-            [bam]
     normalize_variants:
         run: ../tools/normalize_variants.cwl
         in:
@@ -60,7 +53,7 @@ steps:
         run: ../tools/fp_filter.cwl
         in:
             reference: reference
-            bam: cram_to_bam/bam
+            bam: bam
             vcf: index/indexed_vcf
             sample_name: sample_name
             min_var_freq: min_var_freq

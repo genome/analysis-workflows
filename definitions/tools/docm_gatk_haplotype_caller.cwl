@@ -18,18 +18,18 @@ inputs:
         inputBinding:
             prefix: "-R"
             position: 1
-    normal_cram:
+    normal_bam:
         type: File?
         inputBinding:
             prefix: "-I"
             position: 2
-        secondaryFiles: [^.crai]
-    cram:
+        secondaryFiles: [^.bai]
+    bam:
         type: File
         inputBinding:
             prefix: "-I"
             position: 3
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.bai]
     docm_vcf:
         type: File
         inputBinding:

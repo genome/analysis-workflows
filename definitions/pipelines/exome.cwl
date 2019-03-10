@@ -98,7 +98,7 @@ inputs:
 outputs:
     cram:
         type: File
-        outputSource: alignment_and_qc/cram
+        outputSource: index_cram/indexed_cram
     mark_duplicates_metrics:
         type: File
         outputSource: alignment_and_qc/mark_duplicates_metrics
@@ -186,12 +186,12 @@ steps:
             qc_minimum_mapping_quality: qc_minimum_mapping_quality
             qc_minimum_base_quality: qc_minimum_base_quality
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [bam, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     detect_variants:
         run: tumor_only_detect_variants.cwl
         in:
             reference: reference
-            cram: alignment_and_qc/cram
+            bam: alignment_and_qc/bam
             interval_list: target_intervals
             varscan_strand_filter: varscan_strand_filter
             varscan_min_coverage: varscan_min_coverage
@@ -212,3 +212,16 @@ steps:
             readcount_minimum_base_quality: readcount_minimum_base_quality
         out:
             [varscan_vcf, docm_gatk_vcf, annotated_vcf, final_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv]
+    bam_to_cram:
+        run: ../tools/bam_to_cram.cwl
+        in:
+            bam: alignment_and_qc/bam
+            reference: reference
+        out:
+            [cram]
+    index_cram:
+         run: ../tools/index_cram.cwl
+         in:
+            cram: bam_to_cram/cram
+         out:
+            [indexed_cram]

@@ -8,12 +8,12 @@ requirements:
 inputs:
     reference:
         type: string
-    tumor_cram:
+    tumor_bam:
         type: File
-        secondaryFiles: [^.crai]
-    normal_cram:
+        secondaryFiles: [^.bai]
+    normal_bam:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.bai]
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -32,8 +32,8 @@ steps:
         run: ../tools/docm_gatk_haplotype_caller.cwl
         in:
             reference: reference
-            cram: tumor_cram
-            normal_cram: normal_cram
+            bam: tumor_bam
+            normal_bam: normal_bam
             docm_vcf: docm_vcf
             interval_list: interval_list
         out:
@@ -42,8 +42,8 @@ steps:
         run: ../tools/somatic_docm_filter.cwl
         in:
             docm_out: GATK_haplotype_caller/docm_out
-            normal_cram: normal_cram
-            tumor_cram: tumor_cram
+            normal_bam: normal_bam
+            tumor_bam: tumor_bam
         out:
             [docm_filter_out]
     bgzip:

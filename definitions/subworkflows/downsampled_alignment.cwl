@@ -27,10 +27,10 @@ inputs:
     downsample_probability:
         type: float
 outputs:
-    cram:
+    bam:
         type: File
-        outputSource: align_workflow/final_cram
-        secondaryFiles: [.crai, ^.crai]
+        outputSource: align_workflow/final_bam
+        secondaryFiles: [.bai, ^.bai]
     mark_duplicates_metrics_file:
         type: File
         outputSource: align_workflow/mark_duplicates_metrics_file
@@ -55,4 +55,4 @@ steps:
             mills: mills
             known_indels: known_indels
         out:
-            [final_cram,mark_duplicates_metrics_file]
+            [final_bam,mark_duplicates_metrics_file]

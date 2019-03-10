@@ -6,7 +6,9 @@ label: "samtools index"
 arguments: [
     "cp", $(inputs.bam.path), "$(runtime.outdir)/$(inputs.bam.basename)",
     { valueFrom: " && ", shellQuote: false },
-    "/opt/samtools/bin/samtools", "index", $(inputs.bam.path), "$(runtime.outdir)/$(inputs.bam.basename).bai"
+    "/opt/samtools/bin/samtools", "index", $(inputs.bam.path), "$(runtime.outdir)/$(inputs.bam.basename).bai",
+    { valueFrom: " && ", shellQuote: false },
+    "ln", "-s", "$(inputs.bam.basename).bai", "$(runtime.outdir)/$(inputs.bam.nameroot).bai"
 ]
 requirements:
     - class: ShellCommandRequirement
@@ -20,6 +22,6 @@ inputs:
 outputs:
     indexed_bam:
         type: File
-        secondaryFiles: [.bai]
+        secondaryFiles: [.bai, ^.bai]
         outputBinding:
             glob: $(inputs.bam.basename)

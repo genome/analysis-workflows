@@ -8,9 +8,9 @@ requirements:
 inputs:
     reference:
         type: string
-    cram:
+    bam:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.bai]
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -29,7 +29,7 @@ steps:
         run: ../tools/docm_gatk_haplotype_caller.cwl
         in:
             reference: reference
-            cram: cram
+            bam: bam
             docm_vcf: docm_vcf
             interval_list: interval_list
         out:

@@ -10,9 +10,9 @@ requirements:
 inputs:
     reference:
         type: string
-    normal_crams:
+    normal_bams:
         type: File[]
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.bai]
     interval_list:
         type: File
     scatter_count:
@@ -30,12 +30,12 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     mutect:
-        scatter: tumor_cram
+        scatter: tumor_bam
         run: ../subworkflows/mutect.cwl
         in:
             reference: reference
-            tumor_cram: normal_crams
-            normal_cram:
+            tumor_bam: normal_bams
+            normal_bam:
                 default: null
             interval_list: interval_list
             scatter_count: scatter_count

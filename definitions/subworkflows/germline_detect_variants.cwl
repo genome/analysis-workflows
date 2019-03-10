@@ -8,7 +8,7 @@ requirements:
 inputs:
     reference:
         type: string
-    cram:
+    bam:
         type: File
     emit_reference_confidence:
         type: string
@@ -60,7 +60,7 @@ steps:
         run: gatk_haplotypecaller_iterator.cwl
         in:
             reference: reference
-            cram: cram
+            bam: bam
             emit_reference_confidence: emit_reference_confidence
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
