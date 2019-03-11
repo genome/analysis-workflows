@@ -18,7 +18,7 @@ inputs:
     target_intervals:
        type: File?
     min_reads:
-       type: int
+       type: int[]
        default: [10, 5, 3]
     max_read_error_rate:
        type: float?

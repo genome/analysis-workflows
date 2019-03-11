@@ -18,8 +18,8 @@ inputs:
     target_intervals:
        type: File?
     min_reads:
-       type: int
-       default: 1
+       type: int[]
+       default: [1]
     max_read_error_rate:
        type: float?
        default: 0.05 
