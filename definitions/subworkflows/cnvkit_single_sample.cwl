@@ -70,15 +70,16 @@ steps:
             cnr_file: cnvkit_main/tumor_bin_level_ratios
             output_name: 
                 source: cnvkit_vcf_name
-                default: "default"
+                default: "."
                 valueFrom: |
                     ${  
-                        if(inputs.output_name != "default") {
+                        if(inputs.output_name != ".") {
                             return inputs.output_name;
                         }   
                         else {
                             return inputs.tumor_bam.nameroot + ".cnvkit.vcf"
                         }   
                     }
+            tumor_bam: tumor_bam
         out:
             [cnvkit_vcf]
