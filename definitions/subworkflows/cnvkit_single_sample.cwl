@@ -70,10 +70,9 @@ steps:
             cnr_file: cnvkit_main/tumor_bin_level_ratios
             output_name: 
                 source: cnvkit_vcf_name
-                default: "."
                 valueFrom: |
                     ${  
-                        if(inputs.output_name != ".") {
+                        if(inputs.output_name) {
                             return inputs.output_name;
                         }   
                         else {
