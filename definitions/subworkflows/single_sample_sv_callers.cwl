@@ -80,7 +80,6 @@ outputs:
     smoove_output_variants:
         type: File
         outputSource: run_smoove/output_vcf
-
 steps:
     run_cnvkit:
         run: cnvkit_single_sample.cwl
@@ -115,4 +114,3 @@ steps:
             reference: reference
         out:
             [output_vcf]
-
