@@ -7,6 +7,7 @@ label: "Run SURVIVOR to merge SV calls"
 baseCommand: ["/bin/bash", "/usr/bin/survivor_merge_helper.sh"]
 
 requirements:
+    - class: InlineJavascriptRequirement
     - class: DockerRequirement
       dockerPull: "mgibio/survivor-cwl:1.0.6.1"
     - class: ResourceRequirement
@@ -31,20 +32,44 @@ inputs:
             position: 3
         doc: "Minimum number of sv calls needed to be merged"
     same_type:
-        type: int
+        type: boolean
         inputBinding:
             position: 4
-        doc: "Require merged SVs to be of the same type, 1=yes, 0=no"
+            valueFrom: |
+                ${
+                  if(inputs.same_type){
+                    return "1";
+                  } else {
+                    return "0";
+                  }
+                }
+        doc: "Require merged SVs to be of the same type"
     same_strand:
-        type: int
+        type: boolean
         inputBinding:
             position: 5
-        doc: "Require merged SVs to be on the same strand, 1=yes, 0=no"
+            valueFrom: |
+                ${
+                  if(inputs.same_strand){
+                    return "1";
+                  } else {
+                    return "0";
+                  }
+                }
+        doc: "Require merged SVs to be on the same strand"
     estimate_sv_distance:
-        type: int
+        type: boolean
         inputBinding:
             position: 6
-        doc: "Estimate distance based on the size of SV, 1=yes, 0=no"
+            valueFrom: |
+                ${
+                  if(inputs.estimate_sv_distance){
+                    return "1";
+                  } else {
+                    return "0";
+                  }
+                }
+        doc: "Estimate distance based on the size of SV"
     minimum_sv_size:
         type: int
         inputBinding:
