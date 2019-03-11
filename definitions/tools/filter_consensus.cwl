@@ -24,7 +24,6 @@ inputs:
     min_reads:
         type: int[]
         inputBinding:
-            itemSeparator: ' '
             prefix: "--min-reads"
     max_read_error_rate:
         type: float?
