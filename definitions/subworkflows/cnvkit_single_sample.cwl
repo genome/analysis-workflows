@@ -80,6 +80,5 @@ steps:
                             return inputs.tumor_bam.nameroot + ".cnvkit.vcf"
                         }   
                     }
-            tumor_bam: tumor_bam
         out:
             [cnvkit_vcf]
