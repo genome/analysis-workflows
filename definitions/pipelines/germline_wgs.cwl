@@ -89,6 +89,20 @@ inputs:
         type: boolean?
     smoove_exclude_regions:
         type: File?
+    merge_max_distance:
+        type: int
+    merge_min_svs:
+        type: int
+    merge_same_type:
+        type: boolean
+    merge_same_strand:
+        type: boolean
+    merge_estimate_sv_distance:
+        type: boolean
+    merge_min_sv_size:
+        type: int
+    merge_sv_pop_freq_db:
+        type: File
 outputs:
     cram:
         type: File
@@ -201,6 +215,9 @@ outputs:
     smoove_output_variants:
         type: File
         outputSource: variant_callers/smoove_output_variants
+    merged_annotated_svs:
+        type: File
+        outputSource: variant_callers/merged_annotated_svs
 steps:
     alignment_and_qc:
         run: wgs_alignment.cwl
@@ -281,8 +298,15 @@ steps:
             manta_non_wgs: manta_non_wgs
             manta_output_contigs: manta_output_contigs
             smoove_exclude_regions: smoove_exclude_regions
+            merge_max_distance: merge_max_distance
+            merge_min_svs: merge_min_svs
+            merge_same_type: merge_same_type
+            merge_same_strand: merge_same_strand
+            merge_estimate_sv_distance: merge_estimate_sv_distance
+            merge_min_sv_size: merge_min_sv_size
+            merge_sv_pop_freq_db: merge_sv_pop_freq_db
         out: 
-           [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf, manta_diploid_variants, manta_somatic_variants, manta_all_candidates, manta_small_candidates, manta_tumor_only_variants, smoove_output_variants] 
+           [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf, manta_diploid_variants, manta_somatic_variants, manta_all_candidates, manta_small_candidates, manta_tumor_only_variants, smoove_output_variants, merged_annotated_svs]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
