@@ -9,7 +9,6 @@ requirements:
 inputs:
     tumor_bam:
         type: File
-        secondaryFiles: [.bai]
     method:
         type: string?
         default: "hybrid"
