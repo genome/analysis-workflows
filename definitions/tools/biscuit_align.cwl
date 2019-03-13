@@ -15,16 +15,16 @@ requirements:
       listing:
       - entryname: 'biscuit_align.sh'
         entry: |
-            set -eo pipefail
+            set -eou pipefail
 
             cores=$1
-            outdir=$2
+            outdir="$2"
             read_group_id="$3"
-            reference_index=$4
-            fastq1=$5
-            fastq2=$6
+            reference_index="$4"
+            fastq1="$5"
+            fastq2="$6"
 
-            /usr/bin/biscuit align -t $cores -M -R "$read_group_id" $reference_index $fastq1 $fastq2 | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o $outdir/aligned.bam /dev/stdin
+            /usr/bin/biscuit align -t $cores -M -R "$read_group_id" "$reference_index" "$fastq1" "$fastq2" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o "$outdir/aligned.bam" /dev/stdin
 
 arguments: [
     { valueFrom: $(runtime.cores), position: -9 },

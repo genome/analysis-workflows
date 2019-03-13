@@ -19,14 +19,12 @@ requirements:
             set -eo pipefail
 
             cores=$1
-            statsfile_output=$2
-            reference_fasta=$3
-            bam=$4
+            reference_fasta="$2"
+            bam="$3"
             
-            /usr/bin/biscuit pileup -q $cores -w $statsfile_output $reference_fasta $bam | /opt/htslib/bin/bgzip
+            /usr/bin/biscuit pileup -q $cores -w pileup_stats.txt  "$reference_fasta" "$bam" | /opt/htslib/bin/bgzip
 arguments: [
     { valueFrom: $(runtime.cores), position: -9 },
-    { valueFrom: "pileup_stats.txt", position: -8 }
 ]
 inputs:
     bam:

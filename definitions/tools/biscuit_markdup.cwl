@@ -14,13 +14,13 @@ requirements:
       listing:
       - entryname: 'biscuit_markdup.sh'
         entry: |
-            set -eo pipefail
+            set -eou pipefail
 
             cores=$1
-            outdir=$2
-            bam=$3
+            outdir="$2"
+            bam="$3"
 
-            /usr/bin/biscuit markdup $bam /dev/stdout | /usr/bin/sambamba sort -t $cores -m 15G -o $outdir/markdup.bam /dev/stdin
+            /usr/bin/biscuit markdup "$bam" /dev/stdout | /usr/bin/sambamba sort -t $cores -m 15G -o "$outdir/markdup.bam" /dev/stdin
 arguments:
     [{ valueFrom: $(runtime.cores), position: -3},
     { valueFrom: $(runtime.outdir), position: -2}
