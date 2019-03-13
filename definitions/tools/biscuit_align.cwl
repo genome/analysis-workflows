@@ -5,7 +5,6 @@ class: CommandLineTool
 label: "Biscuit: align"
 baseCommand: ["/bin/bash","biscuit_align.sh"]
 requirements:
-    - class: ShellCommandRequirement
     - class: ResourceRequirement
       ramMin: 32000
       coresMin: 12

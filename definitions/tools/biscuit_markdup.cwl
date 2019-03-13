@@ -4,7 +4,6 @@ class: CommandLineTool
 label: "Biscuit dedup"
 baseCommand: ["/bin/bash", "biscuit_markdup.sh"]
 requirements:
-    - class: ShellCommandRequirement
     - class: ResourceRequirement
       ramMin: 24000
       coresMin: 4

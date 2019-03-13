@@ -6,7 +6,6 @@ label: "Biscuit pileup"
 baseCommand: ["/bin/bash", "helper.sh"]
 stdout: pileup.vcf.gz
 requirements:
-    - class: ShellCommandRequirement
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: 4
