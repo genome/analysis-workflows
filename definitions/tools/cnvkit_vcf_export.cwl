@@ -37,22 +37,9 @@ inputs:
             prefix: "--cnr"
     output_name:
         type: string
-        default: "default"
         inputBinding:
             position: 3
             prefix: "-o"
-            valueFrom: |
-                ${  
-                    if(inputs.output_name != "default") {
-                        return inputs.output_name;
-                    }   
-                    else {
-                        return inputs.tumor_bam.nameroot + ".cnvkit.vcf"
-                    }   
-                }   
-
-    tumor_bam:
-        type: File
 outputs:
     cnvkit_vcf:
         type: File
