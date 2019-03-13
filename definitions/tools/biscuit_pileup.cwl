@@ -11,7 +11,7 @@ requirements:
       ramMin: 16000
       coresMin: 4
     - class: DockerRequirement
-      dockerPull: "mgibio/bisulfite:v1.3"
+      dockerPull: "mgibio/biscuit:0.3.8"
     - class: InitialWorkDirRequirement
       listing:
       - entryname: 'helper.sh'

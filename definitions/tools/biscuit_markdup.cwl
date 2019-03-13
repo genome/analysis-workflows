@@ -1,21 +1,29 @@
 #!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Biscuit dedup"
-baseCommand: ["/usr/bin/biscuit", "markdup"]
+baseCommand: ["/bin/bash", "biscuit_markdup.sh"]
 requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
       ramMin: 24000
       coresMin: 4
     - class: DockerRequirement
-      dockerPull: "mgibio/bisulfite:v1.3"
+      dockerPull: "mgibio/biscuit:0.3.8"
+    - class: InitialWorkDirRequirement
+      listing:
+      - entryname: 'biscuit_markdup.sh'
+        entry: |
+            set -eo pipefail
 
+            cores=$1
+            outdir=$2
+            bam=$3
+
+            /usr/bin/biscuit markdup $bam /dev/stdout | /usr/bin/sambamba sort -t $cores -m 15G -o $outdir/markdup.bam /dev/stdin
 arguments:
-    ["/dev/stdout",
-    { shellQuote: false, valueFrom: "|" },
-    "/usr/bin/sambamba", "sort", "-t", $(runtime.cores), "-m", "15G", "-o", "$(runtime.outdir)/markdup.bam", "/dev/stdin"
+    [{ valueFrom: $(runtime.cores), position: -3},
+    { valueFrom: $(runtime.outdir), position: -2}
     ]
 inputs:
     bam:
