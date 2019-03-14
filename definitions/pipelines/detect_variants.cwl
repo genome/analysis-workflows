@@ -8,12 +8,12 @@ requirements:
 inputs:
     reference:
         type: string
-    tumor_cram:
+    tumor_bam:
         type: File
-        secondaryFiles: [.crai,^.crai]
-    normal_cram:
+        secondaryFiles: [.bai,^.bai]
+    normal_bam:
         type: File
-        secondaryFiles: [.crai,^.crai]
+        secondaryFiles: [.bai,^.bai]
     interval_list:
         type: File
     dbsnp_vcf:
@@ -171,8 +171,8 @@ steps:
         run: ../subworkflows/mutect.cwl
         in:
             reference: reference
-            tumor_cram: tumor_cram
-            normal_cram: normal_cram
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
             interval_list: interval_list
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
@@ -187,8 +187,8 @@ steps:
         run: ../subworkflows/strelka_and_post_processing.cwl
         in:
             reference: reference
-            tumor_cram: tumor_cram
-            normal_cram: normal_cram
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
             interval_list: interval_list
             exome_mode: strelka_exome_mode
             cpu_reserved: strelka_cpu_reserved
@@ -198,8 +198,8 @@ steps:
         run: ../subworkflows/varscan_pre_and_post_processing.cwl
         in:
             reference: reference
-            tumor_cram: tumor_cram
-            normal_cram: normal_cram
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
             interval_list: interval_list
             strand_filter: varscan_strand_filter
             min_coverage: varscan_min_coverage
@@ -212,8 +212,8 @@ steps:
         run: ../subworkflows/pindel.cwl
         in:
             reference: reference
-            tumor_cram: tumor_cram
-            normal_cram: normal_cram
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
             interval_list: interval_list
             insert_size: pindel_insert_size
         out:
@@ -222,8 +222,8 @@ steps:
         run: ../subworkflows/docm_cle.cwl
         in:
             reference: reference
-            tumor_cram: tumor_cram
-            normal_cram: normal_cram
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
             docm_vcf: docm_vcf
             interval_list: interval_list
             filter_docm_variants: filter_docm_variants
@@ -265,20 +265,6 @@ steps:
             custom_clivnar_vcf: custom_clinvar_vcf
         out:
             [annotated_vcf, vep_summary]
-    tumor_cram_to_bam:
-        run: ../subworkflows/cram_to_bam_and_index.cwl
-        in:
-            cram: tumor_cram
-            reference: reference
-        out:
-            [bam]
-    normal_cram_to_bam:
-        run: ../subworkflows/cram_to_bam_and_index.cwl
-        in:
-            cram: normal_cram
-            reference: reference
-        out:
-            [bam]
     tumor_bam_readcount:
         run: ../tools/bam_readcount.cwl
         in:
@@ -286,7 +272,7 @@ steps:
             sample:
                 default: 'TUMOR'
             reference_fasta: reference
-            bam: tumor_cram_to_bam/bam
+            bam: tumor_bam
             min_base_quality: readcount_minimum_base_quality
             min_mapping_quality: readcount_minimum_mapping_quality
         out:
@@ -298,7 +284,7 @@ steps:
             sample:
                 default: 'NORMAL'
             reference_fasta: reference
-            bam: normal_cram_to_bam/bam
+            bam: normal_bam
             min_base_quality: readcount_minimum_base_quality
             min_mapping_quality: readcount_minimum_mapping_quality
         out:
@@ -340,7 +326,7 @@ steps:
             filter_gnomADe_maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
             filter_mapq0_threshold: filter_mapq0_threshold
             filter_somatic_llr_threshold: filter_somatic_llr_threshold
-            tumor_bam: tumor_cram_to_bam/bam
+            tumor_bam: tumor_bam
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference
         out: 

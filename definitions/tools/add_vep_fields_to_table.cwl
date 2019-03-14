@@ -7,7 +7,9 @@ label: "add VEP annotation to report"
 baseCommand: ["vep-annotation-reporter"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/vcf_annotation_tools-cwl:3.0.0"
+      dockerPull: "griffithlab/vatools:3.0.0"
+    - class: ResourceRequirement
+      ramMin: 4000
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/variants.annotated.tsv }]
 inputs:

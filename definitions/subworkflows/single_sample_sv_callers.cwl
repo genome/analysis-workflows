@@ -8,8 +8,9 @@ requirements:
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
 inputs:
-    cram:
+    bam:
         type: File
+        secondaryFiles: [.bai,^.bai]
     reference:
         type: string
 
@@ -30,6 +31,7 @@ inputs:
 
     manta_call_regions:
         type: File?
+        secondaryFiles: [.tbi]
     manta_non_wgs:
         type: boolean?
     manta_output_contigs:
@@ -78,21 +80,7 @@ outputs:
     smoove_output_variants:
         type: File
         outputSource: run_smoove/output_vcf
-
 steps:
-    cram_to_bam:
-        run: ../tools/cram_to_bam.cwl
-        in:
-            cram: cram
-            reference: reference
-        out:
-            [bam]
-    index_bam:
-        run: ../tools/index_bam.cwl
-        in:
-            bam: cram_to_bam/bam
-        out:
-            [indexed_bam]
     run_cnvkit:
         run: cnvkit_single_sample.cwl
         in:
@@ -100,7 +88,7 @@ steps:
             drop_low_coverage: cnvkit_drop_low_coverage
             method: cnvkit_method
             reference_cnn: cnvkit_reference_cnn
-            tumor_bam: index_bam/indexed_bam
+            tumor_bam: bam
             scatter_plot: cnvkit_scatter_plot
             male_reference: cnvkit_male_reference
             cnvkit_vcf_name: cnvkit_vcf_name
@@ -113,17 +101,16 @@ steps:
             non_wgs: manta_non_wgs
             output_contigs: manta_output_contigs
             reference: reference
-            tumor_bam: index_bam/indexed_bam
+            tumor_bam: bam
         out: 
             [diploid_variants, somatic_variants, all_candidates, small_candidates, tumor_only_variants]
     run_smoove:
         run: ../tools/smoove.cwl
         in:
             bams:
-                source: [index_bam/indexed_bam]
+                source: [bam]
                 linkMerge: merge_flattened
             exclude_regions: smoove_exclude_regions
             reference: reference
         out:
             [output_vcf]
-

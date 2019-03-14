@@ -29,7 +29,7 @@ outputs:
     aligned_cram:
         type: File
         secondaryFiles: [.crai, ^.crai]
-        outputSource: alignment_workflow/aligned_cram
+        outputSource: index_cram/indexed_cram
     adapter_histogram:
         type: File[]
         outputSource: alignment_workflow/adapter_histogram
@@ -59,4 +59,17 @@ steps:
             reference: reference
             target_intervals: target_intervals
         out:
-            [aligned_cram, adapter_histogram, duplex_seq_metrics]
+            [aligned_bam, adapter_histogram, duplex_seq_metrics]
+    bam_to_cram:
+        run: ../tools/bam_to_cram.cwl
+        in:
+            bam: alignment_workflow/aligned_bam
+            reference: reference
+        out:
+            [cram]
+    index_cram:
+         run: ../tools/index_cram.cwl
+         in:
+            cram: bam_to_cram/cram
+         out:
+            [indexed_cram]

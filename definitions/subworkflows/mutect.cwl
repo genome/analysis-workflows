@@ -11,12 +11,12 @@ requirements:
 inputs:
     reference:
         type: string
-    tumor_cram:
+    tumor_bam:
         type: File
-        secondaryFiles: [.crai]
-    normal_cram:
+        secondaryFiles: [.bai]
+    normal_bam:
         type: File?
-        secondaryFiles: [.crai]
+        secondaryFiles: [.bai]
     interval_list:
         type: File
     scatter_count:
@@ -57,8 +57,8 @@ steps:
         run: ../tools/mutect.cwl
         in:
             reference: reference
-            tumor_cram: tumor_cram
-            normal_cram: normal_cram
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
             interval_list: split_interval_list/split_interval_lists
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
@@ -84,7 +84,7 @@ steps:
         run: fp_filter.cwl
         in:
             reference: reference
-            cram: tumor_cram
+            bam: tumor_bam
             vcf: index/indexed_vcf
             variant_caller: 
                 valueFrom: "mutect"

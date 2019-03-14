@@ -10,9 +10,9 @@ requirements:
 inputs:
     reference:
         type: string
-    cram:
+    bam:
         type: File
-        secondaryFiles: [^.crai,.crai]
+        secondaryFiles: [^.bai,.bai]
     interval_list:
         type: File
     varscan_strand_filter:
@@ -99,7 +99,7 @@ steps:
         run: ../subworkflows/varscan_germline.cwl
         in:
             reference: reference
-            cram: cram
+            bam: bam
             interval_list: interval_list
             strand_filter: varscan_strand_filter
             min_coverage: varscan_min_coverage
@@ -113,7 +113,7 @@ steps:
         run: ../subworkflows/docm_germline.cwl
         in:
             reference: reference
-            cram: cram
+            bam: bam
             interval_list: interval_list
             docm_vcf: docm_vcf
         out:
@@ -144,20 +144,13 @@ steps:
             pick: vep_pick
         out:
             [annotated_vcf, vep_summary]
-    cram_to_bam:
-        run: ../subworkflows/cram_to_bam_and_index.cwl
-        in:
-            cram: cram
-            reference: reference
-        out:
-            [bam]
     bam_readcount:
         run: ../tools/bam_readcount.cwl
         in:
             vcf: annotate_variants/annotated_vcf
             sample: sample_name
             reference_fasta: reference
-            bam: cram_to_bam/bam
+            bam: bam
             min_mapping_quality: readcount_minimum_mapping_quality
             min_base_quality: readcount_minimum_base_quality
         out:

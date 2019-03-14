@@ -7,6 +7,8 @@ baseCommand: ["/opt/htslib/bin/bgzip"]
 requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/samtools-cwl:1.0.0"
+    - class: ResourceRequirement
+      ramMin: 4000
 stdout: $(inputs.file.basename).gz
 arguments:
     ["-c"]

@@ -9,12 +9,12 @@ requirements:
 inputs:
     reference:
         type: string
-    tumor_cram:
+    tumor_bam:
         type: File
-        secondaryFiles: ["^.crai"]
-    normal_cram:
+        secondaryFiles: ["^.bai"]
+    normal_bam:
         type: File
-        secondaryFiles: ["^.crai"]
+        secondaryFiles: ["^.bai"]
     chromosome:
         type: string
     insert_size:
@@ -29,8 +29,8 @@ steps:
         run: ../tools/pindel.cwl
         in:
             reference: reference
-            tumor_cram: tumor_cram
-            normal_cram: normal_cram
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
             insert_size: insert_size
             chromosome: chromosome
         out:

@@ -15,12 +15,12 @@ inputs:
         inputBinding:
             prefix: "-R"
             position: 1
-    cram:
+    bam:
         type: File
         inputBinding:
             prefix: "-I"
             position: 2
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.bai]
     emit_reference_confidence:
         type: string
         inputBinding:

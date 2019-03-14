@@ -5,6 +5,8 @@ baseCommand: ["python", "/opt/concordance/newConcordance.py"]
 requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/concordance"
+    - class: ResourceRequirement
+      ramMin: 4000
 inputs:
     bam_1:
         type: File

@@ -22,7 +22,7 @@ inputs:
         secondaryFiles: [.tbi]
     final_name:
         type: string?
-        default: 'final.cram'
+        default: 'final.bam'
     mills:
         type: File
         secondaryFiles: [.tbi]
@@ -30,10 +30,10 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
 outputs:
-    final_cram:
+    final_bam:
         type: File
-        outputSource: index_cram/indexed_cram
-        secondaryFiles: [.crai, ^.crai]
+        outputSource: index_bam/indexed_bam
+        secondaryFiles: [.bai, ^.bai]
     mark_duplicates_metrics_file:
         type: File
         outputSource: mark_duplicates_and_sort/metrics_file
@@ -82,19 +82,12 @@ steps:
             reference: reference
             bam: mark_duplicates_and_sort/sorted_bam
             bqsr_table: bqsr/bqsr_table
+            output_name: final_name
         out:
             [bqsr_bam]
-    bam_to_cram:
-        run: ../tools/bam_to_cram.cwl
+    index_bam:
+        run: ../tools/index_bam.cwl
         in:
-            reference: reference
             bam: apply_bqsr/bqsr_bam
-            name: final_name
         out:
-            [cram]
-    index_cram:
-        run: ../tools/index_cram.cwl
-        in:
-            cram: bam_to_cram/cram
-        out:
-            [indexed_cram]
+            [indexed_bam]

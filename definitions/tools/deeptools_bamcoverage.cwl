@@ -6,7 +6,7 @@ label: "deepTools bamCoverage"
 baseCommand: ['/usr/local/bin/bamCoverage']
 requirements:
     - class: ResourceRequirement
-      ramMin: 4000
+      ramMin: 16000
       coresMin: 4
     - class: DockerRequirement
       dockerPull: "quay.io/biocontainers/deeptools:3.1.3--py35h470a237_0"
@@ -53,7 +53,7 @@ inputs:
         inputBinding:
             prefix: '-v'
     effective_genome_size:
-        type: int?
+        type: long?
         inputBinding:
             prefix: '--effectiveGenomeSize'
         default: 2451960000

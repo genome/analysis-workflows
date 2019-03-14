@@ -82,6 +82,7 @@ inputs:
         type: string?
     manta_call_regions:
         type: File?
+        secondaryFiles: [.tbi]
     manta_non_wgs:
         type: boolean?
     manta_output_contigs:
@@ -91,7 +92,7 @@ inputs:
 outputs:
     cram:
         type: File
-        outputSource: alignment_and_qc/cram
+        outputSource: index_cram/indexed_cram
     mark_duplicates_metrics:
         type: File
         outputSource: alignment_and_qc/mark_duplicates_metrics
@@ -220,7 +221,7 @@ steps:
             per_target_intervals: per_target_intervals
             summary_intervals: summary_intervals
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics, bamcoverage_bigwig]
+            [bam, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics, bamcoverage_bigwig]
     extract_freemix:
         in:
             verify_bam_id_metrics: alignment_and_qc/verify_bam_id_metrics
@@ -251,7 +252,7 @@ steps:
         run: ../subworkflows/germline_detect_variants.cwl
         in:
             reference: reference
-            cram: alignment_and_qc/cram
+            bam: alignment_and_qc/bam
             emit_reference_confidence: emit_reference_confidence
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
@@ -267,7 +268,7 @@ steps:
     variant_callers:
         run: ../subworkflows/single_sample_sv_callers.cwl
         in:
-            cram: alignment_and_qc/cram
+            bam: alignment_and_qc/bam
             reference: reference
             cnvkit_diagram: cnvkit_diagram
             cnvkit_drop_low_coverage: cnvkit_drop_low_coverage
@@ -282,3 +283,16 @@ steps:
             smoove_exclude_regions: smoove_exclude_regions
         out: 
            [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf, manta_diploid_variants, manta_somatic_variants, manta_all_candidates, manta_small_candidates, manta_tumor_only_variants, smoove_output_variants] 
+    bam_to_cram:
+        run: ../tools/bam_to_cram.cwl
+        in:
+            bam: alignment_and_qc/bam
+            reference: reference
+        out:
+            [cram]
+    index_cram:
+         run: ../tools/index_cram.cwl
+         in:
+            cram: bam_to_cram/cram
+         out:
+            [indexed_cram]
