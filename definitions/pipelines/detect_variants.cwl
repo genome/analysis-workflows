@@ -62,6 +62,9 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+   filter_docm_variants:
+        type: Boolean?
+        default: 1
     vep_cache_dir:
         type: string
     synonyms_file:
@@ -133,9 +136,6 @@ outputs:
         type: File
         outputSource: pindel/filtered_vcf
         secondaryFiles: [.tbi]
-    docm_unfiltered_vcf:
-        type: File
-        outputSource: docm/unfiltered_vcf
     docm_filtered_vcf:
         type: File
         outputSource: docm/filtered_vcf
@@ -226,8 +226,9 @@ steps:
             normal_bam: normal_bam
             docm_vcf: docm_vcf
             interval_list: interval_list
+            filter_docm_variants: filter_docm_variants
         out:
-            [unfiltered_vcf, filtered_vcf]
+            [filtered_vcf]
     combine:
         run: ../tools/combine_variants.cwl
         in:
@@ -236,7 +237,6 @@ steps:
             strelka_vcf: strelka/filtered_vcf
             varscan_vcf: varscan/filtered_vcf
             pindel_vcf: pindel/filtered_vcf
-            docm_vcf: docm/filtered_vcf
         out:
             [combined_vcf]
     decompose:
@@ -245,10 +245,17 @@ steps:
             vcf: combine/combined_vcf
         out:
             [decomposed_vcf]
+    add_docm_variants:
+        run: ../tools/docm_add_variants.cwl
+        in: 
+            docm_vcf: docm/docm_vcf
+            vcf: decompose/decomposed_vcf
+        out:
+            [merged_vcf]
     annotate_variants:
         run: ../tools/vep.cwl
         in:
-            vcf: decompose/decomposed_vcf
+            vcf: add_docm_variants/merged_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only

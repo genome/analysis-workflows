@@ -42,7 +42,7 @@ inputs:
             prefix: "-L"
             position: 5
 outputs:
-    docm_out:
+    docm_raw_variants:
         type: File
         outputBinding:
-            glob: "docm_out.vcf"
+            glob: "docm_raw_variants.vcf"
