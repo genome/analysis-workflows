@@ -43,7 +43,7 @@ steps:
         out:
             [decomposed_vcf]
     docm_filter:
-        run: ../tools/somatic_docm_filter.cwl
+        run: ../tools/filter_vcf_docm.cwl
         in:
             docm_raw_variants: decompose/decomposed_vcf
             normal_bam: normal_bam
