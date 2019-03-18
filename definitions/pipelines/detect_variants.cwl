@@ -62,9 +62,9 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
-   filter_docm_variants:
+    filter_docm_variants:
         type: boolean?
-        default: 1
+        default: true
     vep_cache_dir:
         type: string
     synonyms_file:
@@ -138,7 +138,7 @@ outputs:
         secondaryFiles: [.tbi]
     docm_filtered_vcf:
         type: File
-        outputSource: docm/filtered_vcf
+        outputSource: docm/docm_variants_vcf
         secondaryFiles: [.tbi]
     final_vcf:
         type: File
@@ -228,7 +228,7 @@ steps:
             interval_list: interval_list
             filter_docm_variants: filter_docm_variants
         out:
-            [filtered_vcf]
+            [docm_variants_vcf]
     combine:
         run: ../tools/combine_variants.cwl
         in:
@@ -248,8 +248,9 @@ steps:
     add_docm_variants:
         run: ../tools/docm_add_variants.cwl
         in: 
-            docm_vcf: docm/docm_vcf
-            vcf: decompose/decomposed_vcf
+            reference: reference
+            docm_vcf: docm/docm_variants_vcf
+            callers_vcf: decompose/decomposed_vcf
         out:
             [merged_vcf]
     annotate_variants:

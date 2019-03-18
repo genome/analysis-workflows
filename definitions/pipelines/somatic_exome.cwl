@@ -97,9 +97,9 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
-   filter_docm_variants:
+    filter_docm_variants:
         type: boolean?
-        default: 1
+        default: true
     vep_cache_dir:
         type: string
     synonyms_file:

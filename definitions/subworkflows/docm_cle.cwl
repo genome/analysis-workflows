@@ -19,9 +19,10 @@ inputs:
         secondaryFiles: [.tbi]
     interval_list:
         type: File
-    filter_docm_variants: filter_docm_variants
+    filter_docm_variants:
+        type: boolean
 outputs:
-    docm_variants_vcf::
+    docm_variants_vcf:
         type: File
         outputSource: index/indexed_vcf
         secondaryFiles: [.tbi]

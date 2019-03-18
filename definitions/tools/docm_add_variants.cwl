@@ -13,7 +13,7 @@ requirements:
 arguments:
     ["-genotypeMergeOptions", "PRIORITIZE",
      "--rod_priority_list", "callers,docm",
-     "--setKey","null"
+     "--setKey","null",
      "-o", { valueFrom: $(runtime.outdir)/merged.vcf.gz }]
 inputs:
     reference:
