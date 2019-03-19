@@ -13,11 +13,11 @@ inputs:
     minimum_sv_calls:
         type: int
     same_type:
-        type: int
+        type: boolean
     same_strand:
-        type: int
+        type: boolean
     estimate_sv_distance:
-        type: int
+        type: boolean
     minimum_sv_size:
         type: int
     cohort_name:
