@@ -22,14 +22,6 @@ inputs:
         type: File
     bait_intervals:
         type: File
-    per_target_intervals:
-        type: File
-    per_target_bait_intervals:
-        type: File
-    per_base_intervals:
-        type: File
-    per_base_bait_intervals:
-        type: File
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
