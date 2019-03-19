@@ -45,7 +45,7 @@ steps:
         run: ../tools/input_to_bam.cwl
         in:
             input: input
-            reference_cram: cram_reference
+            cram_reference: cram_reference
         out: [bam_file]
     revert_bam:
         run: ../tools/revert_input.cwl
