@@ -9,12 +9,15 @@ requirements:
     - class: ScatterFeatureRequirement
     - class: InlineJavascriptRequirement
 inputs:
+    cram_reference:
+        type: File?
+        doc: Reference file used for cram decompression
     reference_index:
         type: File #this requires an extra file with the basename
         secondaryFiles: [".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"]
     reference_annotation:
         type: File
-    instrument_data_bams:
+    instrument_data:
         type: File[]
     read_group_id:
         type: string[]
@@ -76,12 +79,13 @@ outputs:
         type: File
         outputSource: kallisto/fusion_evidence
 steps:
-    bam_to_trimmed_fastq_and_hisat_alignments:
-        run: ../subworkflows/bam_to_trimmed_fastq_and_hisat_alignments.cwl
+    input_to_trimmed_fastq_and_hisat_alignments:
+        run: ../subworkflows/input_to_trimmed_fastq_and_hisat_alignments.cwl
         scatter: [bam, read_group_id, read_group_fields]
         scatterMethod: dotproduct
         in:
-            bam: instrument_data_bams
+            cram_reference: cram_reference
+            input: instrument_data
             read_group_id: read_group_id
             read_group_fields: read_group_fields
             adapters: trimming_adapters
@@ -99,7 +103,7 @@ steps:
             kallisto_index: kallisto_index
             strand: strand
             fastqs:
-                source: bam_to_trimmed_fastq_and_hisat_alignments/fastqs
+                source: input_to_trimmed_fastq_and_hisat_alignments/fastqs
                 valueFrom: |
                     ${
                       for(var i=0;i<self.length;i++){self[i] = self[i].reverse()}
@@ -117,7 +121,7 @@ steps:
     merge:
         run: ../tools/merge_bams.cwl
         in:
-            bams: bam_to_trimmed_fastq_and_hisat_alignments/aligned_bam
+            bams: input_to_trimmed_fastq_and_hisat_alignments/aligned_bam
         out:
             [merged_bam]
     index_bam:
