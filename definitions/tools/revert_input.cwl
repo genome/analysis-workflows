@@ -3,11 +3,11 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Picard: Revert Input"
-baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/picard/picard.jar", "RevertSam", "VALIDATION_STRINGENCY=SILENT"]
+baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/opt/picard/picard.jar", "RevertSam", "VALIDATION_STRINGENCY=SILENT"]
 requirements:
     - class: ResourceRequirement
       coresMin: 1
-      ramMin: 6000
+      ramMin: 18000
       tmpdirMin: 25000
     - class: DockerRequirement
       dockerPull: "mgibio/rnaseq"
