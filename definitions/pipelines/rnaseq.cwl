@@ -81,7 +81,7 @@ outputs:
 steps:
     input_to_trimmed_fastq_and_hisat_alignments:
         run: ../subworkflows/input_to_trimmed_fastq_and_hisat_alignments.cwl
-        scatter: [bam, read_group_id, read_group_fields]
+        scatter: [input, read_group_id, read_group_fields]
         scatterMethod: dotproduct
         in:
             cram_reference: cram_reference
