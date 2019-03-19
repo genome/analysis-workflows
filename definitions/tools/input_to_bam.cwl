@@ -33,6 +33,7 @@ inputs:
     type: File?
     inputBinding:
       position: 4
+      prefix: "-T"
 
 outputs:
   bam_file:
