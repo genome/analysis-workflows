@@ -9,7 +9,7 @@ arguments:
     ["O=", { valueFrom: $(runtime.outdir)/sorted.vcf }]
 requirements:
     - class: ResourceRequirement
-      ramMin: 16000
+      ramMin: 18000
     - class: DockerRequirement
       dockerPull: "mgibio/picard-cwl:2.18.1"
 inputs:
