@@ -6,7 +6,7 @@ label: "Filter variants from the DoCM detector"
 baseCommand: ["/usr/bin/perl", "/usr/bin/docm_filter.pl"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/cle:v1.4.1"
 arguments: [
     $(runtime.outdir)/docm_filtered_variants.vcf
 ]
@@ -26,9 +26,18 @@ inputs:
     filter_docm_variants:
         type: boolean
         inputBinding:
-            position: -1
+            position: 1
+            valueFrom: |
+                ${
+                  if(inputs.filter_docm_variants){
+                    return "1";
+                  } else {
+                    return "0";
+                  }
+                }
 outputs:
     docm_filtered_variants:
         type: File
         outputBinding:
             glob: "docm_filtered_variants.vcf"
+

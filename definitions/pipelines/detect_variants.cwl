@@ -245,12 +245,18 @@ steps:
             vcf: combine/combined_vcf
         out:
             [decomposed_vcf]
+    decompose_index:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: decompose/decomposed_vcf
+        out:
+            [indexed_vcf]
     add_docm_variants:
         run: ../tools/docm_add_variants.cwl
         in: 
             reference: reference
             docm_vcf: docm/docm_variants_vcf
-            callers_vcf: decompose/decomposed_vcf
+            callers_vcf: decompose_index/indexed_vcf
         out:
             [merged_vcf]
     annotate_variants:

@@ -11,7 +11,7 @@ requirements:
       dockerPull: "mgibio/gatk-cwl:3.6.0"
 arguments:
     ["-gt_mode", "GENOTYPE_GIVEN_ALLELES",
-    "-o", { valueFrom: $(runtime.outdir)/docm_out.vcf }]
+    "-o", { valueFrom: $(runtime.outdir)/docm_raw_variants.vcf }]
 inputs:
     reference:
         type: string
