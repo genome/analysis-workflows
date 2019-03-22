@@ -24,6 +24,7 @@ inputs:
         inputBinding:
             prefix: "-I"
             position: 2
+        secondaryFiles: [.bai]
     vcf:
         type: File
         inputBinding:

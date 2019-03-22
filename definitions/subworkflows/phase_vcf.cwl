@@ -16,6 +16,7 @@ inputs:
         type: File
     bam:
         type: File
+        secondaryFiles: [.bai]
 outputs:
     phased_vcf:
         type: File
