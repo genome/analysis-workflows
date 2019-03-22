@@ -37,12 +37,18 @@ steps:
             reference_dict: reference_dict
         out:
             [sorted_vcf]
+    index:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: sort/sorted_vcf
+        out:
+            [indexed_vcf]
     phase_vcf:
         run: ../tools/read_backed_phasing.cwl
         in:
             reference: reference
             bam: bam
-            vcf: sort/sorted_vcf
+            vcf: index/indexed_vcf
         out:
             [phased_vcf]
     bgzip_and_index:
