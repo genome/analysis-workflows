@@ -19,7 +19,7 @@ inputs:
 outputs:
     phased_vcf:
         type: File
-        outputSource: bgzip_and_index/indexed_vcf
+        outputSource: bgzip_and_index_phased_vcf/indexed_vcf
         secondaryFiles: [.tbi]
 steps:
     combine_variants:
@@ -37,8 +37,8 @@ steps:
             reference_dict: reference_dict
         out:
             [sorted_vcf]
-    index:
-        run: ../tools/index_vcf.cwl
+    bgzip_and_index:
+        run: bgzip_and_index.cwl
         in:
             vcf: sort/sorted_vcf
         out:
@@ -48,10 +48,10 @@ steps:
         in:
             reference: reference
             bam: bam
-            vcf: index/indexed_vcf
+            vcf: bgzip_and_index/indexed_vcf
         out:
             [phased_vcf]
-    bgzip_and_index:
+    bgzip_and_index_phased_vcf:
         run: bgzip_and_index.cwl
         in:
             vcf: phase_vcf/phased_vcf
