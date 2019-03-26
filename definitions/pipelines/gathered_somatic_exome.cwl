@@ -99,7 +99,7 @@ inputs:
     filter_docm_variants:
         type: boolean?
         default: 1
-vep_cache_dir:
+    vep_cache_dir:
         type: string?
     synonyms_file:
         type: File?
