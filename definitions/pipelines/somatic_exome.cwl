@@ -97,6 +97,9 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+    filter_docm_variants:
+        type: boolean?
+        default: true
     vep_cache_dir:
         type: string
     synonyms_file:
@@ -245,9 +248,6 @@ outputs:
         type: File
         outputSource: detect_variants/pindel_filtered_vcf
         secondaryFiles: [.tbi]
-    docm_unfiltered_vcf:
-        type: File
-        outputSource: detect_variants/docm_unfiltered_vcf
     docm_filtered_vcf:
         type: File
         outputSource: detect_variants/docm_filtered_vcf
@@ -405,6 +405,7 @@ steps:
             varscan_max_normal_freq: varscan_max_normal_freq
             pindel_insert_size: pindel_insert_size
             docm_vcf: docm_vcf
+            filter_docm_variants: filter_docm_variants
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             annotate_coding_only: annotate_coding_only
@@ -416,7 +417,7 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             custom_clinvar_vcf: custom_clinvar_vcf
         out:
-            [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_unfiltered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
+            [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
     cnvkit:
         run: ../tools/cnvkit_batch.cwl
         in: 
