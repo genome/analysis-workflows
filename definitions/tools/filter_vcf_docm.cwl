@@ -7,6 +7,8 @@ baseCommand: ["/usr/bin/perl", "/usr/bin/docm_filter.pl"]
 requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/cle:v1.4.1"
+    - class: ResourceRequirement
+      ramMin: 4000
 arguments: [
     $(runtime.outdir)/docm_filtered_variants.vcf
 ]
