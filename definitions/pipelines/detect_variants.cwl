@@ -82,6 +82,9 @@ inputs:
     filter_mapq0_threshold:
         type: float?
         default: 0.15
+    filter_minimum_depth:
+        type: int?
+        default: 1
     cle_vcf_filter:
         type: boolean?
         default: false
@@ -333,6 +336,9 @@ steps:
             filter_gnomADe_maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
             filter_mapq0_threshold: filter_mapq0_threshold
             filter_somatic_llr_threshold: filter_somatic_llr_threshold
+            filter_minimum_depth: filter_minimum_depth
+            sample_names:
+                default: 'NORMAL,TUMOR'
             tumor_bam: tumor_bam
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference

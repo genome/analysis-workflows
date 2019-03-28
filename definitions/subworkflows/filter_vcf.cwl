@@ -21,6 +21,10 @@ inputs:
         type: float
     reference: 
         type: string
+    filter_minimum_depth:
+        type: int
+    sample_names:
+        type: string
 outputs: 
     filtered_vcf:
         type: File
@@ -50,10 +54,18 @@ steps:
             filter: do_cle_vcf_filter
         out:
             [cle_filtered_vcf]
+    filter_vcf_depth:
+        run: ../tools/filter_vcf_depth.cwl
+        in:
+            vcf: filter_vcf_cle/cle_filtered_vcf
+            minimum_depth: filter_minimum_depth
+            sample_names: sample_names
+        out:
+            [depth_filtered_vcf]
     filter_vcf_somatic_llr:
         run: ../tools/filter_vcf_somatic_llr.cwl
         in:
-            vcf: filter_vcf_cle/cle_filtered_vcf
+            vcf: filter_vcf_depth/depth_filtered_vcf
             threshold: filter_somatic_llr_threshold
         out:
             [somatic_llr_filtered_vcf]
