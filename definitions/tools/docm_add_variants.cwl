@@ -9,44 +9,31 @@ requirements:
       ramMin: 9000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: mgibio/cle:v1.3.1
+      dockerPull: mgibio/cle
 arguments:
     ["-genotypeMergeOptions", "PRIORITIZE",
-     "--rod_priority_list", "mutect,varscan,strelka,pindel",
-     "-o", { valueFrom: $(runtime.outdir)/combined.vcf.gz }]
+     "--rod_priority_list", "callers,docm",
+     "--setKey","null",
+     "-o", { valueFrom: $(runtime.outdir)/merged.vcf.gz }]
 inputs:
     reference:
         type: string
         inputBinding:
             prefix: "-R"
             position: 1
-    mutect_vcf:
+    callers_vcf:
         type: File
         inputBinding:
-            prefix: "--variant:mutect"
+            prefix: "--variant:callers"
             position: 2
         secondaryFiles: [.tbi]
-    varscan_vcf:
+    docm_vcf:
         type: File
         inputBinding:
-            prefix: "--variant:varscan"
+            prefix: "--variant:docm"
             position: 3
-        secondaryFiles: [.tbi]
-    strelka_vcf:
-        type: File
-        inputBinding:
-            prefix: "--variant:strelka"
-            position: 4
-        secondaryFiles: [.tbi]
-    pindel_vcf:
-        type: File
-        inputBinding:
-            prefix: "--variant:pindel"
-            position: 5
-        secondaryFiles: [.tbi]
 outputs:
-    combined_vcf:
+    merged_vcf:
         type: File
         outputBinding:
-            glob: "combined.vcf.gz"
-
+            glob: "merged.vcf.gz"

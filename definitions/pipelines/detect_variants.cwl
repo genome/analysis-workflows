@@ -62,6 +62,9 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+    filter_docm_variants:
+        type: boolean?
+        default: true
     vep_cache_dir:
         type: string
     synonyms_file:
@@ -79,6 +82,9 @@ inputs:
     filter_mapq0_threshold:
         type: float?
         default: 0.15
+    filter_minimum_depth:
+        type: int?
+        default: 1
     cle_vcf_filter:
         type: boolean?
         default: false
@@ -133,12 +139,9 @@ outputs:
         type: File
         outputSource: pindel/filtered_vcf
         secondaryFiles: [.tbi]
-    docm_unfiltered_vcf:
-        type: File
-        outputSource: docm/unfiltered_vcf
     docm_filtered_vcf:
         type: File
-        outputSource: docm/filtered_vcf
+        outputSource: docm/docm_variants_vcf
         secondaryFiles: [.tbi]
     final_vcf:
         type: File
@@ -226,8 +229,9 @@ steps:
             normal_bam: normal_bam
             docm_vcf: docm_vcf
             interval_list: interval_list
+            filter_docm_variants: filter_docm_variants
         out:
-            [unfiltered_vcf, filtered_vcf]
+            [docm_variants_vcf]
     combine:
         run: ../tools/combine_variants.cwl
         in:
@@ -236,7 +240,6 @@ steps:
             strelka_vcf: strelka/filtered_vcf
             varscan_vcf: varscan/filtered_vcf
             pindel_vcf: pindel/filtered_vcf
-            docm_vcf: docm/filtered_vcf
         out:
             [combined_vcf]
     decompose:
@@ -245,10 +248,24 @@ steps:
             vcf: combine/combined_vcf
         out:
             [decomposed_vcf]
+    decompose_index:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: decompose/decomposed_vcf
+        out:
+            [indexed_vcf]
+    add_docm_variants:
+        run: ../tools/docm_add_variants.cwl
+        in: 
+            reference: reference
+            docm_vcf: docm/docm_variants_vcf
+            callers_vcf: decompose_index/indexed_vcf
+        out:
+            [merged_vcf]
     annotate_variants:
         run: ../tools/vep.cwl
         in:
-            vcf: decompose/decomposed_vcf
+            vcf: add_docm_variants/merged_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only
@@ -319,6 +336,9 @@ steps:
             filter_gnomADe_maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
             filter_mapq0_threshold: filter_mapq0_threshold
             filter_somatic_llr_threshold: filter_somatic_llr_threshold
+            filter_minimum_depth: filter_minimum_depth
+            sample_names:
+                default: 'NORMAL,TUMOR'
             tumor_bam: tumor_bam
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference
