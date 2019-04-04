@@ -89,9 +89,11 @@ inputs:
             prefix: "--fasta" 
             position: 8
     plugins:
-        type: string[]?
-        inputBinding:
-            prefix: "--plugin"
+        type:
+            type: array
+            items: string
+            inputBinding:
+                prefix: "--plugin"
 outputs:
     annotated_vcf:
         type: File
