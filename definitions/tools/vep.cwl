@@ -11,7 +11,7 @@ requirements:
       ramMin: 64000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: "mgibio/vep_helper-cwl:1.0.0"
+      dockerPull: "mgibio/vep_helper-cwl:1.1.0"
 arguments:
     ["--format", "vcf",
     "--vcf",
