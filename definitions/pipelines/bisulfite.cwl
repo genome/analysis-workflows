@@ -28,6 +28,8 @@ inputs:
         type: int
     trimming_min_readlength:
         type: int
+    QCannotation:
+        type: File
 outputs:
     cram:
         type: File
@@ -42,6 +44,9 @@ outputs:
     cpg_bedgraph:
         type: File
         outputSource: bedgraph_to_bigwig/cpg_bigwig
+    gathered_directory:
+        type: Directory
+        outputSource: bisulfite_qc/QC_directory
 steps:
     bam_to_trimmed_fastq_and_biscuit_alignments:
         run: ../subworkflows/bam_to_trimmed_fastq_and_biscuit_alignments.cwl
@@ -85,6 +90,15 @@ steps:
             reference_sizes: reference_sizes
         out:
             [cpg_bigwig]
+    bisulfite_qc:
+        run: ../subworkflows/Bisulfite_QC.cwl
+        in:
+            vcf: pileup/vcf
+            bam: merge/merged_bam
+            reference: reference_index
+            QCannotation: QCannotation
+        out:
+            [QC_directory]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
