@@ -10,7 +10,7 @@ requirements:
               ramMin: 16000
               tmpdirMin: 20000
             - class: DockerRequirement
-              dockerPull: "mgibio/biscuit"
+              dockerPull: "mgibio/biscuit:v1.4.1"
 
 inputs:
       vcf:

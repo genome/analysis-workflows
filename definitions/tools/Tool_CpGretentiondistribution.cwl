@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "Biscuit QC: CpG Retention Distribution."
+label: "Biscuit QC: CpG Retention Distribution"
 baseCommand: ["/bin/bash", "/opt/biscuit/scripts/Bisulfite_QC_CpGretentiondistribution.sh"]
 requirements:
             - class: ResourceRequirement
@@ -10,7 +10,7 @@ requirements:
               ramMin: 16000
               tmpdirMin: 10000
             - class: DockerRequirement
-              dockerPull: "mgibio/biscuit"
+              dockerPull: "mgibio/biscuit:v1.4.1"
 
 inputs:
       vcf:
