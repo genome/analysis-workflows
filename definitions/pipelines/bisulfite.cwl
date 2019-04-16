@@ -76,6 +76,15 @@ steps:
             reference: reference_index
         out:
             [vcf]
+    bisulfite_qc:
+        run: ../subworkflows/Bisulfite_QC.cwl
+        in:
+            vcf: pileup/vcf
+            bam: merge/merged_bam
+            reference: reference_index
+            QCannotation: QCannotation
+        out:
+            [QC_directory]
     vcf2bed:
         run: ../tools/bisulfite_vcf2bed.cwl
         in:
@@ -90,15 +99,6 @@ steps:
             reference_sizes: reference_sizes
         out:
             [cpg_bigwig]
-    bisulfite_qc:
-        run: ../subworkflows/Bisulfite_QC.cwl
-        in:
-            vcf: pileup/vcf
-            bam: merge/merged_bam
-            reference: reference_index
-            QCannotation: QCannotation
-        out:
-            [QC_directory]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
