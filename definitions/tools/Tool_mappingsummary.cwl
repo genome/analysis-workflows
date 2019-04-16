@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "Biscuit QC: Bisulfite conversion rate."
+label: "Biscuit QC: Mapping summary."
 baseCommand: ["/bin/bash", "/opt/biscuit/scripts/Bisulfite_QC_mappingsummary.sh"]
 requirements:
             - class: ResourceRequirement

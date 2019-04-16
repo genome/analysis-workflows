@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "Biscuit QC: CpG Retention Distribution"
+label: "Biscuit QC: CpG Retention Distribution."
 baseCommand: ["/bin/bash", "/opt/biscuit/scripts/Bisulfite_QC_CpGretentiondistribution.sh"]
 requirements:
             - class: ResourceRequirement

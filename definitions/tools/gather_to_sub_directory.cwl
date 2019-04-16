@@ -14,9 +14,15 @@ requirements:
       listing:
       - entryname: 'directory_gatherer.sh'
         entry: |
+            set -eou pipefail
+
             outdir="$1"
-            files="${@:-1}"
-            cp $files $outdir
+            files="${@:2}"
+            mkdir $outdir
+            chmod -R 777 $outdir
+            cp -t $outdir $files
+
+            exit 0
 
 inputs:
     outdir:
@@ -32,3 +38,4 @@ outputs:
         type: Directory
         outputBinding:
             glob: "$(inputs.outdir)"
+

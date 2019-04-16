@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "Biscuit QC: Bisulfite conversion rate."
+label: "Biscuit QC: Coverage statistics."
 baseCommand: ["/bin/bash", "/opt/biscuit/scripts/Bisulfite_QC_Coveragestats.sh"]
 requirements:
             - class: ResourceRequirement
