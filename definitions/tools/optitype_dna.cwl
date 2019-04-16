@@ -5,12 +5,13 @@ class: CommandLineTool
 label: 'Run optitype on dna samples'
 baseCommand: ["/bin/bash", "/usr/bin/optitype_script.sh"]
 arguments:
-    [ { valueFrom: $(runtime.outdir) },
+    [ { valueFrom: $(runtime.tmpdir) },
     { valueFrom: $(runtime.outdir) } ]
 requirements:
     - class: ResourceRequirement
       ramMin: 64000
       coresMin: 4
+      tmpdirMin: 20000
     - class: DockerRequirement
       dockerPull: "mgibio/immuno_tools-cwl:1.0.0"
 inputs:
