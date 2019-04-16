@@ -9,7 +9,7 @@ requirements:
       ramMin: 8000
       coresMin: 4
     - class: DockerRequirement
-      dockerPull: "mgibio/bisulfite:v1.3"
+      dockerPull: "mgibio/biscuit:v1.4.1"
 arguments: [
     "$(runtime.cores)",
     "$(runtime.outdir)/merged.bam"
