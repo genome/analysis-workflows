@@ -12,7 +12,7 @@ requirements:
       ramMin: 4000
 arguments:
     [{ valueFrom: $(inputs.vcf.path) },
-    { valueFrom: $(runtime.outdir)/annotated.af_filtered.vcf },
+    { valueFrom: $(runtime.outdir)/annotated.max_sv_pf_filtered.vcf },
     "/usr/bin/perl", "/opt/vep/src/ensembl-vep/filter_vep",
     "--format", "vcf",
     "--vcf_info_field", "tmp",
