@@ -4,8 +4,8 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Run Cell Ranger ATAC Count"
 
-baseCommand: ["/opt/cellranger-atac-1.0.1/cellranger-atac", "count", "--localmem=64", "--localcores=8"]
-arguments: ["--id=$(inputs.sample_name)"]
+baseCommand: ["/opt/cellranger-atac-1.0.1/cellranger-atac", "count"]
+arguments: ["--id=$(inputs.sample_name)", "--localcores=$(runtime.cores)", "--localmem=$(runtime.ram/1000)"]
 
 requirements:
     - class: DockerRequirement
