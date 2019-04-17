@@ -34,19 +34,19 @@ inputs:
           position: 4
 
 outputs:
-       baseconvertion:
+       base_convertion:
                    type: File
                    outputBinding:
                     glob: "totalBaseConversionRate.txt"
-       readconvertion:
+       read_convertion:
                    type: File
                    outputBinding:
                     glob: "totalReadConversionRate.txt"
-       CpHretention:
+       cph_retention:
                    type: File
                    outputBinding:
                     glob: "CpHRetentionByReadPos.txt"
-       CpGretention:
+       cpg_retention:
                    type: File
                    outputBinding:
                     glob: "CpGRetentionByReadPos.txt"

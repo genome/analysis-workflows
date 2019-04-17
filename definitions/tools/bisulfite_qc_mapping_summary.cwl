@@ -35,11 +35,11 @@ inputs:
 
 
 outputs:
-       Strandtable:
+       strand_table:
              type: File
              outputBinding:
               glob: "strand_table.txt"
-       Mappingquality:
+       mapping_quality:
              type: File
              outputBinding:
               glob: "mapq_table.txt"

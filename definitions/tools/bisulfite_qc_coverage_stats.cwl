@@ -34,31 +34,31 @@ inputs:
           position: 4
 
 outputs:
-       BgaBed:
+       bga_bed:
              type: File
              outputBinding:
               glob: "bga.bed"
-       covdist:
+       cov_dist:
               type: File
               outputBinding:
                 glob: "covdist_table.txt"
-       BgaBeddup:
+       bga_bed_dup:
                 type: File
                 outputBinding:
                   glob: "bga_dup.bed"
-       Dupreport:
+       dup_report:
                 type: File
                 outputBinding:
                   glob: "dup_report.txt"
-       CpGbed:
+       cpg_bed:
              type: File
              outputBinding:
               glob: "cpg.bed"
-       covdistcpg:
+       cov_dist_cpg:
                  type: File
                  outputBinding:
                   glob: "covdist_cpg_table.txt"
-       cpgdist:
+       cpg_dist:
               type: File
               outputBinding:
                 glob: "cpg_dist_table.txt"

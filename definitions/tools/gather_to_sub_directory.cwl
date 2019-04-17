@@ -5,11 +5,10 @@ class: CommandLineTool
 baseCommand: ["/bin/bash","directory_gatherer.sh"]
 
 requirements:
-    - class: ShellCommandRequirement
     - class: DockerRequirement
       dockerPull: "ubuntu:xenial"
     - class: ResourceRequirement
-      ramMin: 8000
+      ramMin: 1000
     - class: InitialWorkDirRequirement
       listing:
       - entryname: 'directory_gatherer.sh'

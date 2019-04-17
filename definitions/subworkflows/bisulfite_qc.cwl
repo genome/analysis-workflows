@@ -25,55 +25,50 @@ outputs:
         outputSource: gather_to_sub_directory/gathered_directory
 
 steps:
-      Tool_bisulfiteconversion:
-          run: ../tools/Tool_bisulfiteconversion.cwl
+      bisulfite_conversion:
+          run: ../tools/bisulfite_qc_conversion.cwl
           in:
             vcf: vcf
             bam: bam
             reference: reference
             QCannotation: QCannotation
           out:
-              [baseconvertion, readconvertion, CpHretention, CpGretention]
+              [base_convertion, read_convertion, cph_retention, cpg_retention]
 
-      Tool_mappingsummary:
-          run: ../tools/Tool_mappingsummary.cwl
+      mapping_summary:
+          run: ../tools/bisulfite_qc_mapping_summary.cwl
           in:
             vcf: vcf
             bam: bam
             reference: reference
             QCannotation: QCannotation
           out:
-             [Strandtable, Mappingquality]
+             [strand_table, mapping_quality]
 
-      Tool_CpGretentiondistribution:
-          run: ../tools/Tool_CpGretentiondistribution.cwl
+      cpg_retention_distribution:
+          run: ../tools/bisulfite_qc_cpg_retention_distribution.cwl
           in:
             vcf: vcf
             bam: bam
             reference: reference
             QCannotation: QCannotation
           out:
-             [CpGRetentionDist]
+             [cpg_retention_dist]
 
-      Tool_coveragestats:
-          run: ../tools/Tool_coveragestats.cwl
+      coverage_stats:
+          run: ../tools/bisulfite_qc_coverage_stats.cwl
           in:
             vcf: vcf
             bam: bam
             reference: reference
             QCannotation: QCannotation
           out:
-             [BgaBed, covdist, BgaBeddup, Dupreport, CpGbed, covdistcpg, cpgdist]
+             [bga_bed, cov_dist, bga_bed_dup, dup_report, cpg_bed, cov_dist_cpg, cpg_dist]
 
       gather_to_sub_directory:
           run: ../tools/gather_to_sub_directory.cwl
           in:
             outdir: output_dir
-            files: [Tool_bisulfiteconversion/baseconvertion, Tool_bisulfiteconversion/readconvertion,
-                  Tool_bisulfiteconversion/CpHretention, Tool_bisulfiteconversion/CpGretention,
-                  Tool_mappingsummary/Strandtable, Tool_mappingsummary/Mappingquality,
-                  Tool_CpGretentiondistribution/CpGRetentionDist,
-                  Tool_coveragestats/BgaBed, Tool_coveragestats/covdist, Tool_coveragestats/BgaBeddup, Tool_coveragestats/Dupreport,
-                  Tool_coveragestats/CpGbed, Tool_coveragestats/covdistcpg, Tool_coveragestats/cpgdist]
+            files: [bisulfite_conversion/base_convertion, bisulfite_conversion/read_convertion, bisulfite_conversion/cph_retention, bisulfite_conversion/cpg_retention, mapping_summary/strand_table, mapping_summary/mapping_quality, cpg_retention_distribution/cpg_retention_dist, coverage_stats/bga_bed, coverage_stats/cov_dist, coverage_stats/bga_bed_dup, coverage_stats/dup_report, coverage_stats/cpg_bed, coverage_stats/cov_dist_cpg, coverage_stats/cpg_dist]
           out:
              [gathered_directory]

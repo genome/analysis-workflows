@@ -34,7 +34,7 @@ inputs:
             position: 4
 
 outputs:
-    CpGRetentionDist:
+    cpg_retention_dist:
         type: File
         outputBinding:
             glob: "CpGRetentionDist.txt"

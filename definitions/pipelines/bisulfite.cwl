@@ -77,7 +77,7 @@ steps:
         out:
             [vcf]
     bisulfite_qc:
-        run: ../subworkflows/Bisulfite_QC.cwl
+        run: ../subworkflows/bisulfite_qc.cwl
         in:
             vcf: pileup/vcf
             bam: merge/merged_bam
