@@ -4,8 +4,8 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Run Cell Ranger Count"
 
-baseCommand: ["/opt/cellranger-3.0.1/cellranger", "count", "--localmem=64", "--localcores=8"]
-arguments: ["--id=$(inputs.sample_name)"]
+baseCommand: ["/opt/cellranger-3.0.1/cellranger", "count"]
+arguments: ["--id=$(inputs.sample_name)", "--localcores=$(runtime.cores)", "--localmem=$(runtime.ram/1000)"]
 
 requirements:
     - class: DockerRequirement
