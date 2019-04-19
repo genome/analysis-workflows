@@ -25,3 +25,4 @@ outputs:
         secondaryFiles: [.bai]
         outputBinding:
             glob: "merged.bam"
+
