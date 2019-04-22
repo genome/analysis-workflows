@@ -24,6 +24,9 @@ inputs:
         type: string?
     vep_cache_dir:
         type: string
+    vep_plugins:
+        type: string[]?
+        default: [Downstream, Wildtype]
     synonyms_file:
         type: File?
     coding_only:
@@ -84,6 +87,7 @@ steps:
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             custom_clinvar_vcf: custom_clinvar_vcf
+            plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]
     bgzip_annotated_vcf:
