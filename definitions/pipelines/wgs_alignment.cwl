@@ -26,7 +26,7 @@ inputs:
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
-    intervals:
+    qc_intervals:
         type: File
     picard_metric_accumulation_level:
         type: string
@@ -115,7 +115,7 @@ steps:
             bam: alignment/final_bam
             reference: reference
             omni_vcf: omni_vcf
-            intervals: intervals
+            intervals: qc_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level
             minimum_mapping_quality: minimum_mapping_quality
             minimum_base_quality: minimum_base_quality
