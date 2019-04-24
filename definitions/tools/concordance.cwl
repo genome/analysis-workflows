@@ -10,7 +10,7 @@ requirements:
       ramMin: 8000
       tmpdirMin: 10000
     - class: DockerRequirement
-      dockerPull: "brentp/somalier"
+      dockerPull: "brentp/somalier:v0.1.5"
 arguments: ["-o", "concordance"]
 inputs:
     vcf:
