@@ -7,7 +7,7 @@ baseCommand: ["somalier"]
 requirements:
     - class: ResourceRequirement
       coresMin: 1
-      ramMin: 4000
+      ramMin: 8000
       tmpdirMin: 10000
     - class: DockerRequirement
       dockerPull: "brentp/somalier"
@@ -18,40 +18,20 @@ inputs:
         inputBinding:
             prefix: "-s"
             position: 1
-    threads:
-        type: string?
-        inputBinding:
-            prefix: "-t"
-            position: 2
-    min_depth:
-        type: string?
-        inputBinding:
-            prefix: "-d"
-            position: 3
     reference:
         type: string
         inputBinding:
             prefix: "-f"
-            position: 4
-    groups:
-        type: File?
-        inputBinding:
-            prefix: "-g"
-            position: 5
-    ped:
-        type: File?
-        inputBinding:
-            prefix: "-p"
-            position: 6
+            position: 2
     bam_1:
         type: File
         inputBinding:
-            position: 7
+            position: 3
         secondaryFiles: [.bai]
     bam_2:
         type: File
         inputBinding:
-            position: 8
+            position: 4
         secondaryFiles: [.bai]
 outputs:
     somalier_pairs:
