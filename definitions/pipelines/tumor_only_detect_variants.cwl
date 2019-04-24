@@ -54,6 +54,9 @@ inputs:
     vep_to_table_fields:
         type: string[]?
         default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,gnomADe_AF,CLIN_SIG,SOMATIC,PHENO]
+    vep_plugins:
+        type: string[]?
+        default: [Downstream, Wildtype]
     sample_name:
         type: string
     docm_vcf:
@@ -142,6 +145,7 @@ steps:
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
+            plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]
     bam_readcount:
