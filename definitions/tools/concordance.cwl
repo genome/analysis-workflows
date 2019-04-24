@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Concordance checking between Tumor and Normal BAM"
-baseCommand: ["somalier"]
+baseCommand: ["/usr/bin/somalier"]
 requirements:
     - class: ResourceRequirement
       coresMin: 1
