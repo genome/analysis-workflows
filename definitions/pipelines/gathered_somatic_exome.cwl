@@ -129,6 +129,8 @@ inputs:
         secondaryFiles: [.tbi]
     output_dir: 
         type: string
+    somalier_vcf:
+        type: File
 outputs:
     final_outputs:
         type: string[]
