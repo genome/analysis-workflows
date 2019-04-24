@@ -94,6 +94,8 @@ inputs:
             items: string
             inputBinding:
                 prefix: "--plugin"
+        inputBinding:
+            position: 9
 outputs:
     annotated_vcf:
         type: File
