@@ -137,16 +137,8 @@ inputs:
         default: true
     manta_output_contigs:
         type: boolean?
-    vcf:
+    somalier_vcf:
         type: File
-    threads:
-        type: string?
-    min_depth:
-        type: string?
-    groups:
-        type: File?
-    ped:
-        type: File?
 outputs:
     tumor_cram:
         type: File
@@ -341,10 +333,10 @@ outputs:
         type: File?
         outputSource: manta/tumor_only_variants
         secondaryFiles: [.tbi]
-    somalier_pairs:
+    somalier_concordance_metrics:
         type: File
         outputSource: concordance/somalier_pairs
-    somalier_samples:
+    somalier_concordance_statistics:
         type: File
         outputSource: concordance/somalier_samples
 steps:
@@ -402,11 +394,7 @@ steps:
             reference: reference
             bam_1: tumor_alignment_and_qc/bam
             bam_2: normal_alignment_and_qc/bam
-            vcf: vcf
-            threads: threads
-            min_depth: min_depth
-            groups: groups
-            ped: ped
+            vcf: somalier_vcf
         out:
             [somalier_pairs, somalier_samples]
     detect_variants:
