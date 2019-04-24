@@ -189,7 +189,7 @@ steps:
             contamination_fraction: extract_freemix/freemix_score
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
-            coding_only: annotate_coding_only
+            annotate_coding_only: annotate_coding_only
             custom_gnomad_vcf: custom_gnomad_vcf
             limit_variant_intervals: target_intervals
             custom_clinvar_vcf: custom_clinvar_vcf

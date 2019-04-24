@@ -29,7 +29,7 @@ inputs:
         default: [Downstream, Wildtype]
     synonyms_file:
         type: File?
-    coding_only:
+    annotate_coding_only:
         type: boolean?
     custom_gnomad_vcf:
         type: File?
@@ -85,7 +85,7 @@ steps:
             vcf: genotype_gvcfs/genotype_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
-            coding_only: coding_only
+            coding_only: annotate_coding_only
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             custom_clinvar_vcf: custom_clinvar_vcf
