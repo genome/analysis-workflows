@@ -20,7 +20,7 @@ arguments:
     "--transcript_version",
     "--offline",
     "--cache",
-    "--everything",
+    "--symbol",
     "-o", { valueFrom: $(runtime.outdir)/annotated.vcf }]
 inputs:
     vcf:
@@ -96,6 +96,12 @@ inputs:
                 prefix: "--plugin"
         inputBinding:
             position: 9
+    everything:
+        type: boolean?
+        default: true
+        inputBinding:
+            prefix: "--everything"
+            position: 10
 outputs:
     annotated_vcf:
         type: File
