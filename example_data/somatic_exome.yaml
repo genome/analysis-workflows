@@ -75,3 +75,4 @@ interval_list:
   path: exome_workflow/chr17_test_genes.interval_list
 mutect_scatter_count: 2
 mutect_artifact_detection_mode: false
+somalier_vcf: "exome_workflow/chr17_vcf_file_for_somalier.vcf"
