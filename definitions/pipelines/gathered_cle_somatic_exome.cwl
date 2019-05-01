@@ -180,6 +180,7 @@ steps:
             hgvs_annotation: hgvs_annotation
             vep_pick: vep_pick
             cle_vcf_filter: cle_vcf_filter
+            filter_docm_variants: filter_docm_variants
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
