@@ -136,7 +136,7 @@ outputs:
         type: File
         outputSource: optitype/optitype_plot
 steps:
-    germline_exome_wf:
+    germline_exome:
         run: germline_exome.cwl
         in:
             reference: reference
