@@ -104,7 +104,7 @@ inputs:
         default: [HGVSc,HGVSp]
 outputs:
     annotated_vcf:
-        type: File?
+        type: File
         outputSource: add_transcript_expression_data_to_vcf/annotated_expression_vcf
     annotated_tsv:
         type: File
