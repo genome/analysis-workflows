@@ -25,17 +25,6 @@ inputs:
     normal_name:
         type: string?
         default: 'normal'
-    mills:
-        type: File
-        secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
-    bqsr_intervals:
-        type: string[]
     bait_intervals:
         type: File
     target_intervals:
@@ -323,21 +312,16 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     tumor_alignment_and_qc:
-        run: exome_alignment.cwl
+        run: exome_alignment_mouse.cwl
         in:
             reference: reference
             bams: tumor_bams
             readgroups: tumor_readgroups
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
-            bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
             per_base_intervals: per_base_intervals
             per_target_intervals: per_target_intervals
             summary_intervals: summary_intervals
-            omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
             minimum_mapping_quality: qc_minimum_mapping_quality
             minimum_base_quality: qc_minimum_base_quality
@@ -345,23 +329,18 @@ steps:
                 source: tumor_name
                 valueFrom: "$(self).bam"
         out:
-            [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats]
     normal_alignment_and_qc:
-        run: exome_alignment.cwl
+        run: exome_alignment_mouse.cwl
         in:
             reference: reference
             bams: normal_bams
             readgroups: normal_readgroups
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
-            bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
             per_base_intervals: per_base_intervals
             per_target_intervals: per_target_intervals
             summary_intervals: summary_intervals
-            omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
             minimum_mapping_quality: qc_minimum_mapping_quality
             minimum_base_quality: qc_minimum_base_quality
@@ -369,7 +348,7 @@ steps:
                 source: normal_name
                 valueFrom: "$(self).bam"
         out:
-            [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats]
     detect_variants:
         run: detect_variants_mouse.cwl
         in:
