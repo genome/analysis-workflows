@@ -131,8 +131,6 @@ inputs:
         default: true
     manta_output_contigs:
         type: boolean?
-    somalier_vcf:
-        type: File
 outputs:
     tumor_cram:
         type: File
@@ -323,12 +321,6 @@ outputs:
         type: File?
         outputSource: manta/tumor_only_variants
         secondaryFiles: [.tbi]
-    somalier_concordance_metrics:
-        type: File
-        outputSource: concordance/somalier_pairs
-    somalier_concordance_statistics:
-        type: File
-        outputSource: concordance/somalier_samples
 steps:
     tumor_alignment_and_qc:
         run: exome_alignment.cwl
@@ -378,15 +370,6 @@ steps:
                 valueFrom: "$(self).bam"
         out:
             [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
-    concordance:
-        run: ../tools/concordance.cwl
-        in:
-            reference: reference
-            bam_1: tumor_alignment_and_qc/bam
-            bam_2: normal_alignment_and_qc/bam
-            vcf: somalier_vcf
-        out:
-            [somalier_pairs, somalier_samples]
     detect_variants:
         run: detect_variants.cwl
         in:
