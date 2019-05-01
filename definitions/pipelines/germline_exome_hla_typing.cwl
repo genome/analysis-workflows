@@ -71,64 +71,64 @@ inputs:
 outputs:
     cram:
         type: File
-        outputSource: germline_exome_wf/cram
+        outputSource: germline_exome/cram
     mark_duplicates_metrics:
         type: File
-        outputSource: germline_exome_wf/mark_duplicates_metrics
+        outputSource: germline_exome/mark_duplicates_metrics
     insert_size_metrics:
         type: File
-        outputSource: germline_exome_wf/insert_size_metrics
+        outputSource: germline_exome/insert_size_metrics
     insert_size_histogram:
         type: File
-        outputSource: germline_exome_wf/insert_size_histogram
+        outputSource: germline_exome/insert_size_histogram
     alignment_summary_metrics:
         type: File
-        outputSource: germline_exome_wf/alignment_summary_metrics
+        outputSource: germline_exome/alignment_summary_metrics
     hs_metrics:
         type: File
-        outputSource: germline_exome_wf/hs_metrics
+        outputSource: germline_exome/hs_metrics
     per_target_coverage_metrics:
         type: File[]
-        outputSource: germline_exome_wf/per_target_coverage_metrics
+        outputSource: germline_exome/per_target_coverage_metrics
     per_target_hs_metrics:
         type: File[]
-        outputSource: germline_exome_wf/per_target_hs_metrics
+        outputSource: germline_exome/per_target_hs_metrics
     per_base_coverage_metrics:
         type: File[]
-        outputSource: germline_exome_wf/per_base_coverage_metrics
+        outputSource: germline_exome/per_base_coverage_metrics
     per_base_hs_metrics:
         type: File[]
-        outputSource: germline_exome_wf/per_base_hs_metrics
+        outputSource: germline_exome/per_base_hs_metrics
     summary_hs_metrics:
         type: File[]
-        outputSource: germline_exome_wf/summary_hs_metrics
+        outputSource: germline_exome/summary_hs_metrics
     flagstats:
         type: File
-        outputSource: germline_exome_wf/flagstats
+        outputSource: germline_exome/flagstats
     verify_bam_id_metrics:
         type: File
-        outputSource: germline_exome_wf/verify_bam_id_metrics
+        outputSource: germline_exome/verify_bam_id_metrics
     verify_bam_id_depth:
         type: File
-        outputSource: germline_exome_wf/verify_bam_id_depth
+        outputSource: germline_exome/verify_bam_id_depth
     gvcf:
         type: File[]
-        outputSource: germline_exome_wf/gvcf
+        outputSource: germline_exome/gvcf
     final_vcf:
         type: File
-        outputSource: germline_exome_wf/final_vcf
+        outputSource: germline_exome/final_vcf
         secondaryFiles: [.tbi]
     coding_vcf:
         type: File
-        outputSource: germline_exome_wf/coding_vcf
+        outputSource: germline_exome/coding_vcf
         secondaryFiles: [.tbi]
     limited_vcf:
         type: File
-        outputSource: germline_exome_wf/limited_vcf
+        outputSource: germline_exome/limited_vcf
         secondaryFiles: [.tbi]
     vep_summary:
         type: File
-        outputSource: germline_exome_wf/vep_summary
+        outputSource: germline_exome/vep_summary
     optitype_tsv:
         type: File
         outputSource: optitype/optitype_tsv
@@ -169,6 +169,6 @@ steps:
         run: ../tools/optitype_dna.cwl
         in:
             optitype_name: optitype_name
-            cram: germline_exome_wf/cram
+            cram: germline_exome/cram
         out:
             [optitype_tsv, optitype_plot]
