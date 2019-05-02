@@ -228,6 +228,9 @@ outputs:
     merged_annotated_svs:
         type: File
         outputSource: variant_callers/merged_annotated_svs
+    filtered_sv_pop_vcf:
+        type: File
+        outputSource: variant_callers/sv_pop_filtered_vcf
     filtered_sv_vcfs:
         type: File[]
         outputSource: variant_callers/filtered_vcfs
@@ -328,7 +331,7 @@ steps:
             variants_to_table_genotype_fields: sv_variants_to_table_genotype_fields
             vep_to_table_fields: sv_vep_to_table_fields
         out: 
-           [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf, manta_diploid_variants, manta_somatic_variants, manta_all_candidates, manta_small_candidates, manta_tumor_only_variants, smoove_output_variants, merged_annotated_svs, filtered_vcfs, annotated_tsvs]
+           [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf, manta_diploid_variants, manta_somatic_variants, manta_all_candidates, manta_small_candidates, manta_tumor_only_variants, smoove_output_variants, merged_annotated_svs, sv_pop_filtered_vcf, filtered_vcfs, annotated_tsvs]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:

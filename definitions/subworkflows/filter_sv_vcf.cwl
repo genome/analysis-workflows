@@ -21,6 +21,9 @@ outputs:
     filtered_vcf:
         type: File[]
         outputSource: intersect_variants/intersect_result
+    sv_pop_filtered_vcf:
+        type: File
+        outputSource: filter_sv_pop/filtered_vcf
 steps:
     filter_sv_pop:
         run: ../tools/filter_vcf_max_sv_pop_freq.cwl

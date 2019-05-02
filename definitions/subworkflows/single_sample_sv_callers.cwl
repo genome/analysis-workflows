@@ -121,6 +121,9 @@ outputs:
     merged_annotated_svs:
         type: File
         outputSource: run_merge/merged_annotated_vcf
+    sv_pop_filtered_vcf:
+        type: File
+        outputSource: filter_vcf/sv_pop_filtered_vcf
     filtered_vcfs:
         type: File[]
         outputSource: annotated_filter_index/indexed_vcf
@@ -185,7 +188,7 @@ steps:
             sv_intervals: sv_filter_interval_lists
             vcf: run_merge/merged_annotated_vcf
         out:
-            [filtered_vcf]
+            [filtered_vcf, sv_pop_filtered_vcf]
     annotated_filter_bgzip:
         run: ../tools/bgzip.cwl
         scatter: [file]
