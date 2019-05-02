@@ -42,7 +42,7 @@ inputs:
 outputs:
     merged_annotated_vcf:
         type: File
-        outputSource: annotate_variants/annotated_vcf
+        outputSource: sort_vcf/sorted_vcf
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
@@ -85,3 +85,9 @@ steps:
                 default: "per_gene"
         out:
             [annotated_vcf, vep_summary]
+    sort_vcf:
+        run: ../tools/sort_vcf.cwl
+        in:
+            vcf: annotate_variants/annotated_vcf
+        out:
+            [sorted_vcf]

@@ -18,7 +18,7 @@ inputs:
         inputBinding:
             prefix: "I="
     reference_dict:
-        type: File
+        type: File?
         inputBinding:
             prefix: "SEQUENCE_DICTIONARY="
 outputs:
