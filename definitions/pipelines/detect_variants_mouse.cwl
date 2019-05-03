@@ -304,25 +304,10 @@ steps:
             vcf: add_normal_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
             [indexed_vcf]
-    filter_vcf:
-        run: ../subworkflows/filter_vcf.cwl
-        in: 
-            vcf: index/indexed_vcf
-            filter_gnomADe_maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
-            filter_mapq0_threshold: filter_mapq0_threshold
-            filter_somatic_llr_threshold: filter_somatic_llr_threshold
-            filter_minimum_depth: filter_minimum_depth
-            sample_names:
-                default: 'NORMAL,TUMOR'
-            tumor_bam: tumor_bam
-            do_cle_vcf_filter: cle_vcf_filter
-            reference: reference
-        out: 
-            [filtered_vcf]
     annotated_filter_bgzip:
         run: ../tools/bgzip.cwl
         in:
-            file: filter_vcf/filtered_vcf
+            file: index/indexed_vcf
         out:
             [bgzipped_file]
     annotated_filter_index:
