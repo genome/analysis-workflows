@@ -39,6 +39,15 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    variants_to_table_fields:
+        type: string[]?
+        default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
+    variants_to_table_genotype_fields:
+        type: string[]?
+        default: [GT,AD]
+    vep_to_table_fields:
+        type: string[]?
+        default: [HGVSc,HGVSp]
 outputs:
     gvcf:
         type: File[]
@@ -58,6 +67,9 @@ outputs:
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
+    final_tsv:
+        type: File
+        outputSource: add_vep_fields_to_table/annotated_variants_tsv
 steps:
     haplotype_caller:
         run: gatk_haplotypecaller_iterator.cwl
@@ -130,4 +142,19 @@ steps:
                 default: true
         out:
             [filtered_vcf]
-
+    variants_to_table:
+        run: ../tools/variants_to_table.cwl
+        in:
+            reference: reference
+            vcf: limit_variants/filtered_vcf
+            fields: variants_to_table_fields
+            genotype_fields: variants_to_table_genotype_fields
+        out:
+            [variants_tsv]
+    add_vep_fields_to_table:
+        run: ../tools/add_vep_fields_to_table.cwl
+        in:
+            vcf: limit_variants/filtered_vcf
+            vep_fields: vep_to_table_fields
+            tsv: variants_to_table/variants_tsv
+        out: [annotated_variants_tsv]
