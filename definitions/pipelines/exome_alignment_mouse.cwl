@@ -77,7 +77,7 @@ steps:
             bams: bams
             readgroups: readgroups
             final_name: final_name
-        out: [indexed_bam,mark_duplicates_metrics_file]
+        out: [final_bam,mark_duplicates_metrics_file]
     qc:
         run: ../subworkflows/qc_exome_no_verify_bam.cwl
         in:
