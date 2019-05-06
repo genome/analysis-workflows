@@ -11,7 +11,7 @@ requirements:
     - class: DockerRequirement
       dockerPull: "registry.gsc.wustl.edu/mgi/cellranger:3.0.1"
     - class: ResourceRequirement
-      ramMin: 64000
+      ramMin: 56000
       coresMin: 8
 
 inputs:
