@@ -8,8 +8,9 @@ requirements:
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
 inputs:
-    cram:
+    bam:
         type: File
+        secondaryFiles: [.bai,^.bai]
     reference:
         type: string
 
@@ -30,10 +31,26 @@ inputs:
 
     manta_call_regions:
         type: File?
+        secondaryFiles: [.tbi]
     manta_non_wgs:
         type: boolean?
     manta_output_contigs:
         type: boolean?
+
+    merge_max_distance:
+        type: int
+    merge_min_svs:
+        type: int
+    merge_same_type:
+        type: boolean
+    merge_same_strand:
+        type: boolean
+    merge_estimate_sv_distance:
+        type: boolean
+    merge_min_sv_size:
+        type: int
+    merge_sv_pop_freq_db:
+        type: File
 
     smoove_exclude_regions:
         type: File?
@@ -78,21 +95,10 @@ outputs:
     smoove_output_variants:
         type: File
         outputSource: run_smoove/output_vcf
-
+    merged_annotated_svs:
+        type: File
+        outputSource: run_merge/merged_annotated_vcf
 steps:
-    cram_to_bam:
-        run: ../tools/cram_to_bam.cwl
-        in:
-            cram: cram
-            reference: reference
-        out:
-            [bam]
-    index_bam:
-        run: ../tools/index_bam.cwl
-        in:
-            bam: cram_to_bam/bam
-        out:
-            [indexed_bam]
     run_cnvkit:
         run: cnvkit_single_sample.cwl
         in:
@@ -100,7 +106,7 @@ steps:
             drop_low_coverage: cnvkit_drop_low_coverage
             method: cnvkit_method
             reference_cnn: cnvkit_reference_cnn
-            tumor_bam: index_bam/indexed_bam
+            tumor_bam: bam
             scatter_plot: cnvkit_scatter_plot
             male_reference: cnvkit_male_reference
             cnvkit_vcf_name: cnvkit_vcf_name
@@ -113,17 +119,31 @@ steps:
             non_wgs: manta_non_wgs
             output_contigs: manta_output_contigs
             reference: reference
-            tumor_bam: index_bam/indexed_bam
+            tumor_bam: bam
         out: 
             [diploid_variants, somatic_variants, all_candidates, small_candidates, tumor_only_variants]
     run_smoove:
         run: ../tools/smoove.cwl
         in:
             bams:
-                source: [index_bam/indexed_bam]
+                source: [bam]
                 linkMerge: merge_flattened
             exclude_regions: smoove_exclude_regions
             reference: reference
         out:
             [output_vcf]
-
+    run_merge:
+        run: merge_svs.cwl
+        in:
+            vcfs:
+                source: [run_cnvkit/cnvkit_vcf, run_manta/tumor_only_variants, run_smoove/output_vcf]
+                linkMerge: merge_flattened
+            max_distance_to_merge: merge_max_distance
+            minimum_sv_calls: merge_min_svs
+            same_type: merge_same_type
+            same_strand: merge_same_strand
+            estimate_sv_distance: merge_estimate_sv_distance
+            minimum_sv_size: merge_min_sv_size
+            sv_db: merge_sv_pop_freq_db
+        out:
+            [merged_annotated_vcf]

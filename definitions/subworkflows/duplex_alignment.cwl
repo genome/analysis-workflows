@@ -17,6 +17,21 @@ inputs:
         type: string
     target_intervals:
        type: File?
+    min_reads:
+       type: int[]
+       default: [10, 5, 3]
+    max_read_error_rate:
+       type: float?
+       default: 0.05
+    max_base_error_rate:
+       type: float?
+       default: 0.1
+    min_base_quality:
+       type: int
+       default: 50
+    max_no_call_fraction:
+       type: float
+       default: 0.05
 outputs:
     aligned_bam:
         type: File
@@ -68,6 +83,11 @@ steps:
         in:
             bam: align_consensus/consensus_aligned_bam
             reference: reference
+            min_reads: min_reads
+            max_read_error_rate: max_read_error_rate
+            max_base_error_rate: max_base_error_rate
+            min_base_quality: min_base_quality
+            max_no_call_fraction: max_no_call_fraction
         out:
             [filtered_bam]
     clip_overlap:

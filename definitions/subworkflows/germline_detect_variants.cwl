@@ -8,7 +8,7 @@ requirements:
 inputs:
     reference:
         type: string
-    cram:
+    bam:
         type: File
     emit_reference_confidence:
         type: string
@@ -24,6 +24,9 @@ inputs:
         type: string?
     vep_cache_dir:
         type: string
+    vep_plugins:
+        type: string[]?
+        default: [Downstream, Wildtype]
     synonyms_file:
         type: File?
     coding_only:
@@ -37,7 +40,7 @@ inputs:
         type: File?
         secondaryFiles: [.tbi]
     vep_assembly:
-        type: string?
+        type: string
         default: "GRCh38"
 outputs:
     gvcf:
@@ -63,7 +66,7 @@ steps:
         run: gatk_haplotypecaller_iterator.cwl
         in:
             reference: reference
-            cram: cram
+            bam: bam
             emit_reference_confidence: emit_reference_confidence
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
@@ -88,6 +91,7 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             custom_clinvar_vcf: custom_clinvar_vcf
             assembly: vep_assembly
+            plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]
     bgzip_annotated_vcf:

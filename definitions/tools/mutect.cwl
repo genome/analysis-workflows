@@ -9,7 +9,7 @@ requirements:
       ramMin: 20000
       tmpdirMin: 100000
     - class: DockerRequirement
-      dockerPull: "mgibio/cle"
+      dockerPull: "mgibio/cle:v1.3.1"
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/mutect.vcf.gz }]
 inputs:
@@ -18,18 +18,18 @@ inputs:
         inputBinding:
             prefix: "-R"
             position: 1
-    tumor_cram:
+    tumor_bam:
         type: File
         inputBinding:
             prefix: "-I:tumor"
             position: 2
-        secondaryFiles: [.crai]
-    normal_cram:
+        secondaryFiles: [.bai]
+    normal_bam:
         type: File?
         inputBinding:
             prefix: "-I:normal"
             position: 3
-        secondaryFiles: [.crai]
+        secondaryFiles: [.bai]
     interval_list:
         type: File
         inputBinding:

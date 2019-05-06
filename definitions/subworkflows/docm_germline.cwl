@@ -8,9 +8,9 @@ requirements:
 inputs:
     reference:
         type: string
-    cram:
+    bam:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.bai]
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -19,7 +19,7 @@ inputs:
 outputs:
     unfiltered_vcf:
         type: File
-        outputSource: gatk_haplotypecaller/docm_out
+        outputSource: gatk_haplotypecaller/docm_raw_variants
     filtered_vcf:
         type: File
         outputSource: index/indexed_vcf
@@ -29,15 +29,15 @@ steps:
         run: ../tools/docm_gatk_haplotype_caller.cwl
         in:
             reference: reference
-            cram: cram
+            bam: bam
             docm_vcf: docm_vcf
             interval_list: interval_list
         out:
-            [docm_out]
+            [docm_raw_variants]
     docm_filter:
         run: ../tools/single_sample_docm_filter.cwl
         in:
-            docm_out: gatk_haplotypecaller/docm_out
+            docm_out: gatk_haplotypecaller/docm_raw_variants
         out:
             [docm_filter_out]
     bgzip:

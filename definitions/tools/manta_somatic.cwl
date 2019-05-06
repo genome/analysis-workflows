@@ -43,16 +43,20 @@ inputs:
         inputBinding:
             position: -5
             prefix: "--callRegions"
+        secondaryFiles: [.tbi]
+        doc: bgzip-compressed, tabix-indexed BED file specifiying regions to which variant analysis will be restricted
     non_wgs:
         type: boolean?
         inputBinding:
             position: -6
             prefix: "--exome"
+        doc: toggles on settings for WES
     output_contigs:
         type: boolean?
         inputBinding:
             position: -7
             prefix: "--outputContig"
+        doc: if true, outputs assembled contig sequences in final VCF files, in the INFO field CONTIG
 outputs:
     diploid_variants:
         type: File?

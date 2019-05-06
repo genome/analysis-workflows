@@ -6,12 +6,12 @@ label: "varscan somatic workflow"
 inputs:
     reference:
         type: string
-    tumor_cram:
+    tumor_bam:
         type: File
-        secondaryFiles: [^.crai]
-    normal_cram:
+        secondaryFiles: [^.bai]
+    normal_bam:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.bai]
     roi_bed:
         type: File?
     strand_filter:
@@ -72,8 +72,8 @@ steps:
         run: ../tools/varscan_somatic.cwl
         in:
             reference: reference
-            normal_cram: normal_cram
-            tumor_cram: tumor_cram
+            normal_bam: normal_bam
+            tumor_bam: tumor_bam
             roi_bed: roi_bed
             strand_filter: strand_filter
             min_coverage: min_coverage

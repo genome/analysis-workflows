@@ -7,15 +7,15 @@ baseCommand: ["/usr/bin/perl", "-I", "/opt/lib/perl/VEP/Plugins", "/usr/bin/vari
 requirements:
     - class: InlineJavascriptRequirement
     - class: ResourceRequirement
-      ramMin: 32000
+      coresMin: 4
+      ramMin: 64000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: "mgibio/vep_helper-cwl:1.0.0"
+      dockerPull: "mgibio/vep_helper-cwl:1.1.0"
 arguments:
     ["--format", "vcf",
     "--vcf",
-    "--plugin", "Downstream",
-    "--plugin", "Wildtype",
+    "--fork", "4",
     "--term", "SO",
     "--transcript_version",
     "--offline",
@@ -82,15 +82,22 @@ inputs:
                         return []
                     }
                 }
-            position: 8
+            position: 7
     reference:
         type: string?
         inputBinding:
             prefix: "--fasta" 
+            position: 8
+    plugins:
+        type:
+            type: array
+            items: string
+            inputBinding:
+                prefix: "--plugin"
+        inputBinding:
             position: 9
     assembly:
-        type: string?
-        default: "GRCh38"
+        type: string
         inputBinding:
             prefix: "--assembly"
             position: 10

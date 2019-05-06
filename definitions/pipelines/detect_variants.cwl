@@ -8,12 +8,12 @@ requirements:
 inputs:
     reference:
         type: string
-    tumor_cram:
+    tumor_bam:
         type: File
-        secondaryFiles: [.crai,^.crai]
-    normal_cram:
+        secondaryFiles: [.bai,^.bai]
+    normal_bam:
         type: File
-        secondaryFiles: [.crai,^.crai]
+        secondaryFiles: [.bai,^.bai]
     interval_list:
         type: File
     dbsnp_vcf:
@@ -62,6 +62,9 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+    filter_docm_variants:
+        type: boolean?
+        default: true
     vep_cache_dir:
         type: string
     synonyms_file:
@@ -73,15 +76,24 @@ inputs:
             - "null"
             - type: enum
               symbols: ["pick", "flag_pick", "pick_allele", "per_gene", "pick_allele_gene", "flag_pick_allele", "flag_pick_allele_gene"]
+    vep_plugins:
+        type: string[]?
+        default: [Downstream, Wildtype]
     filter_gnomADe_maximum_population_allele_frequency:
         type: float?
         default: 0.001
     filter_mapq0_threshold:
         type: float?
         default: 0.15
+    filter_minimum_depth:
+        type: int?
+        default: 1
     cle_vcf_filter:
         type: boolean?
         default: false
+    filter_somatic_llr_threshold:
+        type: float?
+        default: 5
     variants_to_table_fields:
         type: string[]?
         default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
@@ -98,8 +110,7 @@ inputs:
         type: File?
         secondaryFiles: [.tbi]
     vep_assembly:
-        type: string?
-        default: "GRCh38"
+        type: string
         doc: Used to explicitly define which assembly version to use; required when there are two or more in the same directory
 outputs:
     mutect_unfiltered_vcf:
@@ -134,12 +145,9 @@ outputs:
         type: File
         outputSource: pindel/filtered_vcf
         secondaryFiles: [.tbi]
-    docm_unfiltered_vcf:
-        type: File
-        outputSource: docm/unfiltered_vcf
     docm_filtered_vcf:
         type: File
-        outputSource: docm/filtered_vcf
+        outputSource: docm/docm_variants_vcf
         secondaryFiles: [.tbi]
     final_vcf:
         type: File
@@ -172,8 +180,8 @@ steps:
         run: ../subworkflows/mutect.cwl
         in:
             reference: reference
-            tumor_cram: tumor_cram
-            normal_cram: normal_cram
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
             interval_list: interval_list
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
@@ -188,8 +196,8 @@ steps:
         run: ../subworkflows/strelka_and_post_processing.cwl
         in:
             reference: reference
-            tumor_cram: tumor_cram
-            normal_cram: normal_cram
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
             interval_list: interval_list
             exome_mode: strelka_exome_mode
             cpu_reserved: strelka_cpu_reserved
@@ -199,8 +207,8 @@ steps:
         run: ../subworkflows/varscan_pre_and_post_processing.cwl
         in:
             reference: reference
-            tumor_cram: tumor_cram
-            normal_cram: normal_cram
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
             interval_list: interval_list
             strand_filter: varscan_strand_filter
             min_coverage: varscan_min_coverage
@@ -213,8 +221,8 @@ steps:
         run: ../subworkflows/pindel.cwl
         in:
             reference: reference
-            tumor_cram: tumor_cram
-            normal_cram: normal_cram
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
             interval_list: interval_list
             insert_size: pindel_insert_size
         out:
@@ -223,12 +231,13 @@ steps:
         run: ../subworkflows/docm_cle.cwl
         in:
             reference: reference
-            tumor_cram: tumor_cram
-            normal_cram: normal_cram
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
             docm_vcf: docm_vcf
             interval_list: interval_list
+            filter_docm_variants: filter_docm_variants
         out:
-            [unfiltered_vcf, filtered_vcf]
+            [docm_variants_vcf]
     combine:
         run: ../tools/combine_variants.cwl
         in:
@@ -237,7 +246,6 @@ steps:
             strelka_vcf: strelka/filtered_vcf
             varscan_vcf: varscan/filtered_vcf
             pindel_vcf: pindel/filtered_vcf
-            docm_vcf: docm/filtered_vcf
         out:
             [combined_vcf]
     decompose:
@@ -246,10 +254,24 @@ steps:
             vcf: combine/combined_vcf
         out:
             [decomposed_vcf]
+    decompose_index:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: decompose/decomposed_vcf
+        out:
+            [indexed_vcf]
+    add_docm_variants:
+        run: ../tools/docm_add_variants.cwl
+        in: 
+            reference: reference
+            docm_vcf: docm/docm_variants_vcf
+            callers_vcf: decompose_index/indexed_vcf
+        out:
+            [merged_vcf]
     annotate_variants:
         run: ../tools/vep.cwl
         in:
-            vcf: decompose/decomposed_vcf
+            vcf: add_docm_variants/merged_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only
@@ -258,22 +280,9 @@ steps:
             pick: vep_pick
             custom_clivnar_vcf: custom_clinvar_vcf
             assembly: vep_assembly
+            plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]
-    tumor_cram_to_bam:
-        run: ../subworkflows/cram_to_bam_and_index.cwl
-        in:
-            cram: tumor_cram
-            reference: reference
-        out:
-            [bam]
-    normal_cram_to_bam:
-        run: ../subworkflows/cram_to_bam_and_index.cwl
-        in:
-            cram: normal_cram
-            reference: reference
-        out:
-            [bam]
     tumor_bam_readcount:
         run: ../tools/bam_readcount.cwl
         in:
@@ -281,7 +290,7 @@ steps:
             sample:
                 default: 'TUMOR'
             reference_fasta: reference
-            bam: tumor_cram_to_bam/bam
+            bam: tumor_bam
             min_base_quality: readcount_minimum_base_quality
             min_mapping_quality: readcount_minimum_mapping_quality
         out:
@@ -293,7 +302,7 @@ steps:
             sample:
                 default: 'NORMAL'
             reference_fasta: reference
-            bam: normal_cram_to_bam/bam
+            bam: normal_bam
             min_base_quality: readcount_minimum_base_quality
             min_mapping_quality: readcount_minimum_mapping_quality
         out:
@@ -334,7 +343,11 @@ steps:
             vcf: index/indexed_vcf
             filter_gnomADe_maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
             filter_mapq0_threshold: filter_mapq0_threshold
-            tumor_bam: tumor_cram_to_bam/bam
+            filter_somatic_llr_threshold: filter_somatic_llr_threshold
+            filter_minimum_depth: filter_minimum_depth
+            sample_names:
+                default: 'NORMAL,TUMOR'
+            tumor_bam: tumor_bam
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference
         out: 

@@ -3,22 +3,27 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Biscuit pileup"
-baseCommand: ["/usr/bin/biscuit", "pileup"]
+baseCommand: ["/bin/bash", "helper.sh"]
 stdout: pileup.vcf.gz
 requirements:
-    - class: ShellCommandRequirement
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: 4
     - class: DockerRequirement
-      dockerPull: "mgibio/bisulfite:v1.3"
+      dockerPull: "mgibio/biscuit:0.3.8"
+    - class: InitialWorkDirRequirement
+      listing:
+      - entryname: 'helper.sh'
+        entry: |
+            set -eo pipefail
+
+            cores=$1
+            reference_fasta="$2"
+            bam="$3"
+            
+            /usr/bin/biscuit pileup -q $cores -w pileup_stats.txt  "$reference_fasta" "$bam" | /opt/htslib/bin/bgzip
 arguments: [
-    { valueFrom: "-q", position: -10 },
     { valueFrom: $(runtime.cores), position: -9 },
-    { valueFrom: "-w", position: -8 },
-    { valueFrom: "pileup_stats.txt", position: -7 },
-    { shellQuote: false, valueFrom: "|" },
-    "/opt/htslib/bin/bgzip"
 ]
 inputs:
     bam:

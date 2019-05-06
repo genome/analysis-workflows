@@ -3,6 +3,8 @@
 cwlVersion: v1.0
 class: Workflow
 label: "Subworkflow that runs cnvkit in single sample mode and returns a vcf file"
+requirements:
+    - class: StepInputExpressionRequirement
 
 inputs:
     tumor_bam:
@@ -22,7 +24,6 @@ inputs:
         type: File
     cnvkit_vcf_name:
         type: string?
-        default: $(inputs.tumor_bam.nameroot).cnvkit.vcf
 outputs:
     cn_diagram:
         type: File?
@@ -66,6 +67,17 @@ steps:
             cns_file: cnvkit_main/tumor_segmented_ratios
             male_reference: male_reference
             cnr_file: cnvkit_main/tumor_bin_level_ratios
-            output_name: cnvkit_vcf_name
+            output_name: 
+                source: cnvkit_vcf_name
+                valueFrom: |
+                    ${  
+                        if(inputs.output_name) {
+                            return inputs.output_name;
+                        }   
+                        else {
+                            return inputs.tumor_bam.nameroot + ".cnvkit.vcf"
+                        }   
+                    }
+            tumor_bam: tumor_bam
         out:
             [cnvkit_vcf]

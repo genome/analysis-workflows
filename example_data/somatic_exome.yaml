@@ -56,7 +56,7 @@ summary_intervals:
       class: File
       path: exome_workflow/chr17_test_genes.interval_list
 picard_metric_accumulation_level: ALL_READS
-reference: "/gscmnt/gc2764/cad/jgarza/pipeline_data/exome_workflow/chr17_test.fa"
+reference: "/gscmnt/gc2560/core/reference_sequences/chr17_refseq_cwl_test/chr17_test.fa"
 synonyms_file:
   class: File
   path: exome_workflow/chromAlias.ensembl.txt
@@ -67,7 +67,7 @@ varscan_min_coverage: 8
 varscan_min_var_freq: 0.02
 varscan_p_value: 0.99
 varscan_strand_filter: 0
-vep_cache_dir: "/gscmnt/gc2764/cad/ssiebert/toil_test/inputs/VEP_cache"
+vep_cache_dir: "/gscmnt/gc2560/core/cwl/inputs/VEP_cache/"
 bqsr_intervals:
 - chr17
 interval_list:
@@ -75,3 +75,4 @@ interval_list:
   path: exome_workflow/chr17_test_genes.interval_list
 mutect_scatter_count: 2
 mutect_artifact_detection_mode: false
+somalier_vcf: "exome_workflow/chr17_vcf_file_for_somalier.vcf"

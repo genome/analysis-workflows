@@ -18,3 +18,7 @@ By contrast, the toil_compatibility branch relies on large, a/k/a fat, Docker im
 
 If a tool or workflow is a subworkflow of a larger workflow, then the same Docker image is required.
 
+
+
+[![DOI](https://zenodo.org/badge/64162512.svg)](https://zenodo.org/badge/latestdoi/64162512)
+

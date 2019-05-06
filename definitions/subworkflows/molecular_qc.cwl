@@ -22,14 +22,6 @@ inputs:
         type: File
     bait_intervals:
         type: File
-    per_target_intervals:
-        type: File
-    per_target_bait_intervals:
-        type: File
-    per_base_intervals:
-        type: File
-    per_base_bait_intervals:
-        type: File
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -46,10 +38,10 @@ inputs:
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
 outputs:
-    aligned_cram:
+    aligned_bam:
         type: File
-        secondaryFiles: [.crai, ^.crai]
-        outputSource: alignment/aligned_cram
+        secondaryFiles: [.bai, ^.bai]
+        outputSource: alignment/aligned_bam
     adapter_histogram:
         type: File[]
         outputSource: alignment/adapter_histogram
@@ -102,11 +94,11 @@ steps:
             reference: reference
             target_intervals: target_intervals
         out:
-            [aligned_cram, adapter_histogram, duplex_seq_metrics]
+            [aligned_bam, adapter_histogram, duplex_seq_metrics]
     qc:
         run: qc_exome.cwl
         in:
-            cram: alignment/aligned_cram
+            bam: alignment/aligned_bam
             reference: reference
             bait_intervals: bait_intervals
             target_intervals: target_intervals

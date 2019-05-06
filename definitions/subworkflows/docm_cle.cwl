@@ -8,53 +8,71 @@ requirements:
 inputs:
     reference:
         type: string
-    tumor_cram:
+    tumor_bam:
         type: File
-        secondaryFiles: [^.crai]
-    normal_cram:
+        secondaryFiles: [^.bai]
+    normal_bam:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.bai]
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
     interval_list:
         type: File
+    filter_docm_variants:
+        type: boolean
 outputs:
-    unfiltered_vcf:
+    docm_variants_vcf:
         type: File
-        outputSource: GATK_haplotype_caller/docm_out
-    filtered_vcf:
-        type: File
-        outputSource: index/indexed_vcf
+        outputSource: index2/indexed_vcf
         secondaryFiles: [.tbi]
 steps:
     GATK_haplotype_caller:
         run: ../tools/docm_gatk_haplotype_caller.cwl
         in:
             reference: reference
-            cram: tumor_cram
-            normal_cram: normal_cram
+            bam: tumor_bam
+            normal_bam: normal_bam
             docm_vcf: docm_vcf
             interval_list: interval_list
         out:
-            [docm_out]
-    docm_filter:
-        run: ../tools/somatic_docm_filter.cwl
-        in:
-            docm_out: GATK_haplotype_caller/docm_out
-            normal_cram: normal_cram
-            tumor_cram: tumor_cram
-        out:
-            [docm_filter_out]
+            [docm_raw_variants]
     bgzip:
         run: ../tools/bgzip.cwl
         in:
-            file: docm_filter/docm_filter_out
+            file: GATK_haplotype_caller/docm_raw_variants
         out:
             [bgzipped_file]
     index:
         run: ../tools/index_vcf.cwl
         in:
             vcf: bgzip/bgzipped_file
+        out:
+            [indexed_vcf]
+    decompose:
+        run: ../tools/vt_decompose.cwl
+        in:
+            vcf: index/indexed_vcf
+        out:
+            [decomposed_vcf]
+    docm_filter:
+        run: ../tools/filter_vcf_docm.cwl
+        in:
+            docm_raw_variants: decompose/decomposed_vcf
+            normal_bam: normal_bam
+            tumor_bam: tumor_bam
+            filter_docm_variants: filter_docm_variants
+        out:
+            [docm_filtered_variants]
+    bgzip2:
+        run: ../tools/bgzip.cwl
+        in:
+            file: docm_filter/docm_filtered_variants
+        out:
+            [bgzipped_file]
+    index2:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: bgzip2/bgzipped_file
         out:
             [indexed_vcf]

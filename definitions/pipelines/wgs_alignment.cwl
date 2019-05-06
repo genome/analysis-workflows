@@ -43,9 +43,9 @@ inputs:
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
 outputs:
-    cram:
+    bam:
         type: File
-        outputSource: alignment/final_cram
+        outputSource: alignment/final_bam
     mark_duplicates_metrics:
         type: File
         outputSource: alignment/mark_duplicates_metrics_file
@@ -94,6 +94,9 @@ outputs:
     summary_hs_metrics:
         type: File[]
         outputSource: qc/summary_hs_metrics
+    bamcoverage_bigwig:
+        type: File
+        outputSource: qc/bamcoverage_bigwig
 steps:
     alignment:
         run: ../subworkflows/bam_to_bqsr.cwl
@@ -105,11 +108,11 @@ steps:
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
             bqsr_intervals: bqsr_intervals
-        out: [final_cram,mark_duplicates_metrics_file]
+        out: [final_bam,mark_duplicates_metrics_file]
     qc:
         run: ../subworkflows/qc_wgs.cwl
         in:
-            cram: alignment/final_cram
+            bam: alignment/final_bam
             reference: reference
             omni_vcf: omni_vcf
             intervals: intervals
@@ -119,4 +122,4 @@ steps:
             per_base_intervals: per_base_intervals
             per_target_intervals: per_target_intervals
             summary_intervals: summary_intervals
-        out: [insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics]
+        out: [insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics, bamcoverage_bigwig]

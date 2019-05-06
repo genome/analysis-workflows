@@ -13,11 +13,11 @@ arguments:
     - position: 9
       valueFrom: "$(runtime.outdir)/output.vcf"
 inputs:
-    cram:
+    bam:
         type: File
         inputBinding:
             position: 1
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.bai]
     reference:
         type: string
         inputBinding:

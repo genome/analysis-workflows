@@ -10,9 +10,9 @@ requirements:
 inputs:
     reference:
         type: string
-    cram:
+    bam:
         type: File
-        secondaryFiles: [^.crai,.crai]
+        secondaryFiles: [^.bai,.bai]
     interval_list:
         type: File
     varscan_strand_filter:
@@ -54,6 +54,9 @@ inputs:
     vep_to_table_fields:
         type: string[]?
         default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,gnomADe_AF,CLIN_SIG,SOMATIC,PHENO]
+    vep_plugins:
+        type: string[]?
+        default: [Downstream, Wildtype]
     sample_name:
         type: string
     docm_vcf:
@@ -67,8 +70,7 @@ inputs:
     readcount_minimum_base_quality:
         type: int?
     vep_assembly:
-        type: string?
-        default: "GRCh38"
+        type: string
         doc: Used to explicitly define which version of the assembly to use; required when there are two or more in the same directory
 outputs:
     varscan_vcf:
@@ -103,7 +105,7 @@ steps:
         run: ../subworkflows/varscan_germline.cwl
         in:
             reference: reference
-            cram: cram
+            bam: bam
             interval_list: interval_list
             strand_filter: varscan_strand_filter
             min_coverage: varscan_min_coverage
@@ -117,7 +119,7 @@ steps:
         run: ../subworkflows/docm_germline.cwl
         in:
             reference: reference
-            cram: cram
+            bam: bam
             interval_list: interval_list
             docm_vcf: docm_vcf
         out:
@@ -147,22 +149,16 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
             assembly: vep_assembly
+            plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]
-    cram_to_bam:
-        run: ../subworkflows/cram_to_bam_and_index.cwl
-        in:
-            cram: cram
-            reference: reference
-        out:
-            [bam]
     bam_readcount:
         run: ../tools/bam_readcount.cwl
         in:
             vcf: annotate_variants/annotated_vcf
             sample: sample_name
             reference_fasta: reference
-            bam: cram_to_bam/bam
+            bam: bam
             min_mapping_quality: readcount_minimum_mapping_quality
             min_base_quality: readcount_minimum_base_quality
         out:

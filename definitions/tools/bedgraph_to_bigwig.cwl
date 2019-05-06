@@ -10,7 +10,7 @@ requirements:
       ramMin: 32000
       coresMin: 1
     - class: DockerRequirement
-      dockerPull: "mgibio/bisulfite"
+      dockerPull: "mgibio/bisulfite:v1.4"
 arguments:
     - position: 3
       valueFrom: "cpgs.bw"

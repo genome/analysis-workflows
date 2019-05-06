@@ -7,6 +7,8 @@ baseCommand: ["vt", "decompose"]
 requirements:
     - class: DockerRequirement
       dockerPull: quay.io/biocontainers/vt:0.57721--hf74b74d_1
+    - class: ResourceRequirement
+      ramMin: 4000
 arguments:
     ["-s",
      "-o", { valueFrom: $(runtime.outdir)/decomposed.vcf.gz }]

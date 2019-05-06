@@ -17,11 +17,26 @@ inputs:
         type: string
     target_intervals:
        type: File?
+    min_reads:
+       type: int[]
+       default: [1]
+    max_read_error_rate:
+       type: float?
+       default: 0.05 
+    max_base_error_rate:
+       type: float?
+       default: 0.1
+    min_base_quality:
+       type: int
+       default: 1
+    max_no_call_fraction:
+       type: float
+       default: 0.5
 outputs:
-    aligned_cram:
+    aligned_bam:
         type: File
-        secondaryFiles: [.crai, ^.crai]
-        outputSource: index_cram/indexed_cram
+        secondaryFiles: [.bai, ^.bai]
+        outputSource: index_bam/indexed_bam
     adapter_histogram:
         type: File[]
         outputSource: align/adapter_metrics
@@ -68,6 +83,11 @@ steps:
         in:
             bam: align_consensus/consensus_aligned_bam
             reference: reference
+            min_reads: min_reads
+            max_read_error_rate: max_read_error_rate
+            max_base_error_rate: max_base_error_rate
+            min_base_quality: min_base_quality
+            max_no_call_fraction: max_no_call_fraction
         out:
             [filtered_bam]
     clip_overlap:
@@ -85,16 +105,9 @@ steps:
             description: sample_name
        out:
             [duplex_seq_metrics]
-    bam_to_cram:
-        run: ../tools/bam_to_cram.cwl
+    index_bam:
+        run: ../tools/index_bam.cwl
         in:
             bam: clip_overlap/clipped_bam
-            reference: reference
         out:
-            [cram]
-    index_cram:
-        run: ../tools/index_cram.cwl
-        in:
-            cram: bam_to_cram/cram
-        out:
-            [indexed_cram]
+            [indexed_bam]

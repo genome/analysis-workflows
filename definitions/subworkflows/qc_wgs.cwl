@@ -9,9 +9,9 @@ requirements:
           - $import: ../types/labelled_file.yml
     - class: SubworkflowFeatureRequirement
 inputs:
-    cram:
+    bam:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.bai]
     reference:
         type: string
     intervals:
@@ -78,11 +78,14 @@ outputs:
     summary_hs_metrics:
         type: File[]
         outputSource: collect_hs_metrics/summary_hs_metrics
+    bamcoverage_bigwig:
+        type: File
+        outputSource: deeptools_bamcoverage/outfile
 steps:
     collect_insert_size_metrics:
         run: ../tools/collect_insert_size_metrics.cwl
         in:
-            cram: cram
+            bam: bam
             reference: reference
             metric_accumulation_level: picard_metric_accumulation_level
         out:
@@ -90,7 +93,7 @@ steps:
     collect_alignment_summary_metrics:
         run: ../tools/collect_alignment_summary_metrics.cwl
         in:
-            cram: cram
+            bam: bam
             reference: reference
             metric_accumulation_level: picard_metric_accumulation_level
         out:
@@ -98,7 +101,7 @@ steps:
     collect_gc_bias_metrics:
         run: ../tools/collect_gc_bias_metrics.cwl
         in:
-            cram: cram
+            bam: bam
             reference: reference
             metric_accumulation_level: picard_metric_accumulation_level
         out:
@@ -106,7 +109,7 @@ steps:
     collect_wgs_metrics:
         run: ../tools/collect_wgs_metrics.cwl
         in:
-            cram: cram
+            bam: bam
             reference: reference
             intervals: intervals
         out:
@@ -114,26 +117,19 @@ steps:
     samtools_flagstat:
         run: ../tools/samtools_flagstat.cwl
         in:
-            cram: cram
+            bam: bam
         out: [flagstats]
-    cram_to_bam:
-        run: cram_to_bam_and_index.cwl
-        in:
-          cram: cram
-          reference: reference
-        out:
-          [bam]
     verify_bam_id:
         run: ../tools/verify_bam_id.cwl
         in:
-            bam: cram_to_bam/bam
+            bam: bam
             vcf: omni_vcf
         out:
             [verify_bam_id_metrics, verify_bam_id_depth]
     collect_hs_metrics:
-        run: ../subworkflows/hs_metrics.cwl
+        run: hs_metrics.cwl
         in:
-            cram: cram
+            bam: bam
             minimum_mapping_quality: minimum_mapping_quality
             minimum_base_quality: minimum_base_quality
             per_base_intervals: per_base_intervals
@@ -142,3 +138,10 @@ steps:
             summary_intervals: summary_intervals
         out:
             [per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics]
+    deeptools_bamcoverage:
+        run: ../tools/deeptools_bamcoverage.cwl
+        in:
+            bam: bam
+            min_mapping_quality: minimum_mapping_quality
+        out:
+            [outfile]

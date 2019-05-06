@@ -9,9 +9,9 @@ requirements:
 inputs:
     reference:
         type: string
-    cram:
+    bam:
         type: File
-        secondaryFiles: [^.crai]
+        secondaryFiles: [^.bai]
     emit_reference_confidence:
         type: string
     gvcf_gq_bands:
@@ -39,7 +39,7 @@ steps:
         run: ../tools/gatk_haplotype_caller.cwl
         in:
             reference: reference
-            cram: cram
+            bam: bam
             emit_reference_confidence: emit_reference_confidence
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals

@@ -5,19 +5,26 @@ class: CommandLineTool
 label: "run pVACfuse"
 
 baseCommand: [
-    "pvacfuse",
-    "run"
+    "ln", "-s"
+]
+arguments: [
+    { valueFrom: "$TMPDIR", shellQuote: false },
+    "/tmp/pvacseq",
+    { valueFrom: " && ", shellQuote: false },
+    "export", "TMPDIR=/tmp/pvacseq",
+    { valueFrom: " && ", shellQuote: false },
+    "/opt/conda/bin/pvacfuse",
+    "run",
+    "--iedb-install-directory", "/opt/iedb",
+    { position: 5, valueFrom: $(runtime.outdir) },
 ]
 requirements:
+    - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:1.3.0"
-arguments:
-    - position: 5
-      valueFrom: $(runtime.outdir)
-    - position: 6
-      valueFrom: "--iedb-install-directory"
-    - position: 7
-      valueFrom: "/opt/iedb"
+      dockerPull: "griffithlab/pvactools:1.3.7"
+    - class: ResourceRequirement
+      ramMin: 16000
+      coresMin: 8
 inputs:
     input_file:
         type: File
@@ -106,6 +113,7 @@ inputs:
         type: int?
         inputBinding:
             prefix: "--n-threads"
+        default: 8
 outputs:
     mhc_i_all_epitopes:
         type: File?

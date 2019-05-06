@@ -7,7 +7,9 @@ label: "add expression info to vcf"
 baseCommand: ["vcf-expression-annotator"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/vcf_annotation_tools-cwl:3.0.0"
+      dockerPull: "griffithlab/vatools:3.1.0"
+    - class: ResourceRequirement
+      ramMin: 4000
 arguments:
     ["-o", { valueFrom: $(runtime.outdir)/annotated.expression.vcf.gz }]
 inputs:

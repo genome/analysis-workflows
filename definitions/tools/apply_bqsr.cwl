@@ -5,7 +5,7 @@ class: CommandLineTool
 label: 'apply BQSR'
 baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "PrintReads"]
 arguments:
-    ["-o", { valueFrom: $(runtime.outdir)/Final.bam },
+    ["-o", { valueFrom: $(runtime.outdir)/$(inputs.output_name) },
     "-preserveQ", "6",
     "-SQQ", "10",
     "-SQQ", "20",
@@ -34,9 +34,12 @@ inputs:
         inputBinding:
             prefix: "-BQSR"
             position: 3
+    output_name:
+        type: string?
+        default: Final.bam
 outputs:
     bqsr_bam:
         type: File
         outputBinding:
-            glob: "Final.bam"
+            glob: $(inputs.output_name)
         secondaryFiles: [^.bai]

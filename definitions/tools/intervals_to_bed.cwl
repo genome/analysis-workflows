@@ -5,6 +5,8 @@ baseCommand: ['/usr/bin/perl', '/usr/bin/intervals_to_bed.pl']
 requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/perl_helper-cwl:1.0.0"
+    - class: ResourceRequirement
+      ramMin: 4000
 stdout: "interval_list.bed"
 inputs:
     interval_list:

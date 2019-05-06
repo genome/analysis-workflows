@@ -11,12 +11,12 @@ requirements:
 inputs:
     reference:
         type: string
-    tumor_cram:
+    tumor_bam:
         type: File
-        secondaryFiles: ["^.crai"]
-    normal_cram:
+        secondaryFiles: ["^.bai"]
+    normal_bam:
         type: File
-        secondaryFiles: ["^.crai"]
+        secondaryFiles: ["^.bai"]
     interval_list:
         type: File
     insert_size:
@@ -43,8 +43,8 @@ steps:
         run: pindel_cat.cwl
         in:
             reference: reference
-            tumor_cram: tumor_cram
-            normal_cram: normal_cram
+            tumor_bam: tumor_bam
+            normal_bam: normal_bam
             chromosome: get_chromosome_list/chromosome_list
             insert_size: insert_size
         out:
@@ -98,7 +98,7 @@ steps:
         run: fp_filter.cwl
         in:
             reference: reference
-            cram: tumor_cram
+            bam: tumor_bam
             vcf: reindex/indexed_vcf
             variant_caller: 
                 valueFrom: "pindel"
