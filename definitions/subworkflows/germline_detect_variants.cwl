@@ -41,7 +41,6 @@ inputs:
         secondaryFiles: [.tbi]
     vep_assembly:
         type: string
-        default: "GRCh38"
 outputs:
     gvcf:
         type: File[]
