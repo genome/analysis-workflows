@@ -89,6 +89,9 @@ inputs:
         type: boolean?
     smoove_exclude_regions:
         type: File?
+    vep_assembly:
+        type: string
+        doc: Used to explicitly define which assembly version to use; required when there are two or more in the same directory
     merge_max_distance:
         type: int
     merge_min_svs:
@@ -280,6 +283,7 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             limit_variant_intervals: variant_reporting_intervals
             custom_clinvar_vcf: custom_clinvar_vcf
+            vep_assembly: vep_assembly
         out:
             [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]
     variant_callers:

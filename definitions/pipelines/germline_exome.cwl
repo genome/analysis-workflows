@@ -66,6 +66,9 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    vep_assembly:
+        type: string
+        doc: Used to explicitly define which assembly version to use; required when there are two or more in the same directory
 outputs:
     cram:
         type: File
@@ -190,6 +193,7 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             limit_variant_intervals: target_intervals
             custom_clinvar_vcf: custom_clinvar_vcf
+            vep_assembly: vep_assembly
         out:
             [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]
     bam_to_cram:

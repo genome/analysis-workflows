@@ -39,6 +39,8 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    vep_assembly:
+        type: string
 outputs:
     gvcf:
         type: File[]
@@ -87,6 +89,7 @@ steps:
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             custom_clinvar_vcf: custom_clinvar_vcf
+            assembly: vep_assembly
             plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]
