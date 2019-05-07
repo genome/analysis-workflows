@@ -1,4 +1,4 @@
-instrument_data_bams:
+instrument_data:
     - class: File
       path: gerald_H3MYFBBXX_4_GCCAAT_1k.bam
     - class: File

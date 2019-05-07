@@ -8,7 +8,9 @@ requirements:
     - class: SubworkflowFeatureRequirement
     - class: InlineJavascriptRequirement
 inputs:
-    bam:
+    cram_reference:
+        type: File?
+    input:
         type: File
     adapters:
         type: File
@@ -39,10 +41,21 @@ outputs:
         type: File
         outputSource: hisat2_align/aligned_bam
 steps:
+    input_to_bam:
+        run: ../tools/input_to_bam.cwl
+        in:
+            input: input
+            cram_reference: cram_reference
+        out: [bam_file]
+    revert_bam:
+        run: ../tools/revert_input.cwl
+        in:
+            bam: input_to_bam/bam_file
+        out: [reverted_bam]
     bam_to_fastq:
         run: ../tools/bam_to_fastq.cwl
         in:
-            bam: bam
+            bam: revert_bam/reverted_bam
         out:
             [fastq1, fastq2]
     trim_fastq:
@@ -61,10 +74,10 @@ steps:
         run: ../tools/hisat2_align.cwl
         in:
             reference_index: reference_index
-            fastq1: 
+            fastq1:
                 source: trim_fastq/fastqs
                 valueFrom: $(self[0])
-            fastq2: 
+            fastq2:
                 source: trim_fastq/fastqs
                 valueFrom: $(self[1])
             read_group_id: read_group_id
