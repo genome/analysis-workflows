@@ -50,6 +50,7 @@ outputs:
     bam:
         type: File
         outputSource: alignment/final_bam
+        secondaryFiles: [.bai, ^.bai]
     mark_duplicates_metrics:
         type: File
         outputSource: alignment/mark_duplicates_metrics_file

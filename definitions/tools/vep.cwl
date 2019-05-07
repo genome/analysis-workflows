@@ -16,8 +16,6 @@ arguments:
     ["--format", "vcf",
     "--vcf",
     "--fork", "4",
-    "--plugin", "Downstream",
-    "--plugin", "Wildtype",
     "--term", "SO",
     "--transcript_version",
     "--offline",
@@ -90,6 +88,19 @@ inputs:
         inputBinding:
             prefix: "--fasta" 
             position: 8
+    plugins:
+        type:
+            type: array
+            items: string
+            inputBinding:
+                prefix: "--plugin"
+        inputBinding:
+            position: 9
+    assembly:
+        type: string
+        inputBinding:
+            prefix: "--assembly"
+            position: 10
 outputs:
     annotated_vcf:
         type: File

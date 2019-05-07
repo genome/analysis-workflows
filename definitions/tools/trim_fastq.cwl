@@ -14,7 +14,7 @@ requirements:
       tmpdirMin: 25000
       coresMin: 4
     - class: DockerRequirement
-      dockerPull: "mgibio/bisulfite"
+      dockerPull: "mgibio/bisulfite:v1.4"
 inputs:
     adapters:
         type: File
