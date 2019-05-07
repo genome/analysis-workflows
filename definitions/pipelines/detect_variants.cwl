@@ -278,7 +278,7 @@ steps:
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
-            custom_clivnar_vcf: custom_clinvar_vcf
+            custom_clinvar_vcf: custom_clinvar_vcf
             assembly: vep_assembly
             plugins: vep_plugins
         out:

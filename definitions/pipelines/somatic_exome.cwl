@@ -360,8 +360,8 @@ steps:
             summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
             final_name:
                 source: tumor_name
                 valueFrom: "$(self).bam"
@@ -384,8 +384,8 @@ steps:
             summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
             final_name:
                 source: normal_name
                 valueFrom: "$(self).bam"

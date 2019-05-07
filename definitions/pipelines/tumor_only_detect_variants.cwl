@@ -37,7 +37,7 @@ inputs:
         type: string
     synonyms_file:
         type: File?
-    coding_only:
+    annotate_coding_only:
         type: boolean?
         default: true
     vep_pick:
@@ -144,7 +144,7 @@ steps:
             vcf: decompose/decomposed_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
-            coding_only: coding_only
+            coding_only: annotate_coding_only
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
