@@ -4,8 +4,8 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Run Cell Ranger V(D)J"
 
-baseCommand: ["/opt/cellranger-3.0.1/cellranger", "vdj", "--localmem=64", "--localcores=8"]
-arguments: ["--id=$(inputs.sample_name)"]
+baseCommand: ["/opt/cellranger-3.0.1/cellranger", "vdj"]
+arguments: ["--id=$(inputs.sample_name)", "--localcores=$(runtime.cores)", "--localmem=$(runtime.ram/1000)"]
 
 requirements:
     - class: DockerRequirement
