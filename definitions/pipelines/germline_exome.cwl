@@ -66,6 +66,9 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    vep_assembly:
+        type: string
+        doc: Used to explicitly define which assembly version to use; required when there are two or more in the same directory
 outputs:
     cram:
         type: File
@@ -145,8 +148,8 @@ steps:
             summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
         out:
             [bam, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     extract_freemix:
@@ -190,6 +193,7 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             limit_variant_intervals: target_intervals
             custom_clinvar_vcf: custom_clinvar_vcf
+            vep_assembly: vep_assembly
         out:
             [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]
     bam_to_cram:

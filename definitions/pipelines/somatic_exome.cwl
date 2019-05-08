@@ -129,6 +129,9 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    vep_assembly:
+        type: string
+        doc: Used to explicitly define which assembly to use; required if there are two or more in the same directory
     manta_call_regions:
         type: File?
         secondaryFiles: [.tbi]
@@ -137,6 +140,8 @@ inputs:
         default: true
     manta_output_contigs:
         type: boolean?
+    somalier_vcf:
+        type: File
 outputs:
     tumor_cram:
         type: File
@@ -331,7 +336,12 @@ outputs:
         type: File?
         outputSource: manta/tumor_only_variants
         secondaryFiles: [.tbi]
-
+    somalier_concordance_metrics:
+        type: File
+        outputSource: concordance/somalier_pairs
+    somalier_concordance_statistics:
+        type: File
+        outputSource: concordance/somalier_samples
 steps:
     tumor_alignment_and_qc:
         run: exome_alignment.cwl
@@ -350,8 +360,8 @@ steps:
             summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
             final_name:
                 source: tumor_name
                 valueFrom: "$(self).bam"
@@ -374,13 +384,22 @@ steps:
             summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
             final_name:
                 source: normal_name
                 valueFrom: "$(self).bam"
         out:
             [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+    concordance:
+        run: ../tools/concordance.cwl
+        in:
+            reference: reference
+            bam_1: tumor_alignment_and_qc/bam
+            bam_2: normal_alignment_and_qc/bam
+            vcf: somalier_vcf
+        out:
+            [somalier_pairs, somalier_samples]
     detect_variants:
         run: detect_variants.cwl
         in:
@@ -416,6 +435,7 @@ steps:
             vep_to_table_fields: vep_to_table_fields
             custom_gnomad_vcf: custom_gnomad_vcf
             custom_clinvar_vcf: custom_clinvar_vcf
+            vep_assembly: vep_assembly
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
     cnvkit:

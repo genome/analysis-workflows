@@ -96,12 +96,17 @@ inputs:
                 prefix: "--plugin"
         inputBinding:
             position: 9
+    assembly:
+        type: string
+        inputBinding:
+            prefix: "--assembly"
+            position: 10
     everything:
         type: boolean?
         default: true
         inputBinding:
             prefix: "--everything"
-            position: 10
+            position: 11
 outputs:
     annotated_vcf:
         type: File
