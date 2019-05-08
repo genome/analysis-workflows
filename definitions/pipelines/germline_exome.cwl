@@ -66,6 +66,12 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    variants_to_table_fields:
+         type: string[]?
+    variants_to_table_genotype_fields:
+         type: string[]?
+    vep_to_table_fields:
+         type: string[]?
 outputs:
     cram:
         type: File
@@ -127,6 +133,9 @@ outputs:
     vep_summary:
         type: File
         outputSource: detect_variants/vep_summary
+    final_tsv:
+       type: File
+       outputSource: detect_variants/final_tsv
 steps:
     alignment_and_qc:
         run: exome_alignment.cwl
@@ -191,7 +200,7 @@ steps:
             limit_variant_intervals: target_intervals
             custom_clinvar_vcf: custom_clinvar_vcf
         out:
-            [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]
+            [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary, final_tsv]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:

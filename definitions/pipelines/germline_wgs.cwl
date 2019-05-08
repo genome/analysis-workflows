@@ -103,6 +103,12 @@ inputs:
         type: int
     merge_sv_pop_freq_db:
         type: File
+    variants_to_table_fields:
+         type: string[]?
+    variants_to_table_genotype_fields:
+         type: string[]?
+    vep_to_table_fields:
+         type: string[]?
 outputs:
     cram:
         type: File
@@ -218,6 +224,9 @@ outputs:
     merged_annotated_svs:
         type: File
         outputSource: variant_callers/merged_annotated_svs
+    final_tsv:
+        type: File
+        outputSource: detect_variants/final_tsv
 steps:
     alignment_and_qc:
         run: wgs_alignment.cwl
@@ -281,7 +290,7 @@ steps:
             limit_variant_intervals: variant_reporting_intervals
             custom_clinvar_vcf: custom_clinvar_vcf
         out:
-            [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]
+            [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary, final_tsv]
     variant_callers:
         run: ../subworkflows/single_sample_sv_callers.cwl
         in:
