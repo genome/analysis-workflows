@@ -12,7 +12,7 @@ inputs:
         type: string
     bam:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [.bai, ^.bai]
     interval_list:
         type: File
     strand_filter:
@@ -38,6 +38,7 @@ outputs:
     unfiltered_vcf:
         type: File
         outputSource: filter/unfiltered_vcf
+        secondaryFiles: [.tbi]
     filtered_vcf:
         type: File
         outputSource: filter/filtered_vcf

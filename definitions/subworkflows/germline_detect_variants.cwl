@@ -29,7 +29,7 @@ inputs:
         default: [Downstream, Wildtype]
     synonyms_file:
         type: File?
-    coding_only:
+    annotate_coding_only:
         type: boolean?
     custom_gnomad_vcf:
         type: File?
@@ -41,13 +41,12 @@ inputs:
         secondaryFiles: [.tbi]
     variants_to_table_fields:
         type: string[]?
-        default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
     variants_to_table_genotype_fields:
-        type: string[]?
-        default: [GT,AD]
+        type: string[]?]
     vep_to_table_fields:
         type: string[]?
-        default: [HGVSc,HGVSp]
+    vep_assembly:
+        type: string
 outputs:
     gvcf:
         type: File[]
@@ -95,10 +94,11 @@ steps:
             vcf: genotype_gvcfs/genotype_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
-            coding_only: coding_only
+            coding_only: annotate_coding_only
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             custom_clinvar_vcf: custom_clinvar_vcf
+            assembly: vep_assembly
             plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]

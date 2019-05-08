@@ -1,0 +1,117 @@
+---
+bait_intervals:
+  class: File
+  path: /gscmnt/gc2709/info/production_reference_GRCh38DH/CLE/IDTExome/xgen-exome-research-panel-probes.interval_list
+bqsr_intervals:
+- chr1
+- chr2
+- chr3
+- chr4
+- chr5
+- chr6
+- chr7
+- chr8
+- chr9
+- chr10
+- chr11
+- chr12
+- chr13
+- chr14
+- chr15
+- chr16
+- chr17
+- chr18
+- chr19
+- chr20
+- chr21
+- chr22
+cosmic_vcf:
+  class: File
+  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-774-52fa2dadc4ba4b6490abe0701907d394/snvs.hq.vcf.gz
+custom_gnomad_vcf:
+  class: File
+  path: /gscmnt/gc2560/core/model_data/genome-db-ensembl-gnomad/2dd4b53431674786b760adad60a29273/fixed_b38_exome.vcf.gz
+dbsnp_vcf:
+  class: File
+  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-19443-e48c595a620a432c93e8dd29e4af64f2/snvs.hq.vcf.gz
+docm_vcf:
+  class: File
+  path: /gscmnt/gc2709/info/production_reference_GRCh38DH/CLE/IDTExome/DoCM.hs37_011117_sanitized_sort_new_LiftOver_hg19ToHg38.vcf.gz
+interval_list:
+  class: File
+  path: /gscmnt/gc2709/info/production_reference_GRCh38DH/CLE/IDTExome/xgen-exome-research-panel-targets.interval_list
+known_indels:
+  class: File
+  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-20267-00cb8ff552914c17ad66d86031e10d30/indels.hq.vcf.gz
+mills:
+  class: File
+  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-20211-26b393cc7ab04120ac68cc2cbd4a15df/indels.hq.vcf.gz
+mutect_scatter_count: 80
+mutect_artifact_detection_mode: false
+mutect_max_alt_allele_in_normal_fraction: 0.1
+mutect_max_alt_alleles_in_normal_count: 5
+varscan_strand_filter: 1
+varscan_min_var_freq: 0.08
+varscan_p_value: 0.1
+varscan_max_normal_freq: 0.1
+normal_bams:
+- class: File
+  path: NORMAL_BAM_PATH
+normal_readgroups:
+- "NORMAL_RG_STR"
+omni_vcf:
+  class: File
+  path: /gscmnt/gc2709/info/production_reference_GRCh38DH/accessory_vcf/omni25-ld-pruned-20000-2000-0.5-annotated.wchr.sites_only.b38.autosomes_only.vcf.gz
+panel_of_normals_vcf:
+  class: File
+  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-2237-db881b860992443da9d6aac8b36a7ea6/snvs.hq.vcf.gz
+per_base_intervals: []
+per_target_intervals: []
+picard_metric_accumulation_level: LIBRARY
+reference: /gscmnt/gc2709/info/production_reference_GRCh38DH/reference/all_sequences.fa
+summary_intervals: []
+synonyms_file:
+  class: File
+  path: /gscmnt/gc2560/core/model_data/2887491634/build50f99e75d14340ffb5b7d21b03887637/chromAlias.ensembl.txt
+target_intervals:
+  class: File
+  path: /gscmnt/gc2709/info/production_reference_GRCh38DH/CLE/IDTExome/xgen-exome-research-panel-targets.interval_list
+tumor_bams:
+- class: File
+  path: TUMOR_BAM_PATH 
+tumor_readgroups:
+- "TUMOR_RG_STR"
+filter_docm_variants: true
+cle_vcf_filter: true
+annotate_coding_only: false
+variants_to_table_fields:
+- CHROM
+- POS
+- ID
+- REF
+- ALT
+- set
+variants_to_table_genotype_fields:
+- GT
+- AD
+- AF
+- DP
+vep_to_table_fields:
+- Consequence
+- SYMBOL
+- Feature_type
+- Feature
+- HGVSc
+- HGVSp
+- cDNA_position
+- CDS_position
+- Protein_position
+- Amino_acids
+- Codons
+- HGNC_ID
+- Existing_variation
+- gnomADe_AF
+vep_cache_dir: /gscmnt/gc2560/core/cwl/inputs/VEP_cache
+vep_assembly: GRCh38
+somalier_vcf: /gscmnt/gc2560/core/annotation_data/concordance_snps/GRC-human-build38_gnomad_exome_common_snps.vcf
+output_dir: OUTPUT_DIR

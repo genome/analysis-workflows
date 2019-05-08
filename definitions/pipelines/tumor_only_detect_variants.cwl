@@ -37,7 +37,7 @@ inputs:
         type: string
     synonyms_file:
         type: File?
-    coding_only:
+    annotate_coding_only:
         type: boolean?
         default: true
     vep_pick:
@@ -69,6 +69,9 @@ inputs:
         type: int?
     readcount_minimum_base_quality:
         type: int?
+    vep_assembly:
+        type: string
+        doc: Used to explicitly define which version of the assembly to use; required when there are two or more in the same directory
 outputs:
     varscan_vcf:
         type: File
@@ -141,10 +144,11 @@ steps:
             vcf: decompose/decomposed_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
-            coding_only: coding_only
+            coding_only: annotate_coding_only
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
+            assembly: vep_assembly
             plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]
