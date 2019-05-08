@@ -12,10 +12,10 @@ inputs:
         type: string
     tumor_bam:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [.bai,^.bai]
     normal_bam:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [.bai,^.bai]
     interval_list:
         type: File
     strand_filter:

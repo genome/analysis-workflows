@@ -96,7 +96,7 @@ inputs:
         default: [GT,AD]
     vep_to_table_fields:
         type: string[]
-        default: [HGVSc,HGVSp]
+        default: ['Consequence','SYMBOL','Feature']
     custom_gnomad_vcf:
         type: File?
         secondaryFiles: [.tbi]
@@ -137,12 +137,6 @@ outputs:
     tumor_flagstats:
         type: File
         outputSource: tumor_alignment_and_qc/flagstats
-    tumor_verify_bam_id_metrics:
-        type: File
-        outputSource: tumor_alignment_and_qc/verify_bam_id_metrics
-    tumor_verify_bam_id_depth:
-        type: File
-        outputSource: tumor_alignment_and_qc/verify_bam_id_depth
     normal_cram:
         type: File
         outputSource: normal_index_cram/indexed_cram
@@ -176,12 +170,6 @@ outputs:
     normal_flagstats:
         type: File
         outputSource: normal_alignment_and_qc/flagstats
-    normal_verify_bam_id_metrics:
-        type: File
-        outputSource: normal_alignment_and_qc/verify_bam_id_metrics
-    normal_verify_bam_id_depth:
-        type: File
-        outputSource: normal_alignment_and_qc/verify_bam_id_depth
     mutect_unfiltered_vcf:
         type: File
         outputSource: detect_variants/mutect_unfiltered_vcf
@@ -253,8 +241,8 @@ steps:
             per_target_intervals: per_target_intervals
             summary_intervals: summary_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
             final_name:
                 source: tumor_name
                 valueFrom: "$(self).bam"
@@ -272,8 +260,8 @@ steps:
             per_target_intervals: per_target_intervals
             summary_intervals: summary_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
             final_name:
                 source: normal_name
                 valueFrom: "$(self).bam"
