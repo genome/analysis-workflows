@@ -77,7 +77,8 @@ inputs:
     vep_to_table_fields:
         type: string[]?
         default: [SYMBOL]
-
+    vep_assembly:
+        type: string
 outputs:
     cn_diagram:
         type: File?
@@ -178,6 +179,7 @@ steps:
             minimum_sv_size: merge_min_sv_size
             sv_db: merge_sv_pop_freq_db
             vep_cache_dir: vep_cache_dir
+            vep_assembly: vep_assembly
             reference: reference
         out:
             [merged_annotated_vcf, vep_summary]

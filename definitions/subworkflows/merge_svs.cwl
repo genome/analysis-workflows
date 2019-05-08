@@ -39,6 +39,8 @@ inputs:
     vep_plugins:
         type: string[]?
         default: []
+    vep_assembly:
+        type: string
 outputs:
     merged_annotated_vcf:
         type: File
@@ -71,6 +73,7 @@ steps:
     annotate_variants:
         run: ../tools/vep.cwl
         in:
+            assembly: vep_assembly
             vcf: add_population_frequency/merged_annotated_vcf
             cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
