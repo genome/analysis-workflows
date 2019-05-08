@@ -42,7 +42,7 @@ inputs:
     variants_to_table_fields:
         type: string[]?
     variants_to_table_genotype_fields:
-        type: string[]?]
+        type: string[]?
     vep_to_table_fields:
         type: string[]?
     vep_assembly:
