@@ -16,15 +16,6 @@ inputs:
         secondaryFiles: [.bai,^.bai]
     interval_list:
         type: File
-    dbsnp_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    cosmic_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    panel_of_normals_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
     strelka_exome_mode:
         type: boolean
     strelka_cpu_reserved:
@@ -75,7 +66,7 @@ inputs:
         default: [Downstream, Wildtype]
     filter_gnomADe_maximum_population_allele_frequency:
         type: float?
-        default: 0.001
+        default: 0.000
     filter_mapq0_threshold:
         type: float?
         default: 0.15
@@ -96,13 +87,7 @@ inputs:
         default: [GT,AD]
     vep_to_table_fields:
         type: string[]?
-        default: [HGVSc,HGVSp]
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    custom_clinvar_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
+        default: []
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -170,13 +155,10 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             interval_list: interval_list
-            dbsnp_vcf: dbsnp_vcf
-            cosmic_vcf: cosmic_vcf
             max_alt_allele_in_normal_fraction: mutect_max_alt_allele_in_normal_fraction
             max_alt_alleles_in_normal_count: mutect_max_alt_alleles_in_normal_count
             scatter_count: mutect_scatter_count
             artifact_detection_mode: mutect_artifact_detection_mode
-            panel_of_normals_vcf: panel_of_normals_vcf
         out:
             [unfiltered_vcf, filtered_vcf]
     strelka:
@@ -244,9 +226,7 @@ steps:
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only
             reference: reference
-            custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
-            custom_clivnar_vcf: custom_clinvar_vcf
             plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]
