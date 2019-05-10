@@ -17,17 +17,13 @@ inputs:
             items:
                 type: array
                 items: string
-    genomeDir:
+    stargenomeDir:
         type: Directory
-    sjdbGTFfile:
+    gtf_file:
         type: File
     sample_name:
         type: string
-    runMode:
-        type: string
     outFileNamePrefix:
-        type: string
-    outSAMstrandField:
         type: string
     trimming_adapters:
         type: File
@@ -86,10 +82,8 @@ steps:
         in:
             bam: instrument_data_bams
             outSAMattrRGline: outSAMattrRGline
-            outSAMstrandField: outSAMstrandField
             outFileNamePrefix: sample_name
-            genomeDir: genomeDir
-            runMode: runMode
+            stargenomeDir: stargenomeDir
             adapters: trimming_adapters
             adapter_trim_end: trimming_adapter_trim_end
             adapter_min_overlap: trimming_adapter_min_overlap
@@ -134,7 +128,7 @@ steps:
         run: ../tools/stringtie.cwl
         in:
             bam: merge/merged_bam
-            reference_annotation: sjdbGTFfile
+            reference_annotation: gtf_file
             sample_name: sample_name
             strand: strand
         out:

@@ -20,17 +20,13 @@ inputs:
         type: int
     min_readlength:
         type: int
-    genomeDir:
+    stargenomeDir:
         type: Directory
-    runMode:
-        type: string
     outSAMattrRGline:
         type:
             type: array
             items: string
     outFileNamePrefix:
-        type: string
-    outSAMstrandField:
         type: string
 outputs:
     fastqs:
@@ -61,10 +57,8 @@ steps:
     star_align:
         run: ../tools/star_align.cwl
         in:
-            genomeDir: genomeDir
-            runMode: runMode
+            stargenomeDir: stargenomeDir
             outSAMattrRGline: outSAMattrRGline
-            outSAMstrandField: outSAMstrandField
             outFileNamePrefix: outFileNamePrefix
             fastq1: 
                 source: trim_fastq/fastqs

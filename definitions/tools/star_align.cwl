@@ -24,6 +24,7 @@ inputs:
             prefix: '--outSAMtype'
     runMode:
         type: string
+        default: alignReads
         inputBinding:
             position: 2
             prefix: "--runMode"
@@ -42,13 +43,13 @@ inputs:
         inputBinding:
             position: 5
             prefix: ''
-    genomeDir:
+    stargenomeDir:
         type: Directory
         inputBinding:
             position: 6
             prefix: '--genomeDir'
         doc: |
-          string: paths to the directory where genome files are stored 
+          string: paths to the directory where genome files are stored, created using genomeGenerate
     outSAMunmapped:
         type: int?
         inputBinding:
@@ -63,34 +64,25 @@ inputs:
         inputBinding:
             position: 8
             prefix: '--alignIntronMin'
-        doc: '
-
-      minimum intron size: genomic gap is considered intron if its length>=alignIntronMin,
-      otherwise it is considered Deletion
-
-'
+        doc: 'minimum intron size: genomic gap is considered intron if its length>=alignIntronMin,otherwise it is considered Deletion
+        '
     alignIntronMax:
         type: int?
         inputBinding:
             position: 9
             prefix: '--alignIntronMax'
-        doc: '
-
-      maximum intron size: genomic gap is considered intron if its length>=alignIntronMin,
-      otherwise it is considered Deletion
-
-'
+        doc: 'maximum intron size: genomic gap is considered intron if its length>=alignIntronMin,otherwise it is considered Deletion
+        '
     alignMatesGapMax:
         type: int?
         inputBinding:
             position: 10
             prefix: '--alignMatesGapMax'
-        doc: '
-
-           maximum gap between two mates, if 0, max intron gap will be determined by (2^winBinNbits)*winAnchorDistNbins
-             '
+        doc: 'maximum gap between two mates, if 0, max intron gap will be determined by (2^winBinNbits)*winAnchorDistNbins
+        '
     outSAMstrandField:
         type: string
+        default: intronMotif
         inputBinding:
             position: 11
             prefix: '--outSAMstrandField'
@@ -111,28 +103,20 @@ inputs:
            None        ... 1-pass mapping
            Basic ... basic 2-pass mapping, with all 1st pass junctions inserted into the genome indices on the fly
     outFilterMultimapNmax:
-        type: string?
+        type: int?
         inputBinding:
             position: 13
             prefix: '--outFilterMultimapNmax'
-        doc: '
-
-      int: read alignments will be output only if the read maps fewer than this value,
-      otherwise no alignments will be output
-
-'
+        doc: 'int: read alignments will be output only if the read maps fewer than this value,otherwise no alignments will be output
+        '
     sjdbOverhang:
         type: string?
         inputBinding:
             position: 14
             prefix: '--sjdbOverhang'
-        doc: '
-
-      int>0: length of the donor/acceptor sequence on each side of the junctions,
-      ideally = (mate_length - 1)
-
-'
-    sjdbGTFfile:
+        doc: 'int>0: length of the donor/acceptor sequence on each side of the junctions, ideally = (mate_length - 1)
+        '
+    gtf_file:
         type: File?
         inputBinding:
             position: 15
@@ -144,17 +128,16 @@ inputs:
         inputBinding:
             position: 16
             prefix: '--outFileNamePrefix'
-        doc: |
-          string: output files name prefix (including full or relative path). Can
-          only be defined on the command line.
+        doc: ' output files name prefix (including full or relative path). Can
+          only be defined on the command line 
+          '
     readFilesCommand:
         type: string?
         inputBinding:
             position: 17
             prefix: '--readFilesCommand'
-        doc: |
-          string(s): command line to execute for each of the input file. This command should generate FASTA or FASTQ text and send it to stdout
-          For example: zcat - to uncompress .gz files, bzcat - to uncompress .bz2 files, etc.
+        doc: ' command line to execute for each of the input file. This command should generate FASTA or FASTQ text and send it to stdout, zcat - to uncompress .gz files, bzcat - to uncompress .bz2 files, etc 
+        '
     outSAMattributes:
         type: string[]
         default: ["NH", "HI", "AS", "NM", "MD"]
@@ -187,22 +170,21 @@ outputs:
     aligned_bam:
         type: File
         outputBinding:
-          glob: "$(inputs.outFileNamePrefix)Aligned.sortedByCoord.out.bam"
-          #glob: "aligned.bam"
+          glob: "$(inputs.outFileNamePrefix)_Aligned.sortedByCoord.out.bam"
     log_final:
         type: File
         outputBinding:
-          glob: "$(inputs.outFileNamePrefix)Log.final.out"
+          glob: "$(inputs.outFileNamePrefix)_Log.final.out"
     log:
         type: File
         outputBinding:
-          glob: "$(inputs.outFileNamePrefix)Log.out"
+          glob: "$(inputs.outFileNamePrefix)_Log.out"
     log_progress:
         type: File
         outputBinding:
-          glob: "$(inputs.outFileNamePrefix)Log.progress.out"
-    sj:
+          glob: "$(inputs.outFileNamePrefix)_Log.progress.out"
+    splicejunctionout:
         type: File
         outputBinding:
-            glob: "$(inputs.outFileNamePrefix)SJ.out.tab"
+            glob: "$(inputs.outFileNamePrefix)_SJ.out.tab"
 
