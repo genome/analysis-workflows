@@ -41,6 +41,7 @@ inputs:
         secondaryFiles: [.tbi]
     variants_to_table_fields:
         type: string[]?
+        default: ['CHROM','POS','ID','REF','ALT']
     variants_to_table_genotype_fields:
         type: string[]?
     vep_to_table_fields:
