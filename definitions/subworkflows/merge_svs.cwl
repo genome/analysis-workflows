@@ -2,9 +2,9 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "merge and annotate svs with population allele freq"
+label: "merge and annotate svs with population allele freq and vep"
 requirements:
-    - class: MultipleInputFeatureRequirement
+    - class: SubworkflowFeatureRequirement
 inputs:
     vcfs:
         type: File[]
@@ -24,10 +24,30 @@ inputs:
         type: string?
     sv_db:
         type: File
+    vep_cache_dir:
+        type: string
+    coding_only:
+        type: boolean?
+    custom_gnomad_vcf:
+        type: File?
+    custom_clinvar_vcf:
+        type: File?
+    reference:
+        type: string
+    synonyms_file:
+        type: File?
+    vep_plugins:
+        type: string[]?
+        default: []
+    vep_assembly:
+        type: string
 outputs:
     merged_annotated_vcf:
         type: File
-        outputSource: add_population_frequency/merged_annotated_vcf
+        outputSource: sort_vcf/sorted_vcf
+    vep_summary:
+        type: File
+        outputSource: annotate_variants/vep_summary
 steps:
     merge_vcfs:
         run: ../tools/survivor.cwl
@@ -50,3 +70,27 @@ steps:
             cohort_name: cohort_name
         out:
             [merged_annotated_vcf]
+    annotate_variants:
+        run: ../tools/vep.cwl
+        in:
+            assembly: vep_assembly
+            vcf: add_population_frequency/merged_annotated_vcf
+            cache_dir: vep_cache_dir
+            synonyms_file: synonyms_file
+            coding_only: coding_only
+            reference: reference
+            custom_gnomad_vcf: custom_gnomad_vcf
+            custom_clinvar_vcf: custom_clinvar_vcf
+            plugins: vep_plugins
+            everything:
+                default: false
+            pick:
+                default: "per_gene"
+        out:
+            [annotated_vcf, vep_summary]
+    sort_vcf:
+        run: ../tools/sort_vcf.cwl
+        in:
+            vcf: annotate_variants/annotated_vcf
+        out:
+            [sorted_vcf]

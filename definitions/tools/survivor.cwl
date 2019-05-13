@@ -9,7 +9,7 @@ baseCommand: ["/bin/bash", "/usr/bin/survivor_merge_helper.sh"]
 requirements:
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
-      dockerPull: "mgibio/survivor-cwl:1.0.6.1"
+      dockerPull: "mgibio/survivor-cwl:1.0.6.2"
     - class: ResourceRequirement
       ramMin: 2000
       coresMin: 1

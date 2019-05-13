@@ -2,7 +2,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 baseCommand: [
-    "bash", "-c", "/bin/grep -v '^@' $1 | /usr/bin/cut -f 1 | /usr/bin/sort | /usr/bin/uniq", "--"
+    "bash", "-c", "/bin/grep -v '^@' $1 | /usr/bin/cut -f 1 | /usr/bin/sort | grep -v ^$ | /usr/bin/uniq", "--"
 ]
 requirements:
     - class: InlineJavascriptRequirement
