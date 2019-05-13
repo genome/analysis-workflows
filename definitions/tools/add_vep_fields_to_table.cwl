@@ -11,7 +11,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 4000
 arguments:
-    ["-o", { valueFrom: $(runtime.outdir)/variants.annotated.tsv }]
+    ["-o", { valueFrom: $(runtime.outdir)/$(inputs.prefix).annotated.tsv }]
 inputs:
     vcf:
         type: File
@@ -28,8 +28,11 @@ inputs:
         type: File?
         inputBinding:
             prefix: "-t"
+    prefix:
+        type: string?
+        default: 'variants'
 outputs:
     annotated_variants_tsv:
         type: File
         outputBinding:
-            glob: variants.annotated.tsv
+            glob: $(inputs.prefix).annotated.tsv
