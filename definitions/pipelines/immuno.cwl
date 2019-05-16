@@ -4,6 +4,9 @@ cwlVersion: v1.0
 class: Workflow
 label: "Immunotherapy Workflow"
 requirements:
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/labelled_file.yml
     - class: SubworkflowFeatureRequirement
 inputs:
     reference_index:
@@ -412,6 +415,12 @@ steps:
             bam: somatic/tumor_cram
         out:
             [phased_vcf]
+    extract_alleles:
+        run: ../tools/extract_hla_alleles.cwl
+        in:
+            allele_file: germline/optitype_tsv
+        out:
+            [allele_string]
     pvacseq:
         run: ../subworkflows/pvacseq.cwl
         in:
@@ -424,7 +433,7 @@ steps:
             readcount_minimum_mapping_quality: readcount_minimum_mapping_quality #should this be different from qc_minimum_mapping_quality
             gene_expression_file: rnaseq/stringtie_gene_expression_tsv #not sure if this connection is correct
             transcript_expression_file: rnaseq/transcript_abundance_tsv #not sure if this connection is correct
-            allele_file: germline/optitype_tsv
+            alleles: extract_alleles/allele_string
             prediction_algorithms: prediction_algorithms
             epitope_lengths: epitope_lengths
             binding_threshold: binding_threshold

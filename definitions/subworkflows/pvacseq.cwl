@@ -31,10 +31,8 @@ inputs:
     expression_tool:
         type: string?
         default: 'kallisto'
-    allele_file:
-        type: File
-        inputBinding:
-            loadContents: true
+    alleles:
+        type: string[]
     prediction_algorithms:
         type: string[]
     epitope_lengths:
@@ -195,20 +193,7 @@ steps:
         in:
             input_vcf: index/indexed_vcf
             sample_name: sample_name
-            alleles:
-                source: allele_file
-                valueFrom: |
-                    ${  
-
-                        var types_line = self.contents.split("\n")[1].split(/(\s+)/);
-                        var ans = []; 
-                        for (var i = 0; i < types_line.length; i++) {
-                            if (types_line[i].charAt(0) == "A" || types_line[i].charAt(0) == "B" || types_line[i].charAt(0) == "C") {
-                                ans.push( "HLA-" + types_line[i] )
-                            }   
-                        }   
-                        return ans 
-                    }   
+            alleles: alleles
             prediction_algorithms: prediction_algorithms
             epitope_lengths: epitope_lengths
             normal_sample_name: normal_sample_name
