@@ -425,8 +425,10 @@ steps:
         run: ../subworkflows/pvacseq.cwl
         in:
             detect_variants_vcf: somatic/final_vcf
-            sample_name: sample_name #should this be the same as the above sample_name
-            normal_sample_name: normal_name #is this right?
+            sample_name: 
+                default: 'TUMOR'
+            normal_sample_name: 
+                default: 'NORMAL'
             rnaseq_bam: rnaseq/final_bam
             reference_fasta: reference
             readcount_minimum_base_quality: readcount_minimum_base_quality #should this be different from qc_minimum_base_quality?
