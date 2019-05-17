@@ -268,6 +268,311 @@ inputs:
         type: int?
 
 outputs:
+    final_bam:
+        type: File
+        outputSource: rnaseq/final_bam
+        secondaryFiles: [.bai]
+    stringtie_transcript_gtf:
+        type: File
+        outputSource: rnaseq/stringtie_transcript_gtf
+    stringtie_gene_expression_tsv:
+        type: File
+        outputSource: rnaseq/stringtie_gene_expression_tsv
+    transcript_abundance_tsv:
+        type: File
+        outputSource: rnaseq/transcript_abundance_tsv
+    transcript_abundance_h5:
+        type: File
+        outputSource: rnaseq/transcript_abundance_h5
+    gene_abundance:
+        type: File
+        outputSource: rnaseq/gene_abundance
+    metrics:
+        type: File
+        outputSource: rnaseq/metrics
+    chart:
+        type: File
+        outputSource: rnaseq/chart
+    fusion_evidence:
+        type: File
+        outputSource: rnaseq/fusion_evidence
+
+    tumor_cram:
+        type: File
+        outputSource: somatic/tumor_cram
+    tumor_mark_duplicates_metrics:
+        type: File
+        outputSource: somatic/tumor_mark_duplicates_metrics
+    tumor_insert_size_metrics:
+        type: File
+        outputSource: somatic/tumor_insert_size_metrics
+    tumor_alignment_summary_metrics:
+        type: File
+        outputSource: somatic/tumor_alignment_summary_metrics
+    tumor_hs_metrics:
+        type: File
+        outputSource: somatic/tumor_hs_metrics
+    tumor_per_target_coverage_metrics:
+        type: File[]
+        outputSource: somatic/tumor_per_target_coverage_metrics
+    tumor_per_target_hs_metrics:
+        type: File[]
+        outputSource: somatic/tumor_per_target_hs_metrics
+    tumor_per_base_coverage_metrics:
+        type: File[]
+        outputSource: somatic/tumor_per_base_coverage_metrics
+    tumor_per_base_hs_metrics:
+        type: File[]
+        outputSource: somatic/tumor_per_base_hs_metrics
+    tumor_summary_hs_metrics:
+        type: File[]
+        outputSource: somatic/tumor_summary_hs_metrics
+    tumor_flagstats:
+        type: File
+        outputSource: somatic/tumor_flagstats
+    tumor_verify_bam_id_metrics:
+        type: File
+        outputSource: somatic/tumor_verify_bam_id_metrics
+    tumor_verify_bam_id_depth:
+        type: File
+        outputSource: somatic/tumor_verify_bam_id_depth
+    normal_cram:
+        type: File
+        outputSource: somatic/normal_cram
+    normal_mark_duplicates_metrics:
+        type: File
+        outputSource: somatic/normal_mark_duplicates_metrics
+    normal_insert_size_metrics:
+        type: File
+        outputSource: somatic/normal_insert_size_metrics
+    normal_alignment_summary_metrics:
+        type: File
+        outputSource: somatic/normal_alignment_summary_metrics
+    normal_hs_metrics:
+        type: File
+        outputSource: somatic/normal_hs_metrics
+    normal_per_target_coverage_metrics:
+        type: File[]
+        outputSource: somatic/normal_per_target_coverage_metrics
+    normal_per_target_hs_metrics:
+        type: File[]
+        outputSource: somatic/normal_per_target_hs_metrics
+    normal_per_base_coverage_metrics:
+        type: File[]
+        outputSource: somatic/normal_per_base_coverage_metrics
+    normal_per_base_hs_metrics:
+        type: File[]
+        outputSource: somatic/normal_per_base_hs_metrics
+    normal_summary_hs_metrics:
+        type: File[]
+        outputSource: somatic/normal_summary_hs_metrics
+    normal_flagstats:
+        type: File
+        outputSource: somatic/normal_flagstats
+    normal_verify_bam_id_metrics:
+        type: File
+        outputSource: somatic/normal_verify_bam_id_metrics
+    normal_verify_bam_id_depth:
+        type: File
+        outputSource: somatic/normal_verify_bam_id_depth
+    mutect_unfiltered_vcf:
+        type: File
+        outputSource: somatic/mutect_unfiltered_vcf
+        secondaryFiles: [.tbi]
+    mutect_filtered_vcf:
+        type: File
+        outputSource: somatic/mutect_filtered_vcf
+        secondaryFiles: [.tbi]
+    strelka_unfiltered_vcf:
+        type: File
+        outputSource: somatic/strelka_unfiltered_vcf
+        secondaryFiles: [.tbi]
+    strelka_filtered_vcf:
+        type: File
+        outputSource: somatic/strelka_filtered_vcf
+        secondaryFiles: [.tbi]
+    varscan_unfiltered_vcf:
+        type: File
+        outputSource: somatic/varscan_unfiltered_vcf
+        secondaryFiles: [.tbi]
+    varscan_filtered_vcf:
+        type: File
+        outputSource: somatic/varscan_filtered_vcf
+        secondaryFiles: [.tbi]
+    pindel_unfiltered_vcf:
+        type: File
+        outputSource: somatic/pindel_unfiltered_vcf
+        secondaryFiles: [.tbi]
+    pindel_filtered_vcf:
+        type: File
+        outputSource: somatic/pindel_filtered_vcf
+        secondaryFiles: [.tbi]
+    docm_filtered_vcf:
+        type: File
+        outputSource: somatic/docm_filtered_vcf
+        secondaryFiles: [.tbi]
+    somatic_final_vcf:
+        type: File
+        outputSource: somatic/final_vcf
+        secondaryFiles: [.tbi]
+    final_filtered_vcf:
+        type: File
+        outputSource: somatic/final_filtered_vcf
+        secondaryFiles: [.tbi]
+    final_tsv:
+        type: File
+        outputSource: somatic/final_tsv
+    somatic_vep_summary:
+        type: File
+        outputSource: somatic/vep_summary
+    tumor_snv_bam_readcount_tsv:
+        type: File
+        outputSource: somatic/tumor_snv_bam_readcount_tsv
+    tumor_indel_bam_readcount_tsv:
+        type: File
+        outputSource: somatic/tumor_indel_bam_readcount_tsv
+    normal_snv_bam_readcount_tsv:
+        type: File
+        outputSource: somatic/normal_snv_bam_readcount_tsv
+    normal_indel_bam_readcount_tsv:
+        type: File
+        outputSource: somatic/normal_indel_bam_readcount_tsv
+    intervals_antitarget:
+        type: File?
+        outputSource: somatic/intervals_antitarget
+    intervals_target:
+        type: File?
+        outputSource: somatic/intervals_target
+    normal_antitarget_coverage:
+        type: File
+        outputSource: somatic/normal_antitarget_coverage
+    normal_target_coverage:
+        type: File
+        outputSource: somatic/normal_target_coverage
+    reference_coverage:
+        type: File?
+        outputSource: somatic/reference_coverage
+    cn_diagram:
+        type: File?
+        outputSource: somatic/cn_diagram
+    cn_scatter_plot:
+        type: File?
+        outputSource: somatic/cn_scatter_plot
+    tumor_antitarget_coverage:
+        type: File
+        outputSource: somatic/tumor_antitarget_coverage
+    tumor_target_coverage:
+        type: File
+        outputSource: somatic/tumor_target_coverage
+    tumor_bin_level_ratios:
+        type: File
+        outputSource: somatic/tumor_bin_level_ratios
+    tumor_segmented_ratios:
+        type: File
+        outputSource: somatic/tumor_segmented_ratios
+    diploid_variants:
+        type: File?
+        outputSource: somatic/diploid_variants
+        secondaryFiles: [.tbi]
+    somatic_variants:
+        type: File?
+        outputSource: somatic/somatic_variants
+        secondaryFiles: [.tbi]
+    all_candidates:
+        type: File
+        outputSource: somatic/all_candidates
+        secondaryFiles: [.tbi]
+    small_candidates:
+        type: File
+        outputSource: somatic/small_candidates
+        secondaryFiles: [.tbi]
+    tumor_only_variants:
+        type: File?
+        outputSource: somatic/tumor_only_variants
+        secondaryFiles: [.tbi]
+    somalier_concordance_metrics:
+        type: File
+        outputSource: somatic/somalier_concordance_metrics
+    somalier_concordance_statistics:
+        type: File
+        outputSource: somatic/somalier_concordance_statistics
+
+    cram:
+        type: File
+        outputSource: germline/cram
+    mark_duplicates_metrics:
+        type: File
+        outputSource: germline/mark_duplicates_metrics
+    insert_size_metrics:
+        type: File
+        outputSource: germline/insert_size_metrics
+    insert_size_histogram:
+        type: File
+        outputSource: germline/insert_size_histogram
+    alignment_summary_metrics:
+        type: File
+        outputSource: germline/alignment_summary_metrics
+    hs_metrics:
+        type: File
+        outputSource: germline/hs_metrics
+    per_target_coverage_metrics:
+        type: File[]
+        outputSource: germline/per_target_coverage_metrics
+    per_target_hs_metrics:
+        type: File[]
+        outputSource: germline/per_target_hs_metrics
+    per_base_coverage_metrics:
+        type: File[]
+        outputSource: germline/per_base_coverage_metrics
+    per_base_hs_metrics:
+        type: File[]
+        outputSource: germline/per_base_hs_metrics
+    summary_hs_metrics:
+        type: File[]
+        outputSource: germline/summary_hs_metrics
+    flagstats:
+        type: File
+        outputSource: germline/flagstats
+    verify_bam_id_metrics:
+        type: File
+        outputSource: germline/verify_bam_id_metrics
+    verify_bam_id_depth:
+        type: File
+        outputSource: germline/verify_bam_id_depth
+    gvcf:
+        type: File[]
+        outputSource: germline/gvcf
+    germline_final_vcf:
+        type: File
+        outputSource: germline/final_vcf
+        secondaryFiles: [.tbi]
+    coding_vcf:
+        type: File
+        outputSource: germline/coding_vcf
+        secondaryFiles: [.tbi]
+    limited_vcf:
+        type: File
+        outputSource: germline/limited_vcf
+        secondaryFiles: [.tbi]
+    germline_vep_summary:
+        type: File
+        outputSource: germline/vep_summary
+    optitype_tsv:
+        type: File
+        outputSource: germline/optitype_tsv
+    optitype_plot:
+        type: File
+        outputSource: germline/optitype_plot
+
+    phased_vcf:
+        type: File
+        outputSource: phase_vcf/phased_vcf
+        secondaryFiles: [.tbi]
+
+    allele_string:
+        type: string[]
+        outputSource: extract_alleles/allele_string
+
     annotated_vcf:
         type: File
         outputSource: pvacseq/annotated_vcf
