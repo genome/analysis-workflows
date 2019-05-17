@@ -9,6 +9,7 @@ requirements:
           - $import: ../types/labelled_file.yml
     - class: SubworkflowFeatureRequirement
 inputs:
+    #rnaseq inputs
     reference_index:
         type: File #this requires an extra file with the basename
         secondaryFiles: [".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"]
@@ -47,6 +48,7 @@ inputs:
     ribosomal_intervals:
         type: File
 
+    #somatic inputs
     reference: string
     tumor_bams:
         type: File[]
@@ -180,6 +182,7 @@ inputs:
     somalier_vcf:
         type: File
 
+    #germline inputs
     emit_reference_confidence:
         type: string
     gvcf_gq_bands:
@@ -193,9 +196,11 @@ inputs:
     optitype_name:
         type: string?
 
+    #phase_vcf inputs
     reference_dict:
         type: File?
 
+    #pvacseq inputs
     readcount_minimum_base_quality:
         type: int?
     readcount_minimum_mapping_quality:
