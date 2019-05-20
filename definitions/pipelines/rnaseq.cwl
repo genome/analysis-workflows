@@ -54,9 +54,6 @@ outputs:
         type: File
         outputSource: mark_dup/sorted_bam
         secondaryFiles: [.bai]
-    markdup_metrics:
-        type: File
-        outputSource: mark_dup/metrics_file
     stringtie_transcript_gtf:
         type: File
         outputSource: stringtie/transcript_gtf
