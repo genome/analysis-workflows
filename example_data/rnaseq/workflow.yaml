@@ -36,4 +36,4 @@ refFlat:
 ribosomal_intervals:
     class: File
     path: /gscmnt/gc2560/core/GRC-human-build38_human_90_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.90.rRNA.interval_list
-strand: "SECOND_READ_TRANSCRIPTION_STRAND"
+strand: "second"
