@@ -37,9 +37,9 @@ inputs:
     trimming_min_readlength:
         type: int
     kallisto_index:
-       type: File
+        type: File
     gene_transcript_lookup_table:
-       type: File
+        type: File
     strand:
         type:
           - "null"
@@ -52,8 +52,11 @@ inputs:
 outputs:
     final_bam:
         type: File
-        outputSource: index_bam/indexed_bam
+        outputSource: mark_dup/sorted_bam
         secondaryFiles: [.bai]
+    markdup_metrics:
+        type: File
+        outputSource: mark_dup/metrics_file
     stringtie_transcript_gtf:
         type: File
         outputSource: stringtie/transcript_gtf
@@ -129,10 +132,16 @@ steps:
             bam: merge/merged_bam
         out:
             [indexed_bam]
+    mark_dup:
+        run: ../tools/mark_duplicates_and_sort.cwl
+        in:
+            bam: merge/merged_bam
+        out:
+            [sorted_bam, metrics_file]
     stringtie:
         run: ../tools/stringtie.cwl
         in:
-            bam: merge/merged_bam
+            bam: mark_dup/sorted_bam
             reference_annotation: reference_annotation
             sample_name: sample_name
             strand: strand
