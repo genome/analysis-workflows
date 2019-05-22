@@ -51,7 +51,7 @@ inputs:
         doc: |
           string: paths to the directory where genome files are stored, created using genomeGenerate
     outSAMunmapped:
-        type: int?
+        type: string?
         inputBinding:
             position: 7
             prefix: '--outSAMunmapped'
@@ -152,9 +152,7 @@ inputs:
           All        ... NH HI AS nM NM MD jM jI
           None ... no attributes
     outSAMattrRGline:
-        type:
-            type: array
-            items: string
+        type: string
         inputBinding:
             position: 19
             prefix: '--outSAMattrRGline'

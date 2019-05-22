@@ -12,11 +12,7 @@ inputs:
     instrument_data_bams:
         type: File[]
     outSAMattrRGline:
-        type:
-            type: array
-            items:
-                type: array
-                items: string
+        type:string[]
     stargenomeDir:
         type: Directory
     gtf_file:

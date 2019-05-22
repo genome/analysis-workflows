@@ -4,8 +4,8 @@ instrument_data_bams:
     - class: File
       path: test2.bam
 outSAMattrRGline: 
-    - ['ID:2895626107', 'PU:H3MYFBBXX5.4.GCCAAT', 'SM:H_NJ-HCC1395-HCC1395_RNA', 'LB:Pooled_RNA_2891007020-cD1-lib1', 'PL:Illumina', 'CN:WUGSC']
-    - ['ID:2895626112', 'PU:H3MYFBBXX5.5.GCCAAT', 'SM:H_NJ-HCC1395-HCC1395_RNA', 'LB:Pooled_RNA_2891007020-cD1-lib1', 'PL:Illumina', 'CN:WUGSC']
+    - ['ID:2895626107 PU:H3MYFBBXX5.4.GCCAAT SM:H_NJ-HCC1395-HCC1395_RNA LB:Pooled_RNA_2891007020-cD1-lib1 PL:Illumina CN:WUGSC']
+    - ['ID:2895626112 PU:H3MYFBBXX5.5.GCCAAT SM:H_NJ-HCC1395-HCC1395_RNA LB:Pooled_RNA_2891007020-cD1-lib1 PL:Illumina CN:WUGSC']
 trimming_adapters:
     class: File
     path: /gscmnt/gc2560/core/illumina_adapters/illumina_multiplex.fa
