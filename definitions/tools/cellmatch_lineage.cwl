@@ -22,16 +22,20 @@ inputs:
             position: -1
     cellranger_out_dir:
         type: Directory
-    lineage_min_cell:
+    lineage_reference_data:
+        type: string
+        inputBinding:
+            position: 1
+    lineage_min_cells:
         type: int?
         default: 3
         inputBinding:
-            position: 1 
+            position: 2 
     lineage_min_features:
         type: int?
         default: 10
         inputBinding:
-            position: 2
+            position: 3
 
 outputs:
     cellmatch_out_dir:
