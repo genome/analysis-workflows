@@ -8,7 +8,7 @@ baseCommand: ["/usr/local/bin/Rscript", "/opt/CellMatch_Haemopedia.r"]
 
 requirements:
     - class: DockerRequirement
-      dockerPull: "saimukund/seurat_docker"
+      dockerPull: "mgibio/scrna_lineage_inference:0.2"
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: 1
