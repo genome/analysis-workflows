@@ -37,11 +37,14 @@ inputs:
     trimming_min_readlength:
         type: int
     kallisto_index:
-       type: File
+        type: File
     gene_transcript_lookup_table:
-       type: File
+        type: File
     strand:
-       type: string?
+        type:
+          - "null"
+          - type: enum
+            symbols: ["first", "second", "unstranded"]
     refFlat:
         type: File
     ribosomal_intervals:
@@ -49,7 +52,7 @@ inputs:
 outputs:
     final_bam:
         type: File
-        outputSource: index_bam/indexed_bam
+        outputSource: mark_dup/sorted_bam
         secondaryFiles: [.bai]
     stringtie_transcript_gtf:
         type: File
@@ -126,10 +129,16 @@ steps:
             bam: merge/merged_bam
         out:
             [indexed_bam]
+    mark_dup:
+        run: ../tools/mark_duplicates_and_sort.cwl
+        in:
+            bam: merge/merged_bam
+        out:
+            [sorted_bam, metrics_file]
     stringtie:
         run: ../tools/stringtie.cwl
         in:
-            bam: merge/merged_bam
+            bam: mark_dup/sorted_bam
             reference_annotation: reference_annotation
             sample_name: sample_name
             strand: strand

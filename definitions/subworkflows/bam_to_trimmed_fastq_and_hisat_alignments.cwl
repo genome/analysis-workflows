@@ -30,7 +30,10 @@ inputs:
         type: File
         secondaryFiles: [".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"]
     strand:
-        type: string?
+        type:
+          - "null"
+          - type: enum
+            symbols: ["first", "second", "unstranded"]
 outputs:
     fastqs:
         type: File[]
