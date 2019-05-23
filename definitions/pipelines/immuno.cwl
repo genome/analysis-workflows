@@ -42,7 +42,10 @@ inputs:
     gene_transcript_lookup_table:
        type: File
     strand:
-       type: string?
+        type:
+          - "null"
+          - type: enum
+            symbols: ["first", "second", "unstranded"]
     refFlat:
         type: File
     ribosomal_intervals:
