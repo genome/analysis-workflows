@@ -744,10 +744,10 @@ steps:
                 default: 'NORMAL'
             rnaseq_bam: rnaseq/final_bam
             reference_fasta: reference
-            readcount_minimum_base_quality: readcount_minimum_base_quality #should this be different from qc_minimum_base_quality?
-            readcount_minimum_mapping_quality: readcount_minimum_mapping_quality #should this be different from qc_minimum_mapping_quality
-            gene_expression_file: rnaseq/stringtie_gene_expression_tsv #not sure if this connection is correct
-            transcript_expression_file: rnaseq/transcript_abundance_tsv #not sure if this connection is correct
+            readcount_minimum_base_quality: readcount_minimum_base_quality
+            readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
+            gene_expression_file: rnaseq/stringtie_gene_expression_tsv
+            transcript_expression_file: rnaseq/transcript_abundance_tsv
             alleles: extract_alleles/allele_string
             prediction_algorithms: prediction_algorithms
             epitope_lengths: epitope_lengths
@@ -773,8 +773,8 @@ steps:
             net_chop_threshold: net_chop_threshold
             netmhc_stab: netmhc_stab
             n_threads: pvacseq_threads
-            variants_to_table_fields: variants_to_table_fields #the defaults set in this file will override the defaults for this parameter set in the pvacseq subworkflow; is this ok?
-            variants_to_table_genotype_fields: variants_to_table_genotype_fields #the defaults set in this file will override the defaults for this parameter set in the pvacseq subworkflow; is this ok?
+            variants_to_table_fields: variants_to_table_fields
+            variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
         out:
             [annotated_vcf, annotated_tsv, mhc_i_all_epitopes, mhc_i_filtered_epitopes, mhc_i_ranked_epitopes, mhc_ii_all_epitopes, mhc_ii_filtered_epitopes, mhc_ii_ranked_epitopes, combined_all_epitopes, combined_filtered_epitopes, combined_ranked_epitopes]
