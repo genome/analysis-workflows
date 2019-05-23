@@ -13,10 +13,18 @@ arguments: [
     $(runtime.outdir)/alignment_stat.out
 ]
 inputs:
-    alignment_summary_outs:
-        type: File[]
+    normal_alignment_summary_metrics:
+        type: File
         inputBinding:
-            position: -1 
+            position: -4
+    tumor_alignment_summary_metrics:
+        type: File
+        inputBinding:
+            position: -3
+    followup_alignment_summary_metrics:
+        type: File
+        inputBinding:
+            position: -2
 outputs:
     alignment_stat:
         type: File
