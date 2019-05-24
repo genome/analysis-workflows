@@ -28,13 +28,13 @@ inputs:
         type: string
     vep_ensembl_assembly:
         type: string
-        doc: genome assembly to use in vep. Examples: "GRCh38" or "GRCm38"
+        doc: "genome assembly to use in vep. Examples: GRCh38 or GRCm38"
     vep_ensembl_version:
         type: string
-        doc: ensembl version - Must be present in the cache directory. Example: "95"
+        doc: "ensembl version - Must be present in the cache directory. Example: 95"
     vep_ensembl_species:
         type: string
-        doc: ensembl species - Must be present in the cache directory. Examples: "homo_sapiens" or "mus_musculus"
+        doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
     coding_only:
         type: boolean?
     custom_gnomad_vcf:
