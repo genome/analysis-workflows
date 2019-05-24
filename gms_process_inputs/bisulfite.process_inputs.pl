@@ -31,7 +31,7 @@ for my $file_input ('reference_sizes', 'trimming_adapters') {
     };
 }
 
-for my $string_input ('reference_index', 'trimming_adapter_trim_end'){
+for my $string_input ('reference_index', 'trimming_adapter_trim_end', "QCannotation"){
     my ($found, @extra) = grep { $_->name eq $string_input } @inputs;
 
     if (@extra) {
