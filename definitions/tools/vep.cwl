@@ -96,17 +96,30 @@ inputs:
                 prefix: "--plugin"
         inputBinding:
             position: 9
-    assembly:
-        type: string
-        inputBinding:
-            prefix: "--assembly"
-            position: 10
     everything:
         type: boolean?
         default: true
         inputBinding:
             prefix: "--everything"
+            position: 10
+    ensembl_assembly:
+        type: string
+        inputBinding:
+            prefix: "--assembly"
             position: 11
+        doc: genome assembly to use in vep. Examples: "GRCh38" or "GRCm38"
+    ensembl_version:
+        type: string
+        inputBinding:
+            prefix: "--cache_version"
+            position: 12
+        doc: ensembl version - Must be present in the cache directory. Example: "95"
+    ensembl_species:
+        type: string
+        inputBinding:
+            prefix: "--species"
+            position: 13
+        doc: ensembl species - Must be present in the cache directory. Examples: "homo_sapiens" or "mus_musculus"
 outputs:
     annotated_vcf:
         type: File
