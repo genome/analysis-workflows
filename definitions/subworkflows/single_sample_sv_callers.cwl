@@ -68,6 +68,15 @@ inputs:
 
     vep_cache_dir:
         type: string
+    vep_ensembl_assembly:
+        type: string
+        doc: genome assembly to use in vep. Examples: "GRCh38" or "GRCm38"
+    vep_ensembl_version:
+        type: string
+        doc: ensembl version - Must be present in the cache directory. Example: "95"
+    vep_ensembl_species:
+        type: string
+        doc: ensembl species - Must be present in the cache directory. Examples: "homo_sapiens" or "mus_musculus"
     variants_to_table_fields:
         type: string[]?
         default: [CHROM,POS,ID,REF,ALT,SVLEN,CHR2,END,POPFREQ_AF,POPFREQ_VarID,NSAMP]
@@ -179,7 +188,9 @@ steps:
             minimum_sv_size: merge_min_sv_size
             sv_db: merge_sv_pop_freq_db
             vep_cache_dir: vep_cache_dir
-            vep_assembly: vep_assembly
+            vep_ensembl_assembly: vep_ensembl_assembly
+            vep_ensembl_version: vep_ensembl_version
+            vep_ensembl_species: vep_ensembl_species
             reference: reference
         out:
             [merged_annotated_vcf, vep_summary]

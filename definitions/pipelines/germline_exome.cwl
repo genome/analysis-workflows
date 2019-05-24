@@ -52,6 +52,15 @@ inputs:
                 items: string
     vep_cache_dir:
         type: string
+    vep_ensembl_assembly:
+        type: string
+        doc: genome assembly to use in vep. Examples: "GRCh38" or "GRCm38"
+    vep_ensembl_version:
+        type: string
+        doc: ensembl version - Must be present in the cache directory. Example: "95"
+    vep_ensembl_species:
+        type: string
+        doc: ensembl species - Must be present in the cache directory. Examples: "homo_sapiens" or "mus_musculus"
     synonyms_file:
         type: File?
     annotate_coding_only:
@@ -66,9 +75,6 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    vep_assembly:
-        type: string
-        doc: Used to explicitly define which assembly version to use; required when there are two or more in the same directory
 outputs:
     cram:
         type: File
@@ -193,7 +199,9 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             limit_variant_intervals: target_intervals
             custom_clinvar_vcf: custom_clinvar_vcf
-            vep_assembly: vep_assembly
+            vep_ensembl_assembly: vep_ensembl_assembly
+            vep_ensembl_version: vep_ensembl_version
+            vep_ensembl_species: vep_ensembl_species
         out:
             [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]
     bam_to_cram:
