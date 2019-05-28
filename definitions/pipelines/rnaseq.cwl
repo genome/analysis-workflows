@@ -40,6 +40,9 @@ inputs:
         type: File
     gene_transcript_lookup_table:
         type: File
+    markdup_assume_sort_order:
+        type: string?
+        default: "queryname"
     strand:
         type:
           - "null"
@@ -133,6 +136,7 @@ steps:
         run: ../tools/mark_duplicates_and_sort.cwl
         in:
             bam: merge/merged_bam
+            markdup_assume_sort_order: markdup_assume_sort_order
         out:
             [sorted_bam, metrics_file]
     stringtie:
