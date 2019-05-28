@@ -41,7 +41,7 @@ inputs:
     gene_transcript_lookup_table:
         type: File
     markdup_assume_sort_order:
-        type: string?
+        type: string? #make sure to provide an input in the yaml file with value coordinate
         default: "queryname"
     strand:
         type:
