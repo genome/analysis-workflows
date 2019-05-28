@@ -52,6 +52,15 @@ inputs:
         default: 400
     vep_cache_dir:
         type: string
+    vep_ensembl_assembly:
+        type: string
+        doc: "genome assembly to use in vep. Examples: GRCh38 or GRCm38"
+    vep_ensembl_version:
+        type: string
+        doc: "ensembl version - Must be present in the cache directory. Example: 95"
+    vep_ensembl_species:
+        type: string
+        doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
     synonyms_file:
         type: File?
     annotate_coding_only:
@@ -223,6 +232,9 @@ steps:
         in:
             vcf: decompose_index/indexed_vcf
             cache_dir: vep_cache_dir
+            ensembl_assembly: vep_ensembl_assembly
+            ensembl_version: vep_ensembl_version
+            ensembl_species: vep_ensembl_species
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only
             reference: reference
@@ -284,10 +296,24 @@ steps:
             vcf: add_normal_bam_readcount_to_vcf/annotated_bam_readcount_vcf
         out:
             [indexed_vcf]
+    filter_vcf:
+        run: ../subworkflows/filter_vcf_mouse.cwl
+        in: 
+            vcf: index/indexed_vcf
+            filter_mapq0_threshold: filter_mapq0_threshold
+            filter_somatic_llr_threshold: filter_somatic_llr_threshold
+            filter_minimum_depth: filter_minimum_depth
+            sample_names:
+                default: 'NORMAL,TUMOR'
+            tumor_bam: tumor_bam
+            do_cle_vcf_filter: cle_vcf_filter
+            reference: reference
+        out: 
+            [filtered_vcf]
     annotated_filter_bgzip:
         run: ../tools/bgzip.cwl
         in:
-            file: index/indexed_vcf
+            file: filter_vcf/filtered_vcf
         out:
             [bgzipped_file]
     annotated_filter_index:

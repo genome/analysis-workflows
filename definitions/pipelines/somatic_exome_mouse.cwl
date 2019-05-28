@@ -76,6 +76,15 @@ inputs:
         default: 400
     vep_cache_dir:
         type: string
+    vep_ensembl_assembly:
+        type: string
+        doc: "genome assembly to use in vep. Examples: GRCh38 or GRCm38"
+    vep_ensembl_version:
+        type: string
+        doc: "ensembl version - Must be present in the cache directory. Example: 95"
+    vep_ensembl_species:
+        type: string
+        doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
     synonyms_file:
         type: File?
     annotate_coding_only:
@@ -294,6 +303,9 @@ steps:
             cle_vcf_filter: cle_vcf_filter
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
+            vep_ensembl_assembly: vep_ensembl_assembly
+            vep_ensembl_version: vep_ensembl_version
+            vep_ensembl_species: vep_ensembl_species
             vep_to_table_fields: vep_to_table_fields
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
