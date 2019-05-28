@@ -86,8 +86,6 @@ inputs:
     vep_to_table_fields:
         type: string[]?
         default: [SYMBOL]
-    vep_assembly:
-        type: string
 outputs:
     cn_diagram:
         type: File?

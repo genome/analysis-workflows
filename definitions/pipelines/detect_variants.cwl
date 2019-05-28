@@ -118,9 +118,6 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    vep_assembly:
-        type: string
-        doc: Used to explicitly define which assembly version to use; required when there are two or more in the same directory
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -291,7 +288,6 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
             custom_clinvar_vcf: custom_clinvar_vcf
-            assembly: vep_assembly
             plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]

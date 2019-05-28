@@ -338,7 +338,9 @@ steps:
             merge_sv_pop_freq_db: merge_sv_pop_freq_db
             sv_filter_interval_lists: sv_filter_interval_lists
             vep_cache_dir: vep_cache_dir
-            vep_assembly: vep_assembly
+            vep_ensembl_assembly: vep_ensembl_assembly
+            vep_ensembl_version: vep_ensembl_version
+            vep_ensembl_species: vep_ensembl_species
             maximum_sv_pop_freq: maximum_sv_pop_freq
             variants_to_table_fields: sv_variants_to_table_fields
             variants_to_table_genotype_fields: sv_variants_to_table_genotype_fields
