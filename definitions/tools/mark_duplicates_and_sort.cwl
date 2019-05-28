@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "mark duplicates and sort"
+label: "Mark duplicates and Sort"
 
 baseCommand: ["/bin/bash", "markduplicates_helper.sh"]
 requirements:
