@@ -1,0 +1,52 @@
+---
+tumor_bams:
+- class: File
+  path: exome_workflow/mouse_test_bams/tum.2896232918.bam
+- class: File
+  path: exome_workflow/mouse_test_bams/tum.2896233121.bam
+tumor_readgroups:
+- "@RG\tID:2896232918\tPL:illumina\tPU:CA3N9ANXX.3-ACATGGAG-ACATGGAG\tLB:M_BQ-17857-082516-7-EZ41A1-APL19-lg1-lib1\tDS:paired end\tDT:2016-10-27T19:00:00-0500\tSM:M_BQ-17857-082516-7-EZ41A1-APL19\tCN:WUGSC"
+- "@RG\tID:2896233121\tPL:illumina\tPU:CA3N9ANXX.2-ACATGGAG-ACATGGAG\tLB:M_BQ-17857-082516-7-EZ41A1-APL19-lg1-lib1\tDS:paired end\tDT:2016-10-27T19:00:00-0500\tSM:M_BQ-17857-082516-7-EZ41A1-APL19\tCN:WUGSC"
+normal_bams:
+- class: File
+  path: exome_workflow/mouse_test_bams/nrm.2888697054.bam
+- class: File
+  path: exome_workflow/mouse_test_bams/nrm.2888697058.bam
+normal_readgroups:
+- "@RG\tID:2888697054\tPL:illumina\tPU:C17NUACXX.5-TGACCA\tLB:M_BQ-17857-17857_N-lib1\tDS:paired end\tDT:2012-10-02T19:00:00-0500\tSM:M_BQ-17857-17857_N\tCN:WUGSC"
+- "@RG\tID:2888697058\tPL:illumina\tPU:C17NUACXX.6-TGACCA\tLB:M_BQ-17857-17857_N-lib1\tDS:paired end\tDT:2012-10-02T19:00:00-0500\tSM:M_BQ-17857-17857_N\tCN:WUGSC"
+bait_intervals:
+  class: File
+  path: exome_workflow/mouse_test_reference/targets.interval_list
+interval_list:
+  class: File
+  path: exome_workflow/mouse_test_reference/genes.interval_list
+per_base_intervals:
+  - label: testing
+    file:
+      class: File
+      path: exome_workflow/mouse_test_reference/targets.interval_list
+per_target_intervals:
+  - label: targets
+    file:
+      class: File
+      path: exome_workflow/mouse_test_reference/targets.interval_list
+summary_intervals:
+  - label: baits 
+    file:
+      class: File
+      path: exome_workflow/mouse_test_reference/targets.interval_list
+  - label: genes
+    file:
+      class: File
+      path: exome_workflow/mouse_test_reference/genes.interval_list
+target_intervals:
+  class: File
+  path: exome_workflow/mouse_test_reference/targets.interval_list
+picard_metric_accumulation_level: ALL_READS
+reference: "/gscmnt/gc2560/core/reference_sequences/mouse_exome_reference_cwl_test/reference_small.fa"
+vep_cache_dir: "/gscmnt/gc2560/core/cwl/inputs/VEP_cache/"
+vep_ensembl_assembly: "GRCm38"
+vep_ensembl_version: "96"
+vep_ensembl_species: "mus_musculus"
+mutect_scatter_count: 2
