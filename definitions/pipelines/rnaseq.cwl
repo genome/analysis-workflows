@@ -40,9 +40,6 @@ inputs:
         type: File
     gene_transcript_lookup_table:
         type: File
-    markdup_assume_sort_order:
-        type: string?
-        default: "coordinate"
     strand:
         type:
           - "null"
@@ -136,7 +133,7 @@ steps:
         run: ../tools/mark_duplicates_and_sort.cwl
         in:
             bam: merge/merged_bam
-            markdup_assume_sort_order: markdup_assume_sort_order
+            input_sort_order: "coordinate"
         out:
             [sorted_bam, metrics_file]
     stringtie:
