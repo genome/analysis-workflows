@@ -44,6 +44,12 @@ outputs:
         type: File
         outputSource: index_bam/indexed_bam
         secondaryFiles: [.bai]
+    star_fusion_out:
+        type: File
+        outputSource: star_align_fusion/chimjunc
+    star_junction_out:
+        type: File
+        outputSource: star_align_fusion/splicejunctionout
     stringtie_transcript_gtf:
         type: File
         outputSource: stringtie/transcript_gtf
@@ -69,7 +75,7 @@ outputs:
         type: File
         outputSource: kallisto/fusion_evidence
 steps:
-    bam_to_trimmed_fastq_and_star_fusion_alignments:
+    bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
         scatter: [bam]
         scatterMethod: dotproduct
@@ -89,13 +95,13 @@ steps:
             stargenomeDir: stargenomeDir
             gtf_file: gtf_file
             fastq:
-                source: bam_to_trimmed_fastq_and_star_fusion_alignments/fastq1
+                source: bam_to_trimmed_fastq/fastq1
                 linkMerge: merge_flattened
             fastq2:
-                source: bam_to_trimmed_fastq_and_star_fusion_alignments/fastq2
+                source: bam_to_trimmed_fastq/fastq2
                 linkMerge: merge_flattened
         out:
-            [aligned_bam]
+            [aligned_bam, chimjunc, splicejunctionout]
     kallisto:
         run: ../tools/kallisto.cwl
         in:
