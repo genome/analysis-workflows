@@ -70,7 +70,7 @@ outputs:
         outputSource: kallisto/fusion_evidence
 steps:
     bam_to_trimmed_fastq_and_star_fusion_alignments:
-        run: ../subworkflows/bam_to_trimmed_fastq_and_star_fusion_alignments.cwl
+        run: ../subworkflows/bam_to_trimmed_fastq.cwl
         scatter: [bam]
         scatterMethod: dotproduct
         in:
