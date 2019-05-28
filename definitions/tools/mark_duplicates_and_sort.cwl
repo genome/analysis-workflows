@@ -7,8 +7,8 @@ label: "Mark duplicates and Sort"
 baseCommand: ["/bin/bash", "markduplicates_helper.sh"]
 requirements:
     - class: ResourceRequirement
-      coresMin: 2
-      ramMin: 8000
+      coresMin: 8
+      ramMin: 40000
     - class: DockerRequirement
       dockerPull: "mgibio/mark_duplicates-cwl:1.0.1"
     - class: InitialWorkDirRequirement
