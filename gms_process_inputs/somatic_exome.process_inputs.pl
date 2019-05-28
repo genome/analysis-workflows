@@ -126,7 +126,7 @@ if ($roi_input) {
 } elsif ($multiple_trsn) {
     $build->fatal_message('Multiple target_region_set_name found on instrument data. Please specify a "region_of_interest_set_name" input explicitly.');
 } elsif ($target_region_set_name) {
-    $fl = Genome::FeatureList->get(name => $target_region_set_name)
+    $fl = Genome::FeatureList->get(name => $target_region_set_name) // Genome::FeatureList->get(id => $target_region_set_name)
         or $build->fatal_message('no ROI found for instrument data target region set');
 } else {
     $build->fatal_message('No target_region_set_name found on instrument data.  Please specify a "region_of_interest_set_name" input explicitly.');
