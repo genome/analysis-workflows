@@ -68,6 +68,9 @@ varscan_min_var_freq: 0.02
 varscan_p_value: 0.99
 varscan_strand_filter: 0
 vep_cache_dir: "/gscmnt/gc2560/core/cwl/inputs/VEP_cache/"
+vep_ensembl_assembly: GRCh38
+vep_ensembl_version: 95
+vep_ensembl_species: homo_sapiens
 bqsr_intervals:
 - chr17
 interval_list:
