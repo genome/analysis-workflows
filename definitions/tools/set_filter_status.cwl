@@ -28,7 +28,8 @@ inputs:
             position: 3
         secondaryFiles: [.tbi]
     reference:
-        type: string
+        type: File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "-R"
             position: 1

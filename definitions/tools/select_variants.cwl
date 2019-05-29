@@ -14,7 +14,8 @@ arguments:
     ["-o", { valueFrom: $(runtime.outdir)/$(inputs.output_vcf_basename).vcf.gz }]
 inputs:
     reference:
-        type: string
+        type: File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "-R"
             position: 1

@@ -9,13 +9,14 @@ requirements:
     - class: StepInputExpressionRequirement
 inputs:
     reference:
-        type: string
+        type: File
+        secondaryFiles: [.fai, ^.dict]
     tumor_bam:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [.bai, ^.bai]
     normal_bam:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [.bai, ^.bai]
     interval_list:
         type: File
     strand_filter:

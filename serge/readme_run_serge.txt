@@ -1,0 +1,1 @@
+cwltool ../definitions/subworkflows/varscan_pre_and_post_processing.cwl varscan_pre_and_post_processing.val_serge01.yaml

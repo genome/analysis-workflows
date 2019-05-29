@@ -1,0 +1,25 @@
+reference:
+  class: File
+  path: /home/bio/serge/analysis-workflows_serge2016/example_data/exome_workflow/chr17_test.fa
+  secondaryFiles:
+  - class: File
+    location: /home/bio/serge/analysis-workflows_serge2016/example_data/exome_workflow/chr17_test.fa.fai
+tumor_bam:
+  class: File
+  path: /home/bio/tatahin/test_files/out_cc/2895499_tumor.realigned.bqsr.bam
+  secondaryFiles:
+  - class: File
+    location: /home/bio/tatahin/test_files/out_cc/2895499_tumor.realigned.bqsr.bai
+normal_bam:
+  class: File
+  path: /home/bio/tatahin/test_files/out_cc/2895499_normal.realigned.bqsr.bam
+  secondaryFiles:
+  - class: File
+    location: /home/bio/tatahin/test_files/out_cc/2895499_normal.realigned.bqsr.bai
+interval_list:
+  class: File
+  path: /home/bio/serge/analysis-workflows_serge2016/example_data/exome_workflow/chr17_test_genes.interval_list
+min_coverage: 8
+min_var_freq: 0.02
+p_value: 0.99
+strand_filter: 0

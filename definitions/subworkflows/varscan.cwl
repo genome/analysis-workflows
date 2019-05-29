@@ -5,7 +5,8 @@ class: Workflow
 label: "varscan somatic workflow"
 inputs:
     reference:
-        type: string
+        type: File
+        secondaryFiles: [.fai, ^.dict]
     tumor_bam:
         type: File
         secondaryFiles: [^.bai]
