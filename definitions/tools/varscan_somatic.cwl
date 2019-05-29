@@ -10,6 +10,13 @@ requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/cle:v1.3.1"
 inputs:
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
+        inputBinding:
+            position: 3
     tumor_bam:
         type: File
         inputBinding:
@@ -20,11 +27,6 @@ inputs:
         inputBinding:
             position: 2
         secondaryFiles: [^.bai]
-    reference:
-        type: File
-        secondaryFiles: [.fai, ^.dict]
-        inputBinding:
-            position: 3
     strand_filter:
         type: int?
         default: 0

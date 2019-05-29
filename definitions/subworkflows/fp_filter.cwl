@@ -6,12 +6,14 @@ label: "fp_filter workflow"
 requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     bam:
         type: File
         secondaryFiles: [.bai,^.bai]
-    reference:
-        type: File
-        secondaryFiles: [.fai, ^.dict]
     vcf:
         type: File
         secondaryFiles: [.tbi]

@@ -15,6 +15,14 @@ arguments:
     "--filterNotInMask",
     "-o", { valueFrom: $(runtime.outdir)/output.vcf.gz }]
 inputs:
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
+        inputBinding:
+            prefix: "-R"
+            position: 1
     vcf:
         type: File
         inputBinding:
@@ -27,12 +35,6 @@ inputs:
             prefix: "--mask"
             position: 3
         secondaryFiles: [.tbi]
-    reference:
-        type: File
-        secondaryFiles: [.fai, ^.dict]
-        inputBinding:
-            prefix: "-R"
-            position: 1
 outputs:
     merged_vcf:
         type: File

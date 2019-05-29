@@ -9,7 +9,9 @@ requirements:
     - class: StepInputExpressionRequirement
 inputs:
     reference:
-        type: File
+        type:
+            - string
+            - File
         secondaryFiles: [.fai, ^.dict]
     tumor_bam:
         type: File
