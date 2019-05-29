@@ -36,6 +36,10 @@ inputs:
         type: float?
     max_alt_alleles_in_normal_count:
         type: int?
+    tumor_sample_name_for_mutect2:
+        type: string
+    normal_sample_name_for_mutect2:
+        type: string
 outputs:
     unfiltered_vcf:
         type: File
@@ -60,12 +64,8 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             interval_list: split_interval_list/split_interval_lists
-            dbsnp_vcf: dbsnp_vcf
-            cosmic_vcf: cosmic_vcf
-            artifact_detection_mode: artifact_detection_mode
-            panel_of_normals_vcf: panel_of_normals_vcf
-            max_alt_allele_in_normal_fraction: max_alt_allele_in_normal_fraction
-            max_alt_alleles_in_normal_count: max_alt_alleles_in_normal_count
+            tumor_sample_name: tumor_sample_name_for_mutect2
+            normal_sample_name: normal_sample_name_for_mutect2
         out:
             [vcf]
     merge:
