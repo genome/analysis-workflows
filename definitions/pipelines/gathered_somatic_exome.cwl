@@ -140,6 +140,10 @@ inputs:
         type: string
     somalier_vcf:
         type: File
+    normal_sample_name_for_mutect2:
+        type: string
+    tumor_sample_name_for_mutect2:
+        type: string
 outputs:
     final_outputs:
         type: string[]
