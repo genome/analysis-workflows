@@ -21,11 +21,13 @@ requirements:
 
             /gatk/gatk Mutect2 -O $1 -R $2 -I $3 -tumor $5 -I $4 -normal $6 -L $7
             gunzip mutect.vcf.gz
-            sed "s/\t$5\t/\tTUMOR\t/g; s/\t$6/\tNORMAL/g" mutect.vcf > mutect_final.vcf
-            bgzip mutect_final.vcf
-            tabix mutect_final.vcf.gz
-            mv mutect.vcf.gz.stats mutect_final.vcf.gz.stats
-            /gatk/gatk FilterMutectCalls -R $2 -V mutect_final.vcf.gz -O mutect_final_filtered.vcf.gz
+            grep "^##" mutect.vcf >mutect.final.vcf
+            grep "^#CHROM" mutect.vcf | sed "s/\t$5\t/\tTUMOR\t/g; s/\t$6/\tNORMAL/g" >> mutect.final.vcf
+            grep -v "^#" mutect.vcf >> mutect.final.vcf
+            bgzip mutect.final.vcf
+            tabix mutect.final.vcf.gz
+            mv mutect.vcf.gz.stats mutect.final.vcf.stats
+            /gatk/gatk FilterMutectCalls -R $2 -V mutect.final.vcf.gz -O mutect.final.filtered.vcf.gz
 
 arguments:
     - position: 1
@@ -63,5 +65,5 @@ outputs:
     vcf:
         type: File
         outputBinding:
-            glob: "mutect_final_filtered.vcf.gz"
+            glob: "mutect.final.filtered.vcf.gz"
         secondaryFiles: [.tbi]
