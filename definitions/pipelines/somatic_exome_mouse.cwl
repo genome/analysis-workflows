@@ -106,12 +106,6 @@ inputs:
     vep_to_table_fields:
         type: string[]
         default: ['Consequence','SYMBOL','Feature']
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    custom_clinvar_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
 outputs:
     tumor_cram:
         type: File
