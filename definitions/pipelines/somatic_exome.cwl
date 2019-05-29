@@ -148,6 +148,10 @@ inputs:
         type: boolean?
     somalier_vcf:
         type: File
+    normal_sample_name_for_mutect2:
+        type: string
+    tumor_sample_name_for_mutect2:
+        type: string
 outputs:
     tumor_cram:
         type: File
@@ -444,6 +448,8 @@ steps:
             vep_to_table_fields: vep_to_table_fields
             custom_gnomad_vcf: custom_gnomad_vcf
             custom_clinvar_vcf: custom_clinvar_vcf
+            normal_sample_name_for_mutect2: normal_sample_name_for_mutect2
+            tumor_sample_name_for_mutect2: tumor_sample_name_for_mutect2
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
     cnvkit:
