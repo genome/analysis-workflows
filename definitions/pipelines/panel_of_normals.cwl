@@ -49,6 +49,8 @@ steps:
                 default: true
             panel_of_normals_vcf:
                 default: null
+            normal_sample_name_for_mutect2: normal_sample_name_for_mutect2
+            tumor_sample_name_for_mutect2: tumor_sample_name_for_mutect2
         out:
             [unfiltered_vcf]
     combine:
