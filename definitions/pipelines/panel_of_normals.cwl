@@ -23,6 +23,10 @@ inputs:
     cosmic_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    tumor_sample_name_for_mutect2:
+        type: string
+    normal_sample_name_for_mutect2:
+        type: string
 outputs:
     pon_vcf:
         type: File
