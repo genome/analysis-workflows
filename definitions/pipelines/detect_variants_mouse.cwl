@@ -73,9 +73,6 @@ inputs:
     vep_plugins:
         type: string[]?
         default: [Downstream, Wildtype]
-    filter_gnomADe_maximum_population_allele_frequency:
-        type: float?
-        default: 0.000
     filter_mapq0_threshold:
         type: float?
         default: 0.15
