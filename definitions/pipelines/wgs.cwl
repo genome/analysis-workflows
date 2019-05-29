@@ -34,6 +34,15 @@ inputs:
         type: File
     vep_cache_dir:
         type: string
+    vep_ensembl_assembly:
+        type: string
+        doc: "genome assembly to use in vep. Examples: GRCh38 or GRCm38"
+    vep_ensembl_version:
+        type: string
+        doc: "ensembl version - Must be present in the cache directory. Example: 95"
+    vep_ensembl_species:
+        type: string
+        doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
     synonyms_file:
         type: File?
     vep_pick:
@@ -58,9 +67,6 @@ inputs:
         type: ../types/labelled_file.yml#labelled_file[]
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
-    vep_assembly:
-        type: string
-        doc: Used to explicitly define which version of the assembly to use; required if there are two or more in the same directory
 outputs:
     cram:
         type: File
@@ -178,6 +184,9 @@ steps:
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             vep_pick: vep_pick
+            vep_ensembl_assembly: vep_ensembl_assembly
+            vep_ensembl_version: vep_ensembl_version
+            vep_ensembl_species: vep_ensembl_species
             #variants_to_table_fields:
             #variants_to_table_genotype_fields:
             #vep_to_table_fields:
@@ -186,7 +195,6 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
             readcount_minimum_base_quality: readcount_minimum_base_quality
-            vep_assembly: vep_assembly
         out:
             [varscan_vcf, docm_gatk_vcf, annotated_vcf, final_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv]
     bam_to_cram:
