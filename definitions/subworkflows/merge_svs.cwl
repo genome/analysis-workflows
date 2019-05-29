@@ -26,6 +26,15 @@ inputs:
         type: File
     vep_cache_dir:
         type: string
+    vep_ensembl_assembly:
+        type: string
+        doc: "genome assembly to use in vep. Examples: GRCh38 or GRCm38"
+    vep_ensembl_version:
+        type: string
+        doc: "ensembl version - Must be present in the cache directory. Example: 95"
+    vep_ensembl_species:
+        type: string
+        doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
     coding_only:
         type: boolean?
     custom_gnomad_vcf:
@@ -39,8 +48,6 @@ inputs:
     vep_plugins:
         type: string[]?
         default: []
-    vep_assembly:
-        type: string
 outputs:
     merged_annotated_vcf:
         type: File
@@ -73,9 +80,11 @@ steps:
     annotate_variants:
         run: ../tools/vep.cwl
         in:
-            assembly: vep_assembly
             vcf: add_population_frequency/merged_annotated_vcf
             cache_dir: vep_cache_dir
+            ensembl_assembly: vep_ensembl_assembly
+            ensembl_version: vep_ensembl_version
+            ensembl_species: vep_ensembl_species
             synonyms_file: synonyms_file
             coding_only: coding_only
             reference: reference
