@@ -11,9 +11,9 @@ requirements:
 inputs:
     instrument_data_bams:
         type: File[]
-    outSAMattrRGline:
+    outsam_attrrg_line:
         type: string[]
-    stargenomeDir:
+    star_genome_dir:
         type: Directory
     gtf_file:
         type: File
@@ -42,14 +42,14 @@ inputs:
 outputs:
     final_bam:
         type: File
-        outputSource: index_bam/indexed_bam
+        outputSource: mark_dup/indexed_bam
         secondaryFiles: [.bai]
     star_fusion_out:
         type: File
-        outputSource: star_align_fusion/chimjunc
+        outputSource: star_align_fusion/chim_junc
     star_junction_out:
         type: File
-        outputSource: star_align_fusion/splicejunctionout
+        outputSource: star_align_fusion/splice_junction_out
     stringtie_transcript_gtf:
         type: File
         outputSource: stringtie/transcript_gtf
@@ -91,8 +91,8 @@ steps:
     star_align_fusion:
         run: ../tools/star_align_fusion.cwl
         in:
-            outSAMattrRGline: outSAMattrRGline
-            stargenomeDir: stargenomeDir
+            outsam_attrrg_line: outsam_attrrg_line
+            star_genome_dir: star_genome_dir
             gtf_file: gtf_file
             fastq:
                 source: bam_to_trimmed_fastq/fastq1
@@ -101,7 +101,7 @@ steps:
                 source: bam_to_trimmed_fastq/fastq2
                 linkMerge: merge_flattened
         out:
-            [aligned_bam, chimjunc, splicejunctionout]
+            [aligned_bam, chim_junc, splice_junction_out]
     kallisto:
         run: ../tools/kallisto.cwl
         in:
@@ -129,16 +129,24 @@ steps:
             input_bam: star_align_fusion/aligned_bam
         out:
             [sorted_bam]
+    mark_dup:
+        run: ../tools/mark_duplicates_and_sort.cwl
+        in:
+            bam: sort_bam/sorted_bam
+            input_sort_order:
+                default: "coordinate"
+        out:
+            [sorted_bam, metrics_file]
     index_bam:
         run: ../tools/index_bam.cwl
         in:
-            bam: sort_bam/sorted_bam
+            bam: mark_dup/sorted_bam
         out:
             [indexed_bam]
     stringtie:
         run: ../tools/stringtie.cwl
         in:
-            bam: sort_bam/sorted_bam
+            bam: mark_dup/sorted_bam
             reference_annotation: gtf_file
             sample_name: sample_name
             strand: strand
@@ -150,6 +158,6 @@ steps:
             refFlat: refFlat
             ribosomal_intervals: ribosomal_intervals
             strand: strand
-            bam: sort_bam/sorted_bam
+            bam: mark_dup/sorted_bam
         out:
             [metrics, chart]

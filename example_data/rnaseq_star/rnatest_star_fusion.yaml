@@ -1,11 +1,11 @@
 instrument_data_bams:
     - class: File
-      path: /gscmnt/gc2733/walter/sridnona/softwares/rnaseq_mgbio/test.bam
+      path: rnaseq_star/test.bam
     - class: File
-      path: /gscmnt/gc2733/walter/sridnona/softwares/rnaseq_mgbio/test2.bam
+      path: rnaseq_star/test2.bam
 trimming_adapters:
     class: File
-    path: /gscmnt/gc2560/core/illumina_adapters/illumina_multiplex.fa
+    path: rnaseq_star/illumina_multiplex.fa
 trimming_adapter_trim_end: 'RIGHT'
 trimming_adapter_min_overlap: 7
 trimming_max_uncalled: 300
@@ -26,7 +26,7 @@ outSAMattrRGline:
 gtf_file:
     class: File
     path: /gscmnt/gc2733/walter/sridnona/refs/stock_refs/star/human_38_90/Homo_sapiens.GRCh38.90.gtf
-stargenomeDir:
+star_genome_dir:
     class: Directory 
     path: /gscmnt/gc2733/walter/sridnona/refs/stock_refs/star/human_38_90/
 ribosomal_intervals: 

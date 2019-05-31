@@ -9,28 +9,24 @@ requirements:
       ramMin: 64000
       coresMin: 10
     - class: DockerRequirement
-      dockerPull: "sridnona/mgirnaseq:v3"
+      dockerPull: "mgibio/star"
 arguments: [
     "--runThreadN", $(runtime.cores)
 
 ]
 inputs:
-    outSAMtype:
+    out_samtype:
         type: string[]
         default: ["BAM", "Unsorted"]
         inputBinding:
             position: 3
             prefix: '--outSAMtype'
-    runMode:
+    run_mode:
         type: string
         default: "alignReads"
         inputBinding:
             position: 2
             prefix: "--runMode"
-        doc: |
-          string: type of the run
-          alignReads - map reads
-          genomeGenerate - generate genome files
     fastq:
         type: File[]
         inputBinding:
@@ -42,68 +38,68 @@ inputs:
           inputBinding:
               position: 5
               itemSeparator: ","
-    outReadsUnmapped:
+    out_reads_unmapped:
         type: string
         default: "None"
         inputBinding:
             position: 6
             prefix: '--outReadsUnmapped'
-    chimSegmentMin:
+    chim_segment_min:
         type: int
         default: "12"
         inputBinding:
             position: 7
             prefix: '--chimSegmentMin'
-    chimJunctionOverhangMin:
+    chim_junction_overhang_min:
         type: int
         default: "12"
         inputBinding:
             position: 8
             prefix: '--chimJunctionOverhangMin'
-    alignSJDBoverhangMin:
+    align_sjdb_overhang_min:
         type: int
         default: 10
         inputBinding:
             position: 9
             prefix: '--alignSJDBoverhangMin'
-    alignMatesGapMax:
+    align_mates_gapmax:
         type: int?
         default: 100000
         inputBinding:
             position: 10
             prefix: '--alignMatesGapMax'
-    alignIntronMax:
+    align_intron_max:
         type: int
         default: 100000
         inputBinding:
             position: 11
             prefix: '--alignIntronMax'
-    chimSegmentReadGapMax:
+    chim_segment_read_gapmax:
         type: int
         default: 3
         inputBinding:
             position: 12
             prefix: '--chimSegmentReadGapMax'
-    alignSJstitchMismatchNmax:
+    align_sjstitch_mismatch_nmax:
         type: int[]
         default: [5, -1, 5, 5]
         itemSeparator: ' '
         inputBinding:
             position: 13 
             prefix: '--alignSJstitchMismatchNmax'
-    outSAMstrandField:
+    outsam_strand_field:
         type: string
         default: "intronMotif"
         inputBinding:
             position: 14
             prefix: '--outSAMstrandField'
-    outSAMunmapped:
+    outsam_unmapped:
         type: string
         default: Within
         inputBinding:
             position: 15
             prefix: '--outSAMunmapped'
-    outSAMattrRGline:
+    outsam_attrrg_line:
         type:
             type: array
             items: string
@@ -112,42 +108,52 @@ inputs:
             itemSeparator: ' , ' 
             shellQuote: False
             prefix: '--outSAMattrRGline'
-    chimMultimapNmax:
+            doc: |
+            string(s): SAM/BAM read group line. The first word contains the read group
+            identifier and must start with ID:, e.g. –outSAMattrRGline ID:xxx CN:yy
+            DS:z z z.
+            xxx will be added as RG tag to each output alignment. Any spaces in the tag
+            values have to be double quoted.
+            Comma separated RG lines correspons to different (comma separated) input
+            files in –readFilesIn
+    chim_multimap_nmax:
         type: int
         default: 10
         inputBinding:
             position: 17
             prefix: '--chimMultimapNmax'
-    chimNonchimScoreDropMin:
+    chim_nonchim_scoredrop_min:
         type: int
         default: 10
         inputBinding:
             position: 18
             prefix: '--chimNonchimScoreDropMin'
-    peOverlapNbasesMin:
+    peoverlap_nbases_min:
         type: int
         default: 12
         inputBinding:
             position: 19
             prefix: '--peOverlapNbasesMin'
-    peOverlapMMp:
+    peoverlap_mmp:
         type: float
         default: 0.1
         inputBinding:
             position: 20
             prefix: '--peOverlapMMp'
-    chimOutJunctionFormat:
+    chimout_junction_format:
         type: int
         default: 1
         inputBinding:
             position: 21
             prefix: '--chimOutJunctionFormat'
-    stargenomeDir:
+    star_genome_dir:
         type: Directory
         inputBinding:
             position: 22
             prefix: '--genomeDir'
-    twopassMode:
+            doc: |
+            specifies path to the directory where the genome indices are stored
+    twopass_mode:
         type: string
         default: "Basic"
         inputBinding:
@@ -158,19 +164,19 @@ inputs:
         inputBinding:
             position: 24
             prefix: '--sjdbGTFfile'
-    outFileNamePrefix:
+    outfile_name_prefix:
         type: string
         default: "STAR_"
         inputBinding:
             position: 25
             prefix: '--outFileNamePrefix'
-    readFilesCommand:
+    read_files_command:
         default: "cat"
         type: string?
         inputBinding:
             position: 26
             prefix: '--readFilesCommand'
-    outSAMattributes:
+    outsam_attributes:
         type: string[]
         default: [NH, HI, AS, NM, MD]
         itemSeparator: ' '
@@ -182,24 +188,24 @@ outputs:
     aligned_bam:
         type: File
         outputBinding:
-          glob: "$(inputs.outFileNamePrefix)Aligned.out.bam"
+          glob: "$(inputs.outfile_name_prefix)Aligned.out.bam"
     log_final:
         type: File
         outputBinding:
-          glob: "$(inputs.outFileNamePrefix)Log.final.out"
+          glob: "$(inputs.outfile_name_prefix)Log.final.out"
     log:
         type: File
         outputBinding:
-          glob: "$(inputs.outFileNamePrefix)Log.out"
+          glob: "$(inputs.outfile_name_prefix)Log.out"
     log_progress:
         type: File
         outputBinding:
-          glob: "$(inputs.outFileNamePrefix)Log.progress.out"
+          glob: "$(inputs.outfile_name_prefix)Log.progress.out"
     splicejunctionout:
         type: File
         outputBinding:
-            glob: "$(inputs.outFileNamePrefix)SJ.out.tab"
+            glob: "$(inputs.outfile_name_prefix)SJ.out.tab"
     chimjunc:
         type: File
         outputBinding:
-            glob: "$(inputs.outFileNamePrefix)Chimeric.out.junction"
+            glob: "$(inputs.outfile_name_prefix)Chimeric.out.junction"
