@@ -36,10 +36,6 @@ inputs:
         type: float?
     max_alt_alleles_in_normal_count:
         type: int?
-    tumor_sample_name_for_mutect2:
-        type: string
-    normal_sample_name_for_mutect2:
-        type: string
 outputs:
     unfiltered_vcf:
         type: File
@@ -64,8 +60,6 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             interval_list: split_interval_list/split_interval_lists
-            tumor_sample_name: tumor_sample_name_for_mutect2
-            normal_sample_name: normal_sample_name_for_mutect2
         out:
             [vcf]
     merge:
