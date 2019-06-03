@@ -18,15 +18,17 @@ requirements:
         entry: |
             set -o pipefail
             set -o errexit
-
-            /gatk/gatk Mutect2 -O $1 -R $2 -I $3 -tumor $5 -I $4 -normal $6 -L $7
+            
+            TUMOR=`(samtools view -H $3 | grep "^@RG" | sed "s/.*SM:\([^\t]*\).*/\1/g" | head -n 1)`
+            NORMAL=`(samtools view -H $4 | grep "^@RG" | sed "s/.*SM:\([^\t]*\).*/\1/g" | head -n 1)`
+            /gatk/gatk Mutect2 -O $1 -R $2 -I $3 -tumor $TUMOR -I $4 -normal $NORMAL -L $5
             gunzip mutect.vcf.gz
             grep "^##" mutect.vcf >mutect.final.vcf
-            grep "^#CHROM" mutect.vcf | sed "s/\t$5\t/\tTUMOR\t/g; s/\t$6/\tNORMAL/g" >> mutect.final.vcf
+            grep "^#CHROM" mutect.vcf | sed "s/\t$TUMOR\t/\tTUMOR\t/g; s/\t$NORMAL/\tNORMAL/g" >> mutect.final.vcf
             grep -v "^#" mutect.vcf >> mutect.final.vcf
             bgzip mutect.final.vcf
             tabix mutect.final.vcf.gz
-            mv mutect.vcf.gz.stats mutect.final.vcf.stats
+            mv mutect.vcf.gz.stats mutect.final.vcf.gz.stats
             /gatk/gatk FilterMutectCalls -R $2 -V mutect.final.vcf.gz -O mutect.final.filtered.vcf.gz
 
 arguments:
@@ -51,15 +53,7 @@ inputs:
     interval_list:
         type: File
         inputBinding:
-            position: 7
-    tumor_sample_name:
-        type: string
-        inputBinding:
             position: 5
-    normal_sample_name:
-        type: string
-        inputBinding:
-            position: 6
 
 outputs:
     vcf:
