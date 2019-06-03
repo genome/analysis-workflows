@@ -25,7 +25,10 @@ inputs:
         inputBinding:
             position: 2
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, .amb, .ann, .bwt, .pac, .sa]
         inputBinding:
             position: 3
 outputs:

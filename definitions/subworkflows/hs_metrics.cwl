@@ -23,7 +23,10 @@ inputs:
     per_target_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
 outputs:

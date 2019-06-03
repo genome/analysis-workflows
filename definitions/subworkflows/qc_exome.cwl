@@ -8,12 +8,16 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     bam:
         type: File
         secondaryFiles: [^.bai]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     bait_intervals:
         type: File
     target_intervals:
