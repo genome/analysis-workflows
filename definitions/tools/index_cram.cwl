@@ -6,7 +6,7 @@ label: 'samtools index cram'
 arguments: [
     "/opt/samtools/bin/samtools", "index", "$(runtime.outdir)/$(inputs.cram.basename)", "$(runtime.outdir)/$(inputs.cram.basename).crai",
     { valueFrom: " && ", shellQuote: false },
-    "ln", "-s", "$(inputs.cram.basename).crai", "$(runtime.outdir)/$(inputs.cram.nameroot).crai"
+    "cp", "$(inputs.cram.basename).crai", "$(runtime.outdir)/$(inputs.cram.nameroot).crai"
 ]
 requirements:
     - class: ShellCommandRequirement

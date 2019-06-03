@@ -6,7 +6,7 @@ label: "samtools index"
 arguments: [
     "/opt/samtools/bin/samtools", "index", "$(runtime.outdir)/$(inputs.bam.basename)", "$(runtime.outdir)/$(inputs.bam.basename).bai",
     { valueFrom: " && ", shellQuote: false },
-    "ln", "-s", "$(inputs.bam.basename).bai", "$(runtime.outdir)/$(inputs.bam.nameroot).bai"
+    "cp", "$(inputs.bam.basename).bai", "$(runtime.outdir)/$(inputs.bam.nameroot).bai"
 ]
 requirements:
     - class: ShellCommandRequirement
