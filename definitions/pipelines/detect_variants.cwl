@@ -118,10 +118,6 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    tumor_sample_name_for_mutect2:
-        type: string
-    normal_sample_name_for_mutect2:
-        type: string
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -200,8 +196,6 @@ steps:
             scatter_count: mutect_scatter_count
             artifact_detection_mode: mutect_artifact_detection_mode
             panel_of_normals_vcf: panel_of_normals_vcf
-            normal_sample_name_for_mutect2: normal_sample_name_for_mutect2
-            tumor_sample_name_for_mutect2: tumor_sample_name_for_mutect2
         out:
             [unfiltered_vcf, filtered_vcf]
     strelka:
