@@ -11,6 +11,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 64000
       tmpdirMin: 100000
+      coresMin: 4
     - class: DockerRequirement
       dockerPull: "mgibio/cle:v1.3.1"
 inputs:
@@ -24,12 +25,14 @@ inputs:
         type: string
         inputBinding:
             prefix: "-f"
-            position: 1
     chromosome:
-        type: string
+        type: string?
         inputBinding:
             prefix: "-c"
-            position: 2
+    region_file:
+        type: File?
+        inputBinding:
+            prefix: "-j"
     insert_size:
         type: int
         default: 400
