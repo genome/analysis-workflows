@@ -24,12 +24,13 @@ inputs:
         default: "auto"
         doc: "Assay configuration used, default 'auto' should usually work without issue"
     fastq_directory:
-        type: Directory
+        type: Directory[]
         inputBinding:
            prefix: --fastqs=
            position: 2
+           itemSeparator: ","
            separate: false
-        doc: "Directory containing fastq files"
+        doc: "Array of directories containing fastq files"
     reference:
         type: Directory
         inputBinding:

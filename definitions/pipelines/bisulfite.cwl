@@ -41,7 +41,7 @@ outputs:
     cpgs:
         type: File
         outputSource: vcf2bed/cpgs
-    cpg_bedgraph:
+    cpg_bigwig:
         type: File
         outputSource: bedgraph_to_bigwig/cpg_bigwig
     gathered_directory:

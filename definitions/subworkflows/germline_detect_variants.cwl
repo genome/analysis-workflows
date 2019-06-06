@@ -24,6 +24,15 @@ inputs:
         type: string?
     vep_cache_dir:
         type: string
+    vep_ensembl_assembly:
+        type: string
+        doc: "genome assembly to use in vep. Examples: GRCh38 or GRCm38"
+    vep_ensembl_version:
+        type: string
+        doc: "ensembl version - Must be present in the cache directory. Example: 95"
+    vep_ensembl_species:
+        type: string
+        doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
     vep_plugins:
         type: string[]?
         default: [Downstream, Wildtype]
@@ -46,8 +55,6 @@ inputs:
         type: string[]?
     vep_to_table_fields:
         type: string[]?
-    vep_assembly:
-        type: string
 outputs:
     gvcf:
         type: File[]
@@ -94,12 +101,14 @@ steps:
         in:
             vcf: genotype_gvcfs/genotype_vcf
             cache_dir: vep_cache_dir
+            ensembl_assembly: vep_ensembl_assembly
+            ensembl_version: vep_ensembl_version
+            ensembl_species: vep_ensembl_species
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             custom_clinvar_vcf: custom_clinvar_vcf
-            assembly: vep_assembly
             plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]
