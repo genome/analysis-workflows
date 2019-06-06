@@ -211,6 +211,9 @@ steps:
             vep_ensembl_assembly: vep_ensembl_assembly
             vep_ensembl_version: vep_ensembl_version
             vep_ensembl_species: vep_ensembl_species
+            vep_to_table_fields: vep_to_table_fields
+            variants_to_table_fields: variants_to_table_fields
+            variants_to_table_genotype_fields: variants_to_table_genotype_fields
         out:
             [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary, final_tsv]
     bam_to_cram:
