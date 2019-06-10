@@ -9,7 +9,7 @@ arguments: [
 ]
 requirements:
     - class: ResourceRequirement
-      ramMin: 64000
+      ramMin: 16000
       tmpdirMin: 100000
       coresMin: 4
     - class: DockerRequirement
