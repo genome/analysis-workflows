@@ -5,7 +5,7 @@ class: CommandLineTool
 label: "filter variants at sites below a given sequence depth in each sample"
 requirements:
     - class: DockerRequirement
-      dockerPull: mgibio/depth-filter:0.1
+      dockerPull: mgibio/depth-filter:0.1.1
     - class: ResourceRequirement
       ramMin: 4000
 baseCommand: ["/opt/conda/bin/python3","/usr/bin/depth_filter.py"]
