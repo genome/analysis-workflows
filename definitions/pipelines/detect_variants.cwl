@@ -254,10 +254,18 @@ steps:
             pindel_vcf: pindel/filtered_vcf
         out:
             [combined_vcf]
+    add_docm_variants:
+        run: ../tools/docm_add_variants.cwl
+        in:
+            reference: reference
+            docm_vcf: docm/docm_variants_vcf
+            callers_vcf: combine/combined_vcf
+        out:
+            [merged_vcf]
     decompose:
         run: ../tools/vt_decompose.cwl
         in:
-            vcf: combine/combined_vcf
+            vcf: add_docm_variants/merged_vcf
         out:
             [decomposed_vcf]
     decompose_index:
@@ -266,18 +274,10 @@ steps:
             vcf: decompose/decomposed_vcf
         out:
             [indexed_vcf]
-    add_docm_variants:
-        run: ../tools/docm_add_variants.cwl
-        in: 
-            reference: reference
-            docm_vcf: docm/docm_variants_vcf
-            callers_vcf: decompose_index/indexed_vcf
-        out:
-            [merged_vcf]
     annotate_variants:
         run: ../tools/vep.cwl
         in:
-            vcf: add_docm_variants/merged_vcf
+            vcf: decompose_index/indexed_vcf
             cache_dir: vep_cache_dir
             ensembl_assembly: vep_ensembl_assembly
             ensembl_version: vep_ensembl_version
