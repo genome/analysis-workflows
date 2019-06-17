@@ -99,6 +99,9 @@ inputs:
     filter_docm_variants:
         type: boolean?
         default: true
+    filter_minimum_depth:
+        type: int?
+        default: 20
     vep_cache_dir:
         type: string?
     vep_ensembl_assembly:
@@ -193,6 +196,7 @@ steps:
             vep_pick: vep_pick
             cle_vcf_filter: cle_vcf_filter
             filter_docm_variants: filter_docm_variants
+            filter_minimum_depth: filter_minimum_depth
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
