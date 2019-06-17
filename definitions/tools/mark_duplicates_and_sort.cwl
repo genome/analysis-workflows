@@ -27,7 +27,7 @@ requirements:
             fi
 arguments:
     - position: 2
-      valueFrom: $(runtime.cores)
+      valueFrom: "$(runtime.cores)"
     - position: 4
       valueFrom: "$(inputs.bam.nameroot).mark_dups_metrics.txt"
 inputs:
@@ -40,7 +40,7 @@ inputs:
         default: "queryname"
         inputBinding:
             position: 5
-     output_name:
+    output_name:
         type: string?
         default: 'MarkedSorted.bam'
         inputBinding:
