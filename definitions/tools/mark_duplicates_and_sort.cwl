@@ -28,8 +28,6 @@ requirements:
 arguments:
     - position: 2
       valueFrom: $(runtime.cores)
-    - position: 3
-      valueFrom: $(runtime.outdir)/MarkedSorted.bam
     - position: 4
       valueFrom: "$(inputs.bam.nameroot).mark_dups_metrics.txt"
 inputs:
@@ -42,12 +40,16 @@ inputs:
         default: "queryname"
         inputBinding:
             position: 5
-    
+     output_name:
+        type: string?
+        default: 'MarkedSorted.bam'
+        inputBinding:
+            position: 3
 outputs:
     sorted_bam:
         type: File
         outputBinding:
-            glob: "MarkedSorted.bam"
+            glob: $(inputs.output_name)
         secondaryFiles: [.bai]
     metrics_file:
         type: File
