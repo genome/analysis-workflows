@@ -54,6 +54,7 @@ steps:
         run: ../tools/mark_duplicates_and_sort.cwl
         in:
             bam: name_sort/name_sorted_bam
+            output_name: final_name
         out:
             [sorted_bam, metrics_file]
     index_bam:
