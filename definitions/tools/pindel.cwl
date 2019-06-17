@@ -13,7 +13,7 @@ requirements:
       tmpdirMin: 100000
       coresMin: 4
     - class: DockerRequirement
-      dockerPull: "mgibio/cle:v1.3.1"
+      dockerPull: "mgibio/cle:v1.4.2"
 inputs:
     tumor_bam:
         type: File
