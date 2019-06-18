@@ -26,6 +26,12 @@ inputs:
                 prefix: "--variant"
         inputBinding:
             position: 2
+    ploidy:
+        type: int?
+        default: 2
+        inputBinding:
+            prefix: "--sample_ploidy"
+            position: 3 
 outputs:
     genotype_vcf:
         type: File

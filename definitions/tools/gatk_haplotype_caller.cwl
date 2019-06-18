@@ -53,12 +53,18 @@ inputs:
         inputBinding:
             prefix: "-contamination"
             position: 7
+    ploidy:
+        type: int?
+        default: 2
+        inputBinding:
+            prefix: "--sample_ploidy"
+            position: 8
     output_file_name:
         type: string
         default: "output.g.vcf.gz"
         inputBinding:
             prefix: "-o"
-            position: 8
+            position: 9
 outputs:
     gvcf:
         type: File
