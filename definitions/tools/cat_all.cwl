@@ -12,12 +12,12 @@ arguments: [
     { shellQuote: false, valueFrom: "|" },
     "/bin/grep", "ChrID", "/dev/stdin"
 ]
-stdout: "all_chromosome_pindel.head"
+stdout: "all_region_pindel.head"
 inputs:
-    chromosome_pindel_outs:
+    region_pindel_outs:
         type: File[]
         inputBinding:
             position: -1 
 outputs:
-    all_chromosome_pindel_head:
+    all_region_pindel_head:
         type: stdout
