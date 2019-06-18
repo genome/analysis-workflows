@@ -28,14 +28,14 @@ inputs:
           - "null"
           - type: enum
             symbols: ["first", "second", "unstranded"]
-        inputBinding:
-            valueFrom: |
+        inputBinding:      # the mismatch between first and second here is intentional (and the nomenclature clash is stupid)
+            valueFrom: |   # see https://github.com/griffithlab/rnaseq_tutorial/blob/master/manuscript/supplementary_tables/supplementary_table_5.md
                 ${
                     if (inputs.strand) {
-                        if (inputs.strand == 'first') {
-                            return ['STRAND=FIRST_READ_TRANSCRIPTION_STRAND'];
-                        } else if (inputs.strand == 'second') {
+                        if (inputs.strand == 'first') {  
                             return ['STRAND=SECOND_READ_TRANSCRIPTION_STRAND'];
+                        } else if (inputs.strand == 'second') {
+                            return ['STRAND=FIRST_READ_TRANSCRIPTION_STRAND'];
                         } else {
                             return ['STRAND=NONE'];
                         }
