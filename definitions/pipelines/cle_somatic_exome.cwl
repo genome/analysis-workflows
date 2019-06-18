@@ -100,6 +100,9 @@ inputs:
     filter_docm_variants:
         type: boolean?
         default: true
+    filter_minimum_depth:
+        type: int?
+        default: 20
     vep_cache_dir:
         type: string
     vep_ensembl_assembly:
@@ -370,6 +373,7 @@ steps:
             pindel_insert_size: pindel_insert_size
             docm_vcf: docm_vcf
             filter_docm_variants: filter_docm_variants
+            filter_minimum_depth: filter_minimum_depth
             vep_cache_dir: vep_cache_dir
             vep_ensembl_assembly: vep_ensembl_assembly
             vep_ensembl_version: vep_ensembl_version
