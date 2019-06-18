@@ -48,6 +48,8 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    ploidy:
+        type: int?
 outputs:
     gvcf:
         type: File[]
@@ -77,6 +79,7 @@ steps:
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
             contamination_fraction: contamination_fraction
+            ploidy: ploidy
         out:
             [gvcf]
     genotype_gvcfs:
@@ -84,6 +87,7 @@ steps:
         in:
             reference: reference
             gvcfs: haplotype_caller/gvcf
+            ploidy: ploidy
         out:
             [genotype_vcf]
     annotate_variants:
