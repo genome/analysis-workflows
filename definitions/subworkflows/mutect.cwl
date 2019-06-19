@@ -21,21 +21,6 @@ inputs:
         type: File
     scatter_count:
         type: int
-    dbsnp_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    cosmic_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    artifact_detection_mode:
-        type: boolean
-    panel_of_normals_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    max_alt_allele_in_normal_fraction:
-        type: float?
-    max_alt_alleles_in_normal_count:
-        type: int?
 outputs:
     unfiltered_vcf:
         type: File
