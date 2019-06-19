@@ -19,6 +19,7 @@ inputs:
         type: File
         inputBinding:
             position: 1
+        secondaryFiles: [.tbi]
 outputs:
     processed_vcf:
         type: File
