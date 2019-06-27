@@ -55,6 +55,9 @@ inputs:
         type: string[]?
     vep_to_table_fields:
         type: string[]?
+    final_tsv_prefix:
+        type: string?
+        default: 'variants'
 outputs:
     gvcf:
         type: File[]
@@ -167,4 +170,5 @@ steps:
             vcf: limit_variants/filtered_vcf
             vep_fields: vep_to_table_fields
             tsv: variants_to_table/variants_tsv
+            prefix: final_tsv_prefix
         out: [annotated_variants_tsv]

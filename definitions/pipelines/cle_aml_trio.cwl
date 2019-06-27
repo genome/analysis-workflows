@@ -322,7 +322,7 @@ outputs:
         secondaryFiles: [.tbi]
     germline_final_tsv:
         type: File
-        outputSource: germline_add_vep_fields_to_table/annotated_variants_tsv
+        outputSource: germline_detect_variants/final_tsv
     somalier_concordance_metrics:
         type: File
         outputSource: concordance/somalier_pairs
@@ -527,25 +527,12 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             limit_variant_intervals: variant_reporting_intervals
             custom_clinvar_vcf: custom_clinvar_vcf
+            variants_to_table_fields: germline_variants_to_table_fields
+            variants_to_table_genotype_fields: germline_variants_to_table_genotype_fields
+            vep_to_table_fields: germline_vep_to_table_fields
+            final_tsv_prefix: germline_tsv_prefix
         out:
-            [final_vcf, coding_vcf, limited_vcf]
-    germline_variants_to_table:
-        run: ../tools/variants_to_table.cwl
-        in:
-            reference: reference
-            vcf: germline_detect_variants/limited_vcf
-            fields: germline_variants_to_table_fields
-            genotype_fields: germline_variants_to_table_genotype_fields
-        out:
-            [variants_tsv]
-    germline_add_vep_fields_to_table:
-        run: ../tools/add_vep_fields_to_table.cwl
-        in:
-            vcf: germline_detect_variants/limited_vcf
-            vep_fields: germline_vep_to_table_fields
-            tsv: germline_variants_to_table/variants_tsv
-            prefix: germline_tsv_prefix 
-        out: [annotated_variants_tsv]
+            [final_vcf, coding_vcf, limited_vcf, final_tsv]
     alignment_stat_report:
         run: ../tools/cle_aml_trio_report_alignment_stat.cwl
         in:
