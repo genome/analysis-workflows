@@ -112,6 +112,12 @@ inputs:
         type: int
     merge_sv_pop_freq_db:
         type: File
+    variants_to_table_fields:
+         type: string[]?
+    variants_to_table_genotype_fields:
+         type: string[]?
+    vep_to_table_fields:
+         type: string[]?
     maximum_sv_pop_freq:
         type: float?
     sv_filter_interval_lists:
@@ -237,6 +243,9 @@ outputs:
     merged_annotated_svs:
         type: File
         outputSource: variant_callers/merged_annotated_svs
+    final_tsv:
+        type: File
+        outputSource: detect_variants/final_tsv
     filtered_sv_pop_vcf:
         type: File
         outputSource: variant_callers/sv_pop_filtered_vcf
@@ -311,8 +320,11 @@ steps:
             vep_ensembl_assembly: vep_ensembl_assembly
             vep_ensembl_version: vep_ensembl_version
             vep_ensembl_species: vep_ensembl_species
+            vep_to_table_fields: vep_to_table_fields
+            variants_to_table_fields: variants_to_table_fields
+            variants_to_table_genotype_fields: variants_to_table_genotype_fields
         out:
-            [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]
+            [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary, final_tsv]
     variant_callers:
         run: ../subworkflows/single_sample_sv_callers.cwl
         in:
