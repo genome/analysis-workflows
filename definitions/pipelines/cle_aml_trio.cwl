@@ -417,6 +417,7 @@ steps:
             reference: reference
             bam_1: tumor_alignment_and_qc/bam
             bam_2: normal_alignment_and_qc/bam
+            bam_3: followup_alignment_and_qc/bam
             vcf: somalier_vcf
         out:
             [somalier_pairs, somalier_samples]
