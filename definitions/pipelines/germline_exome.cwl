@@ -61,6 +61,9 @@ inputs:
     vep_ensembl_species:
         type: string
         doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
+    vep_plugins:
+        type: string[]?
+        doc: "array of plugins to use when running vep"
     synonyms_file:
         type: File?
     annotate_coding_only:
@@ -211,6 +214,7 @@ steps:
             vep_ensembl_assembly: vep_ensembl_assembly
             vep_ensembl_version: vep_ensembl_version
             vep_ensembl_species: vep_ensembl_species
+            vep_plugins: vep_plugins
             vep_to_table_fields: vep_to_table_fields
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
