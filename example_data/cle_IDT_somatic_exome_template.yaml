@@ -82,6 +82,7 @@ tumor_bams:
 tumor_readgroups:
 - "TUMOR_RG_STR"
 filter_docm_variants: true
+filter_minimum_depth: 20
 cle_vcf_filter: true
 annotate_coding_only: false
 variants_to_table_fields:
@@ -112,6 +113,8 @@ vep_to_table_fields:
 - Existing_variation
 - gnomADe_AF
 vep_cache_dir: /gscmnt/gc2560/core/cwl/inputs/VEP_cache
-vep_assembly: GRCh38
+vep_ensembl_assembly: GRCh38
+vep_ensembl_version: 95
+vep_ensembl_species: homo_sapiens
 somalier_vcf: /gscmnt/gc2560/core/annotation_data/concordance_snps/GRC-human-build38_gnomad_exome_common_snps.vcf
 output_dir: OUTPUT_DIR
