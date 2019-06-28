@@ -21,7 +21,7 @@ arguments: [
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:1.3.7"
+      dockerPull: "griffithlab/pvactools:1.4.2"
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: 8
@@ -84,6 +84,16 @@ inputs:
         inputBinding:
             prefix: "--n-threads"
         default: 8
+    spacers:
+        type: string?
+        inputBinding:
+            prefix: "--spacers"
+        default: "None,AAY,HHHH,GGS,GPGPG,HHAA,AAL,HH,HHC,HHH,HHHD,HHL,HHHC"
+    max_clip_length:
+        type: int?
+        inputBinding:
+            prefix: "--max-clip-length"
+        default: 3
 outputs:
     vector_fasta:
         type: File

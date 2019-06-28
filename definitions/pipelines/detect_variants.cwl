@@ -67,6 +67,15 @@ inputs:
         default: true
     vep_cache_dir:
         type: string
+    vep_ensembl_assembly:
+        type: string
+        doc: "genome assembly to use in vep. Examples: GRCh38 or GRCm38"
+    vep_ensembl_version:
+        type: string
+        doc: "ensembl version - Must be present in the cache directory. Example: 95"
+    vep_ensembl_species:
+        type: string
+        doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
     synonyms_file:
         type: File?
     annotate_coding_only:
@@ -109,9 +118,6 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    vep_assembly:
-        type: string
-        doc: Used to explicitly define which assembly version to use; required when there are two or more in the same directory
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -248,10 +254,18 @@ steps:
             pindel_vcf: pindel/filtered_vcf
         out:
             [combined_vcf]
+    add_docm_variants:
+        run: ../tools/docm_add_variants.cwl
+        in:
+            reference: reference
+            docm_vcf: docm/docm_variants_vcf
+            callers_vcf: combine/combined_vcf
+        out:
+            [merged_vcf]
     decompose:
         run: ../tools/vt_decompose.cwl
         in:
-            vcf: combine/combined_vcf
+            vcf: add_docm_variants/merged_vcf
         out:
             [decomposed_vcf]
     decompose_index:
@@ -260,26 +274,20 @@ steps:
             vcf: decompose/decomposed_vcf
         out:
             [indexed_vcf]
-    add_docm_variants:
-        run: ../tools/docm_add_variants.cwl
-        in: 
-            reference: reference
-            docm_vcf: docm/docm_variants_vcf
-            callers_vcf: decompose_index/indexed_vcf
-        out:
-            [merged_vcf]
     annotate_variants:
         run: ../tools/vep.cwl
         in:
-            vcf: add_docm_variants/merged_vcf
+            vcf: decompose_index/indexed_vcf
             cache_dir: vep_cache_dir
+            ensembl_assembly: vep_ensembl_assembly
+            ensembl_version: vep_ensembl_version
+            ensembl_species: vep_ensembl_species
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
             custom_clinvar_vcf: custom_clinvar_vcf
-            assembly: vep_assembly
             plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]

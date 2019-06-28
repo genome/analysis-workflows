@@ -7,6 +7,7 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
+    - class: StepInputExpressionRequirement
     - class: SubworkflowFeatureRequirement
 inputs:
     bam:

@@ -27,7 +27,9 @@ steps:
         run: ../tools/cellranger_count.cwl
         in: 
             chemistry: chemistry
-            fastq_directory: mkfastq/fastq_dir
+            fastq_directory:
+                source: [mkfastq/fastq_dir]
+                linkMerge: merge_flattened
             reference: reference
             sample_name: sample_name
         out: [out_dir]

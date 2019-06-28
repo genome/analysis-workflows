@@ -52,6 +52,18 @@ inputs:
                 items: string
     vep_cache_dir:
         type: string
+    vep_ensembl_assembly:
+        type: string
+        doc: "genome assembly to use in vep. Examples: GRCh38 or GRCm38"
+    vep_ensembl_version:
+        type: string
+        doc: "ensembl version - Must be present in the cache directory. Example: 95"
+    vep_ensembl_species:
+        type: string
+        doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
+    vep_plugins:
+        type: string[]?
+        doc: "array of plugins to use when running vep"
     synonyms_file:
         type: File?
     annotate_coding_only:
@@ -66,9 +78,12 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    vep_assembly:
-        type: string
-        doc: Used to explicitly define which assembly version to use; required when there are two or more in the same directory
+    variants_to_table_fields:
+         type: string[]?
+    variants_to_table_genotype_fields:
+         type: string[]?
+    vep_to_table_fields:
+         type: string[]?
 outputs:
     cram:
         type: File
@@ -130,6 +145,9 @@ outputs:
     vep_summary:
         type: File
         outputSource: detect_variants/vep_summary
+    final_tsv:
+       type: File
+       outputSource: detect_variants/final_tsv
 steps:
     alignment_and_qc:
         run: exome_alignment.cwl
@@ -193,9 +211,15 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             limit_variant_intervals: target_intervals
             custom_clinvar_vcf: custom_clinvar_vcf
-            vep_assembly: vep_assembly
+            vep_ensembl_assembly: vep_ensembl_assembly
+            vep_ensembl_version: vep_ensembl_version
+            vep_ensembl_species: vep_ensembl_species
+            vep_plugins: vep_plugins
+            vep_to_table_fields: vep_to_table_fields
+            variants_to_table_fields: variants_to_table_fields
+            variants_to_table_genotype_fields: variants_to_table_genotype_fields
         out:
-            [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]
+            [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary, final_tsv]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:

@@ -32,7 +32,10 @@ inputs:
         inputBinding:
             position: 3
     strand:
-        type: string?
+        type:
+          - "null"
+          - type: enum
+            symbols: ["first", "second", "unstranded"]
         inputBinding:
             valueFrom: |
                 ${

@@ -33,6 +33,11 @@ inputs:
         inputBinding:
             position: 4
         secondaryFiles: [.bai]
+    bam_3:
+        type: File?
+        inputBinding:
+            position: 5
+        secondaryFiles: [.bai]
 outputs:
     somalier_pairs:
         type: File

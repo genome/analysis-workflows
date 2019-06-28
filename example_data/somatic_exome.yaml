@@ -68,6 +68,9 @@ varscan_min_var_freq: 0.02
 varscan_p_value: 0.99
 varscan_strand_filter: 0
 vep_cache_dir: "/gscmnt/gc2560/core/cwl/inputs/VEP_cache/"
+vep_ensembl_assembly: GRCh38
+vep_ensembl_version: 95
+vep_ensembl_species: homo_sapiens
 bqsr_intervals:
 - chr17
 interval_list:
@@ -75,4 +78,6 @@ interval_list:
   path: exome_workflow/chr17_test_genes.interval_list
 mutect_scatter_count: 2
 mutect_artifact_detection_mode: false
-somalier_vcf: "exome_workflow/chr17_vcf_file_for_somalier.vcf"
+somalier_vcf:
+  class: File 
+  path: exome_workflow/chr17_vcf_file_for_somalier.vcf

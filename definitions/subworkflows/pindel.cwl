@@ -13,15 +13,18 @@ inputs:
         type: string
     tumor_bam:
         type: File
-        secondaryFiles: ["^.bai"]
+        secondaryFiles: [^.bai]
     normal_bam:
         type: File
-        secondaryFiles: ["^.bai"]
+        secondaryFiles: [^.bai]
     interval_list:
         type: File
     insert_size:
         type: int
         default: 400
+    scatter_count:
+        type: int
+        default: 50
 outputs:
     unfiltered_vcf:
         type: File
@@ -32,34 +35,35 @@ outputs:
         outputSource: filter/filtered_vcf
         secondaryFiles: [".tbi"]
 steps:
-    get_chromosome_list:
-        run: ../tools/get_chromosome_list.cwl
+    split_interval_list_to_bed:
+        run: ../tools/split_interval_list_to_bed.cwl
         in: 
             interval_list: interval_list
+            scatter_count: scatter_count
         out:
-            [chromosome_list]
+            [split_beds]
     pindel_cat:
-        scatter: chromosome
+        scatter: region_file
         run: pindel_cat.cwl
         in:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            chromosome: get_chromosome_list/chromosome_list
+            region_file: split_interval_list_to_bed/split_beds
             insert_size: insert_size
         out:
-            [per_chromosome_pindel_out]
+            [per_region_pindel_out]
     cat_all:
         run: ../tools/cat_all.cwl
         in:
-            chromosome_pindel_outs: pindel_cat/per_chromosome_pindel_out
+            region_pindel_outs: pindel_cat/per_region_pindel_out
         out:
-            [all_chromosome_pindel_head]
+            [all_region_pindel_head]
     somaticfilter:
         run: ../tools/pindel_somatic_filter.cwl
         in:
             reference: reference
-            pindel_output_summary: cat_all/all_chromosome_pindel_head
+            pindel_output_summary: cat_all/all_region_pindel_head
         out: 
             [vcf]
     bgzip:
@@ -74,18 +78,10 @@ steps:
             vcf: bgzip/bgzipped_file
         out:
             [indexed_vcf]
-    region_filter:
-        run: ../tools/select_variants.cwl
-        in:
-            reference: reference
-            vcf: index/indexed_vcf
-            interval_list: interval_list
-        out:
-            [filtered_vcf]
     remove_end_tags:
         run: ../tools/remove_end_tags.cwl
         in:
-            vcf: region_filter/filtered_vcf
+            vcf: index/indexed_vcf
         out:
             [processed_vcf]
     reindex:

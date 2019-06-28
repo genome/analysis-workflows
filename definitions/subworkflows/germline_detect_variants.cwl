@@ -24,6 +24,15 @@ inputs:
         type: string?
     vep_cache_dir:
         type: string
+    vep_ensembl_assembly:
+        type: string
+        doc: "genome assembly to use in vep. Examples: GRCh38 or GRCm38"
+    vep_ensembl_version:
+        type: string
+        doc: "ensembl version - Must be present in the cache directory. Example: 95"
+    vep_ensembl_species:
+        type: string
+        doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
     vep_plugins:
         type: string[]?
         default: [Downstream, Wildtype]
@@ -39,8 +48,16 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
-    vep_assembly:
-        type: string
+    variants_to_table_fields:
+        type: string[]?
+        default: ['CHROM','POS','ID','REF','ALT']
+    variants_to_table_genotype_fields:
+        type: string[]?
+    vep_to_table_fields:
+        type: string[]?
+    final_tsv_prefix:
+        type: string?
+        default: 'variants'
 outputs:
     gvcf:
         type: File[]
@@ -60,6 +77,9 @@ outputs:
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
+    final_tsv:
+        type: File
+        outputSource: add_vep_fields_to_table/annotated_variants_tsv
 steps:
     haplotype_caller:
         run: gatk_haplotypecaller_iterator.cwl
@@ -84,12 +104,14 @@ steps:
         in:
             vcf: genotype_gvcfs/genotype_vcf
             cache_dir: vep_cache_dir
+            ensembl_assembly: vep_ensembl_assembly
+            ensembl_version: vep_ensembl_version
+            ensembl_species: vep_ensembl_species
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only
             reference: reference
             custom_gnomad_vcf: custom_gnomad_vcf
             custom_clinvar_vcf: custom_clinvar_vcf
-            assembly: vep_assembly
             plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]
@@ -133,4 +155,20 @@ steps:
                 default: true
         out:
             [filtered_vcf]
-
+    variants_to_table:
+        run: ../tools/variants_to_table.cwl
+        in:
+            reference: reference
+            vcf: limit_variants/filtered_vcf
+            fields: variants_to_table_fields
+            genotype_fields: variants_to_table_genotype_fields
+        out:
+            [variants_tsv]
+    add_vep_fields_to_table:
+        run: ../tools/add_vep_fields_to_table.cwl
+        in:
+            vcf: limit_variants/filtered_vcf
+            vep_fields: vep_to_table_fields
+            tsv: variants_to_table/variants_tsv
+            prefix: final_tsv_prefix
+        out: [annotated_variants_tsv]

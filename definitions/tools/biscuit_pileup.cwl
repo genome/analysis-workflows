@@ -7,7 +7,7 @@ baseCommand: ["/bin/bash", "helper.sh"]
 stdout: pileup.vcf.gz
 requirements:
     - class: ResourceRequirement
-      ramMin: 16000
+      ramMin: 48000
       coresMin: 4
     - class: DockerRequirement
       dockerPull: "mgibio/biscuit:0.3.8"

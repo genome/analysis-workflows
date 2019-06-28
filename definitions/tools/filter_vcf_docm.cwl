@@ -6,7 +6,7 @@ label: "Filter variants from the DoCM detector"
 baseCommand: ["/usr/bin/perl", "/usr/bin/docm_filter.pl"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/cle:v1.4.1"
+      dockerPull: "mgibio/cle:v1.4.2"
     - class: ResourceRequirement
       ramMin: 4000
 arguments: [

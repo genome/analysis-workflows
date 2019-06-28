@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 
 class: Workflow
-label: "Per-chromosome pindel"
+label: "Per-region pindel"
 requirements:
     - class: MultipleInputFeatureRequirement
 inputs:
@@ -15,13 +15,13 @@ inputs:
     normal_bam:
         type: File
         secondaryFiles: ["^.bai"]
-    chromosome:
-        type: string
+    region_file:
+        type: File
     insert_size:
         type: int
         default: 400
 outputs:
-    per_chromosome_pindel_out:
+    per_region_pindel_out:
         type: File
         outputSource: cat/pindel_out
 steps:
@@ -32,7 +32,7 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             insert_size: insert_size
-            chromosome: chromosome
+            region_file: region_file
         out:
             [deletions, insertions, tandems, long_insertions, inversions]
     cat:

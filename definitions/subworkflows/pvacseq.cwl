@@ -5,6 +5,7 @@ class: Workflow
 label: "Workflow to run pVACseq from detect_variants and rnaseq pipeline outputs"
 requirements:
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     detect_variants_vcf:
         type: File
@@ -138,7 +139,7 @@ outputs:
         outputSource: pvacseq/combined_ranked_epitopes
 steps:
     tumor_rna_bam_readcount:
-        run: ../subworkflows/bam_readcount.cwl
+        run: bam_readcount.cwl
         in:
             vcf: detect_variants_vcf
             sample: sample_name
@@ -149,7 +150,7 @@ steps:
         out:
             [snv_bam_readcount_tsv, indel_bam_readcount_tsv, normalized_vcf]
     add_tumor_rna_bam_readcount_to_vcf:
-        run: ../subworkflows/vcf_readcount_annotator.cwl
+        run: vcf_readcount_annotator.cwl
         in:
             vcf: tumor_rna_bam_readcount/normalized_vcf
             snv_bam_readcount_tsv: tumor_rna_bam_readcount/snv_bam_readcount_tsv
