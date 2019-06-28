@@ -42,7 +42,7 @@ inputs:
 outputs:
     final_bam:
         type: File
-        outputSource: mark_dup/indexed_bam
+        outputSource: index_bam/indexed_bam
         secondaryFiles: [.bai]
     star_fusion_out:
         type: File
@@ -107,13 +107,7 @@ steps:
         in:
             kallisto_index: kallisto_index
             strand: strand
-            fastqs:
-                source: bam_to_trimmed_fastq_and_star_fusion_alignments/fastqs
-                valueFrom: |
-                    ${
-                      for(var i=0;i<self.length;i++){self[i] = self[i].reverse()}
-                      return(self);
-                     }
+            fastqs: bam_to_trimmed_fastq/fastqs
         out:
             [expression_transcript_table,expression_transcript_h5,fusion_evidence]
     transcript_to_gene:

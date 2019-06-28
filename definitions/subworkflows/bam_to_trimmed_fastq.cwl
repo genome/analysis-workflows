@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "bam to trimmed fastqs and STAR alignments"
+label: "bam to trimmed fastqs"
 requirements:
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement

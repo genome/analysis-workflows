@@ -108,7 +108,7 @@ inputs:
             itemSeparator: ' , ' 
             shellQuote: False
             prefix: '--outSAMattrRGline'
-            doc: |
+            doc: '
             string(s): SAM/BAM read group line. The first word contains the read group
             identifier and must start with ID:, e.g. –outSAMattrRGline ID:xxx CN:yy
             DS:z z z.
@@ -116,6 +116,7 @@ inputs:
             values have to be double quoted.
             Comma separated RG lines correspons to different (comma separated) input
             files in –readFilesIn
+            '
     chim_multimap_nmax:
         type: int
         default: 10
@@ -151,8 +152,9 @@ inputs:
         inputBinding:
             position: 22
             prefix: '--genomeDir'
-            doc: |
+            doc: '
             specifies path to the directory where the genome indices are stored
+            '
     twopass_mode:
         type: string
         default: "Basic"
@@ -201,11 +203,11 @@ outputs:
         type: File
         outputBinding:
           glob: "$(inputs.outfile_name_prefix)Log.progress.out"
-    splicejunctionout:
+    splice_junction_out:
         type: File
         outputBinding:
             glob: "$(inputs.outfile_name_prefix)SJ.out.tab"
-    chimjunc:
+    chim_junc:
         type: File
         outputBinding:
             glob: "$(inputs.outfile_name_prefix)Chimeric.out.junction"
