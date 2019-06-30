@@ -40,6 +40,11 @@ inputs:
         default: "queryname"
         inputBinding:
             position: 5
+    output_name:
+        type: string?
+        default: 'MarkedSorted.bam'
+        inputBinding:
+            position: 3
 
 outputs:
     sorted_bam:

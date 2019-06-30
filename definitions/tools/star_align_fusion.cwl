@@ -83,10 +83,11 @@ inputs:
     align_sjstitch_mismatch_nmax:
         type: int[]
         default: [5, -1, 5, 5]
-        itemSeparator: ' '
         inputBinding:
             position: 13 
             prefix: '--alignSJstitchMismatchNmax'
+            itemSeparator: ' '
+            shellQuote: False
     outsam_strand_field:
         type: string
         default: "intronMotif"
@@ -108,7 +109,7 @@ inputs:
             itemSeparator: ' , ' 
             shellQuote: False
             prefix: '--outSAMattrRGline'
-            doc: '
+        doc: '
             string(s): SAM/BAM read group line. The first word contains the read group
             identifier and must start with ID:, e.g. –outSAMattrRGline ID:xxx CN:yy
             DS:z z z.
@@ -152,7 +153,7 @@ inputs:
         inputBinding:
             position: 22
             prefix: '--genomeDir'
-            doc: '
+        doc: '
             specifies path to the directory where the genome indices are stored
             '
     twopass_mode:
@@ -181,10 +182,11 @@ inputs:
     outsam_attributes:
         type: string[]
         default: [NH, HI, AS, NM, MD]
-        itemSeparator: ' '
         inputBinding:
             position: 27
             prefix: '--outSAMattributes'
+            itemSeparator: ' '
+            shellQuote: False
 
 outputs:
     aligned_bam:
