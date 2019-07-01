@@ -9,7 +9,7 @@ requirements:
       ramMin: 64000
       coresMin: 10
     - class: DockerRequirement
-      dockerPull: "mgibio/star"
+      dockerPull: "mgibio/star:2.7.0f"
 arguments: [
     "--runThreadN", $(runtime.cores)
 
