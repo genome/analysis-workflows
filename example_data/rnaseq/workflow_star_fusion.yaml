@@ -1,11 +1,11 @@
 instrument_data_bams:
     - class: File
-      path: rnaseq_star/test.bam
+      path: gerald_H3MYFBBXX_4_GCCAAT_1k.bam
     - class: File
-      path: rnaseq_star/test2.bam
+      path: gerald_H3MYFBBXX_5_GCCAAT_1k.bam
 trimming_adapters:
     class: File
-    path: rnaseq_star/illumina_multiplex.fa
+    path: illumina_multiplex.fa
 trimming_adapter_trim_end: 'RIGHT'
 trimming_adapter_min_overlap: 7
 trimming_max_uncalled: 300
@@ -17,9 +17,9 @@ kallisto_index:
 gene_transcript_lookup_table:
     class: File
     path: /gscmnt/gc2560/core/GRC-human-build38_human_90_38/rna_seq_annotation/ensembl90.transcriptToGene.tsv
-strand: first
+strand: "second"
 
-outSAMattrRGline:
+outsam_attrrg_line:
     - "ID:2895626107 PU:H3MYFBBXX5.4.GCCAAT SM:H_NJ-HCC1395-HCC1395_RNA LB:Pooled_RNA_2891007020-cD1-lib1 PL:Illumina CN:WUGSC"
     - "ID:2895626112 PU:H3MYFBBXX5.5.GCCAAT SM:H_NJ-HCC1395-HCC1395_RNA LB:Pooled_RNA_2891007020-cD1-lib1 PL:Illumina CN:WUGSC"
 
