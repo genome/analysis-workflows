@@ -233,6 +233,33 @@ outputs:
     normal_verify_bam_id_depth:
         type: File
         outputSource: normal_alignment_and_qc/verify_bam_id_depth
+    followup_cram:
+        type: File
+        outputSource: followup_index_cram/indexed_cram
+    followup_mark_duplicates_metrics:
+        type: File
+        outputSource: followup_alignment_and_qc/mark_duplicates_metrics
+    followup_insert_size_metrics:
+        type: File
+        outputSource: followup_alignment_and_qc/insert_size_metrics
+    followup_alignment_summary_metrics:
+        type: File
+        outputSource: followup_alignment_and_qc/alignment_summary_metrics
+    followup_hs_metrics:
+        type: File
+        outputSource: followup_alignment_and_qc/hs_metrics
+    followup_summary_hs_metrics:
+        type: File[]
+        outputSource: followup_alignment_and_qc/summary_hs_metrics
+    followup_flagstats:
+        type: File
+        outputSource: followup_alignment_and_qc/flagstats
+    followup_verify_bam_id_metrics:
+        type: File
+        outputSource: followup_alignment_and_qc/verify_bam_id_metrics
+    followup_verify_bam_id_depth:
+        type: File
+        outputSource: followup_alignment_and_qc/verify_bam_id_depth
     mutect_unfiltered_vcf:
         type: File
         outputSource: tumor_detect_variants/mutect_unfiltered_vcf
@@ -285,9 +312,6 @@ outputs:
     normal_indel_bam_readcount_tsv:
         type: File
         outputSource: tumor_detect_variants/normal_indel_bam_readcount_tsv
-    followup_cram:
-        type: File
-        outputSource: followup_index_cram/indexed_cram
     followup_snv_bam_readcount_tsv:
         type: File
         outputSource: followup_bam_readcount/snv_bam_readcount_tsv
