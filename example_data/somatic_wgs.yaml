@@ -1,0 +1,130 @@
+---
+reference: /gscmnt/gc2560/core/model_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/all_sequences.fa
+tumor_bams:
+- class: File
+  path: /gscmnt/gc2560/core/cwl/example_data/HCC1395_tumor_downsampled_wgs.bam
+tumor_readgroups:
+- "@RG\tID:2891322951\tPL:illumina\tPU:D1VCPACXX.1\tLB:H_NJ-HCC1395-HCC1395-lig2-lib1\tPI:0\tDS:paired end\tDT:2013-02-22T18:00:00-0600\tSM:H_NJ-HCC1395-HCC1395\tCN:WUGSC"
+normal_bams:
+- class: File
+  path: /gscmnt/gc2560/core/cwl/example_data/HCC1395_normal_downsampled_wgs.bam
+normal_readgroups:
+- "@RG\tID:2891323123\tPL:illumina\tPU:D1VCPACXX.6\tLB:H_NJ-HCC1395-HCC1395_BL-lig2-lib1\tPI:0\tDS:paired end\tDT:2013-02-22T18:00:00-0600\tSM:H_NJ-HCC1395-HCC1395_BL\tCN:WUGSC"
+mills:
+  class: File
+  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-20211-26b393cc7ab04120ac68cc2cbd4a15df/indels.hq.vcf.gz
+known_indels:
+  class: File
+  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-20267-00cb8ff552914c17ad66d86031e10d30/indels.hq.vcf.gz
+dbsnp_vcf:
+  class: File
+  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-19443-e48c595a620a432c93e8dd29e4af64f2/snvs.hq.vcf.gz
+per_base_intervals:
+- file: /gscmnt/gc2560/core/model_data/interval-list/01f4fae3699646c3af2fa47853da7a8c/06a82ecf9c434b7ab03d82e59eaa28c8.interval_list
+  label: clinvar
+per_target_intervals:
+- file: /gscmnt/gc2560/core/model_data/interval-list/db8c25932fd94d2a8a073a2e20449878/a35b64d628b94df194040032d53b5616.interval_list
+  label: acmg_genes
+- file: /gscmnt/gc2560/core/model_data/interval-list/1eea27120d294db49826cef2e79b618c/3a61ffd42f074fe1b8a20742f6dfb32e.interval_list
+  label: gencode_genes
+- file: /gscmnt/gc2560/core/model_data/interval-list/86494a288c3c4d7a89842ed2f1d6e36a/f54639200d364231bd5e1c39266ccfac.interval_list
+  label: gencode_exons
+qc_intervals:
+  class: File
+  path: /gscmnt/gc2560/core/model_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/GRCh38_autosomal_plus_sex.interval_list
+summary_intervals: []
+omni_vcf:
+  class: File
+  path: /gscmnt/gc2709/info/production_reference_GRCh38DH/accessory_vcf/omni25-ld-pruned-20000-2000-0.5-annotated.wchr.sites_only.b38.autosomes_only.vcf.gz
+picard_metric_accumulation_level: LIBRARY
+mutect_scatter_count: 5
+vep_cache_dir: /gscmnt/gc2560/core/cwl/inputs/VEP_cache/
+synonyms_file:
+  class: File
+  path: /gscmnt/gc2560/core/model_data/2887491634/build50f99e75d14340ffb5b7d21b03887637/chromAlias.ensembl.txt
+custom_gnomad_vcf:
+  class: File
+  path: /gscmnt/gc2560/core/model_data/genome-db-ensembl-gnomad/2dd4b53431674786b760adad60a29273/fixed_b38_exome.vcf.gz
+custom_clinvar_vcf:
+  class: File
+  path: /gscmnt/gc2560/core/custom_clinvar_vcf/v20181028/custom.vcf.gz
+mutect_artifact_detection_mode: false
+somalier_vcf: "/gscmnt/gc2560/core/annotation_data/concordance_snps/GRC-human-build38_gnomad_exome_common_snps.vcf"
+vep_ensembl_assembly: GRCh38
+vep_ensembl_version: 95
+vep_ensembl_species: homo_sapiens
+cosmic_vcf:
+  class: File
+  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-774-52fa2dadc4ba4b6490abe0701907d394/snvs.hq.vcf.gz
+panel_of_normals_vcf:
+  class: File
+  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-2237-db881b860992443da9d6aac8b36a7ea6/snvs.hq.vcf.gz
+bqsr_intervals:
+- chr1
+- chr2
+- chr3
+- chr4
+- chr5
+- chr6
+- chr7
+- chr8
+- chr9
+- chr10
+- chr11
+- chr12
+- chr13
+- chr14
+- chr15
+- chr16
+- chr17
+- chr18
+- chr19
+- chr20
+- chr21
+- chr22
+target_intervals:
+  class: File
+  path: /gscmnt/gc2560/core/model_data/interval-list/c83be453937b44e7aa0d7e36f6806710/94b23d66f667472690a7ee165e2037b6.interval_list
+interval_list:
+  class: File
+  path: /gscmnt/gc2560/core/model_data/interval-list/c83be453937b44e7aa0d7e36f6806710/94b23d66f667472690a7ee165e2037b6.interval_list
+docm_vcf:
+  class: File
+  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-16572-a6fc7db1ea124431af5271c8cb23ee26/snvs.hq.vcf.gz
+variants_to_table_fields:
+- CHROM
+- POS
+- REF
+- ALT
+- set
+variants_to_table_genotype_fields:
+- GT
+- AD
+- AF
+- DP
+vep_to_table_fields:
+- Consequence
+- SYMBOL
+- Feature_type
+- Feature
+- HGVSc
+- HGVSp
+- cDNA_position
+- CDS_position
+- Protein_position
+- Amino_acids
+- Codons
+- HGNC_ID
+- Existing_variation
+- gnomADe_AF
+- CLIN_SIG
+- SOMATIC
+- PHENO
+- clinvar_CLINSIGN
+- clinvar_PHENOTYPE
+- clinvar_SCORE
+- clinvar_RCVACC
+- clinvar_TESTEDINGTR
+- clinvar_PHENOTYPELIST
+- clinvar_NUMSUBMIT
+- clinvar_GUIDELINES
