@@ -7,22 +7,20 @@ baseCommand: ["/opt/samtools/bin/samtools", "sort"]
 requirements:
     - class: ResourceRequirement
       ramMin: 4000
+      coresMin: 1
     - class: DockerRequirement
       dockerPull: "mgibio/samtools-cwl:1.0.0"
 
 arguments:
   - prefix: -o
     valueFrom: $(runtime.outdir)/$(inputs.output_filename)
+  - prefix: -@
+    valueFrom: $(runtime.cores)
 
 inputs:
   output_filename:
     type: string
     default: sorted.bam
-  nthreads:
-    type: int
-    default: 1
-    inputBinding:
-      prefix: -@
   input_bam:
     type: File
     inputBinding:

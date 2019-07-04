@@ -7,7 +7,6 @@ requirements:
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: ScatterFeatureRequirement
-    - class: InlineJavascriptRequirement
 inputs:
     instrument_data_bams:
         type: File[]
