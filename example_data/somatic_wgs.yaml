@@ -44,7 +44,7 @@ synonyms_file:
   path: /gscmnt/gc2560/core/model_data/2887491634/build50f99e75d14340ffb5b7d21b03887637/chromAlias.ensembl.txt
 custom_gnomad_vcf:
   class: File
-  path: /gscmnt/gc2560/core/model_data/genome-db-ensembl-gnomad/2dd4b53431674786b760adad60a29273/fixed_b38_exome.vcf.gz
+  path: /gscmnt/gc2560/core/model_data/genome-db-ensembl-gnomad/2dd4b53431674786b760adad60a29273/fixed_b38_genome.vcf.gz
 custom_clinvar_vcf:
   class: File
   path: /gscmnt/gc2560/core/custom_clinvar_vcf/v20181028/custom.vcf.gz
@@ -84,10 +84,10 @@ bqsr_intervals:
 - chr22
 target_intervals:
   class: File
-  path: /gscmnt/gc2560/core/model_data/interval-list/c83be453937b44e7aa0d7e36f6806710/94b23d66f667472690a7ee165e2037b6.interval_list
+  path: /gscmnt/gc2560/core/model_data/interval-list/c83be453937b44e7aa0d7e36f6806710/GRCh38_whole_genome_sequencing.interval_list
 interval_list:
   class: File
-  path: /gscmnt/gc2560/core/model_data/interval-list/c83be453937b44e7aa0d7e36f6806710/94b23d66f667472690a7ee165e2037b6.interval_list
+  path: /gscmnt/gc2560/core/model_data/interval-list/c83be453937b44e7aa0d7e36f6806710/GRCh38_whole_genome_sequencing.interval_list
 docm_vcf:
   class: File
   path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-16572-a6fc7db1ea124431af5271c8cb23ee26/snvs.hq.vcf.gz
