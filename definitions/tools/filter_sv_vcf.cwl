@@ -65,7 +65,7 @@ inputs:
         default: 2
         inputBinding:
             position: 5
-        doc: " if present in variant, number of alternate split reads support needed to pass"
+        doc: "if present in variant, number of alternate split reads support needed to pass"
     split_percentage:
         type: double?
         default: 0.2
