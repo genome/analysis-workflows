@@ -13,6 +13,7 @@ requirements:
       listing:
       - entryname: "filter_sv_vcf_read_support.sh"
         entry: |
+          #!/bin/bash
           set -eou pipefail
           
           input_vcf="$1"
