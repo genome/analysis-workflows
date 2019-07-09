@@ -322,41 +322,6 @@ outputs:
     normal_indel_bam_readcount_tsv:
         type: File
         outputSource: detect_variants/normal_indel_bam_readcount_tsv
-# ##copy number calling
-#     intervals_antitarget:
-#         type: File?
-#         outputSource: cnvkit/intervals_antitarget
-#     intervals_target:
-#         type: File?
-#         outputSource: cnvkit/intervals_target
-#     normal_antitarget_coverage:
-#         type: File
-#         outputSource: cnvkit/normal_antitarget_coverage
-#     normal_target_coverage:
-#         type: File
-#         outputSource: cnvkit/normal_target_coverage
-#     reference_coverage:
-#         type: File?
-#         outputSource: cnvkit/reference_coverage
-#     cn_diagram:
-#         type: File?
-#         outputSource: cnvkit/cn_diagram
-#     cn_scatter_plot:
-#         type: File?
-#         outputSource: cnvkit/cn_scatter_plot
-#     tumor_antitarget_coverage:
-#         type: File
-#         outputSource: cnvkit/tumor_antitarget_coverage
-#     tumor_target_coverage:
-#         type: File
-#         outputSource: cnvkit/tumor_target_coverage
-#     tumor_bin_level_ratios:
-#         type: File
-#         outputSource: cnvkit/tumor_bin_level_ratios
-#     tumor_segmented_ratios:
-#         type: File
-#         outputSource: cnvkit/tumor_segmented_ratios
-##sv calling
     diploid_variants:
         type: File?
         outputSource: manta/diploid_variants
@@ -395,7 +360,7 @@ steps:
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
             omni_vcf: omni_vcf
-            intervals: qc_intervals ##todo
+            intervals: qc_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level
             bqsr_intervals: bqsr_intervals
             minimum_mapping_quality: qc_minimum_mapping_quality
@@ -418,7 +383,7 @@ steps:
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
             omni_vcf: omni_vcf
-            intervals: qc_intervals ##todo
+            intervals: qc_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level
             bqsr_intervals: bqsr_intervals
             minimum_mapping_quality: qc_minimum_mapping_quality
@@ -480,16 +445,6 @@ steps:
             custom_clinvar_vcf: custom_clinvar_vcf
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
-    # this all needs to be changed or replaced for WGS - skipping for now
-    # cnvkit:
-    #     run: ../tools/cnvkit_batch.cwl
-    #     in: 
-    #         tumor_bam: tumor_alignment_and_qc/bam
-    #         normal_bam: normal_alignment_and_qc/bam
-    #         reference: reference
-    #         bait_intervals: bait_intervals
-    #     out:
-    #         [intervals_antitarget, intervals_target, normal_antitarget_coverage, normal_target_coverage, reference_coverage, cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios]
     manta: 
         run: ../tools/manta_somatic.cwl
         in:
