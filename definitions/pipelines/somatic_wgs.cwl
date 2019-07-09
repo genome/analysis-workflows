@@ -416,7 +416,7 @@ steps:
             cosmic_vcf: cosmic_vcf
             panel_of_normals_vcf: panel_of_normals_vcf
             strelka_exome_mode:
-                default: true
+                default: false
             strelka_cpu_reserved: strelka_cpu_reserved
             mutect_scatter_count: mutect_scatter_count
             mutect_artifact_detection_mode: mutect_artifact_detection_mode
