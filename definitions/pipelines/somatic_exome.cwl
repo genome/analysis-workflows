@@ -413,16 +413,10 @@ steps:
             tumor_bam: tumor_alignment_and_qc/bam
             normal_bam: normal_alignment_and_qc/bam
             interval_list: interval_list
-            dbsnp_vcf: dbsnp_vcf
-            cosmic_vcf: cosmic_vcf
-            panel_of_normals_vcf: panel_of_normals_vcf
             strelka_exome_mode:
                 default: true
             strelka_cpu_reserved: strelka_cpu_reserved
             mutect_scatter_count: mutect_scatter_count
-            mutect_artifact_detection_mode: mutect_artifact_detection_mode
-            mutect_max_alt_allele_in_normal_fraction: mutect_max_alt_allele_in_normal_fraction
-            mutect_max_alt_alleles_in_normal_count: mutect_max_alt_alleles_in_normal_count
             varscan_strand_filter: varscan_strand_filter
             varscan_min_coverage: varscan_min_coverage
             varscan_min_var_freq: varscan_min_var_freq

@@ -16,15 +16,6 @@ inputs:
         secondaryFiles: [.bai,^.bai]
     interval_list:
         type: File
-    dbsnp_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    cosmic_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    panel_of_normals_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
     strelka_exome_mode:
         type: boolean
     strelka_cpu_reserved:
@@ -35,12 +26,6 @@ inputs:
     readcount_minimum_mapping_quality:
         type: int?
     mutect_scatter_count:
-        type: int?
-    mutect_artifact_detection_mode:
-        type: boolean?
-    mutect_max_alt_allele_in_normal_fraction:
-        type: float?
-    mutect_max_alt_alleles_in_normal_count:
         type: int?
     varscan_strand_filter:
         type: int?
@@ -189,13 +174,7 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             interval_list: interval_list
-            dbsnp_vcf: dbsnp_vcf
-            cosmic_vcf: cosmic_vcf
-            max_alt_allele_in_normal_fraction: mutect_max_alt_allele_in_normal_fraction
-            max_alt_alleles_in_normal_count: mutect_max_alt_alleles_in_normal_count
             scatter_count: mutect_scatter_count
-            artifact_detection_mode: mutect_artifact_detection_mode
-            panel_of_normals_vcf: panel_of_normals_vcf
         out:
             [unfiltered_vcf, filtered_vcf]
     strelka:

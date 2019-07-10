@@ -27,12 +27,6 @@ inputs:
         type: int?
     mutect_scatter_count:
         type: int?
-    mutect_artifact_detection_mode:
-        type: boolean?
-    mutect_max_alt_allele_in_normal_fraction:
-        type: float?
-    mutect_max_alt_alleles_in_normal_count:
-        type: int?
     varscan_strand_filter:
         type: int?
         default: 0
@@ -161,10 +155,7 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             interval_list: interval_list
-            max_alt_allele_in_normal_fraction: mutect_max_alt_allele_in_normal_fraction
-            max_alt_alleles_in_normal_count: mutect_max_alt_alleles_in_normal_count
             scatter_count: mutect_scatter_count
-            artifact_detection_mode: mutect_artifact_detection_mode
         out:
             [unfiltered_vcf, filtered_vcf]
     strelka:
