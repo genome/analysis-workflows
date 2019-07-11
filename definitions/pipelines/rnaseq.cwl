@@ -49,6 +49,10 @@ inputs:
         type: File
     ribosomal_intervals:
         type: File
+    kallisto_kmer_size:
+        type: int?
+    reference_transcriptome:
+        type: File
 outputs:
     final_bam:
         type: File
@@ -78,6 +82,21 @@ outputs:
     fusion_evidence:
         type: File
         outputSource: kallisto/fusion_evidence
+    unfiltered_fusion_seqs:
+        type: File
+        outputSource: pizzly/unfiltered_fusion_seqs
+    unfiltered_fusions_json:
+        type: File
+        outputSource: pizzly/unfiltered_fusions_json
+    filtered_fusion_seqs:
+        type: File
+        outputSource: pizzly/filtered_fusion_seqs
+    filtered_fusions_json:
+        type: File
+        outputSource: pizzly/filtered_fusions_json
+    parsed_fusion_calls:
+        type: File
+        outputSource: grolar/parsed_fusion_calls
 steps:
     bam_to_trimmed_fastq_and_hisat_alignments:
         run: ../subworkflows/bam_to_trimmed_fastq_and_hisat_alignments.cwl
@@ -149,3 +168,18 @@ steps:
             bam: index_bam/indexed_bam
         out:
             [metrics, chart]
+    pizzly:
+        run: ../tools/pizzly.cwl
+        in:
+            kallisto_kmer_size: kallisto_kmer_size
+            transcriptome_annotations: reference_annotation
+            reference_transcriptome: reference_transcriptome
+            fusion_evidence: kallisto/fusion_evidence
+        out:
+            [unfiltered_fusion_seqs, unfiltered_fusions_json, filtered_fusion_seqs, filtered_fusions_json]
+    grolar:
+        run: ../tools/grolar.cwl
+        in:
+            pizzly_calls: pizzly/filtered_fusions_json
+        out:
+            [parsed_fusion_calls]
