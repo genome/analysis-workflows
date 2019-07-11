@@ -26,7 +26,7 @@ inputs:
 outputs: 
     filtered_vcf:
         type: File
-        outputSource: filter_vcf_cle/cle_filtered_vcf
+        outputSource: filter_vcf_somatic_llr/somatic_llr_filtered_vcf
         secondaryFiles: [.tbi]
 steps:
     filter_vcf_mapq0:
