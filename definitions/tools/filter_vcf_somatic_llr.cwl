@@ -5,13 +5,13 @@ class: CommandLineTool
 label: "use the binomial/llr somatic filter to weed out low confidence variants"
 requirements:
     - class: DockerRequirement
-      dockerPull: mgibio/somatic-llr-filter:v0.4.2
+      dockerPull: mgibio/somatic-llr-filter:v0.4.3
     - class: ResourceRequirement
       ramMin: 4000
 baseCommand: ["/opt/conda/bin/python3","/usr/bin/somatic_llr_filter.py"]
 arguments: 
     ["--overwrite", #we expect to have to overwrite the SOMATIC field
-    {valueFrom: "$(runtime.outdir)/somatic_llr_filtered.vcf"}]
+    {valueFrom: "$(runtime.outdir)/annotated_filtered.vcf"}]
 inputs:
     vcf:
         type: File
@@ -26,4 +26,4 @@ outputs:
      somatic_llr_filtered_vcf:
          type: File
          outputBinding:
-             glob: "somatic_llr_filtered.vcf"
+             glob: "annotated_filtered.vcf"
