@@ -16,7 +16,8 @@ requirements:
       ramMin: 4000
     - class: InitialWorkDirRequirement
       listing:
-          - $(inputs.bam)
+        - ${ var f = inputs.bam; delete f.secondaryFiles; return f }
+    - class: InlineJavascriptRequirement
 inputs:
     bam:
         type: File
