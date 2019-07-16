@@ -28,7 +28,6 @@ outputs:
     filtered_vcf:
         type: File
         outputSource: filter_vcf_somatic_llr/somatic_llr_filtered_vcf
-        secondaryFiles: [.tbi]
 steps:
     filter_vcf_mapq0:
         run: ../tools/filter_vcf_mapq0.cwl

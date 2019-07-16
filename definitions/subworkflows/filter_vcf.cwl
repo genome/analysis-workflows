@@ -30,7 +30,6 @@ outputs:
     filtered_vcf:
         type: File
         outputSource: set_final_vcf_name/replacement
-        secondaryFiles: [.tbi]
 steps:
     filter_vcf_gnomADe_allele_freq:
         run: ../tools/filter_vcf_gnomADe_allele_freq.cwl
