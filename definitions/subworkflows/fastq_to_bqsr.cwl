@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "FASTQ to BQSR and VCF"
+label: "FASTQ to BQSR"
 requirements:
     - class: ScatterFeatureRequirement
     - class: SubworkflowFeatureRequirement

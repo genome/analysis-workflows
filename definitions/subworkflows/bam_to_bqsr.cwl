@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "Unaligned BAM to BQSR and VCF"
+label: "Unaligned BAM to BQSR"
 requirements:
     - class: ScatterFeatureRequirement
     - class: SubworkflowFeatureRequirement
