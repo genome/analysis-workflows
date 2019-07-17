@@ -2,7 +2,8 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "A crude file-renamer to work around workflow engines that don't support rename.cwl"
+label: "Staged Renamer"
+doc: "Renames a file by staging and then `mv`ing it.  A workaround for workflow engines that don't support rename.cwl.  If running in cwltool, use the other one instead."
 requirements:
     - class: DockerRequirement
       dockerPull: ubuntu:bionic
