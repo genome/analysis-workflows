@@ -50,8 +50,6 @@ inputs:
         type: File
     ribosomal_intervals:
         type: File
-    kallisto_kmer_size:
-        type: int?
     reference_transcriptome:
         type: File
 
@@ -654,7 +652,6 @@ steps:
             strand: strand
             refFlat: refFlat
             ribosomal_intervals: ribosomal_intervals
-            kallisto_kmer_size: kallisto_kmer_size
             reference_transcriptome: reference_transcriptome
         out:
             [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence, unfiltered_fusion_seqs, unfiltered_fusions_json, filtered_fusion_seqs, filtered_fusions_json, final_fusion_calls]
