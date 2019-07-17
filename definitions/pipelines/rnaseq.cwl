@@ -49,8 +49,6 @@ inputs:
         type: File
     ribosomal_intervals:
         type: File
-    kallisto_kmer_size:
-        type: int?
     reference_transcriptome:
         type: File
 outputs:
@@ -168,10 +166,16 @@ steps:
             bam: index_bam/indexed_bam
         out:
             [metrics, chart]
+    get_index_kmer_size:
+        run: ../tools/kmer_size_from_index.cwl
+        in: 
+            kallisto_index: kallisto_index
+        out:
+            [kmer_length]
     pizzly:
         run: ../tools/pizzly.cwl
         in:
-            kallisto_kmer_size: kallisto_kmer_size
+            kallisto_kmer_size: get_index_kmer_size/kmer_length
             transcriptome_annotations: reference_annotation
             reference_transcriptome: reference_transcriptome
             fusion_evidence: kallisto/fusion_evidence
