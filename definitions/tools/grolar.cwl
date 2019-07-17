@@ -152,11 +152,16 @@ requirements:
              #GetDistance(476, output)
              #GetDistance(5916, output)
            
-             # Get distances
-             cat("Computing gene distances\n")
-             geneDistance <- sapply(identical_idx, function(x) GetDistance(x, output))
-             output[identical_idx,"gene_distance"] <- geneDistance
-           
+             #Only run if our index has at least one TRUE value
+             if(sum(identical_idx)) {
+
+               # Get distances
+               cat("Computing gene distances\n")
+               geneDistance <- sapply(identical_idx, function(x) GetDistance(x, output))
+               output[identical_idx,"gene_distance"] <- geneDistance
+
+             }
+
              # Sort by splitcount then paircount
              cat("Sorting by number of events\n")
              idx <- order(output$splitcount, output$paircount, decreasing = TRUE)

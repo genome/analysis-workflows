@@ -321,9 +321,9 @@ outputs:
     filtered_fusions_json:
         type: File
         outputSource: rnaseq/filtered_fusions_json
-    parsed_fusion_calls:
+    final_fusion_calls:
         type: File
-        outputSource: rnaseq/parsed_fusion_calls
+        outputSource: rnaseq/final_fusion_calls
 
     tumor_cram:
         type: File
@@ -657,7 +657,7 @@ steps:
             kallisto_kmer_size: kallisto_kmer_size
             reference_transcriptome: reference_transcriptome
         out:
-            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence, unfiltered_fusion_seqs, unfiltered_fusions_json, filtered_fusion_seqs, filtered_fusions_json, parsed_fusion_calls]
+            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence, unfiltered_fusion_seqs, unfiltered_fusions_json, filtered_fusion_seqs, filtered_fusions_json, final_fusion_calls]
     somatic:
         run: somatic_exome.cwl
         in:

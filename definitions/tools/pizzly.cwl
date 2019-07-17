@@ -10,7 +10,7 @@ requirements:
       coresMin: 1
       ramMin: 16000
     - class: DockerRequirement
-      dockerPull: "chrisamiller/docker-pizzly"
+      dockerPull: "mgibio/pizzly-cwl"
 arguments: ["--output", "pizzly"]
 inputs:
     kallisto_kmer_size:

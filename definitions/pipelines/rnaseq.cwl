@@ -92,7 +92,7 @@ outputs:
     filtered_fusions_json:
         type: File
         outputSource: pizzly/filtered_fusions_json
-    parsed_fusion_calls:
+    final_fusion_calls:
         type: File
         outputSource: grolar/parsed_fusion_calls
 steps:
