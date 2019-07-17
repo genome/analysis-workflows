@@ -70,7 +70,7 @@ steps:
         out:
             [somatic_llr_filtered_vcf]
     set_final_vcf_name:
-        run: ../tools/rename.cwl
+        run: ../tools/staged_rename.cwl
         in:
             original: filter_vcf_somatic_llr/somatic_llr_filtered_vcf
             name:
