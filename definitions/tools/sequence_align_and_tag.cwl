@@ -12,9 +12,9 @@ requirements:
     - class: ResourceRequirement
       coresMin: 8
       ramMin: 20000
-      #    - class: DockerRequirement
-      #      dockerPull: "mgibio/alignment_helper-cwl:1.0.0"
-    - class: InlineJavascriptRequirement #necessary for cwltool to handle the record
+    - class: DockerRequirement
+      dockerPull: "mgibio/alignment_helper-cwl:1.0.0"
+    - class: InlineJavascriptRequirement
     - class: InitialWorkDirRequirement
       listing:
       - entryname: 'sequence_alignment_helper.sh'
@@ -50,21 +50,21 @@ requirements:
             done
 
             if [[ "$MODE" == 'fastq' ]]; then
-                echo /usr/local/bin/bwa mem -K 100000000 -t "$NTHREADS" -Y -p -R "$READGROUP" "$REFERENCE" "$FASTQ1" "$FASTQ2" "|" /usr/local/bin/samblaster -a --addMateTags "|" /opt/samtools/bin/samtools view -b -S /dev/stdin
+                /usr/local/bin/bwa mem -K 100000000 -t "$NTHREADS" -Y -p -R "$READGROUP" "$REFERENCE" "$FASTQ1" "$FASTQ2" | /usr/local/bin/samblaster -a --addMateTags | /opt/samtools/bin/samtools view -b -S /dev/stdin
             fi
             if [[ "$MODE" == 'bam' ]]; then
-                echo /usr/bin/java -Xmx4g -jar /opt/picard/picard.jar SamToFastq I="$BAM" INTERLEAVE=true INCLUDE_NON_PF_READS=true FASTQ=/dev/stdout "|" /usr/local/bin/bwa mem -K 100000000 -t "$NTHREADS" -Y -p -R "$READGROUP" "$REFERENCE" /dev/stdin "|" /usr/local/bin/samblaster -a --addMateTags "|" /opt/samtools/bin/samtools view -b -S /dev/stdin
+                /usr/bin/java -Xmx4g -jar /opt/picard/picard.jar SamToFastq I="$BAM" INTERLEAVE=true INCLUDE_NON_PF_READS=true FASTQ=/dev/stdout | /usr/local/bin/bwa mem -K 100000000 -t "$NTHREADS" -Y -p -R "$READGROUP" "$REFERENCE" /dev/stdin | /usr/local/bin/samblaster -a --addMateTags | /opt/samtools/bin/samtools view -b -S /dev/stdin
             fi
 stdout: "refAlign.bam"
 arguments:
     - valueFrom: $(runtime.cores)
       position: 5
       prefix: '-n'
-    - valueFrom: $(inputs.unaligned.sequence.bam)
+    - valueFrom: "$(inputs.unaligned.sequence.hasOwnProperty('bam')? inputs.unaligned.sequence.bam : null)"
       prefix: '-b'
-    - valueFrom: $(inputs.unaligned.sequence.fastq1)
+    - valueFrom: "$(inputs.unaligned.sequence.hasOwnProperty('fastq1')? inputs.unaligned.sequence.fastq1 : null)"
       prefix: '-1'
-    - valueFrom: $(inputs.unaligned.sequence.fastq2)
+    - valueFrom: "$(inputs.unaligned.sequence.hasOwnProperty('fastq2')? inputs.unaligned.sequence.fastq2 : null)"
       prefix: '-2'
     - valueFrom: $(inputs.unaligned.readgroup)
       prefix: '-g'
