@@ -30,11 +30,12 @@ inputs:
             prefix: "-outputFile"
         doc: "output file name"
     snps_vcf:
-        type: File?
+        type: File[]?
         inputBinding:
             position: 5
             prefix: "-vcfFiles"
-        doc: "snps vcf for adding hom/het snp counts found within svs"
+            itemSeparator: ","
+        doc: "snps vcf(s) for adding hom/het snp counts found within svs"
 
 outputs:
     sv_variants_tsv:
