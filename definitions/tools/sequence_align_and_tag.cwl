@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "align with bwa_mem and tag"
-
+doc: "Due to workflow runner limitations, use sequence_align_and_tag_adapter.cwl to call this"
 baseCommand: ["/bin/bash", "sequence_alignment_helper.sh"]
 requirements:
     - class: SchemaDefRequirement
@@ -14,7 +14,6 @@ requirements:
       ramMin: 20000
     - class: DockerRequirement
       dockerPull: "mgibio/alignment_helper-cwl:1.0.0"
-    - class: InlineJavascriptRequirement
     - class: InitialWorkDirRequirement
       listing:
       - entryname: 'sequence_alignment_helper.sh'
@@ -60,18 +59,23 @@ arguments:
     - valueFrom: $(runtime.cores)
       position: 5
       prefix: '-n'
-    - valueFrom: "$(inputs.unaligned.sequence.hasOwnProperty('bam')? inputs.unaligned.sequence.bam : null)"
-      prefix: '-b'
-    - valueFrom: "$(inputs.unaligned.sequence.hasOwnProperty('fastq1')? inputs.unaligned.sequence.fastq1 : null)"
-      prefix: '-1'
-    - valueFrom: "$(inputs.unaligned.sequence.hasOwnProperty('fastq2')? inputs.unaligned.sequence.fastq2 : null)"
-      prefix: '-2'
-    - valueFrom: $(inputs.unaligned.readgroup)
-      prefix: '-g'
 inputs:
-    unaligned:
-        type: ../types/sequence_data.yml#sequence_data
-        doc: "the unaligned sequence data with readgroup information"
+    bam:
+        type: File?
+        inputBinding:
+            prefix: '-b'
+    fastq1:
+        type: File?
+        inputBinding:
+            prefix: '-1'
+    fastq2:
+        type: File?
+        inputBinding:
+            prefix: '-2'
+    readgroup:
+        type: string
+        inputBinding:
+            prefix: '-g'
     reference:
         type: string
         inputBinding:
