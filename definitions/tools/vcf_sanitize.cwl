@@ -6,7 +6,7 @@ label: "Sanitize a VCF"
 baseCommand: ["/bin/bash","sanitize.sh"]
 requirements:
     - class: ResourceRequirement
-      ramMin: 4
+      ramMin: 4000
       coresMin: 1
     - class: DockerRequirement
       dockerPull: "mgibio/samtools-cwl:1.0.0"
