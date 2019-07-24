@@ -143,7 +143,7 @@ inputs:
         secondaryFiles: [.tbi]
     manta_non_wgs:
         type: boolean?
-        default: true
+        default: false
     manta_output_contigs:
         type: boolean?
     somalier_vcf:
