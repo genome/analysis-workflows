@@ -10,7 +10,7 @@ requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/bam_readcount_helper-cwl:1.1.0"
     - class: ResourceRequirement
-      ramMin: 4000
+      ramMin: 8000
     - class: InlineJavascriptRequirement
 arguments: [
     { valueFrom: $(runtime.outdir), position: -3 }
