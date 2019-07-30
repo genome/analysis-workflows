@@ -24,7 +24,7 @@ inputs:
         inputBinding:
             prefix: "-I"
             position: 2
-        secondaryFiles: [.bai]
+        secondaryFiles: ${if (self.nameext === ".bam") {return self.basename + ".bai"} else {return self.basename + ".crai"}}
     vcf:
         type: File
         inputBinding:
