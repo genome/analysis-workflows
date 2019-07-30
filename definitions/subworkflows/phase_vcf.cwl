@@ -16,7 +16,7 @@ inputs:
         type: File
     bam:
         type: File
-        secondaryFiles: [.bai]
+        secondaryFiles: ${if (self.nameext === ".bam") {return self.basename + ".bai"} else {return self.basename + ".crai"}}
 outputs:
     phased_vcf:
         type: File
