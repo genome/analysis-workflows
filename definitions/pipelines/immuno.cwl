@@ -207,7 +207,7 @@ inputs:
 
     #phase_vcf inputs
     reference_dict:
-        type: File?
+        type: File
 
     #pvacseq inputs
     readcount_minimum_base_quality:
