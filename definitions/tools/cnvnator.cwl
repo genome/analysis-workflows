@@ -24,7 +24,7 @@ requirements:
           # set vars
           BAM="$1"
           BIN_SIZE="$2"
-          CHROMOSOMES="${3//,/ }" # input as csv so it's one var to bash script but CNVnator wants them space separated
+          CHROMOSOMES="$3"
           REFERENCE="$4"
           SAMPLE="$5"
 
@@ -64,7 +64,7 @@ inputs:
         default: ["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "chrX", "chrY"]
         inputBinding:
            position: 3
-           itemSeparator: ","
+           itemSeparator: " "
         doc: "List of chromosomes to run CNVnator on"
     reference:
         type: string
