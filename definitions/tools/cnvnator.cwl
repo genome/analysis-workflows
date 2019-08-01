@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "Run CNVnator to calcualte copy number variations in WGS samples"
+label: "Run CNVnator to calculate copy number variations in WGS samples"
 
 arguments: ["source", "/opt/root/bin/thisroot.sh", { shellQuote: false, valueFrom: "&&" },  "/bin/bash", "run_cnvnator.sh"]
 
