@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "align with bwa_mem and tag"
-doc: "Due to workflow runner limitations, use sequence_align_and_tag_adapter.cwl to call this"
+doc: "Due to workflow runner limitations, use sequence_align_and_tag_adapter.cwl subworkflow to call this"
 baseCommand: ["/bin/bash", "sequence_alignment_helper.sh"]
 requirements:
     - class: SchemaDefRequirement

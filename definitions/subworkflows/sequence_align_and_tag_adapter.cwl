@@ -24,7 +24,7 @@ outputs:
         outputSource: align_and_tag/aligned_bam
 steps:
     align_and_tag:
-        run: sequence_align_and_tag.cwl
+        run: ../tools/sequence_align_and_tag.cwl
         in:
             reference: reference
             bam:

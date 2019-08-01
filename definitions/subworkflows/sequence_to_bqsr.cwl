@@ -42,7 +42,7 @@ steps:
     align:
         scatter: [unaligned]
         scatterMethod: dotproduct
-        run: ../tools/sequence_align_and_tag_adapter.cwl
+        run: sequence_align_and_tag_adapter.cwl
         in:
             unaligned: unaligned
             reference: reference
