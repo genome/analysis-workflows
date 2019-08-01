@@ -51,7 +51,7 @@ inputs:
         default: 0.75
         inputBinding:
             position: 3
-        doc: "Cutoff depth for deletions, less than passes filter"
+        doc: "Depth for deletions must be less than this cutoff to pass the filter."
     duplication_depth:
         type: double?
         default: 1.25
