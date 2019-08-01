@@ -57,7 +57,7 @@ inputs:
         default: 1.25
         inputBinding:
             position: 4
-        doc: "Cutoff depth for duplications, greater than passes filter"
+        doc: "Depth for duplications must be greater than this cutoff to pass the filter."
     vcf_source:
         type:
           - type: enum
