@@ -276,6 +276,13 @@ inputs:
     pvacseq_threads:
         type: int?
 
+    immuno_tumor_sample_name:
+        type: string
+    immuno_tumor_sample_name_arr:
+        type: string[]
+    immuno_normal_sample_name:
+        type: string
+
 outputs:
     final_bam:
         type: File
@@ -728,11 +735,65 @@ steps:
             optitype_name: optitype_name
         out:
             [cram,mark_duplicates_metrics,insert_size_metrics,insert_size_histogram,alignment_summary_metrics,hs_metrics,per_target_coverage_metrics,per_target_hs_metrics,per_base_coverage_metrics,per_base_hs_metrics,summary_hs_metrics,flagstats,verify_bam_id_metrics,verify_bam_id_depth,gvcf,final_vcf,coding_vcf,limited_vcf,vep_summary,optitype_tsv,optitype_plot]
+
+    sanitize_somatic_vcf:
+        run: ../tools/sanitize_mutect_vcfs.cwl
+        in:
+            input_vcf: somatic/final_vcf
+        out: [sanitized_vcf]
+    rename_somatic_vcf_tumor_sample:
+        run: ../tools/replace_vcf_sample_name.cwl
+        in:
+            input_vcf: sanitize_somatic_vcf/sanitized_vcf
+            sample_to_replace:
+                default: 'TUMOR'
+            new_sample_name: immuno_tumor_sample_name
+        out: [renamed_vcf]
+    rename_somatic_vcf_normal_sample:
+        run: ../tools/replace_vcf_sample_name.cwl
+        in:
+            input_vcf: rename_somatic_vcf_tumor_sample/renamed_vcf
+            sample_to_replace:
+                default: 'NORMAL'
+            new_sample_name: immuno_normal_sample_name
+        out: [renamed_vcf]
+    index_renamed_somatic:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: rename_somatic_vcf_normal_sample/renamed_vcf
+        out: [indexed_vcf]
+    filter_somatic_vcf:
+        run: ../tools/select_variants.cwl
+        in:
+            reference: reference
+            vcf: index_renamed_somatic/indexed_vcf
+            output_vcf_basename:
+                default: 'somatic_tumor_only'
+            samples_to_include: immuno_tumor_sample_name_arr
+        out:
+            [filtered_vcf]
+    index_filtered_somatic:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: filter_somatic_vcf/filtered_vcf
+        out: [indexed_vcf]
+    rename_germline_vcf:
+        run: ../tools/replace_vcf_sample_name.cwl
+        in:
+            input_vcf: germline/final_vcf
+            sample_to_replace: immuno_normal_sample_name
+            new_sample_name: immuno_tumor_sample_name
+        out: [renamed_vcf]
+    index_germline:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: rename_germline_vcf/renamed_vcf
+        out: [indexed_vcf]
     phase_vcf:
         run: ../subworkflows/phase_vcf.cwl
         in:
-            somatic_vcf: somatic/final_vcf
-            germline_vcf: germline/final_vcf
+            somatic_vcf: index_filtered_somatic/indexed_vcf
+            germline_vcf: index_germline/indexed_vcf
             reference: reference
             reference_dict: reference_dict
             bam: somatic/tumor_cram
@@ -747,16 +808,14 @@ steps:
     pvacseq:
         run: ../subworkflows/pvacseq.cwl
         in:
-            detect_variants_vcf: somatic/final_vcf
-            sample_name: 
-                default: 'TUMOR'
-            normal_sample_name: 
-                default: 'NORMAL'
+            detect_variants_vcf: index_renamed_somatic/indexed_vcf
+            sample_name: immuno_tumor_sample_name
+            normal_sample_name: immuno_normal_sample_name
             rnaseq_bam: rnaseq/final_bam
             reference_fasta: reference
             readcount_minimum_base_quality: readcount_minimum_base_quality
             readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
-            gene_expression_file: rnaseq/stringtie_gene_expression_tsv
+            gene_expression_file: rnaseq/gene_abundance
             transcript_expression_file: rnaseq/transcript_abundance_tsv
             alleles: extract_alleles/allele_string
             prediction_algorithms: prediction_algorithms
