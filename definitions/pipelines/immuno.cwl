@@ -757,16 +757,11 @@ steps:
                 default: 'NORMAL'
             new_sample_name: immuno_normal_sample_name
         out: [renamed_vcf]
-    index_renamed_somatic:
-        run: ../tools/index_vcf.cwl
-        in:
-            vcf: rename_somatic_vcf_normal_sample/renamed_vcf
-        out: [indexed_vcf]
     filter_somatic_vcf:
         run: ../tools/select_variants.cwl
         in:
             reference: reference
-            vcf: index_renamed_somatic/indexed_vcf
+            vcf: rename_somatic_vcf_normal_sample/renamed_vcf
             output_vcf_basename:
                 default: 'somatic_tumor_only'
             samples_to_include: immuno_tumor_sample_name_arr
@@ -784,16 +779,11 @@ steps:
             sample_to_replace: immuno_normal_sample_name
             new_sample_name: immuno_tumor_sample_name
         out: [renamed_vcf]
-    index_germline:
-        run: ../tools/index_vcf.cwl
-        in:
-            vcf: rename_germline_vcf/renamed_vcf
-        out: [indexed_vcf]
     phase_vcf:
         run: ../subworkflows/phase_vcf.cwl
         in:
             somatic_vcf: index_filtered_somatic/indexed_vcf
-            germline_vcf: index_germline/indexed_vcf
+            germline_vcf: rename_germline_vcf/renamed_vcf
             reference: reference
             reference_dict: reference_dict
             bam: somatic/tumor_cram
@@ -808,7 +798,7 @@ steps:
     pvacseq:
         run: ../subworkflows/pvacseq.cwl
         in:
-            detect_variants_vcf: index_renamed_somatic/indexed_vcf
+            detect_variants_vcf: rename_somatic_vcf_normal_sample/renamed_vcf
             sample_name: immuno_tumor_sample_name
             normal_sample_name: immuno_normal_sample_name
             rnaseq_bam: rnaseq/final_bam
