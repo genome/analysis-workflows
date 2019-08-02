@@ -15,7 +15,15 @@ requirements:
       - entryname: 'replacer.sh'
         entry: |
             set -eou pipefail
-            zcat $1 | sed -e "s/$2/$3/g" | /opt/htslib/bin/bgzip
+
+            if [[ "$1" =~ ".vcf.gz" ]];then
+                zcat "$1" | sed -e "s/$2/$3/g" | /opt/htslib/bin/bgzip > sample_renamed.vcf.gz
+            else
+                cat "$1" | sed -e "s/$2/$3/g" | /opt/htslib/bin/bgzip > sample_renamed.vcf.gz
+            fi
+
+            /usr/bin/tabix -p vcf sample_renamed.vcf.gz
+
 arguments: [{valueFrom: $(inputs.input_vcf)}]
 inputs:
     input_vcf:
@@ -28,8 +36,9 @@ inputs:
         type: string
         inputBinding:
             position: 3
-stdout: "$(inputs.input_vcf.basename).renamed.gz"
 outputs:
     renamed_vcf:
-        type: stdout
-
+       type: File
+        secondaryFiles: [.tbi]
+        outputBinding:
+            glob: sample_renamed.vcf.gz
