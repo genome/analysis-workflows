@@ -21,13 +21,15 @@ arguments: [
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:1.4.4"
+      dockerPull: "griffithlab/pvactools:1.5.0"
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: 8
 inputs:
     input_file:
-        type: File
+        type:
+            - File
+            - Directory
         inputBinding:
             position: 1
     sample_name:
