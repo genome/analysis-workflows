@@ -8,6 +8,8 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
+    - class: InlineJavascriptRequirement
 inputs:
     #rnaseq inputs
     reference_index:
@@ -25,7 +27,7 @@ inputs:
             items:
                 type: array
                 items: string 
-    sample_name:
+    tumor_sample_name:
         type: string
     trimming_adapters:
         type: File
@@ -206,6 +208,8 @@ inputs:
         type: string?
 
     #phase_vcf inputs
+    normal_sample_name:
+        type: string
     reference_dict:
         type: File
 
@@ -275,13 +279,6 @@ inputs:
         type: boolean?
     pvacseq_threads:
         type: int?
-
-    immuno_tumor_sample_name:
-        type: string
-    immuno_tumor_sample_name_arr:
-        type: string[]
-    immuno_normal_sample_name:
-        type: string
 
 outputs:
     final_bam:
@@ -631,7 +628,7 @@ steps:
             instrument_data_bams: rna_bams
             read_group_id: rna_readgroups
             read_group_fields: read_group_fields
-            sample_name: sample_name
+            sample_name: tumor_sample_name
             trimming_adapters: trimming_adapters
             trimming_adapter_trim_end: trimming_adapter_trim_end
             trimming_adapter_min_overlap: trimming_adapter_min_overlap
@@ -736,13 +733,14 @@ steps:
         out:
             [cram,mark_duplicates_metrics,insert_size_metrics,insert_size_histogram,alignment_summary_metrics,hs_metrics,per_target_coverage_metrics,per_target_hs_metrics,per_base_coverage_metrics,per_base_hs_metrics,summary_hs_metrics,flagstats,verify_bam_id_metrics,verify_bam_id_depth,gvcf,final_vcf,coding_vcf,limited_vcf,vep_summary,optitype_tsv,optitype_plot]
 
+    #the following two steps are exposed at this workflow level because multiple downstream steps use them
     rename_somatic_vcf_tumor_sample:
         run: ../tools/replace_vcf_sample_name.cwl
         in:
             input_vcf: somatic/final_vcf
             sample_to_replace:
                 default: 'TUMOR'
-            new_sample_name: immuno_tumor_sample_name
+            new_sample_name: tumor_sample_name
         out: [renamed_vcf]
     rename_somatic_vcf_normal_sample:
         run: ../tools/replace_vcf_sample_name.cwl
@@ -750,8 +748,9 @@ steps:
             input_vcf: rename_somatic_vcf_tumor_sample/renamed_vcf
             sample_to_replace:
                 default: 'NORMAL'
-            new_sample_name: immuno_normal_sample_name
+            new_sample_name: normal_sample_name
         out: [renamed_vcf]
+
     filter_somatic_vcf:
         run: ../tools/select_variants.cwl
         in:
@@ -759,7 +758,9 @@ steps:
             vcf: rename_somatic_vcf_normal_sample/renamed_vcf
             output_vcf_basename:
                 default: 'somatic_tumor_only'
-            samples_to_include: immuno_tumor_sample_name_arr
+            samples_to_include: 
+                source: tumor_sample_name
+                valueFrom: ${ return [self]; }
         out:
             [filtered_vcf]
     index_filtered_somatic:
@@ -771,8 +772,8 @@ steps:
         run: ../tools/replace_vcf_sample_name.cwl
         in:
             input_vcf: germline/final_vcf
-            sample_to_replace: immuno_normal_sample_name
-            new_sample_name: immuno_tumor_sample_name
+            sample_to_replace: normal_sample_name
+            new_sample_name: tumor_sample_name
         out: [renamed_vcf]
     phase_vcf:
         run: ../subworkflows/phase_vcf.cwl
@@ -794,8 +795,8 @@ steps:
         run: ../subworkflows/pvacseq.cwl
         in:
             detect_variants_vcf: rename_somatic_vcf_normal_sample/renamed_vcf
-            sample_name: immuno_tumor_sample_name
-            normal_sample_name: immuno_normal_sample_name
+            sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
             rnaseq_bam: rnaseq/final_bam
             reference_fasta: reference
             readcount_minimum_base_quality: readcount_minimum_base_quality
