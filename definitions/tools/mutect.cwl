@@ -2,75 +2,62 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "mutect2 (GATK 3.6)"
-baseCommand: ["/usr/bin/java", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "MuTect2"]
+label: "Mutect2 (GATK 4)"
+
+baseCommand: ["/bin/bash", "Mutect2.sh"]
+
 requirements:
     - class: ResourceRequirement
       ramMin: 20000
       tmpdirMin: 100000
     - class: DockerRequirement
-      dockerPull: "mgibio/cle:v1.3.1"
+      dockerPull: "broadinstitute/gatk:4.1.2.0"
+    - class: InitialWorkDirRequirement
+      listing:
+      - entryname: 'Mutect2.sh'
+        entry: |
+            set -o pipefail
+            set -o errexit
+            
+            TUMOR=`(samtools view -H $3 | grep "^@RG" | sed "s/.*SM:\([^\t]*\).*/\1/g" | head -n 1)` #Extracting the sample name from the TUMOR bam.
+            NORMAL=`(samtools view -H $4 | grep "^@RG" | sed "s/.*SM:\([^\t]*\).*/\1/g" | head -n 1)` #Extracting the sample name from the NORMAL bam.
+            /gatk/gatk Mutect2 -O $1 -R $2 -I $3 -tumor $TUMOR -I $4 -normal $NORMAL -L $5 #Running Mutect2.
+            gunzip mutect.vcf.gz #Unzipping the Mutect2 output vcf file to alter the header names.
+            grep "^##" mutect.vcf >mutect.final.vcf #Extracting all the lines above #CHROM in the vcf to a new output vcf.
+            grep "^#CHROM" mutect.vcf | sed "s/\t$TUMOR\t/\tTUMOR\t/g; s/\t$NORMAL/\tNORMAL/g" >> mutect.final.vcf #Concatenating the #CHROM line with substituted sample headers to the output vcf.
+            grep -v "^#" mutect.vcf >> mutect.final.vcf #Concatenating the sites to the output vcf.
+            bgzip mutect.final.vcf #Bzipping the final output vcf.
+            tabix mutect.final.vcf.gz #Indexing the bzipped output vcf.
+            mv mutect.vcf.gz.stats mutect.final.vcf.gz.stats #Renaming the .stats file to match the name conversion of the final output vcf.
+            /gatk/gatk FilterMutectCalls -R $2 -V mutect.final.vcf.gz -O mutect.final.filtered.vcf.gz #Running FilterMutectCalls on the output vcf.
+
 arguments:
-    ["-o", { valueFrom: $(runtime.outdir)/mutect.vcf.gz }]
+    - position: 1
+      valueFrom: mutect.vcf.gz
+
 inputs:
     reference:
         type: string
         inputBinding:
-            prefix: "-R"
-            position: 1
+            position: 2
     tumor_bam:
         type: File
         inputBinding:
-            prefix: "-I:tumor"
-            position: 2
+            position: 3
         secondaryFiles: [.bai]
     normal_bam:
         type: File?
         inputBinding:
-            prefix: "-I:normal"
-            position: 3
+            position: 4
         secondaryFiles: [.bai]
     interval_list:
         type: File
         inputBinding:
-            prefix: "-L"
-            position: 4
-    dbsnp_vcf:
-        type: File?
-        inputBinding:
-            prefix: "--dbsnp"
             position: 5
-        secondaryFiles: [.tbi]
-    cosmic_vcf:
-        type: File?
-        inputBinding:
-            prefix: "--cosmic"
-            position: 6
-        secondaryFiles: [.tbi]
-    artifact_detection_mode:
-        type: boolean?
-        inputBinding:
-            prefix: "--artifact_detection_mode"
-            position: 7 
-    panel_of_normals_vcf:
-        type: File?
-        inputBinding:
-            prefix: "-PON"
-            position: 8
-        secondaryFiles: [.tbi]
-    max_alt_alleles_in_normal_count:
-        type: int?
-        inputBinding:
-            prefix: "--max_alt_alleles_in_normal_count"
-            position: 9
-    max_alt_allele_in_normal_fraction:
-        type: float?
-        inputBinding:
-            prefix: "--max_alt_allele_in_normal_fraction"
-            position: 10
+
 outputs:
     vcf:
         type: File
         outputBinding:
-            glob: "mutect.vcf.gz"
+            glob: "mutect.final.filtered.vcf.gz"
         secondaryFiles: [.tbi]

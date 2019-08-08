@@ -50,13 +50,6 @@ inputs:
         default: 8
     mutect_scatter_count:
         type: int
-    mutect_artifact_detection_mode:
-        type: boolean
-        default: false
-    mutect_max_alt_allele_in_normal_fraction:
-        type: float?
-    mutect_max_alt_alleles_in_normal_count:
-        type: int?
     varscan_strand_filter:
         type: int?
         default: 0
@@ -281,9 +274,6 @@ steps:
                 default: true
             strelka_cpu_reserved: strelka_cpu_reserved
             mutect_scatter_count: mutect_scatter_count
-            mutect_artifact_detection_mode: mutect_artifact_detection_mode
-            mutect_max_alt_allele_in_normal_fraction: mutect_max_alt_allele_in_normal_fraction
-            mutect_max_alt_alleles_in_normal_count: mutect_max_alt_alleles_in_normal_count
             varscan_strand_filter: varscan_strand_filter
             varscan_min_coverage: varscan_min_coverage
             varscan_min_var_freq: varscan_min_var_freq

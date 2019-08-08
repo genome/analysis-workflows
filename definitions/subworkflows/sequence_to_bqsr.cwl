@@ -2,19 +2,20 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "Unaligned BAM to BQSR"
+label: "Raw sequence data to BQSR"
 requirements:
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/sequence_data.yml
     - class: ScatterFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: MultipleInputFeatureRequirement
 
 inputs:
-    bams:
-        type: File[]
-    readgroups:
-        type: string[]
+    unaligned:
+        type: ../types/sequence_data.yml#sequence_data[]
     bqsr_intervals:
-        type: string[]?
+        type: string[]
     reference:
         type: string
     dbsnp_vcf:
@@ -39,19 +40,18 @@ outputs:
         outputSource: mark_duplicates_and_sort/metrics_file
 steps:
     align:
-        scatter: [bam, readgroup]
+        scatter: [unaligned]
         scatterMethod: dotproduct
-        run: align.cwl
+        run: ../tools/sequence_align_and_tag.cwl
         in:
-            bam: bams
-            readgroup: readgroups
+            unaligned: unaligned
             reference: reference
         out:
-            [tagged_bam]
+            [aligned_bam]
     merge:
         run: ../tools/merge_bams_samtools.cwl
         in:
-            bams: align/tagged_bam
+            bams: align/aligned_bam
             name: final_name
         out:
             [merged_bam]
