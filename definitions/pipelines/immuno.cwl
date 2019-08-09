@@ -8,8 +8,6 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
     - class: SubworkflowFeatureRequirement
-    - class: StepInputExpressionRequirement
-    - class: InlineJavascriptRequirement
 inputs:
     #rnaseq inputs
     reference_index:
@@ -750,39 +748,16 @@ steps:
                 default: 'NORMAL'
             new_sample_name: normal_sample_name
         out: [renamed_vcf]
-
-    filter_somatic_vcf:
-        run: ../tools/select_variants.cwl
-        in:
-            reference: reference
-            vcf: rename_somatic_vcf_normal_sample/renamed_vcf
-            output_vcf_basename:
-                default: 'somatic_tumor_only'
-            samples_to_include: 
-                source: tumor_sample_name
-                valueFrom: ${ return [self]; }
-        out:
-            [filtered_vcf]
-    index_filtered_somatic:
-        run: ../tools/index_vcf.cwl
-        in:
-            vcf: filter_somatic_vcf/filtered_vcf
-        out: [indexed_vcf]
-    rename_germline_vcf:
-        run: ../tools/replace_vcf_sample_name.cwl
-        in:
-            input_vcf: germline/final_vcf
-            sample_to_replace: normal_sample_name
-            new_sample_name: tumor_sample_name
-        out: [renamed_vcf]
     phase_vcf:
         run: ../subworkflows/phase_vcf.cwl
         in:
-            somatic_vcf: index_filtered_somatic/indexed_vcf
-            germline_vcf: rename_germline_vcf/renamed_vcf
+            somatic_vcf: rename_somatic_vcf_normal_sample/renamed_vcf
+            germline_vcf: germline/final_vcf
             reference: reference
             reference_dict: reference_dict
             bam: somatic/tumor_cram
+            normal_sample_name: normal_sample_name
+            tumor_sample_name: tumor_sample_name
         out:
             [phased_vcf]
     extract_alleles:
