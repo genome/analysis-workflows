@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "bedGraph to bigwig conversion"
-baseCommand: ["/usr/bin/bedGraphToBigWig"]
+baseCommand: ["/bin/bash","bed2bigwig.sh"]
 requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
@@ -11,20 +11,28 @@ requirements:
       coresMin: 1
     - class: DockerRequirement
       dockerPull: "mgibio/bisulfite:v1.4"
-arguments:
-    - position: 3
-      valueFrom: "cpgs.bw"
+    - class: InitialWorkDirRequirement
+      listing:
+      - entryname: 'bed2bigwig.sh'
+        entry: |
+            set -eou pipefail
+                
+                for FILE in ${@:2}
+                do
+                    filename=`basename $FILE .bedgraph`
+                    /usr/bin/bedGraphToBigWig $FILE $1 $filename.bw
+                done
 inputs:
-    bedgraph:
-        type: File
+    final_bedgraph:
+        type: File[]
         inputBinding:
-            position: 1
+            position: 2
     reference_sizes:
         type: File
         inputBinding:
-            position: 2
+            position: 1
 outputs:
-    cpg_bigwig:
-        type: File
+    final_bigwigs:
+        type: File[]
         outputBinding:
-            glob: "cpgs.bw"
+            glob: "*.bw"
