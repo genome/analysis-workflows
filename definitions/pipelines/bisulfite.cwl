@@ -30,6 +30,10 @@ inputs:
         type: int
     QCannotation:
         type: File
+#nonmethylation_sites_bed is a variable to determine if user wants to obtain vcf/bed/bedgraph/bigwig for non - methylation sites. Value has to be yes or no
+    assay_non_cpg_sites:
+        type: string?
+        default: 'no'
 outputs:
     cram:
         type: File
@@ -39,11 +43,11 @@ outputs:
         type: File
         outputSource: pileup/vcf
     cpgs:
-        type: File
-        outputSource: vcf2bed/cpgs
+        type: File[]
+        outputSource: vcf2bed/final_bed
     cpg_bigwig:
-        type: File
-        outputSource: bedgraph_to_bigwig/cpg_bigwig
+        type: File[]
+        outputSource: bedgraph_to_bigwig/final_bigwigs
     gathered_directory:
         type: Directory
         outputSource: bisulfite_qc/QC_directory
@@ -90,15 +94,16 @@ steps:
         in:
             vcf: pileup/vcf
             reference: reference_index
+            assay_non_cpg_sites: assay_non_cpg_sites
         out:
-            [cpgs,cpg_bedgraph]
+            [final_bed,final_bedgraph]
     bedgraph_to_bigwig:
         run: ../tools/bedgraph_to_bigwig.cwl
         in:
-            bedgraph: vcf2bed/cpg_bedgraph
+            final_bedgraph: vcf2bed/final_bedgraph
             reference_sizes: reference_sizes
         out:
-            [cpg_bigwig]
+            [final_bigwigs]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
