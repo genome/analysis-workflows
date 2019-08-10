@@ -15,34 +15,37 @@ requirements:
       - entryname: 'bsvcf2bed.sh'
         entry: |
             set -eou pipefail
+            
+            if [[ $3 == "no" ]]
+            then
+                #Creates a gzipped bed and a bedgraph that leaves out MT, random, GL contigs, etc
+                /usr/bin/biscuit vcf2bed -t cg -k 1 -e $1 | /usr/bin/biscuit mergecg $2 /dev/stdin -k 2 |  tee >(/bin/gzip >cpgs.bed.gz) | cut -f 1-4 | sort -k1,1 -k2,2n -S 12G | /usr/bin/perl -ne 'print $_ if $_ =~ /^(chr)?[1-9]?[0-9|X|Y]\s/' >cpgs.bedgraph
+            else
+                /usr/bin/biscuit vcf2bed -t cg -k 1 -e $1 | /usr/bin/biscuit mergecg $2 /dev/stdin -k 2 |  tee >(/bin/gzip >cpgs.bed.gz) | cut -f 1-4 | sort -k1,1 -k2,2n -S 12G | /usr/bin/perl -ne 'print $_ if $_ =~ /^(chr)?[1-9]?[0-9|X|Y]\s/' >cpgs.bedgraph
+                /usr/bin/biscuit vcf2bed -t ch -k 1 -e $1 | awk '$6 == "CA"' | tee >(/bin/gzip >cpas.bed.gz) | cut -f 1-3,8 | sort -k1,1 -k2,2n -S 12G | /usr/bin/perl -ne 'print $_ if $_ =~ /^(chr)?[1-9]?[0-9|X|Y]\s/' >cpas.bedgraph
+                /usr/bin/biscuit vcf2bed -t ch -k 1 -e $1 | awk '$6 == "CT"' | tee >(/bin/gzip >cpts.bed.gz) | cut -f 1-3,8 | sort -k1,1 -k2,2n -S 12G | /usr/bin/perl -ne 'print $_ if $_ =~ /^(chr)?[1-9]?[0-9|X|Y]\s/' >cpts.bedgraph
+                /usr/bin/biscuit vcf2bed -t ch -k 1 -e $1 | awk '$6 == "CC"' | tee >(/bin/gzip >cpcs.bed.gz) | cut -f 1-3,8 | sort -k1,1 -k2,2n -S 12G | /usr/bin/perl -ne 'print $_ if $_ =~ /^(chr)?[1-9]?[0-9|X|Y]\s/' >cpcs.bedgraph
+            fi
 
-            pileup_vcf="$1"
-            reference="$2"
-            cpgs_bed_out="$3"
-            cpgs_bedgraph_out="$4"
-
-            #Creates a gzipped bed and a bedgraph that leaves out MT, random, GL contigs, etc
-            /usr/bin/biscuit vcf2bed -t cg -k 1 -e "$pileup_vcf" | /usr/bin/biscuit mergecg "$reference" /dev/stdin -k 2 |  tee >(/bin/gzip >"$cpgs_bed_out") | cut -f 1-4 | sort -k1,1 -k2,2n -S 12G | /usr/bin/perl -ne 'print $_ if $_ =~ /^(chr)?[1-9]?[0-9|X|Y]\s/' >"$cpgs_bedgraph_out"
-
-arguments: [
-    "$(runtime.outdir)/cpgs.bed.gz",
-    "$(runtime.outdir)/cpgs.bedgraph"
-]
 inputs:
     vcf:
         type: File
         inputBinding:
-            position: -2
+            position: 1
     reference:
         type: string
         inputBinding:
-            position: -1
+            position: 2
+    assay_non_cpg_sites:
+        type: string
+        inputBinding:
+            position: 3
 outputs:
-    cpgs:
-        type: File
+    final_bed:
+        type: File[]
         outputBinding:
-            glob: "cpgs.bed.gz"
-    cpg_bedgraph:
-        type: File
+            glob: "*.bed.gz"
+    final_bedgraph:
+        type: File[]
         outputBinding:
-            glob: "cpgs.bedgraph"
+            glob: "*.bedgraph"
