@@ -37,15 +37,17 @@ inputs:
         inputBinding:
             position: 2
     assay_non_cpg_sites:
-        type: string
+        type:
+            type: enum
+            symbols: ["yes", "no"]
         inputBinding:
             position: 3
 outputs:
-    final_bed:
+    methylation_bed:
         type: File[]
         outputBinding:
             glob: "*.bed.gz"
-    final_bedgraph:
+    methylation_bedgraph:
         type: File[]
         outputBinding:
             glob: "*.bedgraph"
