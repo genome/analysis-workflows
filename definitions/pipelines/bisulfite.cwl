@@ -32,8 +32,10 @@ inputs:
         type: File
 #nonmethylation_sites_bed is a variable to determine if user wants to obtain vcf/bed/bedgraph/bigwig for non - methylation sites. Value has to be yes or no
     assay_non_cpg_sites:
-        type: string?
-        default: 'no'
+        type:
+            type: enum
+            symbols: ["yes", "no"]
+        default: "no"
 outputs:
     cram:
         type: File
@@ -44,10 +46,10 @@ outputs:
         outputSource: pileup/vcf
     cpgs:
         type: File[]
-        outputSource: vcf2bed/final_bed
+        outputSource: vcf2bed/methylation_bed
     cpg_bigwig:
         type: File[]
-        outputSource: bedgraph_to_bigwig/final_bigwigs
+        outputSource: bedgraph_to_bigwig/methylation_bigwigs
     gathered_directory:
         type: Directory
         outputSource: bisulfite_qc/QC_directory
@@ -96,14 +98,14 @@ steps:
             reference: reference_index
             assay_non_cpg_sites: assay_non_cpg_sites
         out:
-            [final_bed,final_bedgraph]
+            [methylation_bed,methylation_bedgraph]
     bedgraph_to_bigwig:
         run: ../tools/bedgraph_to_bigwig.cwl
         in:
-            final_bedgraph: vcf2bed/final_bedgraph
+            methylation_bedgraph: vcf2bed/methylation_bedgraph
             reference_sizes: reference_sizes
         out:
-            [final_bigwigs]
+            [methylation_bigwigs]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
