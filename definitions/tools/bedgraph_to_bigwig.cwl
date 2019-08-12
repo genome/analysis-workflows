@@ -23,7 +23,7 @@ requirements:
                     /usr/bin/bedGraphToBigWig $FILE $1 $filename.bw
                 done
 inputs:
-    final_bedgraph:
+    methylation_bedgraph:
         type: File[]
         inputBinding:
             position: 2
@@ -32,7 +32,7 @@ inputs:
         inputBinding:
             position: 1
 outputs:
-    final_bigwigs:
+    methylation_bigwigs:
         type: File[]
         outputBinding:
             glob: "*.bw"
