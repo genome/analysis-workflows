@@ -16,7 +16,7 @@ requirements:
         entry: |
             set -eou pipefail
             
-            if [[ $3 == "no" ]]
+            if [[ $3 == "false" ]]
             then
                 #Creates a gzipped bed and a bedgraph that leaves out MT, random, GL contigs, etc
                 /usr/bin/biscuit vcf2bed -t cg -k 1 -e $1 | /usr/bin/biscuit mergecg $2 /dev/stdin -k 2 |  tee >(/bin/gzip >cpgs.bed.gz) | cut -f 1-4 | sort -k1,1 -k2,2n -S 12G | /usr/bin/perl -ne 'print $_ if $_ =~ /^(chr)?[1-9]?[0-9|X|Y]\s/' >cpgs.bedgraph
@@ -39,7 +39,7 @@ inputs:
     assay_non_cpg_sites:
         type:
             type: enum
-            symbols: ["yes", "no"]
+            symbols: ["true", "false"]
         inputBinding:
             position: 3
 outputs:
