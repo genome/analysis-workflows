@@ -32,7 +32,7 @@ inputs:
         inputBinding:
             position: 1
 outputs:
-    methylation_bigwigs:
+    methylation_bigwig:
         type: File[]
         outputBinding:
             glob: "*.bw"
