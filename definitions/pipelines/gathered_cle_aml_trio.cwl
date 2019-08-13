@@ -7,28 +7,23 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
+          - $import: ../types/sequence_data.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
     reference: string
-    tumor_bams:
-        type: File[]
-    tumor_readgroups:
-        type: string[]
+    tumor_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     tumor_name:
         type: string?
         default: 'tumor'
-    normal_bams:
-        type: File[]
-    normal_readgroups:
-        type: string[]
+    normal_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     normal_name:
         type: string?
         default: 'normal'
-    followup_bams:
-        type: File[]
-    followup_readgroups:
-        type: string[]
+    followup_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     followup_name:
         type: string?
         default: 'followup'
@@ -189,14 +184,11 @@ steps:
         run: cle_aml_trio.cwl
         in:
             reference: reference
-            tumor_bams: tumor_bams
-            tumor_readgroups: tumor_readgroups
+            tumor_sequence: tumor_sequence
             tumor_name: tumor_name
-            normal_bams: normal_bams
-            normal_readgroups: normal_readgroups
+            normal_sequence: normal_sequence
             normal_name: normal_name
-            followup_bams: followup_bams
-            followup_readgroups: followup_readgroups
+            followup_sequence: followup_sequence
             followup_name: followup_name
             mills: mills
             known_indels: known_indels

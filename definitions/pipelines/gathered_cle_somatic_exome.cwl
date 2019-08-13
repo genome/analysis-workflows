@@ -7,21 +7,18 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
+          - $import: ../types/sequence_data.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
     reference: string
-    tumor_bams:
-        type: File[]
-    tumor_readgroups:
-        type: string[]
+    tumor_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     tumor_cram_name:
         type: string?
         default: 'tumor.cram'
-    normal_bams:
-        type: File[]
-    normal_readgroups:
-        type: string[]
+    normal_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     normal_cram_name:
         type: string?
         default: 'normal.cram'
@@ -152,11 +149,9 @@ steps:
         run: cle_somatic_exome.cwl
         in:
             reference: reference
-            tumor_bams: tumor_bams
-            tumor_readgroups: tumor_readgroups
+            tumor_sequence: tumor_sequence
             tumor_cram_name: tumor_cram_name
-            normal_bams: normal_bams
-            normal_readgroups: normal_readgroups
+            normal_sequence: normal_sequence
             normal_cram_name: normal_cram_name
             mills: mills
             known_indels: known_indels

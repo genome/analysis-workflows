@@ -2,11 +2,6 @@
 bait_intervals:
   class: File
   path: exome_workflow/chr17_test_bait.interval_list
-bams:
-- class: File
-  path: exome_workflow/2895499223.bam
-- class: File
-  path: exome_workflow/2895499237.bam
 bqsr_intervals:
 - chr17
 custom_gnomad_vcf:
@@ -40,11 +35,19 @@ per_target_intervals:
   class: File
   path: exome_workflow/chr17_test_target.interval_list
 picard_metric_accumulation_level: ALL_READS
-readgroups:
-- "@RG\tID:2895499223\tPU:H7HY2CCXX.3.ATCACGGT\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:Illumina\tCN:WUGSC"
-- "@RG\tID:2895499237\tPU:H7HY2CCXX.4.ATCACGGT\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:Illumina\tCN:WUGSC"
 reference: /gscmnt/gc2764/cad/jwalker/toil_test/cancer-genomics-workflow/example_data/exome_workflow/chr17_test.fa
 sample_name: H_NJ-HCC1395-HCC1395
+sequence:
+  - sequence:
+      bam:
+        class: File
+        path: exome_workflow/2895499223.bam
+    readgroup: "@RG\tID:2895499223\tPU:H7HY2CCXX.3.ATCACGGT\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:Illumina\tCN:WUGSC"
+  - sequence:
+      bam:
+        class: File
+        path: exome_workflow/2895499237.bam
+    readgroup: "@RG\tID:2895499237\tPU:H7HY2CCXX.4.ATCACGGT\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:Illumina\tCN:WUGSC"
 synonyms_file:
   class: File
   path: exome_workflow/chromAlias.ensembl.txt

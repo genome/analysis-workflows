@@ -7,6 +7,7 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
+          - $import: ../types/sequence_data.yml
     - class: SubworkflowFeatureRequirement
 inputs:
     #rnaseq inputs
@@ -53,17 +54,13 @@ inputs:
 
     #somatic inputs
     reference: string
-    tumor_bams:
-        type: File[]
-    tumor_readgroups:
-        type: string[]
+    tumor_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     tumor_name:
         type: string?
         default: 'tumor'
-    normal_bams:
-        type: File[]
-    normal_readgroups:
-        type: string[]
+    normal_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     normal_name:
         type: string?
         default: 'normal'
@@ -641,11 +638,9 @@ steps:
         run: somatic_exome.cwl
         in:
             reference: reference
-            tumor_bams: tumor_bams
-            tumor_readgroups: tumor_readgroups
+            tumor_sequence: tumor_sequence
             tumor_name: tumor_name
-            normal_bams: normal_bams
-            normal_readgroups: normal_readgroups
+            normal_sequence: normal_sequence
             normal_name: normal_name
             mills: mills
             known_indels: known_indels
@@ -699,8 +694,7 @@ steps:
         run: germline_exome_hla_typing.cwl
         in:
             reference: reference
-            bams: normal_bams
-            readgroups: normal_readgroups
+            sequence: normal_sequence
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf

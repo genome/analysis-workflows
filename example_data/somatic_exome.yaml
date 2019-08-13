@@ -2,22 +2,28 @@
 bait_intervals:
   class: File
   path: exome_workflow/chr17_test_bait.interval_list
-tumor_bams:
-- class: File
-  path: exome_workflow/2895499223.bam
-- class: File
-  path: exome_workflow/2895499237.bam
-tumor_readgroups:
-- "@RG\tID:2895499223\tPU:H7HY2CCXX.3.ATCACGGT\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:Illumina\tCN:WUGSC"
-- "@RG\tID:2895499237\tPU:H7HY2CCXX.4.ATCACGGT\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:Illumina\tCN:WUGSC"
-normal_bams:
-- class: File
-  path: exome_workflow/2895499331.bam
-- class: File
-  path: exome_workflow/2895499399.bam
-normal_readgroups:
-- "@RG\tID:2895499331\tPU:H7HY2CCXX.3.TGACCACG\tSM:H_NJ-HCC1395-HCC1395_BL\tLB:H_NJ-HCC1395-HCC1395_BL-lg21-lib1\tPL:Illumina\tCN:WUGSC"
-- "@RG\tID:2895499399\tPU:H7HY2CCXX.4.TGACCACG\tSM:H_NJ-HCC1395-HCC1395_BL\tLB:H_NJ-HCC1395-HCC1395_BL-lg21-lib1\tPL:Illumina\tCN:WUGSC"
+tumor_sequence:
+  - sequence:
+      bam:
+        class: File
+        path: exome_workflow/2895499223.bam
+    readgroup: "@RG\tID:2895499223\tPU:H7HY2CCXX.3.ATCACGGT\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:Illumina\tCN:WUGSC"
+  - sequence:
+      bam:
+        class: File
+        path: exome_workflow/2895499237.bam
+    readgroup: "@RG\tID:2895499237\tPU:H7HY2CCXX.4.ATCACGGT\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:Illumina\tCN:WUGSC"
+normal_sequence:
+  - sequence:
+      bam:
+        class: File
+        path: exome_workflow/2895499331.bam
+    readgroup: "@RG\tID:2895499331\tPU:H7HY2CCXX.3.TGACCACG\tSM:H_NJ-HCC1395-HCC1395_BL\tLB:H_NJ-HCC1395-HCC1395_BL-lg21-lib1\tPL:Illumina\tCN:WUGSC"
+  - sequence:
+      bam:
+        class: File
+        path: exome_workflow/2895499399.bam
+    readgroup: "@RG\tID:2895499399\tPU:H7HY2CCXX.4.TGACCACG\tSM:H_NJ-HCC1395-HCC1395_BL\tLB:H_NJ-HCC1395-HCC1395_BL-lg21-lib1\tPL:Illumina\tCN:WUGSC"
 custom_gnomad_vcf:
   class: File
   path: exome_workflow/chr17_test_gnomADe.vcf.gz
