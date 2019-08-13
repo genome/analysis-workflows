@@ -7,13 +7,12 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
+          - $import: ../types/sequence_data.yml
     - class: SubworkflowFeatureRequirement
 inputs:
     reference: string
-    bams:
-        type: File[]
-    readgroups:
-        type: string[]
+    sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     mills:
         type: File
         secondaryFiles: [.tbi]
@@ -92,11 +91,10 @@ outputs:
         outputSource: qc/verify_bam_id_depth
 steps:
     alignment:
-        run: ../subworkflows/bam_to_bqsr.cwl
+        run: ../subworkflows/sequence_to_bqsr.cwl
         in:
             reference: reference
-            bams: bams
-            readgroups: readgroups
+            unaligned: sequence
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
