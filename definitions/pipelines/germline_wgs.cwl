@@ -112,6 +112,18 @@ inputs:
         type: boolean
     merge_min_sv_size:
         type: int
+    sv_filter_paired_percentage:
+        type: double?
+    sv_filter_paired_count:
+        type: int?
+    sv_filter_split_percentage:
+        type: double?
+    sv_filter_split_count:
+        type: int?
+    cnv_filter_deletion_depth:
+        type: double?
+    cnv_filter_duplication_depth:
+        type: double?
     variants_to_table_fields:
          type: string[]?
     variants_to_table_genotype_fields:
@@ -333,6 +345,8 @@ steps:
             cnvkit_scatter_plot: cnvkit_scatter_plot
             cnvkit_male_reference: cnvkit_male_reference
             cnvkit_vcf_name: cnvkit_vcf_name
+            cnv_deletion_depth: cnv_filter_deletion_depth
+            cnv_duplication_depth: cnv_filter_duplication_depth
             manta_call_regions: manta_call_regions
             manta_non_wgs: manta_non_wgs
             manta_output_contigs: manta_output_contigs
@@ -344,6 +358,10 @@ steps:
             merge_estimate_sv_distance: merge_estimate_sv_distance
             merge_min_sv_size: merge_min_sv_size
             snps_vcf: detect_variants/final_vcf
+            sv_paired_percentage: sv_filter_paired_percentage
+            sv_paired_count: sv_filter_paired_count
+            sv_split_percentage: sv_filter_split_percentage
+            sv_split_count: sv_filter_split_count
             genome_build: vep_ensembl_assembly
         out: 
            [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf, cnvnator_cn_file, cnvnator_root, cnvnator_vcf, manta_diploid_variants, manta_somatic_variants, manta_all_candidates, manta_small_candidates, manta_tumor_only_variants, smoove_output_variants, merged_sv_vcf, merged_annotated_tsv, filtered_sv_vcfs]
