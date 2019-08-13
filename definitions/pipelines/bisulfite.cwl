@@ -30,7 +30,7 @@ inputs:
         type: int
     QCannotation:
         type: File
-#nonmethylation_sites_bed is a variable to determine if user wants to obtain vcf/bed/bedgraph/bigwig for non - methylation sites. Value has to be yes or no
+#nonmethylation_sites_bed is a variable to determine if user wants to obtain obtain bed/bigwig files for non-CpG cytosines. Value has to be true or false.
     assay_non_cpg_sites:
         type:
             type: enum
