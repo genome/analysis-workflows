@@ -2,64 +2,45 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "merge and annotate svs with population allele freq and vep"
+label: "Merge, annotate, and generate a TSV for SVs"
 requirements:
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
+    - class: InlineJavascriptRequirement
+
 inputs:
-    vcfs:
-        type: File[]
+    cohort_name:
+        type: string?
+    estimate_sv_distance:
+        type: boolean
+    genome_build:
+        type: string
     max_distance_to_merge:
         type: int
     minimum_sv_calls:
         type: int
-    same_type:
-        type: boolean
-    same_strand:
-        type: boolean
-    estimate_sv_distance:
-        type: boolean
     minimum_sv_size:
         type: int
-    cohort_name:
-        type: string?
-    sv_db:
-        type: File
-    vep_cache_dir:
-        type: string
-    vep_ensembl_assembly:
-        type: string
-        doc: "genome assembly to use in vep. Examples: GRCh38 or GRCm38"
-    vep_ensembl_version:
-        type: string
-        doc: "ensembl version - Must be present in the cache directory. Example: 95"
-    vep_ensembl_species:
-        type: string
-        doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
-    coding_only:
-        type: boolean?
-    custom_gnomad_vcf:
+    same_strand:
+        type: boolean
+    same_type:
+        type: boolean
+    snps_vcf:
         type: File?
-    custom_clinvar_vcf:
-        type: File?
-    reference:
-        type: string
-    synonyms_file:
-        type: File?
-    vep_plugins:
-        type: string[]?
-        default: []
+    sv_vcfs:
+        type: File[]
 outputs:
-    merged_annotated_vcf:
+    merged_sv_vcf:
         type: File
-        outputSource: sort_vcf/sorted_vcf
-    vep_summary:
+        outputSource: merge_sv_bgzip/bgzipped_file
+    merged_annotated_tsv:
         type: File
-        outputSource: annotate_variants/vep_summary
+        outputSource: annotate_variants/sv_variants_tsv
 steps:
-    merge_vcfs:
+    merge_sv_vcfs:
         run: ../tools/survivor.cwl
         in: 
-            vcfs: vcfs
+            vcfs: sv_vcfs
             max_distance_to_merge: max_distance_to_merge
             minimum_sv_calls: minimum_sv_calls
             same_type: same_type
@@ -69,37 +50,19 @@ steps:
             cohort_name: cohort_name
         out:
             [merged_vcf]
-    add_population_frequency:
-        run: ../tools/add_sv_population_frequency.cwl
-        in:
-            vcf: merge_vcfs/merged_vcf
-            sv_db: sv_db
-            cohort_name: cohort_name
-        out:
-            [merged_annotated_vcf]
     annotate_variants:
-        run: ../tools/vep.cwl
+        run: ../tools/annotsv.cwl
         in:
-            vcf: add_population_frequency/merged_annotated_vcf
-            cache_dir: vep_cache_dir
-            ensembl_assembly: vep_ensembl_assembly
-            ensembl_version: vep_ensembl_version
-            ensembl_species: vep_ensembl_species
-            synonyms_file: synonyms_file
-            coding_only: coding_only
-            reference: reference
-            custom_gnomad_vcf: custom_gnomad_vcf
-            custom_clinvar_vcf: custom_clinvar_vcf
-            plugins: vep_plugins
-            everything:
-                default: false
-            pick:
-                default: "per_gene"
+            genome_build: genome_build
+            input_vcf: merge_sv_vcfs/merged_vcf
+            snps_vcf:
+                source: [snps_vcf]
+                valueFrom: ${ return [ self ]; }
         out:
-            [annotated_vcf, vep_summary]
-    sort_vcf:
-        run: ../tools/sort_vcf.cwl
+            [sv_variants_tsv]
+    merge_sv_bgzip:
+        run: ../tools/bgzip.cwl
         in:
-            vcf: annotate_variants/annotated_vcf
+            file: merge_sv_vcfs/merged_vcf
         out:
-            [sorted_vcf]
+            [bgzipped_file]
