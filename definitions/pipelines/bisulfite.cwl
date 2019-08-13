@@ -34,8 +34,8 @@ inputs:
     assay_non_cpg_sites:
         type:
             type: enum
-            symbols: ["yes", "no"]
-        default: "no"
+            symbols: ["true", "false"]
+        default: "false"
 outputs:
     cram:
         type: File
@@ -49,7 +49,7 @@ outputs:
         outputSource: vcf2bed/methylation_bed
     cpg_bigwig:
         type: File[]
-        outputSource: bedgraph_to_bigwig/methylation_bigwigs
+        outputSource: bedgraph_to_bigwig/methylation_bigwig
     gathered_directory:
         type: Directory
         outputSource: bisulfite_qc/QC_directory
@@ -105,7 +105,7 @@ steps:
             methylation_bedgraph: vcf2bed/methylation_bedgraph
             reference_sizes: reference_sizes
         out:
-            [methylation_bigwigs]
+            [methylation_bigwig]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
