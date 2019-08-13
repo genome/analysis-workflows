@@ -178,6 +178,9 @@ inputs:
     germline_vep_to_table_fields:
         type: string[]
         default: [HGVSc,HGVSp]
+    disclaimer_text:
+        type: string?
+        default: "This laboratory developed test (LDT) was developed and its performance characteristics determined by the CLIA Licensed Environment laboratory at the McDonnell Genome Institute at Washington University (MGI-CLE, CLIA #26D2092546, CAP #9047655), Dr. David H. Spencer MD, PhD, FCAP, Medical Director. 4444 Forest Park Avenue, Rm 4127 St. Louis, Missouri 63108 (314) 286-1460 Fax: (314) 286-1810. The MGI-CLE laboratory is regulated under CLIA as certified to perform high-complexity testing. This test has not been cleared or approved by the FDA."
 outputs:
     tumor_cram:
         type: File
@@ -233,6 +236,33 @@ outputs:
     normal_verify_bam_id_depth:
         type: File
         outputSource: normal_alignment_and_qc/verify_bam_id_depth
+    followup_cram:
+        type: File
+        outputSource: followup_index_cram/indexed_cram
+    followup_mark_duplicates_metrics:
+        type: File
+        outputSource: followup_alignment_and_qc/mark_duplicates_metrics
+    followup_insert_size_metrics:
+        type: File
+        outputSource: followup_alignment_and_qc/insert_size_metrics
+    followup_alignment_summary_metrics:
+        type: File
+        outputSource: followup_alignment_and_qc/alignment_summary_metrics
+    followup_hs_metrics:
+        type: File
+        outputSource: followup_alignment_and_qc/hs_metrics
+    followup_summary_hs_metrics:
+        type: File[]
+        outputSource: followup_alignment_and_qc/summary_hs_metrics
+    followup_flagstats:
+        type: File
+        outputSource: followup_alignment_and_qc/flagstats
+    followup_verify_bam_id_metrics:
+        type: File
+        outputSource: followup_alignment_and_qc/verify_bam_id_metrics
+    followup_verify_bam_id_depth:
+        type: File
+        outputSource: followup_alignment_and_qc/verify_bam_id_depth
     mutect_unfiltered_vcf:
         type: File
         outputSource: tumor_detect_variants/mutect_unfiltered_vcf
@@ -285,9 +315,6 @@ outputs:
     normal_indel_bam_readcount_tsv:
         type: File
         outputSource: tumor_detect_variants/normal_indel_bam_readcount_tsv
-    followup_cram:
-        type: File
-        outputSource: followup_index_cram/indexed_cram
     followup_snv_bam_readcount_tsv:
         type: File
         outputSource: followup_bam_readcount/snv_bam_readcount_tsv
@@ -304,7 +331,7 @@ outputs:
         secondaryFiles: [.tbi]
     tumor_final_tsv:
         type: File
-        outputSource: tumor_detect_variants/final_tsv
+        outputSource: add_disclaimer_to_tumor_final_tsv/output_file
     tumor_vep_summary:
         type: File
         outputSource: tumor_detect_variants/vep_summary
@@ -322,7 +349,7 @@ outputs:
         secondaryFiles: [.tbi]
     germline_final_tsv:
         type: File
-        outputSource: germline_detect_variants/final_tsv
+        outputSource: add_disclaimer_to_germline_final_tsv/output_file
     somalier_concordance_metrics:
         type: File
         outputSource: concordance/somalier_pairs
@@ -337,7 +364,7 @@ outputs:
         outputSource: coverage_stat_report/coverage_stat
     full_variant_report:
         type: File
-        outputSource:: full_variant_report/full_variant_report
+        outputSource: add_disclaimer_to_full_variant_report/output_file
 steps:
     normal_alignment_and_qc:
         run: exome_alignment.cwl
@@ -462,6 +489,15 @@ steps:
             custom_clinvar_vcf: custom_clinvar_vcf
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
+    add_disclaimer_to_tumor_final_tsv:
+        run: ../tools/add_string_at_line.cwl
+        in:
+            input_file: tumor_detect_variants/final_tsv
+            line_number:
+                default: 1
+            some_text: disclaimer_text
+        out:
+            [output_file]
     pindel_region:
         run: ../subworkflows/pindel_region.cwl
         in:
@@ -533,6 +569,15 @@ steps:
             final_tsv_prefix: germline_tsv_prefix
         out:
             [final_vcf, coding_vcf, limited_vcf, final_tsv]
+    add_disclaimer_to_germline_final_tsv:
+        run: ../tools/add_string_at_line.cwl
+        in:
+            input_file: germline_detect_variants/final_tsv
+            line_number:
+                default: 1
+            some_text: disclaimer_text
+        out:
+            [output_file]
     alignment_stat_report:
         run: ../tools/cle_aml_trio_report_alignment_stat.cwl
         in:
@@ -560,7 +605,16 @@ steps:
             followup_indel_bam_readcount: followup_bam_readcount/indel_bam_readcount_tsv
             pindel_region_vcf: pindel_region/pindel_region_vcf
         out:
-            [full_variant_report]       
+            [full_variant_report]
+    add_disclaimer_to_full_variant_report:
+        run: ../tools/add_string_at_line.cwl
+        in:
+            input_file: full_variant_report/full_variant_report
+            line_number:
+                default: 1
+            some_text: disclaimer_text
+        out:
+            [output_file]
     normal_bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
