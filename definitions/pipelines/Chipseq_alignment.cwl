@@ -30,10 +30,13 @@ inputs:
         type: File
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
+        default: []
     per_target_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
+        default: []
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
+        default: []
     picard_metric_accumulation_level:
         type: string
     bqsr_intervals:
