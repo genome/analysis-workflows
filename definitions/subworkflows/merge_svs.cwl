@@ -32,7 +32,7 @@ inputs:
 outputs:
     merged_sv_vcf:
         type: File
-        outputSource: merge_sv_bgzip/bgzipped_file
+        outputSource: bgzip_merged_sv_vcf/bgzipped_file
     merged_annotated_tsv:
         type: File
         outputSource: annotate_variants/sv_variants_tsv
@@ -60,7 +60,7 @@ steps:
                 valueFrom: ${ return [ self ]; }
         out:
             [sv_variants_tsv]
-    merge_sv_bgzip:
+    bgzip_merged_sv_vcf:
         run: ../tools/bgzip.cwl
         in:
             file: merge_sv_vcfs/merged_vcf
