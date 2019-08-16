@@ -16,17 +16,9 @@ requirements:
                 set -o pipefail
                 set -o errexit
 
-                name=$1
-                bam=$2
-                reference_fasta=$3  #assumes that there's a .genome file next to the reference .fa
-                genome_file = `basename $3 .fa`
-                if [[ -f "$genome_file" ]];
-                then
-                    echo "File $genome_file does exist."
-                else
-                    echo "File $genome_file does not exist. Please make sure that the .genome file is in the same directory as the .fa file."
-                    exit 1;
-                fi
+                name="homer_tag_directory"
+                bam=$1
+                reference_fasta=$2
 
                 export PATH=$PATH:/opt/homer/bin
                 if [[ ! -d $name/homer ]];then
@@ -36,20 +28,16 @@ requirements:
                 makeTagDirectory $name/homer $bam
 
 inputs:
-    tag_directory_name:
-        type: string
-        inputBinding:
-            position: 1
     sam:
         type: File
         inputBinding:
-            position: 2
+            position: 1
     reference:
         type: string
         inputBinding:
-            position: 3
+            position: 2
 outputs:
     tag_directory:
         type: Directory
         outputBinding:
-            glob: "$(inputs.tag_directory_name)"
+            glob: "homer_tag_directory"
