@@ -6,7 +6,7 @@ label: 'Creating the homer tag directory'
 baseCommand: ["/bin/bash", "homer_tag_directory.sh"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "chrisamiller/homer"
+      dockerPull: "mgibio/homer:0.1"
     - class: ResourceRequirement
       ramMin: 32000
     - class: InitialWorkDirRequirement
