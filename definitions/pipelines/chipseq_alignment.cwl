@@ -129,7 +129,6 @@ steps:
         run: ../tools/homer_tag_directory.cwl
         in:
             sam: bam_to_sam/final_sam
-            reference: reference
         out: [tag_directory]
 
     qc:
