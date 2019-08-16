@@ -10,7 +10,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 16000
 
-arguments: [out.sam]
+arguments: ["$(inputs.bam.nameroot).sam"]
 
 inputs:
     bam:
@@ -21,4 +21,4 @@ outputs:
     final_sam:
         type: File
         outputBinding:
-            glob: "out.sam"
+            glob: "$(inputs.bam.nameroot).sam"
