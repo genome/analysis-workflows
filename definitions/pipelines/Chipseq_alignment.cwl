@@ -7,12 +7,14 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
+          - $import: ../types/sequence_data.yml
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     reference: string
     final_name:
         type: string?
-    sequence:
+    chipseq_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     mills:
         type: File
@@ -40,7 +42,7 @@ inputs:
     picard_metric_accumulation_level:
         type: string
     bqsr_intervals:
-        type: string[]?
+        type: string[]
     minimum_mapping_quality:
         type: int?
     minimum_base_quality:
@@ -109,7 +111,7 @@ steps:
         run: ../subworkflows/sequence_to_bqsr.cwl
         in:
             reference: reference
-            unaligned: sequence
+            unaligned: chipseq_sequence
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
