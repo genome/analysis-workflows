@@ -38,7 +38,7 @@ inputs:
             position: 3
 outputs:
     renamed_vcf:
-       type: File
+        type: File
         secondaryFiles: [.tbi]
         outputBinding:
             glob: sample_renamed.vcf.gz
