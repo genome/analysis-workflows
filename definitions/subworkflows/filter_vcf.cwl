@@ -5,6 +5,7 @@ class: Workflow
 label: "Apply filters to VCF file"
 requirements:
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     vcf:
         type: File
@@ -28,8 +29,7 @@ inputs:
 outputs: 
     filtered_vcf:
         type: File
-        outputSource: filter_vcf_cle/cle_filtered_vcf
-        secondaryFiles: [.tbi]
+        outputSource: set_final_vcf_name/replacement
 steps:
     filter_vcf_gnomADe_allele_freq:
         run: ../tools/filter_vcf_gnomADe_allele_freq.cwl
@@ -69,3 +69,11 @@ steps:
             threshold: filter_somatic_llr_threshold
         out:
             [somatic_llr_filtered_vcf]
+    set_final_vcf_name:
+        run: ../tools/staged_rename.cwl
+        in:
+            original: filter_vcf_somatic_llr/somatic_llr_filtered_vcf
+            name:
+                valueFrom: 'annotated_filtered.vcf'
+        out:
+            [replacement]

@@ -1,0 +1,20 @@
+type: record
+name: sequence_data
+label: sequence data with readgroup information
+fields:
+    sequence:
+        type:
+            - type: record
+              name: bam
+              fields:
+                  bam:
+                      type: File
+            - type: record
+              name: fastqs
+              fields:
+                  fastq1:
+                      type: File
+                  fastq2:
+                      type: File
+    readgroup:
+        type: string

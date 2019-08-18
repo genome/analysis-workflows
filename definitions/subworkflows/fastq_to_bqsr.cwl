@@ -2,14 +2,16 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "Unaligned BAM to BQSR"
+label: "FASTQ to BQSR"
 requirements:
     - class: ScatterFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: MultipleInputFeatureRequirement
 
 inputs:
-    bams:
+    fastq_1s:
+        type: File[]
+    fastq_2s:
         type: File[]
     readgroups:
         type: string[]
@@ -39,19 +41,20 @@ outputs:
         outputSource: mark_duplicates_and_sort/metrics_file
 steps:
     align:
-        scatter: [bam, readgroup]
+        scatter: [fastq_1, fastq_2, readgroup]
         scatterMethod: dotproduct
-        run: align.cwl
+        run: ../tools/fastq_align_and_tag.cwl
         in:
-            bam: bams
+            fastq_1: fastq_1s
+            fastq_2: fastq_2s
             readgroup: readgroups
             reference: reference
         out:
-            [tagged_bam]
+            [aligned_bam]
     merge:
         run: ../tools/merge_bams_samtools.cwl
         in:
-            bams: align/tagged_bam
+            bams: align/aligned_bam
             name: final_name
         out:
             [merged_bam]

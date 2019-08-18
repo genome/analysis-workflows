@@ -7,13 +7,12 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
+          - $import: ../types/sequence_data.yml
     - class: SubworkflowFeatureRequirement
 inputs:
     reference: string
-    bams:
-        type: File[]
-    readgroups:
-        type: string[]
+    sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     mills:
         type: File
         secondaryFiles: [.tbi]
@@ -149,8 +148,7 @@ steps:
         run: germline_exome.cwl
         in:
             reference: reference
-            bams: bams
-            readgroups: readgroups
+            sequence: sequence
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
