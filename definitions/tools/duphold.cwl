@@ -23,25 +23,25 @@ inputs:
         type: string?
         default: "duphold_annotated.vcf"
         inputBinding:
-            position: 4
+            position: 2
             prefix: "--output"
         doc: "output vcf file name"
     reference:
         type: string
         inputBinding:
-            position: 2
+            position: 3
             prefix: "--fasta"
         doc: "reference used to align bam"
     snps_vcf:
         type: File?
         inputBinding:
-            position: 3
+            position: 4
             prefix: "--snp"
         doc: "snps vcf file to annotate hom/het variant counts within sv"
     sv_vcf:
         type: File
         inputBinding:
-            position: 4
+            position: 5
             prefix: "--vcf"
         doc: "sv vcf file to annotate"
 
