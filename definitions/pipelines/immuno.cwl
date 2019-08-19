@@ -728,15 +728,10 @@ steps:
         out:
             [cram,mark_duplicates_metrics,insert_size_metrics,insert_size_histogram,alignment_summary_metrics,hs_metrics,per_target_coverage_metrics,per_target_hs_metrics,per_base_coverage_metrics,per_base_hs_metrics,summary_hs_metrics,flagstats,verify_bam_id_metrics,verify_bam_id_depth,gvcf,final_vcf,coding_vcf,limited_vcf,vep_summary,optitype_tsv,optitype_plot]
 
-    sanitize_somatic_vcf:
-        run: ../tools/sanitize_mutect_vcfs.cwl
-        in:
-            input_vcf: somatic/final_vcf
-        out: [sanitized_vcf]
     rename_somatic_vcf_tumor_sample:
         run: ../tools/replace_vcf_sample_name.cwl
         in:
-            input_vcf: sanitize_somatic_vcf/sanitized_vcf
+            input_vcf: somatic/final_vcf
             sample_to_replace:
                 default: 'TUMOR'
             new_sample_name: immuno_tumor_sample_name
