@@ -8,7 +8,7 @@ arguments: ["--threads", "$(runtime.cores)"]
 
 requirements:
     - class: ResourceRequirement
-      ramMin: 4000
+      ramMin: 10000
     - class: DockerRequirement
       dockerPull: "mgibio/duphold-cwl:0.1.4"
 
