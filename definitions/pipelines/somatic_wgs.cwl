@@ -12,12 +12,12 @@ requirements:
     - class: StepInputExpressionRequirement
 inputs:
     reference: string
-    tumor_bams:
+    tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     tumor_name:
         type: string?
         default: 'tumor'
-    normal_bams:
+    normal_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     normal_name:
         type: string?
