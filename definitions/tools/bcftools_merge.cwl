@@ -35,17 +35,26 @@ inputs:
             position: 3
             prefix: "--missing-to-ref"
         doc: "assume genotypes at missing sites are 0/0"
-    output_vcf_name:
-        type: string?
-        default: "bcftools_merged.vcf"
+    output_type:
+        type:
+            type: enum
+            symbols: ["b", "u", "z", "v"]
+        default: "z"
         inputBinding:
             position: 4
+            prefix: "--output-type"
+        doc: "output file format"
+    output_vcf_name:
+        type: string?
+        default: "bcftools_merged.vcf.gz"
+        inputBinding:
+            position: 5
             prefix: "--output"
         doc: "output vcf file name"
     vcfs:
         type: File[]
         inputBinding:
-            position: 5
+            position: 6
         doc: "input bgzipped tabix indexed vcfs to merge"
 
 outputs:
