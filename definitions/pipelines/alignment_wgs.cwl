@@ -41,7 +41,7 @@ inputs:
         type: ../types/labelled_file.yml#labelled_file[]
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
-    final_name:
+    sample_name:
         type: string?
 outputs:
     bam:
@@ -105,11 +105,12 @@ steps:
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
             bqsr_intervals: bqsr_intervals
-            final_name: final_name
+            final_name: sample_name
         out: [final_bam,mark_duplicates_metrics_file]
     qc:
         run: ../subworkflows/qc_wgs.cwl
         in:
+            sample_name: sample_name
             bam: alignment/final_bam
             reference: reference
             omni_vcf: omni_vcf
