@@ -7,21 +7,18 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
+          - $import: ../types/sequence_data.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
     reference: string
     tumor_bams:
-        type: File[]
-    tumor_readgroups:
-        type: string[]
+        type: ../types/sequence_data.yml#sequence_data[]
     tumor_name:
         type: string?
         default: 'tumor'
     normal_bams:
-        type: File[]
-    normal_readgroups:
-        type: string[]
+        type: ../types/sequence_data.yml#sequence_data[]
     normal_name:
         type: string?
         default: 'normal'
@@ -354,8 +351,7 @@ steps:
         run: wgs_alignment.cwl
         in:
             reference: reference
-            bams: tumor_bams
-            readgroups: tumor_readgroups
+            sequence: tumor_bams
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
@@ -368,17 +364,14 @@ steps:
             per_base_intervals: per_base_intervals
             per_target_intervals: per_target_intervals
             summary_intervals: summary_intervals
-            final_name:
-                source: tumor_name
-                valueFrom: "$(self).bam"
+            sample_name: tumor_name
         out:
             [bam, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics, bamcoverage_bigwig] 
     normal_alignment_and_qc:
         run: wgs_alignment.cwl
         in:
             reference: reference
-            bams: normal_bams
-            readgroups: normal_readgroups
+            sequence: normal_bams
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
@@ -391,9 +384,7 @@ steps:
             per_base_intervals: per_base_intervals
             per_target_intervals: per_target_intervals
             summary_intervals: summary_intervals
-            final_name:
-                source: normal_name
-                valueFrom: "$(self).bam"
+            sample_name: normal_name
         out:
             [bam, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics, bamcoverage_bigwig] 
     concordance:
