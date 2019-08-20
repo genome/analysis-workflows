@@ -9,6 +9,8 @@ requirements:
           - $import: ../types/labelled_file.yml
     - class: SubworkflowFeatureRequirement
 inputs:
+    sample_name:
+        type: string
     bam:
         type: File
         secondaryFiles: [^.bai]
@@ -98,6 +100,7 @@ steps:
     collect_gc_bias_metrics:
         run: ../tools/collect_gc_bias_metrics.cwl
         in:
+            sample_name: sample_name
             bam: bam
             reference: reference
             metric_accumulation_level: picard_metric_accumulation_level
@@ -106,6 +109,7 @@ steps:
     collect_wgs_metrics:
         run: ../tools/collect_wgs_metrics.cwl
         in:
+            sample_name: sample_name
             bam: bam
             reference: reference
             intervals: intervals
