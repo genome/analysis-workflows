@@ -10,7 +10,8 @@ requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
     sample_name:
-        type: string
+        type: string?
+        default: 'final'
     bam:
         type: File
         secondaryFiles: [^.bai]
