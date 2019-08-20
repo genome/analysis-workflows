@@ -20,7 +20,9 @@ inputs:
             prefix: "--force-samples"
         doc: "resolve duplicate sample names"
     merge_method:
-        type: string?
+        type:
+            type: enum
+            symbols: ["none", "snps", "indels", "both", "all", "id"]
         default: "none"
         inputBinding:
             position: 2
