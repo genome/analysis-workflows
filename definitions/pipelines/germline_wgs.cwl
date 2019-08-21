@@ -265,7 +265,7 @@ outputs:
         outputSource: sv_detect_variants/filtered_sv_vcfs
 steps:
     alignment_and_qc:
-        run: wgs_alignment.cwl
+        run: alignment_wgs.cwl
         in:
             reference: reference
             sequence: sequence
