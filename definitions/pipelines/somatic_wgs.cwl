@@ -351,7 +351,7 @@ steps:
         run: wgs_alignment.cwl
         in:
             reference: reference
-            sequence: tumor_bams
+            sequence: tumor_sequence
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
@@ -371,7 +371,7 @@ steps:
         run: wgs_alignment.cwl
         in:
             reference: reference
-            sequence: normal_bams
+            sequence: normal_sequence
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
