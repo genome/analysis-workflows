@@ -16,7 +16,10 @@ requirements:
       dockerPull: mgibio/cle:v1.3.1
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     pindel_output_summary:
         type: File
 outputs:

@@ -8,7 +8,10 @@ requirements:
     - class: ScatterFeatureRequirement
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     bam:
         type: File
         secondaryFiles: [^.bai]

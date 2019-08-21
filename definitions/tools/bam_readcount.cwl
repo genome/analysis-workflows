@@ -26,7 +26,10 @@ inputs:
         inputBinding:
             position: -7
     reference_fasta:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             position: -6
     bam:

@@ -12,7 +12,10 @@ requirements:
 stdout: "$(inputs.bam.nameroot).cram"
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "-T"
             position: 1

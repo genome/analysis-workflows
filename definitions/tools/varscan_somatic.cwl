@@ -21,7 +21,10 @@ inputs:
             position: 2
         secondaryFiles: [^.bai]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             position: 3
     strand_filter:

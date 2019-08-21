@@ -14,7 +14,10 @@ arguments:
     "-o", { valueFrom: $(runtime.outdir)/docm_raw_variants.vcf }]
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "-R"
             position: 1

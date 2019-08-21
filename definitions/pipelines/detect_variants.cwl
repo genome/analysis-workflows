@@ -10,7 +10,10 @@ requirements:
           - $import: ../types/vep_custom_annotation.yml
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .index]
     tumor_bam:
         type: File
         secondaryFiles: [.bai,^.bai]

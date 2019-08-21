@@ -54,7 +54,12 @@ inputs:
         type: File
 
     #somatic inputs
-    reference: string
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa, .index]
+
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     tumor_name:

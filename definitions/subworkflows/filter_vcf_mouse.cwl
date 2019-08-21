@@ -19,7 +19,10 @@ inputs:
     filter_somatic_llr_threshold:
         type: float
     reference: 
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     filter_minimum_depth:
         type: int
     sample_names:

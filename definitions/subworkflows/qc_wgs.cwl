@@ -16,7 +16,10 @@ inputs:
         type: File
         secondaryFiles: [^.bai]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     intervals:
         type: File
     omni_vcf:
