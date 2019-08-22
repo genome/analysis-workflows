@@ -26,7 +26,7 @@ requirements:
             filter_expression="ABS(SVLEN) < $SV_SIZE"
           elif [ "$FILTER_METHOD" ==  "min" ]; then
             echo "Running filter for min size svs"
-            ffilter_expression="ABS(SVLEN) > $SV_SIZE"
+            filter_expression="ABS(SVLEN) > $SV_SIZE"
           else
             echo "Filter method: '$FILTER_METHOD' is not supported for size SV filtering"
             exit 1
