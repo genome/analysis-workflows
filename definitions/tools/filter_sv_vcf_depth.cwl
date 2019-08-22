@@ -28,6 +28,9 @@ requirements:
           elif [ "$VCF_SOURCE" ==  "cnvkit" ]; then
             echo "Running filter for cnvkit vcf"
             filter_expression="(FOLD_CHANGE>$DUP_DEPTH | FOLD_CHANGE<$DEL_DEPTH)"
+          elif [ "$VCF_SOURCE" ==  "duphold" ]; then
+            echo "Running filter for vcf annotated by duphold"
+            filter_expression="(SVTYPE='DEL' & FMT/DHFFC[0] < $DEL_DEPTH) | (SVTYPE='DUP' & FMT/DHBFC[0] > $DUP_DEPTH) | SVTYPE='BND' | SVTYPE='INS' | SVTYPE='INV'"
           else
             echo "vcf source: '$VCF_SOURCE' is not supported for SV filtering"
             exit 1
@@ -61,7 +64,7 @@ inputs:
     vcf_source:
         type:
           - type: enum
-            symbols: ["cnvnator", "cnvkit"]
+            symbols: ["cnvnator", "cnvkit", "duphold"]
         inputBinding:
           position: 5
         doc: "source caller of the vcf input file"
