@@ -24,7 +24,7 @@ inputs:
         default: 400
     scatter_count:
         type: int
-        default: 50
+        default: 40
 outputs:
     unfiltered_vcf:
         type: File
