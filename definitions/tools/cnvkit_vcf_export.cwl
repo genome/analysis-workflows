@@ -9,7 +9,7 @@ requirements:
       dockerPull: etal/cnvkit:0.9.5
     - class: ShellCommandRequirement
     - class: ResourceRequirement
-      ramMin: 4000
+      ramMin: 8000
     - class: StepInputExpressionRequirement
     - class: InlineJavascriptRequirement
 baseCommand: ["/usr/bin/python", "/usr/local/bin/cnvkit.py", "call"]
