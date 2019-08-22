@@ -34,7 +34,7 @@ inputs:
         inputBinding:
             position: -2
     male_reference:
-        type: boolean
+        type: boolean?
         default: false
         inputBinding:
             position: 1
