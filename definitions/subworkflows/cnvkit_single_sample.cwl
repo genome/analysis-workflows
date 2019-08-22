@@ -24,6 +24,11 @@ inputs:
         type: File
     cnvkit_vcf_name:
         type: string?
+    segment_filter:
+        type:
+          - "null"
+          - type: enum
+            symbols: ["ampdel", "ci", "cn", "sem"]
 outputs:
     cn_diagram:
         type: File?
@@ -64,6 +69,7 @@ steps:
     cns_to_vcf:
         run: ../tools/cnvkit_vcf_export.cwl
         in:
+            segment_filter: segment_filter
             cns_file: cnvkit_main/tumor_segmented_ratios
             male_reference: male_reference
             cnr_file: cnvkit_main/tumor_bin_level_ratios
