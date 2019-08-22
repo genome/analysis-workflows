@@ -20,6 +20,15 @@ arguments: [
     "/usr/bin/python", "/usr/local/bin/cnvkit.py", "export", "vcf", "adjusted.tumor.cns"
 ]
 inputs:
+    segment_filter:
+        type:
+          - "null"
+          - type: enum
+            symbols: ["ampdel", "ci", "cn", "sem"]
+        inputBinding:
+            position: -3
+            prefix: "--filter"
+        doc: "method for filtering/merging neighboring copy number segments"
     cns_file:
         type: File
         inputBinding:
