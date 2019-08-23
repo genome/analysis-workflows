@@ -36,6 +36,12 @@ steps:
             sample_to_replace: normal_sample_name
             new_sample_name: tumor_sample_name
         out: [renamed_vcf]
+    index_renamed_germline:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: rename_germline_vcf/renamed_vcf
+        out:
+            [indexed_vcf]
 
     select_somatic_tumor_sample:
         run: ../tools/select_variants.cwl
@@ -58,7 +64,7 @@ steps:
         run: ../tools/pvacseq_combine_variants.cwl
         in:
             reference: reference
-            germline_vcf: rename_germline_vcf/renamed_vcf
+            germline_vcf: index_renamed_germline/indexed_vcf
             somatic_vcf: index_filtered_somatic/indexed_vcf
         out:
             [combined_vcf]

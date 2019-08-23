@@ -2,43 +2,44 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "Replace the sample name in a gzipped vcf and return"
-baseCommand: ['/bin/bash', 'replacer.sh']
+
+baseCommand: ["/bin/bash", "rename_sample.sh"]
 requirements:
-    - class: ShellCommandRequirement
-    - class: DockerRequirement
-      dockerPull: "mgibio/samtools-cwl:1.0.0"
+    - class: InlineJavascriptRequirement
     - class: ResourceRequirement
       ramMin: 8000
+    - class: DockerRequirement
+      dockerPull: "mgibio/bcftools-cwl:1.9"
     - class: InitialWorkDirRequirement
       listing:
-      - entryname: 'replacer.sh'
+      - entryname: "rename_sample.sh"
         entry: |
-            set -eou pipefail
+          #!/bin/bash
+          set -eou pipefail
+          basen=`basename "$3"`
+          basen="renamed.$basen"
+          echo "$1 $2" > sample_update.txt
+          /opt/bcftools/bin/bcftools reheader -s sample_update.txt -o "$basen" "$3"
 
-            if [[ "$1" =~ ".vcf.gz" ]];then
-                zcat "$1" | sed -e "s/$2/$3/g" | /opt/htslib/bin/bgzip > sample_renamed.vcf.gz
-            else
-                cat "$1" | sed -e "s/$2/$3/g" | /opt/htslib/bin/bgzip > sample_renamed.vcf.gz
-            fi
-
-            /usr/bin/tabix -p vcf sample_renamed.vcf.gz
-
-arguments: [{valueFrom: $(inputs.input_vcf)}]
 inputs:
     input_vcf:
         type: File
+        inputBinding:
+            position: 3
+        doc: "vcf file to filter"
     sample_to_replace:
         type: string
         inputBinding:
-            position: 2
+            position: 1
+        doc: "Sample name to be replaced"
     new_sample_name:
         type: string
         inputBinding:
-            position: 3
+            position: 2
+        doc: "Sample name to replace the other"
+
 outputs:
     renamed_vcf:
         type: File
-        secondaryFiles: [.tbi]
         outputBinding:
-            glob: sample_renamed.vcf.gz
+            glob: $("renamed." + inputs.input_vcf.basename)

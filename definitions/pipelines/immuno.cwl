@@ -744,10 +744,16 @@ steps:
                 default: 'NORMAL'
             new_sample_name: immuno_normal_sample_name
         out: [renamed_vcf]
+    index_renamed_somatic:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: rename_somatic_vcf_normal_sample/renamed_vcf
+        out:
+            [indexed_vcf]
     phase_vcf:
         run: ../subworkflows/phase_vcf.cwl
         in:
-            somatic_vcf: rename_somatic_vcf_normal_sample/renamed_vcf
+            somatic_vcf: index_renamed_somatic/indexed_vcf
             germline_vcf: germline/final_vcf
             reference: reference
             reference_dict: reference_dict
@@ -765,7 +771,7 @@ steps:
     pvacseq:
         run: ../subworkflows/pvacseq.cwl
         in:
-            detect_variants_vcf: rename_somatic_vcf_normal_sample/renamed_vcf
+            detect_variants_vcf: index_renamed_somatic/indexed_vcf
             sample_name: immuno_tumor_sample_name
             normal_sample_name: immuno_normal_sample_name
             rnaseq_bam: rnaseq/final_bam
