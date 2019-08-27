@@ -10,7 +10,7 @@ requirements:
       coresMin: 1
       ramMin: 16000
     - class: DockerRequirement
-      dockerPull: "mgibio/grolar-cwl"
+      dockerPull: "mgibio/grolar-cwl:1.0"
     - class: InitialWorkDirRequirement
       listing:
       - entryname: 'grolar.R'
