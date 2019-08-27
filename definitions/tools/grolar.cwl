@@ -35,22 +35,30 @@ requirements:
              if (assembly_version == "GRCh38"){
                library(EnsDb.Hsapiens.v86)
                edb <- EnsDb.Hsapiens.v86
-             } else {
+             } else if (assembly_version == "GRCh37") {
                library(EnsDb.Hsapiens.v75)
                edb <- EnsDb.Hsapiens.v75
+             } else {
+               message("Unknown assembly passed to grolar:", assembly_version)
+               message("Options are: GRCh37, GRCh38")
+               quit(status=1)
              }
            } else if (species == "mus_musculus"){
              if (assembly_version == "GRCm38"){
                library(EnsDb.Mmusculus.v79)
                edb <- EnsDb.Mmusculus.v79
-             } else {
+             } else if (assembly_version == "GRCm37"){
                library(EnsDb.Mmusculus.v75)
                edb <- EnsDb.Mmusculus.v75
+             } else {
+               message("Unknown assembly passed to grolar:", assembly_version)
+               message("Options are: GRCm38, GRCm37")
+               quit(status=1)
              }
 
            } else {
-             print(paste("Unknown species passed to grolar:", species))
-             print("Options are: homo_sapiens, mus_musculus")
+             message("Unknown species passed to grolar:", species)
+             message("Options are: homo_sapiens, mus_musculus")
              quit(status=1)
            }
            listColumns(edb)
