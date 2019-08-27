@@ -16,7 +16,8 @@ requirements:
       ramMin: 4000
     - class: InitialWorkDirRequirement
       listing:
-          - $(inputs.cram)
+        - ${ var f = inputs.cram; delete f.secondaryFiles; return f }
+    - class: InlineJavascriptRequirement
 inputs:
     cram:
         type: File

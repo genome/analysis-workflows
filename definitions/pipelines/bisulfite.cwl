@@ -30,6 +30,12 @@ inputs:
         type: int
     QCannotation:
         type: File
+    assay_non_cpg_sites:
+        type:
+            type: enum
+            symbols: ["true", "false"]
+        default: "false"
+        doc: "Variable to determine if user wants to obtain obtain bed/bigwig files for non-CpG cytosines. Value - true or false"
 outputs:
     cram:
         type: File
@@ -39,11 +45,11 @@ outputs:
         type: File
         outputSource: pileup/vcf
     cpgs:
-        type: File
-        outputSource: vcf2bed/cpgs
+        type: File[]
+        outputSource: vcf2bed/methylation_bed
     cpg_bigwig:
-        type: File
-        outputSource: bedgraph_to_bigwig/cpg_bigwig
+        type: File[]
+        outputSource: bedgraph_to_bigwig/methylation_bigwig
     gathered_directory:
         type: Directory
         outputSource: bisulfite_qc/QC_directory
@@ -90,15 +96,16 @@ steps:
         in:
             vcf: pileup/vcf
             reference: reference_index
+            assay_non_cpg_sites: assay_non_cpg_sites
         out:
-            [cpgs,cpg_bedgraph]
+            [methylation_bed,methylation_bedgraph]
     bedgraph_to_bigwig:
         run: ../tools/bedgraph_to_bigwig.cwl
         in:
-            bedgraph: vcf2bed/cpg_bedgraph
+            methylation_bedgraph: vcf2bed/methylation_bedgraph
             reference_sizes: reference_sizes
         out:
-            [cpg_bigwig]
+            [methylation_bigwig]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:

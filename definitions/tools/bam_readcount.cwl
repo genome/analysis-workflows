@@ -8,9 +8,9 @@ baseCommand: ["/usr/bin/python", "/usr/bin/bam_readcount_helper.py"]
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "mgibio/bam_readcount_helper-cwl:1.1.0"
+      dockerPull: "mgibio/bam_readcount_helper-cwl:1.1.1"
     - class: ResourceRequirement
-      ramMin: 4000
+      ramMin: 16000
     - class: InlineJavascriptRequirement
 arguments: [
     { valueFrom: $(runtime.outdir), position: -3 }

@@ -7,21 +7,18 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
+          - $import: ../types/sequence_data.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
     reference: string
-    tumor_bams:
-        type: File[]
-    tumor_readgroups:
-        type: string[]
+    tumor_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     tumor_name:
         type: string?
         default: 'tumor'
-    normal_bams:
-        type: File[]
-    normal_readgroups:
-        type: string[]
+    normal_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     normal_name:
         type: string?
         default: 'normal'
@@ -59,24 +56,11 @@ inputs:
         default: 0
     interval_list:
         type: File
-    cosmic_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    panel_of_normals_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
     strelka_cpu_reserved:
         type: int?
         default: 8
     mutect_scatter_count:
         type: int
-    mutect_artifact_detection_mode:
-        type: boolean
-        default: false
-    mutect_max_alt_allele_in_normal_fraction:
-        type: float?
-    mutect_max_alt_alleles_in_normal_count:
-        type: int?
     varscan_strand_filter:
         type: int?
         default: 0
@@ -143,6 +127,9 @@ inputs:
         secondaryFiles: [.tbi]
     somalier_vcf:
         type: File
+    disclaimer_text:
+        type: string?
+        default: "This laboratory developed test (LDT) was developed and its performance characteristics determined by the CLIA Licensed Environment laboratory at the McDonnell Genome Institute at Washington University (MGI-CLE, CLIA #26D2092546, CAP #9047655), Dr. David H. Spencer MD, PhD, FCAP, Medical Director. 4444 Forest Park Avenue, Rm 4127 St. Louis, Missouri 63108 (314) 286-1460 Fax: (314) 286-1810. The MGI-CLE laboratory is regulated under CLIA as certified to perform high-complexity testing. This test has not been cleared or approved by the FDA."
 outputs:
     tumor_cram:
         type: File
@@ -268,7 +255,7 @@ outputs:
         secondaryFiles: [.tbi]
     final_tsv:
         type: File
-        outputSource: detect_variants/final_tsv
+        outputSource: add_disclaimer_to_final_tsv/output_file
     vep_summary:
         type: File
         outputSource: detect_variants/vep_summary
@@ -295,8 +282,7 @@ steps:
         run: exome_alignment.cwl
         in:
             reference: reference
-            bams: tumor_bams
-            readgroups: tumor_readgroups
+            sequence: tumor_sequence
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
@@ -319,8 +305,7 @@ steps:
         run: exome_alignment.cwl
         in:
             reference: reference
-            bams: normal_bams
-            readgroups: normal_readgroups
+            sequence: normal_sequence
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
@@ -355,16 +340,10 @@ steps:
             tumor_bam: tumor_alignment_and_qc/bam
             normal_bam: normal_alignment_and_qc/bam
             interval_list: interval_list
-            dbsnp_vcf: dbsnp_vcf
-            cosmic_vcf: cosmic_vcf
-            panel_of_normals_vcf: panel_of_normals_vcf
             strelka_exome_mode:
                 default: true
             strelka_cpu_reserved: strelka_cpu_reserved
             mutect_scatter_count: mutect_scatter_count
-            mutect_artifact_detection_mode: mutect_artifact_detection_mode
-            mutect_max_alt_allele_in_normal_fraction: mutect_max_alt_allele_in_normal_fraction
-            mutect_max_alt_alleles_in_normal_count: mutect_max_alt_alleles_in_normal_count
             varscan_strand_filter: varscan_strand_filter
             varscan_min_coverage: varscan_min_coverage
             varscan_min_var_freq: varscan_min_var_freq
@@ -389,6 +368,15 @@ steps:
             custom_clinvar_vcf: custom_clinvar_vcf
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
+    add_disclaimer_to_final_tsv:
+        run: ../tools/add_string_at_line.cwl
+        in:
+            input_file: detect_variants/final_tsv
+            line_number:
+                default: 1
+            some_text: disclaimer_text
+        out:
+            [output_file]
     tumor_bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:

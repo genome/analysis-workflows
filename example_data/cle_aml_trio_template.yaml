@@ -87,11 +87,12 @@ varscan_strand_filter: 1
 varscan_min_var_freq: 0.08
 varscan_p_value: 0.1
 varscan_max_normal_freq: 0.1
-normal_bams:
-- class: File
-  path: NORMAL_BAM_PATH
-normal_readgroups:
-- "NORMAL_RG_STR"
+normal_sequence:
+  - sequence:
+      bam:
+        class: File
+        path: NORMAL_BAM_PATH
+    readgroup: "NORMAL_RG_STR"
 omni_vcf:
   class: File
   path: /gscmnt/gc2709/info/production_reference_GRCh38DH/accessory_vcf/omni25-ld-pruned-20000-2000-0.5-annotated.wchr.sites_only.b38.autosomes_only.vcf.gz
@@ -116,16 +117,18 @@ synonyms_file:
 target_intervals:
   class: File
   path: /gscmnt/gc13016/cle/54f8f7b915cb472aa183c721307369ab_scratch_space/new_AML_trio/new_cwl/bed_file/IDT_targets_plus50bp_build38.resorted.merged.interval_list
-tumor_bams:
-- class: File
-  path: TUMOR_BAM_PATH 
-tumor_readgroups:
-- "TUMOR_RG_STR"
-followup_bams:
-- class: File
-  path: FOLLOWUP_BAM_PATH 
-followup_readgroups:
-- "FOLLOWUP_RG_STR"
+tumor_sequence:
+  - sequence:
+      bam:
+        class: File
+        path: TUMOR_BAM_PATH
+    readgroup: "TUMOR_RG_STR"
+followup_sequence:
+  - sequence:
+      bam:
+        class: File
+        path: FOLLOWUP_BAM_PATH
+    readgroup: "FOLLOWUP_RG_STR"
 filter_docm_variants: false
 filter_minimum_depth: 20
 annotate_coding_only: false
