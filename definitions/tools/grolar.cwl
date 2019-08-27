@@ -26,10 +26,37 @@ requirements:
            # CRAN libs
            library(jsonlite)
            library(dplyr)
-           
-           # Assuming you have used GRCh38 gene models
-           library(EnsDb.Hsapiens.v86)
-           edb <- EnsDb.Hsapiens.v86
+
+
+           species <- args[2]
+           build_version <- args[3]
+
+           if (species == "homo_sapiens"){
+             if (build_version == "GRCh38"){
+               library(EnsDB.Hsapiens.v86)
+               edb <- EnsDB.Hsapiens.v86
+             }
+             else {
+               library(EnsDB.Hsapiens.v75)
+               edb <- EnsDB.Hsapiens.v75
+             }
+           }
+           else if (species == "mus_musculus"){
+             if (build_version == "GRCm38"){
+               library(EnsDB.Mmusculus.v79)
+               edb <- EnsDB.Mmusculus.v79
+             }
+             else {
+               library(EnsDB.Mmusculus.v75)
+               edb <- EnsDB.Mmusculus.v75
+             }
+
+           }
+           else {
+             print(paste("Unknown species passed to grolar:", species))
+             print("Options are: homo_sapiens, mus_musculus")
+             quit(status=1)
+           }
            listColumns(edb)
            supportedFilters(edb)
            
