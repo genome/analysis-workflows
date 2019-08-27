@@ -23,7 +23,7 @@ inputs:
         secondaryFiles: [.tbi]
     final_name:
         type: string?
-        default: 'final.bam'
+        default: 'final'
     mills:
         type: File
         secondaryFiles: [.tbi]
