@@ -51,6 +51,12 @@ inputs:
         type: File
     reference_transcriptome:
         type: File
+    species:
+        type: string
+        doc: 'the species being analyzed, such as homo_sapiens or mus_musculus'
+    assembly:
+        type: string
+        doc: 'the assembly used, such as GRCh37/38, GRCm37/38'
 outputs:
     final_bam:
         type: File
@@ -185,5 +191,7 @@ steps:
         run: ../tools/grolar.cwl
         in:
             pizzly_calls: pizzly/filtered_fusions_json
+            species: species
+            assembly: assembly
         out:
             [parsed_fusion_calls]

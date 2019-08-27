@@ -29,26 +29,26 @@ requirements:
 
 
            species <- args[2]
-           build_version <- args[3]
+           assembly_version <- args[3]
 
            if (species == "homo_sapiens"){
-             if (build_version == "GRCh38"){
-               library(EnsDB.Hsapiens.v86)
-               edb <- EnsDB.Hsapiens.v86
+             if (assembly_version == "GRCh38"){
+               library(EnsDb.Hsapiens.v86)
+               edb <- EnsDb.Hsapiens.v86
              }
              else {
-               library(EnsDB.Hsapiens.v75)
-               edb <- EnsDB.Hsapiens.v75
+               library(EnsDb.Hsapiens.v75)
+               edb <- EnsDb.Hsapiens.v75
              }
            }
            else if (species == "mus_musculus"){
-             if (build_version == "GRCm38"){
-               library(EnsDB.Mmusculus.v79)
-               edb <- EnsDB.Mmusculus.v79
+             if (assembly_version == "GRCm38"){
+               library(EnsDb.Mmusculus.v79)
+               edb <- EnsDb.Mmusculus.v79
              }
              else {
-               library(EnsDB.Mmusculus.v75)
-               edb <- EnsDB.Mmusculus.v75
+               library(EnsDb.Mmusculus.v75)
+               edb <- EnsDb.Mmusculus.v75
              }
 
            }
@@ -210,6 +210,16 @@ inputs:
         type: File
         inputBinding:
             position: 1
+    species:
+        type: string
+        default: 'homo_sapiens'
+        inputBinding:
+            position: 2
+    assembly:
+        type: string
+        default: 'GRCh38'
+        inputBinding:
+            position: 3
 outputs:
     parsed_fusion_calls:
         type: File

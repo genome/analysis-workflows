@@ -655,6 +655,8 @@ steps:
             refFlat: refFlat
             ribosomal_intervals: ribosomal_intervals
             reference_transcriptome: reference_transcriptome
+            species: vep_ensembl_species
+            assembly: vep_ensembl_assembly
         out:
             [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence, unfiltered_fusion_seqs, unfiltered_fusions_json, filtered_fusion_seqs, filtered_fusions_json, final_fusion_calls]
     somatic:
