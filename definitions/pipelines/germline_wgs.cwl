@@ -112,24 +112,24 @@ inputs:
         type: boolean
     merge_min_sv_size:
         type: int
-    merge_sv_pop_freq_db:
-        type: File
+    sv_filter_paired_percentage:
+        type: double?
+    sv_filter_paired_count:
+        type: int?
+    sv_filter_split_percentage:
+        type: double?
+    sv_filter_split_count:
+        type: int?
+    cnv_filter_deletion_depth:
+        type: double?
+    cnv_filter_duplication_depth:
+        type: double?
     variants_to_table_fields:
          type: string[]?
     variants_to_table_genotype_fields:
          type: string[]?
     vep_to_table_fields:
          type: string[]?
-    maximum_sv_pop_freq:
-        type: float?
-    sv_filter_interval_lists:
-        type: ../types/labelled_file.yml#labelled_file[]
-    sv_variants_to_table_fields:
-        type: string[]?
-    sv_variants_to_table_genotype_fields:
-        type: string[]?
-    sv_vep_to_table_fields:
-        type: string[]?
 outputs:
     cram:
         type: File
@@ -205,58 +205,64 @@ outputs:
         outputSource: alignment_and_qc/bamcoverage_bigwig
     cn_diagram:
         type: File?
-        outputSource: variant_callers/cn_diagram
+        outputSource: sv_detect_variants/cn_diagram
     cn_scatter_plot:
         type: File?
-        outputSource: variant_callers/cn_scatter_plot
+        outputSource: sv_detect_variants/cn_scatter_plot
     tumor_antitarget_coverage:
         type: File
-        outputSource: variant_callers/tumor_antitarget_coverage
+        outputSource: sv_detect_variants/tumor_antitarget_coverage
     tumor_target_coverage:
         type: File
-        outputSource: variant_callers/tumor_target_coverage
+        outputSource: sv_detect_variants/tumor_target_coverage
     tumor_bin_level_ratios:
         type: File
-        outputSource: variant_callers/tumor_bin_level_ratios
+        outputSource: sv_detect_variants/tumor_bin_level_ratios
     tumor_segmented_ratios:
         type: File
-        outputSource: variant_callers/tumor_segmented_ratios
+        outputSource: sv_detect_variants/tumor_segmented_ratios
     cnvkit_vcf:
         type: File
-        outputSource: variant_callers/cnvkit_vcf
+        outputSource: sv_detect_variants/cnvkit_vcf
+    cnvnator_cn_file:
+        type: File
+        outputSource: sv_detect_variants/cnvnator_cn_file
+    cnvnator_root:
+        type: File
+        outputSource: sv_detect_variants/cnvnator_root
+    cnvnator_vcf:
+        type: File
+        outputSource: sv_detect_variants/cnvnator_vcf
     manta_diploid_variants:
         type: File?
-        outputSource: variant_callers/manta_diploid_variants
+        outputSource: sv_detect_variants/manta_diploid_variants
     manta_somatic_variants:
         type: File?
-        outputSource: variant_callers/manta_somatic_variants
+        outputSource: sv_detect_variants/manta_somatic_variants
     manta_all_candidates:
         type: File
-        outputSource: variant_callers/manta_all_candidates
+        outputSource: sv_detect_variants/manta_all_candidates
     manta_small_candidates:
         type: File
-        outputSource: variant_callers/manta_small_candidates
+        outputSource: sv_detect_variants/manta_small_candidates
     manta_tumor_only_variants:
         type: File?
-        outputSource: variant_callers/manta_tumor_only_variants
+        outputSource: sv_detect_variants/manta_tumor_only_variants
     smoove_output_variants:
         type: File
-        outputSource: variant_callers/smoove_output_variants
-    merged_annotated_svs:
+        outputSource: sv_detect_variants/smoove_output_variants
+    merged_sv_vcf:
         type: File
-        outputSource: variant_callers/merged_annotated_svs
+        outputSource: sv_detect_variants/merged_sv_vcf
     final_tsv:
         type: File
         outputSource: detect_variants/final_tsv
-    filtered_sv_pop_vcf:
+    merged_annotated_sv_tsvs:
         type: File
-        outputSource: variant_callers/sv_pop_filtered_vcf
+        outputSource: sv_detect_variants/merged_annotated_tsv
     filtered_sv_vcfs:
         type: File[]
-        outputSource: variant_callers/filtered_vcfs
-    annotated_sv_tsvs:
-        type: File[]
-        outputSource: variant_callers/annotated_tsvs
+        outputSource: sv_detect_variants/filtered_sv_vcfs
 steps:
     alignment_and_qc:
         run: wgs_alignment.cwl
@@ -327,7 +333,7 @@ steps:
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
         out:
             [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary, final_tsv]
-    variant_callers:
+    sv_detect_variants:
         run: ../subworkflows/single_sample_sv_callers.cwl
         in:
             bam: alignment_and_qc/bam
@@ -339,6 +345,8 @@ steps:
             cnvkit_scatter_plot: cnvkit_scatter_plot
             cnvkit_male_reference: cnvkit_male_reference
             cnvkit_vcf_name: cnvkit_vcf_name
+            cnv_deletion_depth: cnv_filter_deletion_depth
+            cnv_duplication_depth: cnv_filter_duplication_depth
             manta_call_regions: manta_call_regions
             manta_non_wgs: manta_non_wgs
             manta_output_contigs: manta_output_contigs
@@ -349,18 +357,14 @@ steps:
             merge_same_strand: merge_same_strand
             merge_estimate_sv_distance: merge_estimate_sv_distance
             merge_min_sv_size: merge_min_sv_size
-            merge_sv_pop_freq_db: merge_sv_pop_freq_db
-            sv_filter_interval_lists: sv_filter_interval_lists
-            vep_cache_dir: vep_cache_dir
-            vep_ensembl_assembly: vep_ensembl_assembly
-            vep_ensembl_version: vep_ensembl_version
-            vep_ensembl_species: vep_ensembl_species
-            maximum_sv_pop_freq: maximum_sv_pop_freq
-            variants_to_table_fields: sv_variants_to_table_fields
-            variants_to_table_genotype_fields: sv_variants_to_table_genotype_fields
-            vep_to_table_fields: sv_vep_to_table_fields
+            snps_vcf: detect_variants/final_vcf
+            sv_paired_percentage: sv_filter_paired_percentage
+            sv_paired_count: sv_filter_paired_count
+            sv_split_percentage: sv_filter_split_percentage
+            sv_split_count: sv_filter_split_count
+            genome_build: vep_ensembl_assembly
         out: 
-           [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf, manta_diploid_variants, manta_somatic_variants, manta_all_candidates, manta_small_candidates, manta_tumor_only_variants, smoove_output_variants, merged_annotated_svs, sv_pop_filtered_vcf, filtered_vcfs, annotated_tsvs]
+           [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf, cnvnator_cn_file, cnvnator_root, cnvnator_vcf, manta_diploid_variants, manta_somatic_variants, manta_all_candidates, manta_small_candidates, manta_tumor_only_variants, smoove_output_variants, merged_sv_vcf, merged_annotated_tsv, filtered_sv_vcfs]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
