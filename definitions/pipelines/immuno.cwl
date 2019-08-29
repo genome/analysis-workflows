@@ -51,6 +51,8 @@ inputs:
         type: File
     ribosomal_intervals:
         type: File
+    reference_transcriptome:
+        type: File
 
     #somatic inputs
     reference: string
@@ -307,6 +309,21 @@ outputs:
     fusion_evidence:
         type: File
         outputSource: rnaseq/fusion_evidence
+    unfiltered_fusion_seqs:
+        type: File
+        outputSource: rnaseq/unfiltered_fusion_seqs
+    unfiltered_fusions_json:
+        type: File
+        outputSource: rnaseq/unfiltered_fusions_json
+    filtered_fusion_seqs:
+        type: File
+        outputSource: rnaseq/filtered_fusion_seqs
+    filtered_fusions_json:
+        type: File
+        outputSource: rnaseq/filtered_fusions_json
+    final_fusion_calls:
+        type: File
+        outputSource: rnaseq/final_fusion_calls
 
     tumor_cram:
         type: File
@@ -637,8 +654,11 @@ steps:
             strand: strand
             refFlat: refFlat
             ribosomal_intervals: ribosomal_intervals
+            reference_transcriptome: reference_transcriptome
+            species: vep_ensembl_species
+            assembly: vep_ensembl_assembly
         out:
-            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence]
+            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence, unfiltered_fusion_seqs, unfiltered_fusions_json, filtered_fusion_seqs, filtered_fusions_json, final_fusion_calls]
     somatic:
         run: somatic_exome.cwl
         in:
