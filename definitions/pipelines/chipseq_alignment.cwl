@@ -2,16 +2,19 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "wgs alignment with qc"
+label: "Chipseq alignment with qc and creating homer tag directory"
 requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     reference: string
-    sequence:
+    final_name:
+        type: string?
+    chipseq_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     mills:
         type: File
@@ -27,20 +30,23 @@ inputs:
         secondaryFiles: [.tbi]
     intervals:
         type: File
+    per_base_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]?
+        default: []
+    per_target_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]?
+        default: []
+    summary_intervals:
+        type: ../types/labelled_file.yml#labelled_file[]?
+        default: []
     picard_metric_accumulation_level:
         type: string
     bqsr_intervals:
-        type: string[]?
+        type: string[]
     minimum_mapping_quality:
         type: int?
     minimum_base_quality:
         type: int?
-    per_base_intervals:
-        type: ../types/labelled_file.yml#labelled_file[]
-    per_target_intervals:
-        type: ../types/labelled_file.yml#labelled_file[]
-    summary_intervals:
-        type: ../types/labelled_file.yml#labelled_file[]
 outputs:
     bam:
         type: File
@@ -96,17 +102,35 @@ outputs:
     bamcoverage_bigwig:
         type: File
         outputSource: qc/bamcoverage_bigwig
+    tag_directory:
+        type: Directory
+        outputSource: homer_tag_directory/tag_directory
+
 steps:
     alignment:
         run: ../subworkflows/sequence_to_bqsr.cwl
         in:
             reference: reference
-            unaligned: sequence
+            unaligned: chipseq_sequence
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
             bqsr_intervals: bqsr_intervals
+            final_name: final_name
         out: [final_bam,mark_duplicates_metrics_file]
+
+    bam_to_sam:
+        run: ../tools/bam_to_sam.cwl
+        in:
+            bam: alignment/final_bam
+        out: [final_sam]
+
+    homer_tag_directory:
+        run: ../tools/homer_tag_directory.cwl
+        in:
+            sam: bam_to_sam/final_sam
+        out: [tag_directory]
+
     qc:
         run: ../subworkflows/qc_wgs.cwl
         in:

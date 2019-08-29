@@ -7,28 +7,23 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
+          - $import: ../types/sequence_data.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
     reference: string
-    tumor_bams:
-        type: File[]
-    tumor_readgroups:
-        type: string[]
+    tumor_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     tumor_name:
         type: string?
         default: 'tumor'
-    normal_bams:
-        type: File[]
-    normal_readgroups:
-        type: string[]
+    normal_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     normal_name:
         type: string?
         default: 'normal'
-    followup_bams:
-        type: File[]
-    followup_readgroups:
-        type: string[]
+    followup_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     followup_name:
         type: string?
         default: 'followup'
@@ -78,24 +73,11 @@ inputs:
         default: 0
     interval_list:
         type: File
-    cosmic_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    panel_of_normals_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
     strelka_cpu_reserved:
         type: int?
         default: 8
     mutect_scatter_count:
         type: int
-    mutect_artifact_detection_mode:
-        type: boolean
-        default: false
-    mutect_max_alt_allele_in_normal_fraction:
-        type: float?
-    mutect_max_alt_alleles_in_normal_count:
-        type: int?
     varscan_strand_filter:
         type: int?
         default: 0
@@ -370,8 +352,7 @@ steps:
         run: exome_alignment.cwl
         in:
             reference: reference
-            bams: normal_bams
-            readgroups: normal_readgroups
+            sequence: normal_sequence
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
@@ -394,8 +375,7 @@ steps:
         run: exome_alignment.cwl
         in:
             reference: reference
-            bams: tumor_bams
-            readgroups: tumor_readgroups
+            sequence: tumor_sequence
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
@@ -418,8 +398,7 @@ steps:
         run: exome_alignment.cwl
         in:
             reference: reference
-            bams: followup_bams
-            readgroups: followup_readgroups
+            sequence: followup_sequence
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
@@ -455,16 +434,10 @@ steps:
             tumor_bam: tumor_alignment_and_qc/bam
             normal_bam: normal_alignment_and_qc/bam
             interval_list: interval_list
-            dbsnp_vcf: dbsnp_vcf
-            cosmic_vcf: cosmic_vcf
-            panel_of_normals_vcf: panel_of_normals_vcf
             strelka_exome_mode:
                 default: true
             strelka_cpu_reserved: strelka_cpu_reserved
             mutect_scatter_count: mutect_scatter_count
-            mutect_artifact_detection_mode: mutect_artifact_detection_mode
-            mutect_max_alt_allele_in_normal_fraction: mutect_max_alt_allele_in_normal_fraction
-            mutect_max_alt_alleles_in_normal_count: mutect_max_alt_alleles_in_normal_count
             varscan_strand_filter: varscan_strand_filter
             varscan_min_coverage: varscan_min_coverage
             varscan_min_var_freq: varscan_min_var_freq

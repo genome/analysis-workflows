@@ -37,6 +37,12 @@ inputs:
     output_vcf_basename:
         type: string?
         default: select_variants
+    samples_to_include:
+        type: string[]?
+        inputBinding:
+            prefix: "--sample_name"
+            position: 5
+        doc: 'include genotypes from this sample'
 outputs:
     filtered_vcf:
         type: File
