@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "run pVACseq"
+label: "run pVACbind"
 
 baseCommand: [
     "ln", "-s"
