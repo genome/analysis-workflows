@@ -58,12 +58,10 @@ inputs:
         type: File?
     genome_build:
         type: string
-    sv_paired_percentage:
+    sv_alt_abundance_percentage:
         type: double?
     sv_paired_count:
         type: int?
-    sv_split_percentage:
-        type: double?
     sv_split_count:
         type: int?
     cnv_deletion_depth:
@@ -213,13 +211,12 @@ steps:
     run_manta_filter:
         run: ../tools/filter_sv_vcf_read_support.cwl
         in:
+            abundance_percentage: sv_alt_abundance_percentage
             input_vcf: run_manta/tumor_only_variants
             output_vcf_name:
                 default: "filtered_manta.vcf"
             paired_count: sv_paired_count
-            paired_percentage: sv_paired_percentage
             split_count: sv_split_count
-            split_percentage: sv_split_percentage
             vcf_source:
                 default: "manta"
         out:
@@ -237,13 +234,12 @@ steps:
     run_smoove_filter:
         run: ../tools/filter_sv_vcf_read_support.cwl
         in:
+            abundance_percentage: sv_alt_abundance_percentage
             input_vcf: run_smoove/output_vcf
             output_vcf_name:
                 default: "filtered_smoove.vcf"
             paired_count: sv_paired_count
-            paired_percentage: sv_paired_percentage
             split_count: sv_split_count
-            split_percentage: sv_split_percentage
             vcf_source:
                 default: "smoove"
         out:
