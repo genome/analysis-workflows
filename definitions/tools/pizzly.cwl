@@ -5,7 +5,6 @@ class: CommandLineTool
 label: "pizzly gene fusion detector"
 baseCommand: ["pizzly"]
 requirements:
-    - class: InlineJavascriptRequirement
     - class: ResourceRequirement
       coresMin: 1
       ramMin: 16000

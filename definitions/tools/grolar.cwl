@@ -5,7 +5,6 @@ class: CommandLineTool
 label: "grolar- pizzly gene fusion output parser"
 baseCommand: ["Rscript", "grolar.R"]
 requirements:
-    - class: InlineJavascriptRequirement
     - class: ResourceRequirement
       coresMin: 1
       ramMin: 16000
