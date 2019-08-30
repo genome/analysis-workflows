@@ -103,7 +103,9 @@ inputs:
             prefix: "--everything"
             position: 10
     ensembl_assembly:
-        type: string
+        type:
+            type: enum
+            symbols: ['GRCh37', 'GRCh38', 'GRCm37', 'GRCm38']
         inputBinding:
             prefix: "--assembly"
             position: 11
@@ -115,7 +117,9 @@ inputs:
             position: 12
         doc: "ensembl version - Must be present in the cache directory. Example: '95'"
     ensembl_species:
-        type: string
+        type:
+            type: enum
+            symbols: ['homo_sapiens', 'mus_musculus']
         inputBinding:
             prefix: "--species"
             position: 13

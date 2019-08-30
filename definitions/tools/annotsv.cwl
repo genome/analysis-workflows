@@ -12,7 +12,9 @@ requirements:
 
 inputs:
     genome_build:
-        type: string
+        type:
+            type: enum
+            symbols: ['GRCh37', 'GRCh38', 'GRCm37', 'GRCm38']
         inputBinding:
             position: 2
             prefix: "-genomeBuild"

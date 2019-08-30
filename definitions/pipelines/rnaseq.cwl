@@ -52,10 +52,14 @@ inputs:
     reference_transcriptome:
         type: File
     species:
-        type: string
+        type:
+            type: enum
+            symbols: ['homo_sapiens', 'mus_musculus']
         doc: 'the species being analyzed, such as homo_sapiens or mus_musculus'
     assembly:
-        type: string
+        type:
+            type: enum
+            symbols: ['GRCh37', 'GRCh38', 'GRCm37', 'GRCm38']
         doc: 'the assembly used, such as GRCh37/38, GRCm37/38'
 outputs:
     final_bam:

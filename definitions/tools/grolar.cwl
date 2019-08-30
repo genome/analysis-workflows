@@ -214,12 +214,16 @@ inputs:
         inputBinding:
             position: 1
     species:
-        type: string
+        type:
+            type: enum
+            symbols: ['homo_sapiens', 'mus_musculus']
         default: 'homo_sapiens'
         inputBinding:
             position: 2
     assembly:
-        type: string
+        type:
+            type: enum
+            symbols: ['GRCh37', 'GRCh38', 'GRCm37', 'GRCm38']
         default: 'GRCh38'
         inputBinding:
             position: 3

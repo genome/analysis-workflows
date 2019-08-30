@@ -14,7 +14,9 @@ inputs:
     estimate_sv_distance:
         type: boolean
     genome_build:
-        type: string
+        type:
+            type: enum
+            symbols: ['GRCh37', 'GRCh38', 'GRCm37', 'GRCm38']
     max_distance_to_merge:
         type: int
     minimum_sv_calls:

@@ -57,7 +57,9 @@ inputs:
     snps_vcf:
         type: File?
     genome_build:
-        type: string
+        type:
+            type: enum
+            symbols: ['GRCh37', 'GRCh38', 'GRCm37', 'GRCm38']
     sv_paired_percentage:
         type: double?
     sv_paired_count:
