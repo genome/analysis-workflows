@@ -39,7 +39,7 @@ requirements:
 inputs:
     abundance_percentage:
         type: double?
-        default: 0.2
+        default: 0.1
         inputBinding:
             position: 1
         doc: "required alternate read abundance percentage to pass"
