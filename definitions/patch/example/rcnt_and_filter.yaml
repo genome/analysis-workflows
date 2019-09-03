@@ -1,0 +1,55 @@
+annotated_vcf:
+        type: File
+        path: /gscmnt/gc2565/zevallos_bga1684/model_data/ff2c370cef334e51a396aa12e9e25ef7/builde4a6631d649543969a24cfa26b6493b4/results/annotated.bam_readcount.vcf.gz
+reference: "/gscmnt/gc2560/core/model_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/all_sequences.fa"
+tumor_cram:
+        type: File
+        path: /gscmnt/gc2565/zevallos_bga1684/model_data/ff2c370cef334e51a396aa12e9e25ef7/builde4a6631d649543969a24cfa26b6493b4/results/tumor.cram
+normal_cram:
+        type: File
+        path: /gscmnt/gc2565/zevallos_bga1684/model_data/ff2c370cef334e51a396aa12e9e25ef7/builde4a6631d649543969a24cfa26b6493b4/results/normal.cram
+readcount_minimum_base_quality: 20
+readcount_minimum_mapping_quality: 0
+filter_gnomADe_maximum_population_allele_frequency: 0.001
+filter_mapq0_threshold: 0.15
+filter_minimum_depth: 1
+cle_vcf_filter: false
+filter_somatic_llr_threshold: 5
+variants_to_table_fields:
+- CHROM
+- POS
+- REF
+- ALT
+- set
+variants_to_table_genotype_fields:
+- GT
+- AD
+- AF
+- DP
+vep_to_table_fields:
+- Consequence
+- SYMBOL
+- Feature_type
+- Feature
+- HGVSc
+- HGVSp
+- cDNA_position
+- CDS_position
+- Protein_position
+- Amino_acids
+- Codons
+- HGNC_ID
+- Existing_variation
+- gnomADe_AF
+- CLIN_SIG
+- SOMATIC
+- PHENO
+- clinvar_CLINSIGN
+- clinvar_PHENOTYPE
+- clinvar_SCORE
+- clinvar_RCVACC
+- clinvar_TESTEDINGTR
+- clinvar_PHENOTYPELIST
+- clinvar_NUMSUBMIT
+- clinvar_GUIDELINES
+
