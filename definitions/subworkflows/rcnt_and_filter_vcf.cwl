@@ -70,24 +70,26 @@ outputs:
         outputSource: normal_bam_readcount/indel_bam_readcount_tsv
 steps:
     tumor_cramToBam:
-        run: ../tools/samtools_view_convert2bam.cwl
+        run: ../tools/cram_to_bam.cwl
         in:
-            file: tumor_cram
-        out: [ bam_file ]
+            reference: reference
+            cram: tumor_cram
+        out: [ bam ]
     tumor_indexBam:
         run: ../tools/index_bam.cwl
         in:
-            bam: tumor_cramToBam/bam_file
+            bam: tumor_cramToBam/bam
         out: [indexed_bam]
     normal_cramToBam:
-        run: ../tools/samtools_view_convert2bam.cwl
+        run: ../tools/cram_to_bam.cwl
         in:
-            file: normal_cram
-        out: [ bam_file ]
+            reference: reference
+            cram: normal_cram
+        out: [ bam ]
     normal_indexBam:
         run: ../tools/index_bam.cwl
         in:
-            bam: normal_cramToBam/bam_file
+            bam: normal_cramToBam/bam
         out: [ indexed_bam ]
     tumor_bam_readcount:
         run: ../tools/bam_readcount.cwl
