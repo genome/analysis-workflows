@@ -356,7 +356,7 @@ steps:
             merge_estimate_sv_distance: merge_estimate_sv_distance
             merge_min_sv_size: merge_min_sv_size
             snps_vcf: detect_variants/final_vcf
-            sv_alt_abundance_percentage: sv_alt_abundance_percentage
+            sv_alt_abundance_percentage: sv_filter_alt_abundance_percentage
             sv_paired_count: sv_filter_paired_count
             sv_split_count: sv_filter_split_count
             genome_build: vep_ensembl_assembly
