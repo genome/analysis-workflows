@@ -112,7 +112,7 @@ inputs:
         type: boolean
     merge_min_sv_size:
         type: int
-    sv_alt_abundance_percentage:
+    sv_filter_alt_abundance_percentage:
         type: double?
     sv_filter_paired_count:
         type: int?
