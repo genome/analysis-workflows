@@ -45,6 +45,7 @@ inputs:
         default: 'MarkedSorted.bam'
         inputBinding:
             position: 3
+
 outputs:
     sorted_bam:
         type: File
