@@ -142,30 +142,30 @@ outputs:
         secondaryFiles: [.tbi]
     final_vcf:
         type: File
-        outputSource: index/indexed_vcf
+        outputSource: rcnt_and_filter_variants/final_vcf
         secondaryFiles: [.tbi]
     final_filtered_vcf:
         type: File
-        outputSource: annotated_filter_index/indexed_vcf
+        outputSource: rcnt_and_filter_variants/final_filtered_vcf
         secondaryFiles: [.tbi]
     final_tsv:
         type: File
-        outputSource: add_vep_fields_to_table/annotated_variants_tsv
+        outputSource: rcnt_and_filter_variants/final_tsv
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
     tumor_snv_bam_readcount_tsv:
         type: File
-        outputSource: tumor_bam_readcount/snv_bam_readcount_tsv
+        outputSource: rcnt_and_filter_variants/tumor_snv_bam_readcount_tsv
     tumor_indel_bam_readcount_tsv:
         type: File
-        outputSource: tumor_bam_readcount/indel_bam_readcount_tsv
+        outputSource: rcnt_and_filter_variants/tumor_indel_bam_readcount_tsv
     normal_snv_bam_readcount_tsv:
         type: File
-        outputSource: normal_bam_readcount/snv_bam_readcount_tsv
+        outputSource: rcnt_and_filter_variants/normal_snv_bam_readcount_tsv
     normal_indel_bam_readcount_tsv:
         type: File
-        outputSource: normal_bam_readcount/indel_bam_readcount_tsv
+        outputSource: rcnt_and_filter_variants/normal_indel_bam_readcount_tsv
 steps:
     mutect:
         run: ../subworkflows/mutect.cwl
@@ -270,100 +270,21 @@ steps:
             plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]
-    tumor_bam_readcount:
-        run: ../tools/bam_readcount.cwl
+    rcnt_and_filter_variants:
+        run: ../subworkflows/rcnt_and_filter_vcf.cwl
         in:
-            vcf: annotate_variants/annotated_vcf
-            sample:
-                default: 'TUMOR'
-            reference_fasta: reference
-            bam: tumor_bam
-            min_base_quality: readcount_minimum_base_quality
-            min_mapping_quality: readcount_minimum_mapping_quality
-        out:
-            [snv_bam_readcount_tsv, indel_bam_readcount_tsv]
-    normal_bam_readcount:
-        run: ../tools/bam_readcount.cwl
-        in:
-            vcf: annotate_variants/annotated_vcf
-            sample:
-                default: 'NORMAL'
-            reference_fasta: reference
-            bam: normal_bam
-            min_base_quality: readcount_minimum_base_quality
-            min_mapping_quality: readcount_minimum_mapping_quality
-        out:
-            [snv_bam_readcount_tsv, indel_bam_readcount_tsv]
-    add_tumor_bam_readcount_to_vcf:
-        run: ../subworkflows/vcf_readcount_annotator.cwl
-        in:
-            vcf: annotate_variants/annotated_vcf
-            snv_bam_readcount_tsv: tumor_bam_readcount/snv_bam_readcount_tsv
-            indel_bam_readcount_tsv: tumor_bam_readcount/indel_bam_readcount_tsv
-            data_type:
-                default: 'DNA'
-            sample_name:
-                default: 'TUMOR'
-        out:
-            [annotated_bam_readcount_vcf]
-    add_normal_bam_readcount_to_vcf:
-        run: ../subworkflows/vcf_readcount_annotator.cwl
-        in:
-            vcf: add_tumor_bam_readcount_to_vcf/annotated_bam_readcount_vcf
-            snv_bam_readcount_tsv: normal_bam_readcount/snv_bam_readcount_tsv
-            indel_bam_readcount_tsv: normal_bam_readcount/indel_bam_readcount_tsv
-            data_type:
-                default: 'DNA'
-            sample_name:
-                default: 'NORMAL'
-        out:
-            [annotated_bam_readcount_vcf]
-    index:
-        run: ../tools/index_vcf.cwl
-        in:
-            vcf: add_normal_bam_readcount_to_vcf/annotated_bam_readcount_vcf
-        out:
-            [indexed_vcf]
-    filter_vcf:
-        run: ../subworkflows/filter_vcf.cwl
-        in: 
-            vcf: index/indexed_vcf
+            annotated_vcf: annotate_variants/annotated_vcf
+            reference: reference
+            tumor_cram: tumor_bam
+            normal_cram: normal_bam
+            readcount_minimum_base_quality: readcount_minimum_base_quality
+            readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
             filter_gnomADe_maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
             filter_mapq0_threshold: filter_mapq0_threshold
-            filter_somatic_llr_threshold: filter_somatic_llr_threshold
             filter_minimum_depth: filter_minimum_depth
-            sample_names:
-                default: 'NORMAL,TUMOR'
-            tumor_bam: tumor_bam
-            do_cle_vcf_filter: cle_vcf_filter
-            reference: reference
-        out: 
-            [filtered_vcf]
-    annotated_filter_bgzip:
-        run: ../tools/bgzip.cwl
-        in:
-            file: filter_vcf/filtered_vcf
-        out:
-            [bgzipped_file]
-    annotated_filter_index:
-        run: ../tools/index_vcf.cwl
-        in:
-            vcf: annotated_filter_bgzip/bgzipped_file
-        out:
-            [indexed_vcf]
-    variants_to_table:
-        run: ../tools/variants_to_table.cwl
-        in:
-            reference: reference
-            vcf: annotated_filter_index/indexed_vcf
-            fields: variants_to_table_fields
-            genotype_fields: variants_to_table_genotype_fields
-        out:
-            [variants_tsv]
-    add_vep_fields_to_table:
-        run: ../tools/add_vep_fields_to_table.cwl
-        in:
-            vcf: annotated_filter_index/indexed_vcf
-            vep_fields: vep_to_table_fields
-            tsv: variants_to_table/variants_tsv
-        out: [annotated_variants_tsv]
+            cle_vcf_filter: cle_vcf_filter
+            filter_somatic_llr_threshold: filter_somatic_llr_threshold
+            variants_to_table_fields: variants_to_table_fields
+            variants_to_table_genotype_fields: variants_to_table_genotype_fields
+            vep_to_table_fields: variants_to_table_fields
+        out: [ final_vcf, final_filtered_vcf, final_tsv, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]

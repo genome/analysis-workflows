@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "patch for readcount and filter section in detect_variants.cwl"
+label: "Sub workflow for rcnt and filtering of variants"
 requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
@@ -72,7 +72,7 @@ steps:
     tumor_cramToBam:
         run: ../tools/samtools_view_convert2bam.cwl
         in:
-            file: tumor_cram 
+            file: tumor_cram
         out: [ bam_file ]
     tumor_indexBam:
         run: ../tools/index_bam.cwl
@@ -145,7 +145,7 @@ steps:
             [indexed_vcf]
     filter_vcf:
         run: ../subworkflows/filter_vcf.cwl
-        in: 
+        in:
             vcf: index/indexed_vcf
             filter_gnomADe_maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
             filter_mapq0_threshold: filter_mapq0_threshold
@@ -156,7 +156,7 @@ steps:
             tumor_bam: tumor_indexBam/indexed_bam
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference
-        out: 
+        out:
             [filtered_vcf]
     annotated_filter_bgzip:
         run: ../tools/bgzip.cwl
@@ -186,4 +186,3 @@ steps:
             vep_fields: vep_to_table_fields
             tsv: variants_to_table/variants_tsv
         out: [annotated_variants_tsv]
-
