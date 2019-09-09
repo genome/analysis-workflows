@@ -281,14 +281,14 @@ outputs:
         type: File
         outputSource: detect_variants/varscan_filtered_vcf
         secondaryFiles: [.tbi]
-    pindel_unfiltered_vcf:
-        type: File
-        outputSource: detect_variants/pindel_unfiltered_vcf
-        secondaryFiles: [.tbi]
-    pindel_filtered_vcf:
-        type: File
-        outputSource: detect_variants/pindel_filtered_vcf
-        secondaryFiles: [.tbi]
+#    pindel_unfiltered_vcf:
+#        type: File
+#        outputSource: detect_variants/pindel_unfiltered_vcf
+#        secondaryFiles: [.tbi]
+#    pindel_filtered_vcf:
+#        type: File
+#        outputSource: detect_variants/pindel_filtered_vcf
+#        secondaryFiles: [.tbi]
     docm_filtered_vcf:
         type: File
         outputSource: detect_variants/docm_filtered_vcf
@@ -397,7 +397,7 @@ steps:
         out:
             [somalier_pairs, somalier_samples]
     detect_variants:
-        run: detect_variants.cwl
+        run: detect_variants_wgs.cwl
         in:
             reference: reference
             tumor_bam: tumor_alignment_and_qc/bam
@@ -435,7 +435,7 @@ steps:
             custom_gnomad_vcf: custom_gnomad_vcf
             custom_clinvar_vcf: custom_clinvar_vcf
         out:
-            [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
+            [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
     manta: 
         run: ../tools/manta_somatic.cwl
         in:
