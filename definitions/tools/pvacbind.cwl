@@ -20,7 +20,7 @@ arguments: [
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:1.5.1"
+      dockerPull: "griffithlab/pvactools:1.5.2"
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: $(inputs.n_threads)
