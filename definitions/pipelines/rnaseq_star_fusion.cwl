@@ -40,6 +40,10 @@ inputs:
         type: File
     sample_name:
         type: string
+    paired_end:
+        type: boolean
+        default: true
+        doc: 'whether the sequence data is paired-end (for single-end override to false)'
 outputs:
     final_bam:
         type: File
@@ -96,19 +100,18 @@ steps:
             adapter_min_overlap: trimming_adapter_min_overlap
             max_uncalled: trimming_max_uncalled
             min_readlength: trimming_min_readlength
+            paired_end: paired_end
         out:
-            [fastqs, fastq1, fastq2]
+            [fastqs]
     star_align_fusion:
         run: ../tools/star_align_fusion.cwl
         in:
             outsam_attrrg_line: outsam_attrrg_line
             star_genome_dir: star_genome_dir
             gtf_file: gtf_file
-            fastq:
-                source: bam_to_trimmed_fastq/fastq1
-                linkMerge: merge_flattened
-            fastq2:
-                source: bam_to_trimmed_fastq/fastq2
+            paired_end: paired_end
+            fastqs:
+                source: bam_to_trimmed_fastq/fastqs
                 linkMerge: merge_flattened
         out:
             [aligned_bam, chim_junc, splice_junction_out,log_final]

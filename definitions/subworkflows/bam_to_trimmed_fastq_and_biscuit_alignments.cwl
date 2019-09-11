@@ -27,30 +27,22 @@ outputs:
         type: File
         outputSource: biscuit_markdup/markdup_bam
 steps:
-    bam_to_fastq:
-        run: ../tools/bam_to_fastq.cwl
-        in:
+    bam_to_trimmed_fastq:
+        run: bam_to_trimmed_fastq.cwl
             bam: bam
-        out:
-            [fastq1, fastq2]
-    trim_fastq:
-        run: ../tools/trim_fastq.cwl
-        in:
-            reads1: bam_to_fastq/fastq1
-            reads2: bam_to_fastq/fastq2
+            paired_end: paired_end
             adapters: adapters
             adapter_trim_end: adapter_trim_end
             adapter_min_overlap: adapter_min_overlap
             max_uncalled: max_uncalled
             min_readlength: min_readlength
         out:
-            [fastq1, fastq2]
+            [fastqs]
     biscuit_align:
         run: ../tools/biscuit_align.cwl
         in:
             reference_index: reference_index
-            fastq1: trim_fastq/fastq1
-            fastq2: trim_fastq/fastq2
+            fastqs: bam_to_trimmed_fastq/fastqs
             read_group_id: read_group_id
         out:
             [aligned_bam]

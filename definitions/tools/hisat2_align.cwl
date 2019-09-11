@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "HISAT2: align"
-baseCommand: ["bash hisat.sh"]
+baseCommand: ["/bin/bash", "hisat.sh"]
 requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
@@ -41,19 +41,19 @@ requirements:
 
             strand_param=""
 
-            if [[ $paired == "true" ]];then
+            if [[ "$paired" == "true" ]];then
                 ##get the right strand parameter
-                if [[ $strand == "first" ]];then
+                if [[ "$strand" == "first" ]];then
                     strand_param="--rna-strandness RF"
-                elif [[ $strand == "second" ]];then
+                elif [[ "$strand" == "second" ]];then
                     strand_param="--rna-strandness FR"
                 fi
                 /usr/bin/hisat2 -p "$cores" --dta -x reference --rg-id "$read_group_id" --rg "read_group_fields" -1 "$fastq1" -2 "$fastq2" "$strand_param" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o $(runtime.outdir)/aligned.bam /dev/stdin
             elif [[ "$paired" == "false" ]];then
                 ##get the right strand parameter
-                if [[ $strand == "first" ]];then
+                if [[ "$strand" == "first" ]];then
                     strand_param="--rna-strandness R"
-                elif [[ $strand == "second" ]];then
+                elif [[ "$strand" == "second" ]];then
                     strand_param="--rna-strandness F"
                 fi  
                 /usr/bin/hisat2 -p "$cores" --dta -x reference --rg-id "$read_group_id" --rg "read_group_fields" -1 "$fastq1" "$strand_param" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o $(runtime.outdir)/aligned.bam /dev/stdin

@@ -20,6 +20,8 @@ inputs:
         type: int
     min_readlength:
         type: int
+    paired_end:
+        type: boolean
     
 outputs:
     fastqs:
@@ -37,18 +39,18 @@ steps:
         run: ../tools/bam_to_fastq.cwl
         in:
             bam: bam
+            paired_end: paired_end
         out:
-            [fastq1, fastq2]
+            [fastqs]
     trim_fastq:
         run: ../tools/trim_fastq.cwl
         in:
-            reads1: bam_to_fastq/fastq1
-            reads2: bam_to_fastq/fastq2
+            fastqs: bam_to_fastq/fastqs
             adapters: adapters
             adapter_trim_end: adapter_trim_end
             adapter_min_overlap: adapter_min_overlap
             max_uncalled: max_uncalled
             min_readlength: min_readlength
         out:
-            [fastqs, fastq1, fastq2]
+            [fastqs]
     

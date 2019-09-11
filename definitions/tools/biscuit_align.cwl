@@ -17,35 +17,36 @@ requirements:
             set -eou pipefail
 
             cores=$1
-            outdir="$2"
-            read_group_id="$3"
-            reference_index="$4"
-            fastq1="$5"
-            fastq2="$6"
-
-            /usr/bin/biscuit align -t $cores -M -R "$read_group_id" "$reference_index" "$fastq1" "$fastq2" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o "$outdir/aligned.bam" /dev/stdin
+            read_group_id="$2"
+            reference_index="$3"
+            fastq1="$4"
+            if [[ $# -gt 5 ]];then
+               echo "ERROR: too many arguments - were more than two fastq files provided to biscuit?"
+               exit 1
+            fi
+            if [[ $# -gt 4 ]];then  #two fastqs
+                fastq2=$5
+                /usr/bin/biscuit align -t $cores -M -R "$read_group_id" "$reference_index" "$fastq1" "$fastq2" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o "$outdir/aligned.bam" /dev/stdin
+            else #one fastq
+                /usr/bin/biscuit align -t $cores -M -R "$read_group_id" "$reference_index" "$fastq1" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o "$outdir/aligned.bam" /dev/stdin
+            fi
 
 arguments: [
-    { valueFrom: $(runtime.cores), position: -9 },
-    { valueFrom: $(runtime.outdir), position: -8 },
+    { valueFrom: $(runtime.cores), position: 1 }
 ]
 inputs:
     reference_index:
         type: string
         inputBinding:
-            position: -3
-    fastq1:
+            position: 3
+    fastqs:
         type: File
         inputBinding:
-            position: -2
-    fastq2:
-        type: File
-        inputBinding:
-            position: -1
+            position: 4
     read_group_id:
         type: string
         inputBinding:
-            position: -4
+            position: 2
 outputs:
     aligned_bam:
         type: File
