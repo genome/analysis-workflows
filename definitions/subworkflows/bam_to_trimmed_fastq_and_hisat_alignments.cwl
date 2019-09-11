@@ -34,6 +34,10 @@ inputs:
           - "null"
           - type: enum
             symbols: ["first", "second", "unstranded"]
+    paired_end: 
+        type: boolean?
+        default: true
+        doc: 'whether the sequence data is paired-end (for single-end override to false)'
 outputs:
     fastqs:
         type: File[]
@@ -46,13 +50,13 @@ steps:
         run: ../tools/bam_to_fastq.cwl
         in:
             bam: bam
+            paired_end: paired_end
         out:
-            [fastq1, fastq2]
+            [fastqs]
     trim_fastq:
         run: ../tools/trim_fastq.cwl
         in:
-            reads1: bam_to_fastq/fastq1
-            reads2: bam_to_fastq/fastq2
+            reads: bam_to_fastq/fastqs
             adapters: adapters
             adapter_trim_end: adapter_trim_end
             adapter_min_overlap: adapter_min_overlap
@@ -64,12 +68,8 @@ steps:
         run: ../tools/hisat2_align.cwl
         in:
             reference_index: reference_index
-            fastq1: 
-                source: trim_fastq/fastqs
-                valueFrom: $(self[0])
-            fastq2: 
-                source: trim_fastq/fastqs
-                valueFrom: $(self[1])
+            paired: paired
+            fastqs: trim_fastq/fastqs
             read_group_id: read_group_id
             read_group_fields: read_group_fields
             strand: strand

@@ -45,6 +45,10 @@ inputs:
           - "null"
           - type: enum
             symbols: ["first", "second", "unstranded"]
+    paired_end: 
+        type: boolean
+        default: true
+        doc: 'whether the sequence data is paired-end (for single-end override to false)'
     refFlat:
         type: File
     ribosomal_intervals:
@@ -100,6 +104,7 @@ steps:
             min_readlength: trimming_min_readlength
             reference_index: reference_index
             strand: strand
+            paired_end: paired_end
         out:
             [fastqs,aligned_bam]
     kallisto:

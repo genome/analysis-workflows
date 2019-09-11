@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Picard: BAM to FASTQ"
-baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/picard/picard.jar", "SamToFastq", "VALIDATION_STRINGENCY=SILENT"]
+baseCommand: ["/bin/bash","bam_to_fastq.sh"]
 requirements:
     - class: ResourceRequirement
       coresMin: 1
@@ -11,21 +11,33 @@ requirements:
       tmpdirMin: 25000
     - class: DockerRequirement
       dockerPull: "mgibio/rnaseq:1.0.0"
-arguments: [ {valueFrom: "F=$(runtime.outdir)/read1.fastq"},
-             {valueFrom: "F2=$(runtime.outdir)/read2.fastq"} ]
+    - class: InitialWorkDirRequirement
+      listing:
+      - entryname: 'bam_to_fastq.sh'
+        entry: |
+            set -eou pipefail
+
+            bam=$1
+            paired=$2            
+            if [[ "$paired" == "true" ]];then
+                /usr/bin/java -Xmx4g -jar /opt/picard/picard.jar SamToFastq VALIDATION_STRINGENCY=SILENT I=$bam F=read1.fastq F2=read2.fastq
+            else
+                /usr/bin/java -Xmx4g -jar /opt/picard/picard.jar SamToFastq VALIDATION_STRINGENCY=SILENT I=$bam F=read1.fastq
+            fi
+
 inputs:
     bam:
         type: File
         inputBinding:
-            prefix: "I="
-            separate: false
             position: 1
+    paired_end: 
+        type: boolean?
+        default: true
+        doc: 'whether the sequence data is paired-end (for single-end override to false)'
+        inputBinding:
+            position: 2
 outputs:
-    fastq1:
-        type: File
+    fastqs:
+        type: File[]
         outputBinding:
-            glob: "read1.fastq"
-    fastq2:
-        type: File
-        outputBinding:
-            glob: "read2.fastq"
+            glob: "read*.fastq"
