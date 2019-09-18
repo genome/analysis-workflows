@@ -100,7 +100,7 @@ requirements:
            
              if(length(output) < 1){
                print("No fusions exist in pizzly input. Creating empty output file")
-               file.create(paste0(JSON_file, "_fusions_filt_sorted.simple.txt"))
+               file.create(paste0(basename(JSON_file), "_fusions_filt_sorted.txt"))
                quit(status=0)
              }
            
