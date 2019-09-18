@@ -24,7 +24,7 @@ requirements:
             /gatk/gatk Mutect2 -O $1 -R $2 -I $3 -tumor $TUMOR -I $4 -normal $NORMAL -L $5 #Running Mutect2.
             gunzip mutect.vcf.gz #Unzipping the Mutect2 output vcf file to alter the header names.
             grep "^##" mutect.vcf >mutect.final.vcf #Extracting all the lines above #CHROM in the vcf to a new output vcf.
-            grep "^#CHROM" mutect.vcf | sed "s/\t$TUMOR/\tTUMOR/g; s/\t$NORMAL/\tNORMAL/g" >> mutect.final.vcf #Concatenating the #CHROM line with substituted sample headers to the output vcf.
+            grep "^#CHROM" mutect.vcf | sed "s/\<$TUMOR\>/TUMOR/g; s/\<$NORMAL\>/NORMAL/g" >> mutect.final.vcf #Concatenating the #CHROM line with substituted sample headers to the output vcf.
             grep -v "^#" mutect.vcf >> mutect.final.vcf #Concatenating the sites to the output vcf.
             bgzip mutect.final.vcf #Bzipping the final output vcf.
             tabix mutect.final.vcf.gz #Indexing the bzipped output vcf.
