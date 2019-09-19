@@ -79,7 +79,7 @@ requirements:
              output$geneA.id <- gsub(".\\d+$", "", output$geneA.id, perl = TRUE)
              output$geneB.id <- gsub(".\\d+$", "", output$geneB.id, perl = TRUE)
              cat(paste0("Writing out table: ", JSON_file, "_fusions_filt_sorted.txt", "\n"))
-             write.table(output[,c(-3,-4)], file = paste0(JSON_file, "_fusions_filt_sorted.simple.txt"), quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
+             write.table(output[,c(-3,-4)], file = paste0(JSON_file, "_fusions_filt_sorted.txt"), quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
              cat("\n")
              return(TRUE)
            }
@@ -100,7 +100,7 @@ requirements:
            
              if(length(output) < 1){
                print("No fusions exist in pizzly input. Creating empty output file")
-               file.create(paste0(JSON_file, "_fusions_filt_sorted.simple.txt"))
+               file.create(paste0(JSON_file, "_fusions_filt_sorted.txt"))
                quit(status=0)
              }
            
