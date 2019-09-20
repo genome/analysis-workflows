@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Trim FASTQ (flexbar)"
-baseCommand: ['bash trim_fastq.sh']
+baseCommand: ['/bin/bash','trim_fastq.sh']
 requirements:
     - class: ResourceRequirement
       ramMin: 16000
@@ -17,6 +17,9 @@ requirements:
         entry: |
             set -eou pipefail
 
+            paired="false"
+            fastq2=""
+
             adapters="$1"
             adapter_trim_end="$2"
             adapter_min_overlap="$3"
@@ -27,6 +30,7 @@ requirements:
             fastq1="$8"
             if [[ $# -gt 8 ]];then
                 fastq2=$9
+                paired="true"
             fi
             if [[ $# -gt 9 ]];then
                echo "ERROR: more than two fastq files provided to flexbar"
@@ -35,9 +39,9 @@ requirements:
 
 
             if [[ "$paired" == "true" ]];then                
-                /opt/flexbar/flexbar --adapters $adapters --adapter-trim-end $adapter_trim_end --adapter_min_overlap $adapter_min_overlap --max_uncalled $max_uncalled --min_readlength $min_readlength --target $target --threads $threads --reads $fastq --reads2 $fastq2
+                /opt/flexbar/flexbar --adapters $adapters --adapter-trim-end $adapter_trim_end --adapter-min-overlap $adapter_min_overlap --max-uncalled $max_uncalled --min-read-length $min_readlength --target $target --threads $threads --reads $fastq1 --reads2 $fastq2
             else
-                /opt/flexbar/flexbar --adapters $adapters --adapter-trim-end $adapter_trim_end --adapter_min_overlap $adapter_min_overlap --max_uncalled $max_uncalled --min_readlength $min_readlength --target $target --threads $threads --reads $fastq
+                /opt/flexbar/flexbar --adapters $adapters --adapter-trim-end $adapter_trim_end --adapter-min-overlap $adapter_min_overlap --max-uncalled $max_uncalled --min-read-length $min_readlength --target $target --threads $threads --reads $fastq1
             fi
 arguments: [
     {valueFrom: "$(runtime.outdir)/trimmed_read", position: 6},
@@ -70,7 +74,7 @@ inputs:
         inputBinding:
             position: 8
 outputs:
-    fastqs:
+    trimmed_fastqs:
         type: File[]
         outputBinding:
             glob: "trimmed_read_*.fastq"

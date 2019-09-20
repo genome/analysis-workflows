@@ -22,6 +22,12 @@ inputs:
         type: string
     reference_index:
         type: string
+    paired_end:
+        type:
+            type: enum
+            symbols: ["true", "false"]
+        default: "true"
+        doc: 'whether the sequence data is paired-end (for single-end override to false)'
 outputs:
     aligned_bam:
         type: File
@@ -37,12 +43,12 @@ steps:
             max_uncalled: max_uncalled
             min_readlength: min_readlength
         out:
-            [fastqs]
+            [trimmed_fastqs]
     biscuit_align:
         run: ../tools/biscuit_align.cwl
         in:
             reference_index: reference_index
-            fastqs: bam_to_trimmed_fastq/fastqs
+            fastqs: bam_to_trimmed_fastq/trimmed_fastqs
             read_group_id: read_group_id
         out:
             [aligned_bam]

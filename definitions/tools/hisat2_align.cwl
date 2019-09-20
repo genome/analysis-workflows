@@ -2,10 +2,9 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "HISAT2: align"
-baseCommand: ["/bin/bash", "hisat.sh"]
+label: "HISAT2: align RNAseq data"
+baseCommand: ["/bin/bash","hisat.sh"]
 requirements:
-    - class: ShellCommandRequirement
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: 16
@@ -17,29 +16,38 @@ requirements:
         entry: |
             set -eou pipefail
 
-            cores="$1"
-            reference_index="$2"
-            read_group_id="$3"
-            read_group_fields"$4"
-            paired="$5"
-            strand="$6"
-            #Shandle one or two fastq inputs
-            fastq1="$7"
-            if [[ $# -gt 7 ]];then
-                fastq2=$8
-            fi
-            if [[ $# -gt 8 ]];then
-               echo "ERROR: too many arguments - were more than two fastq files provided to HISAT?"
-               exit 1
-            fi
-
-            #collapse readgroups into string
-            rg=""
-            for i in $read_group_fields;do 
-                rg+="--rg $i "
+            while getopts "c:r:i:g:p:s:f:" opt; do
+                case "$opt" in
+                    c)
+                        cores="$OPTARG"
+                        ;;
+                    r)
+                        reference_index="$OPTARG"
+                        ;;
+                    i)
+                        read_group_id="$OPTARG"
+                        ;;
+                    g)
+                        read_group_fields="$OPTARG"
+                        ;;
+                    p)
+                        paired="$OPTARG"
+                        ;;
+                    s)
+                        strand="$OPTARG"
+                        ;;
+                    f)
+                        fastq_string="$OPTARG"
+                        ;;
+                esac
             done
 
-            strand_param=""
+
+            #collapse readgroups into separastring
+            rg=""
+            for i in $read_group_fields;do
+                rg+="--rg $i "
+            done
 
             if [[ "$paired" == "true" ]];then
                 ##get the right strand parameter
@@ -48,19 +56,22 @@ requirements:
                 elif [[ "$strand" == "second" ]];then
                     strand_param="--rna-strandness FR"
                 fi
-                /usr/bin/hisat2 -p "$cores" --dta -x reference --rg-id "$read_group_id" --rg "read_group_fields" -1 "$fastq1" -2 "$fastq2" "$strand_param" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o $(runtime.outdir)/aligned.bam /dev/stdin
+                #split fastqs
+                IFS=',' read -ra FASTQS <<< "$fastq_string";
+                /usr/bin/hisat2 -p "$cores" --dta -x "$reference_index" --rg-id "$read_group_id" --rg "$read_group_fields" -1 "${FASTQS[0]}" -2 "${FASTQS[1]}" "$strand_param" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o aligned.bam /dev/stdin
             elif [[ "$paired" == "false" ]];then
                 ##get the right strand parameter
                 if [[ "$strand" == "first" ]];then
                     strand_param="--rna-strandness R"
                 elif [[ "$strand" == "second" ]];then
                     strand_param="--rna-strandness F"
-                fi  
-                /usr/bin/hisat2 -p "$cores" --dta -x reference --rg-id "$read_group_id" --rg "read_group_fields" -1 "$fastq1" "$strand_param" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o $(runtime.outdir)/aligned.bam /dev/stdin
+                fi
+                #assumes only one fastq passed in
+                /usr/bin/hisat2 -p "$cores" --dta -x "$reference" --rg-id "$read_group_id" --rg "$read_group_fields" -1 "$fastq_string" "$strand_param" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o aligned.bam /dev/stdin
             fi
-            
+
 arguments: [
-    {valueFrom: "$(runtime.cores)", position: 1}
+    {valueFrom: "$(runtime.cores)", position: 1, prefix: "-c"}
 ]
 inputs:
     reference_index:
@@ -68,32 +79,43 @@ inputs:
         secondaryFiles: [".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"]
         inputBinding:
             position: 2
+            prefix: "-r"
     fastqs:
         type: File[]
         inputBinding:
-            position: -2
+            position: 7
+            prefix: "-f"
+            itemSeparator: ","
     read_group_id:
         type: string
         inputBinding:
             position: 3
-    read_group_fields:  #how to collapse this?
+            prefix: "-i"
+    read_group_fields:
         type:
             type: array
             items: string
-            inputBinding:
         inputBinding:
             position: 4
+            prefix: "-g"
+            itemSeparator: " "
     paired_end:
-        type: boolean?
-        default: true
+        type:
+            type: enum
+            symbols: ["true", "false"]
+        default: "true"
         doc: 'whether the sequence data is paired-end (for single-end override to false)'
+        inputBinding:
+            position: 5
+            prefix: "-p"
     strand:
         type:
           - "null"
           - type: enum
             symbols: ["first", "second", "unstranded"]
         inputBinding:
-            position: 5
+            position: 6
+            prefix: "-s"
 outputs:
     aligned_bam:
         type: File

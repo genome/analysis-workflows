@@ -21,19 +21,16 @@ inputs:
     min_readlength:
         type: int
     paired_end:
-        type: boolean
-    
-outputs:
-    fastqs:
-        type: File[]
-        outputSource: trim_fastq/fastqs
-    fastq1:
-         type: File
-         outputSource: trim_fastq/fastq1
-    fastq2:
-         type: File
-         outputSource: trim_fastq/fastq2
+        type:
+            type: enum
+            symbols: ["true", "false"]
+        default: "true"
+        doc: 'whether the sequence data is paired-end (for single-end override to false)'
 
+outputs:
+    trimmed_fastqs:
+        type: File[]
+        outputSource: trim_fastq/trimmed_fastqs
 steps:
     bam_to_fastq:
         run: ../tools/bam_to_fastq.cwl
@@ -52,5 +49,4 @@ steps:
             max_uncalled: max_uncalled
             min_readlength: min_readlength
         out:
-            [fastqs]
-    
+            [trimmed_fastqs]

@@ -41,8 +41,10 @@ inputs:
     sample_name:
         type: string
     paired_end:
-        type: boolean
-        default: true
+        type:
+            type: enum
+            symbols: ["true", "false"]
+        default: "true"
         doc: 'whether the sequence data is paired-end (for single-end override to false)'
 outputs:
     final_bam:
@@ -102,7 +104,7 @@ steps:
             min_readlength: trimming_min_readlength
             paired_end: paired_end
         out:
-            [fastqs]
+            [trimmed_fastqs]
     star_align_fusion:
         run: ../tools/star_align_fusion.cwl
         in:
@@ -111,7 +113,7 @@ steps:
             gtf_file: gtf_file
             paired_end: paired_end
             fastqs:
-                source: bam_to_trimmed_fastq/fastqs
+                source: bam_to_trimmed_fastq/trimmed_fastqs
                 linkMerge: merge_flattened
         out:
             [aligned_bam, chim_junc, splice_junction_out,log_final]
@@ -127,7 +129,7 @@ steps:
         in:
             kallisto_index: kallisto_index
             strand: strand
-            fastqs: bam_to_trimmed_fastq/fastqs
+            fastqs: bam_to_trimmed_fastq/trimmed_fastqs
         out:
             [expression_transcript_table,expression_transcript_h5,fusion_evidence]
     transcript_to_gene:

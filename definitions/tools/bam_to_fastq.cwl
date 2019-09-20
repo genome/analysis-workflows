@@ -31,8 +31,10 @@ inputs:
         inputBinding:
             position: 1
     paired_end: 
-        type: boolean?
-        default: true
+        type:
+            type: enum
+            symbols: ["true", "false"]
+        default: "true"
         doc: 'whether the sequence data is paired-end (for single-end override to false)'
         inputBinding:
             position: 2

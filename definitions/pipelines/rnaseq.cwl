@@ -45,9 +45,11 @@ inputs:
           - "null"
           - type: enum
             symbols: ["first", "second", "unstranded"]
-    paired_end: 
-        type: boolean
-        default: true
+    paired_end:
+        type:
+            type: enum
+            symbols: ["true", "false"]
+        default: "true"
         doc: 'whether the sequence data is paired-end (for single-end override to false)'
     refFlat:
         type: File
@@ -138,7 +140,7 @@ steps:
         run: ../tools/mark_duplicates_and_sort.cwl
         in:
             bam: merge/merged_bam
-            input_sort_order: 
+            input_sort_order:
                 default: "coordinate"
         out:
             [sorted_bam, metrics_file]
