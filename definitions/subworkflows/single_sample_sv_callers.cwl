@@ -58,18 +58,18 @@ inputs:
         type: File?
     genome_build:
         type: string
-    sv_paired_percentage:
+    sv_alt_abundance_percentage:
         type: double?
     sv_paired_count:
         type: int?
-    sv_split_percentage:
-        type: double?
     sv_split_count:
         type: int?
     cnv_deletion_depth:
         type: double?
     cnv_duplication_depth:
         type: double?
+    cnv_filter_min_size:
+        type: int?
 
 outputs:
     cn_diagram:
@@ -90,12 +90,18 @@ outputs:
     tumor_segmented_ratios:
         type: File
         outputSource: run_cnvkit/tumor_segmented_ratios
+    cnvkit_filtered_vcf:
+        type: File
+        outputSource: run_cnvkit_filter/filtered_vcf
     cnvkit_vcf:
         type: File
         outputSource: run_cnvkit_raw_index/indexed_vcf
     cnvnator_cn_file:
         type: File
         outputSource: run_cnvnator/cn_file
+    cnvnator_filtered_vcf:
+        type: File
+        outputSource: run_cnvnator_filter/filtered_vcf
     cnvnator_root:
         type: File
         outputSource: run_cnvnator/root_file
@@ -105,6 +111,9 @@ outputs:
     manta_diploid_variants:
         type: File?
         outputSource: run_manta/diploid_variants
+    manta_filtered_vcf:
+        type: File
+        outputSource: run_manta_filter/filtered_vcf
     manta_somatic_variants:
         type: File?
         outputSource: run_manta/somatic_variants
@@ -120,15 +129,21 @@ outputs:
     smoove_output_variants:
         type: File
         outputSource: run_smoove/output_vcf
-    filtered_sv_vcfs:
-        type: File[]
-        outputSource: filtered_vcf_index/indexed_vcf
-    merged_sv_vcf:
+    smoove_filtered_vcf:
         type: File
-        outputSource: run_merge/merged_sv_vcf
-    merged_annotated_tsv:
+        outputSource: run_smoove_filter/filtered_vcf
+    survivor_merged_vcf:
         type: File
-        outputSource: run_merge/merged_annotated_tsv
+        outputSource: run_merge/survivor_merged_sv_vcf
+    survivor_merged_annotated_tsv:
+        type: File
+        outputSource: run_merge/survivor_merged_annotated_tsv
+    bcftools_merged_vcf:
+        type: File
+        outputSource: run_merge/bcftools_merged_sv_vcf
+    bcftools_merged_annotated_tsv:
+        type: File
+        outputSource: run_merge/bcftools_merged_annotated_tsv
 steps:
     run_cnvkit:
         run: cnvkit_single_sample.cwl
@@ -141,6 +156,8 @@ steps:
             scatter_plot: cnvkit_scatter_plot
             male_reference: cnvkit_male_reference
             cnvkit_vcf_name: cnvkit_vcf_name
+            segment_filter:
+                default: "cn"
         out:
             [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf]
     run_cnvkit_raw_bgzip:
@@ -156,24 +173,26 @@ steps:
         out:
             [indexed_vcf]
     run_cnvkit_filter:
-        run: ../tools/filter_sv_vcf_depth.cwl
+        run: sv_depth_caller_filter.cwl
         in:
-            input_vcf: run_cnvkit/cnvkit_vcf
             deletion_depth: cnv_deletion_depth
             duplication_depth: cnv_duplication_depth
+            reference: reference
+            min_sv_size: cnv_filter_min_size
             output_vcf_name:
                 default: "filtered_cnvkit.vcf"
+            sv_vcf: run_cnvkit/cnvkit_vcf
             vcf_source:
                 default: "cnvkit"
         out:
-            [filtered_sv_vcf]
+            [filtered_vcf]
     run_cnvnator:
         run: ../tools/cnvnator.cwl
         in:
             bam: bam
             reference: reference
             sample_name:
-                default: "CNVnator"
+                default: "cnvnator"
         out:
             [vcf, root_file, cn_file]
     run_cnvnator_raw_bgzip:
@@ -189,17 +208,19 @@ steps:
         out:
             [indexed_vcf]
     run_cnvnator_filter:
-        run: ../tools/filter_sv_vcf_depth.cwl
+        run: sv_depth_caller_filter.cwl
         in:
-            input_vcf: run_cnvnator/vcf
             deletion_depth: cnv_deletion_depth
             duplication_depth: cnv_duplication_depth
+            reference: reference
+            min_sv_size: cnv_filter_min_size
             output_vcf_name:
-                default: "filtered_CNVnator.vcf"
+                default: "filtered_cnvnator.vcf"
+            sv_vcf: run_cnvnator/vcf
             vcf_source:
                 default: "cnvnator"
         out:
-            [filtered_sv_vcf]
+            [filtered_vcf]
     run_manta:
         run: ../tools/manta_somatic.cwl
         in:
@@ -211,19 +232,23 @@ steps:
         out:
             [diploid_variants, somatic_variants, all_candidates, small_candidates, tumor_only_variants]
     run_manta_filter:
-        run: ../tools/filter_sv_vcf_read_support.cwl
+        run: sv_paired_read_caller_filter.cwl
         in:
-            input_vcf: run_manta/tumor_only_variants
+            abundance_percentage: sv_alt_abundance_percentage
+            bam: bam
+            deletion_depth: cnv_deletion_depth
+            duplication_depth: cnv_duplication_depth
             output_vcf_name:
                 default: "filtered_manta.vcf"
-            paired_count: sv_paired_count
-            paired_percentage: sv_paired_percentage
-            split_count: sv_split_count
-            split_percentage: sv_split_percentage
+            reference: reference
+            snps_vcf: snps_vcf
+            sv_paired_count: sv_paired_count
+            sv_split_count: sv_split_count
+            sv_vcf: run_manta/tumor_only_variants
             vcf_source:
                 default: "manta"
         out:
-            [filtered_sv_vcf]
+            [filtered_vcf]
     run_smoove:
         run: ../tools/smoove.cwl
         in:
@@ -235,19 +260,23 @@ steps:
         out:
             [output_vcf]
     run_smoove_filter:
-        run: ../tools/filter_sv_vcf_read_support.cwl
+        run: sv_paired_read_caller_filter.cwl
         in:
-            input_vcf: run_smoove/output_vcf
+            abundance_percentage: sv_alt_abundance_percentage
+            bam: bam
+            deletion_depth: cnv_deletion_depth
+            duplication_depth: cnv_duplication_depth
             output_vcf_name:
                 default: "filtered_smoove.vcf"
-            paired_count: sv_paired_count
-            paired_percentage: sv_paired_percentage
-            split_count: sv_split_count
-            split_percentage: sv_split_percentage
+            reference: reference
+            snps_vcf: snps_vcf
+            sv_paired_count: sv_paired_count
+            sv_split_count: sv_split_count
+            sv_vcf: run_smoove/output_vcf
             vcf_source:
                 default: "smoove"
         out:
-            [filtered_sv_vcf]
+            [filtered_vcf]
     run_merge:
         run: merge_svs.cwl
         in:
@@ -260,24 +289,7 @@ steps:
             same_type: merge_same_type
             snps_vcf: snps_vcf
             sv_vcfs:
-                source: [run_cnvkit_filter/filtered_sv_vcf, run_cnvnator_filter/filtered_sv_vcf, run_manta_filter/filtered_sv_vcf, run_smoove_filter/filtered_sv_vcf]
+                source: [run_cnvkit_filter/filtered_vcf, run_cnvnator_filter/filtered_vcf, run_manta_filter/filtered_vcf, run_smoove_filter/filtered_vcf]
                 linkMerge: merge_flattened
         out:
-            [merged_sv_vcf, merged_annotated_tsv]
-    filtered_vcf_bgzip:
-        scatter: [file]
-        scatterMethod: dotproduct
-        run: ../tools/bgzip.cwl
-        in:
-            file:
-                source: [run_cnvkit_filter/filtered_sv_vcf, run_cnvnator_filter/filtered_sv_vcf, run_manta_filter/filtered_sv_vcf, run_smoove_filter/filtered_sv_vcf]
-                linkMerge: merge_flattened
-        out: [bgzipped_file]
-    filtered_vcf_index:
-        scatter: [vcf]
-        scatterMethod: dotproduct
-        run: ../tools/index_vcf.cwl
-        in:
-            vcf: filtered_vcf_bgzip/bgzipped_file
-        out:
-            [indexed_vcf]
+            [bcftools_merged_sv_vcf, bcftools_merged_annotated_tsv, survivor_merged_sv_vcf, survivor_merged_annotated_tsv]
