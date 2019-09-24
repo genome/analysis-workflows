@@ -49,8 +49,6 @@ inputs:
         type: File
     ribosomal_intervals:
         type: File
-    reference_transcriptome:
-        type: File
     species:
         type: string
         doc: 'the species being analyzed, such as homo_sapiens or mus_musculus'
@@ -86,21 +84,6 @@ outputs:
     fusion_evidence:
         type: File
         outputSource: kallisto/fusion_evidence
-    unfiltered_fusion_seqs:
-        type: File
-        outputSource: pizzly/unfiltered_fusion_seqs
-    unfiltered_fusions_json:
-        type: File
-        outputSource: pizzly/unfiltered_fusions_json
-    filtered_fusion_seqs:
-        type: File
-        outputSource: pizzly/filtered_fusion_seqs
-    filtered_fusions_json:
-        type: File
-        outputSource: pizzly/filtered_fusions_json
-    final_fusion_calls:
-        type: File
-        outputSource: grolar/parsed_fusion_calls
 steps:
     bam_to_trimmed_fastq_and_hisat_alignments:
         run: ../subworkflows/bam_to_trimmed_fastq_and_hisat_alignments.cwl
@@ -172,26 +155,3 @@ steps:
             bam: index_bam/indexed_bam
         out:
             [metrics, chart]
-    get_index_kmer_size:
-        run: ../tools/kmer_size_from_index.cwl
-        in: 
-            kallisto_index: kallisto_index
-        out:
-            [kmer_length]
-    pizzly:
-        run: ../tools/pizzly.cwl
-        in:
-            kallisto_kmer_size: get_index_kmer_size/kmer_length
-            transcriptome_annotations: reference_annotation
-            reference_transcriptome: reference_transcriptome
-            fusion_evidence: kallisto/fusion_evidence
-        out:
-            [unfiltered_fusion_seqs, unfiltered_fusions_json, filtered_fusion_seqs, filtered_fusions_json]
-    grolar:
-        run: ../tools/grolar.cwl
-        in:
-            pizzly_calls: pizzly/filtered_fusions_json
-            species: species
-            assembly: assembly
-        out:
-            [parsed_fusion_calls]
