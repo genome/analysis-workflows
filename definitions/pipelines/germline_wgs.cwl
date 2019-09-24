@@ -112,12 +112,10 @@ inputs:
         type: boolean
     merge_min_sv_size:
         type: int
-    sv_filter_paired_percentage:
+    sv_filter_alt_abundance_percentage:
         type: double?
     sv_filter_paired_count:
         type: int?
-    sv_filter_split_percentage:
-        type: double?
     sv_filter_split_count:
         type: int?
     cnv_filter_deletion_depth:
@@ -130,6 +128,8 @@ inputs:
          type: string[]?
     vep_to_table_fields:
          type: string[]?
+    cnv_filter_min_size:
+         type: int?
 outputs:
     cram:
         type: File
@@ -251,18 +251,33 @@ outputs:
     smoove_output_variants:
         type: File
         outputSource: sv_detect_variants/smoove_output_variants
-    merged_sv_vcf:
-        type: File
-        outputSource: sv_detect_variants/merged_sv_vcf
     final_tsv:
         type: File
         outputSource: detect_variants/final_tsv
-    merged_annotated_sv_tsvs:
+    cnvkit_filtered_vcf:
         type: File
-        outputSource: sv_detect_variants/merged_annotated_tsv
-    filtered_sv_vcfs:
-        type: File[]
-        outputSource: sv_detect_variants/filtered_sv_vcfs
+        outputSource: sv_detect_variants/cnvkit_filtered_vcf
+    cnvnator_filtered_vcf:
+        type: File
+        outputSource: sv_detect_variants/cnvnator_filtered_vcf
+    manta_filtered_vcf:
+        type: File
+        outputSource: sv_detect_variants/manta_filtered_vcf
+    smoove_filtered_vcf:
+        type: File
+        outputSource: sv_detect_variants/smoove_filtered_vcf
+    survivor_merged_vcf:
+        type: File
+        outputSource: sv_detect_variants/survivor_merged_vcf
+    survivor_merged_annotated_tsv:
+        type: File
+        outputSource: sv_detect_variants/survivor_merged_annotated_tsv
+    bcftools_merged_vcf:
+        type: File
+        outputSource: sv_detect_variants/bcftools_merged_vcf
+    bcftools_merged_annotated_tsv:
+        type: File
+        outputSource: sv_detect_variants/bcftools_merged_annotated_tsv
 steps:
     alignment_and_qc:
         run: wgs_alignment.cwl
@@ -347,6 +362,7 @@ steps:
             cnvkit_vcf_name: cnvkit_vcf_name
             cnv_deletion_depth: cnv_filter_deletion_depth
             cnv_duplication_depth: cnv_filter_duplication_depth
+            cnv_filter_min_size: cnv_filter_min_size
             manta_call_regions: manta_call_regions
             manta_non_wgs: manta_non_wgs
             manta_output_contigs: manta_output_contigs
@@ -358,13 +374,12 @@ steps:
             merge_estimate_sv_distance: merge_estimate_sv_distance
             merge_min_sv_size: merge_min_sv_size
             snps_vcf: detect_variants/final_vcf
-            sv_paired_percentage: sv_filter_paired_percentage
+            sv_alt_abundance_percentage: sv_filter_alt_abundance_percentage
             sv_paired_count: sv_filter_paired_count
-            sv_split_percentage: sv_filter_split_percentage
             sv_split_count: sv_filter_split_count
             genome_build: vep_ensembl_assembly
         out: 
-           [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf, cnvnator_cn_file, cnvnator_root, cnvnator_vcf, manta_diploid_variants, manta_somatic_variants, manta_all_candidates, manta_small_candidates, manta_tumor_only_variants, smoove_output_variants, merged_sv_vcf, merged_annotated_tsv, filtered_sv_vcfs]
+           [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf, cnvnator_cn_file, cnvnator_root, cnvnator_vcf, manta_diploid_variants, manta_somatic_variants, manta_all_candidates, manta_small_candidates, manta_tumor_only_variants, smoove_output_variants, cnvkit_filtered_vcf, cnvnator_filtered_vcf, manta_filtered_vcf, smoove_filtered_vcf, survivor_merged_vcf, survivor_merged_annotated_tsv, bcftools_merged_vcf, bcftools_merged_annotated_tsv]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
