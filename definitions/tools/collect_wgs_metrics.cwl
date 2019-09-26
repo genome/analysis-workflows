@@ -24,7 +24,7 @@ inputs:
         inputBinding:
             prefix: "R="
     intervals:
-        type: File
+        type: File?
         inputBinding:
             prefix: "INTERVALS="
 outputs:
