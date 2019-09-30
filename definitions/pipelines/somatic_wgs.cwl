@@ -281,14 +281,6 @@ outputs:
         type: File
         outputSource: detect_variants/varscan_filtered_vcf
         secondaryFiles: [.tbi]
-#    pindel_unfiltered_vcf:
-#        type: File
-#        outputSource: detect_variants/pindel_unfiltered_vcf
-#        secondaryFiles: [.tbi]
-#    pindel_filtered_vcf:
-#        type: File
-#        outputSource: detect_variants/pindel_filtered_vcf
-#        secondaryFiles: [.tbi]
     docm_filtered_vcf:
         type: File
         outputSource: detect_variants/docm_filtered_vcf
