@@ -128,14 +128,6 @@ outputs:
         type: File
         outputSource: varscan/filtered_vcf
         secondaryFiles: [.tbi]
-#    pindel_unfiltered_vcf:
-#        type: File
-#        outputSource: pindel/unfiltered_vcf
-#        secondaryFiles: [.tbi]
-#    pindel_filtered_vcf:
-#        type: File
-#        outputSource: pindel/filtered_vcf
-#        secondaryFiles: [.tbi]
     docm_filtered_vcf:
         type: File
         outputSource: docm/docm_variants_vcf
@@ -202,16 +194,6 @@ steps:
             max_normal_freq: varscan_max_normal_freq
         out:
             [unfiltered_vcf, filtered_vcf]
-#    pindel:
-#        run: ../subworkflows/pindel.cwl
-#        in:
-#            reference: reference
-#            tumor_bam: tumor_bam
-#            normal_bam: normal_bam
-#            interval_list: interval_list
-#            insert_size: pindel_insert_size
-#        out:
-#            [unfiltered_vcf, filtered_vcf]
     docm:
         run: ../subworkflows/docm_cle.cwl
         in:
@@ -230,7 +212,6 @@ steps:
             mutect_vcf: mutect/filtered_vcf
             strelka_vcf: strelka/filtered_vcf
             varscan_vcf: varscan/filtered_vcf
-#            pindel_vcf: pindel/filtered_vcf
         out:
             [combined_vcf]
     add_docm_variants:
