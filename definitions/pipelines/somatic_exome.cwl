@@ -347,7 +347,7 @@ outputs:
         outputSource: concordance/somalier_samples
 steps:
     tumor_alignment_and_qc:
-        run: exome_alignment.cwl
+        run: alignment_exome.cwl
         in:
             reference: reference
             sequence: tumor_sequence
@@ -370,7 +370,7 @@ steps:
         out:
             [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     normal_alignment_and_qc:
-        run: exome_alignment.cwl
+        run: alignment_exome.cwl
         in:
             reference: reference
             sequence: normal_sequence

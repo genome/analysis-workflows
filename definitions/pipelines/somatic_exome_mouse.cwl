@@ -226,7 +226,7 @@ outputs:
         outputSource: detect_variants/normal_indel_bam_readcount_tsv
 steps:
     tumor_alignment_and_qc:
-        run: exome_alignment_mouse.cwl
+        run: alignment_exome_mouse.cwl
         in:
             reference: reference
             bams: tumor_bams
@@ -245,7 +245,7 @@ steps:
         out:
             [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats]
     normal_alignment_and_qc:
-        run: exome_alignment_mouse.cwl
+        run: alignment_exome_mouse.cwl
         in:
             reference: reference
             bams: normal_bams
