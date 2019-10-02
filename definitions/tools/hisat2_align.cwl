@@ -68,7 +68,7 @@ requirements:
                     strand_param="--rna-strandness F"
                 fi
                 #assumes only one fastq passed in
-                /usr/bin/hisat2 -p "$cores" --dta -x "$reference" --rg-id "$read_group_id" "$rg" -1 "$fastq_string" "$strand_param" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o aligned.bam /dev/stdin
+                /usr/bin/hisat2 -p "$cores" --dta -x "$reference_index" --rg-id "$read_group_id" "$rg" -U "$fastq_string" "$strand_param" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o aligned.bam /dev/stdin
             fi
 
 arguments: [

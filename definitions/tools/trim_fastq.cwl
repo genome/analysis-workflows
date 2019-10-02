@@ -77,4 +77,4 @@ outputs:
     trimmed_fastqs:
         type: File[]
         outputBinding:
-            glob: "trimmed_read_*.fastq"
+            glob: "trimmed_read*fastq"
