@@ -144,6 +144,9 @@ outputs:
     bcftools_merged_annotated_tsv:
         type: File
         outputSource: run_merge/bcftools_merged_annotated_tsv
+    bcftools_merged_filtered_annotated_tsv:
+        type: File
+        outputSource: run_merge/bcftools_merged_filtered_annotated_tsv
 steps:
     run_cnvkit:
         run: cnvkit_single_sample.cwl
@@ -292,4 +295,4 @@ steps:
                 source: [run_cnvkit_filter/filtered_vcf, run_cnvnator_filter/filtered_vcf, run_manta_filter/filtered_vcf, run_smoove_filter/filtered_vcf]
                 linkMerge: merge_flattened
         out:
-            [bcftools_merged_sv_vcf, bcftools_merged_annotated_tsv, survivor_merged_sv_vcf, survivor_merged_annotated_tsv]
+            [bcftools_merged_sv_vcf, bcftools_merged_annotated_tsv, bcftools_merged_filtered_annotated_tsv, survivor_merged_sv_vcf, survivor_merged_annotated_tsv]

@@ -37,6 +37,9 @@ outputs:
     bcftools_merged_annotated_tsv:
         type: File
         outputSource: bcftools_annotate_variants/sv_variants_tsv
+    bcftools_merged_filtered_annotated_tsv:
+       type: File
+       outputSource: bcftools_annotsv_filter/filtered_tsv
     survivor_merged_sv_vcf:
         type: File
         outputSource: survivor_bgzip_merged_sv_vcf/bgzipped_file
@@ -100,6 +103,14 @@ steps:
                 valueFrom: ${ return [ self ]; }
         out:
             [sv_variants_tsv]
+    bcftools_annotsv_filter:
+        run: ../tools/annotsv_filter.cwl
+        in:
+            annotsv_tsv: bcftools_annotate_variants/sv_variants_tsv
+            filtering_frequency:
+                default: "0.05"
+        out:
+            [filtered_tsv]
     bcftools_bgzip_merged_sv_vcf:
         run: ../tools/bgzip.cwl
         in:
