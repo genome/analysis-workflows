@@ -307,7 +307,7 @@ outputs:
         type: File
         outputSource: rnaseq/metrics
     chart:
-        type: File
+        type: File?
         outputSource: rnaseq/chart
     fusion_evidence:
         type: File
