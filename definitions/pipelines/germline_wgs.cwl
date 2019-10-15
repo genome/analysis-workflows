@@ -200,9 +200,6 @@ outputs:
     summary_hs_metrics:
         type: File[]
         outputSource: alignment_and_qc/summary_hs_metrics
-    bamcoverage_bigwig:
-        type: File
-        outputSource: alignment_and_qc/bamcoverage_bigwig
     cn_diagram:
         type: File?
         outputSource: sv_detect_variants/cn_diagram
@@ -282,7 +279,7 @@ steps:
             per_target_intervals: per_target_intervals
             summary_intervals: summary_intervals
         out:
-            [bam, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics, bamcoverage_bigwig]
+            [bam, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics]
     extract_freemix:
         in:
             verify_bam_id_metrics: alignment_and_qc/verify_bam_id_metrics

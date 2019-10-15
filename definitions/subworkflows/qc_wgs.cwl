@@ -78,9 +78,6 @@ outputs:
     summary_hs_metrics:
         type: File[]
         outputSource: collect_hs_metrics/summary_hs_metrics
-    bamcoverage_bigwig:
-        type: File
-        outputSource: deeptools_bamcoverage/outfile
 steps:
     collect_insert_size_metrics:
         run: ../tools/collect_insert_size_metrics.cwl
@@ -138,10 +135,3 @@ steps:
             summary_intervals: summary_intervals
         out:
             [per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics]
-    deeptools_bamcoverage:
-        run: ../tools/deeptools_bamcoverage.cwl
-        in:
-            bam: bam
-            min_mapping_quality: minimum_mapping_quality
-        out:
-            [outfile]
