@@ -99,9 +99,6 @@ outputs:
     summary_hs_metrics:
         type: File[]
         outputSource: qc/summary_hs_metrics
-    bamcoverage_bigwig:
-        type: File
-        outputSource: qc/bamcoverage_bigwig
     tag_directory:
         type: Directory
         outputSource: homer_tag_directory/tag_directory
@@ -144,4 +141,4 @@ steps:
             per_base_intervals: per_base_intervals
             per_target_intervals: per_target_intervals
             summary_intervals: summary_intervals
-        out: [insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics, bamcoverage_bigwig]
+        out: [insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics]
