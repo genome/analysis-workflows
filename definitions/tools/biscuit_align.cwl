@@ -26,9 +26,9 @@ requirements:
             fi
             if [[ $# -gt 4 ]];then  #two fastqs
                 fastq2=$5
-                /usr/bin/biscuit align -t $cores -M -R "$read_group_id" "$reference_index" "$fastq1" "$fastq2" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o "$outdir/aligned.bam" /dev/stdin
+                /usr/bin/biscuit align -t $cores -M -R "$read_group_id" "$reference_index" "$fastq1" "$fastq2" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o "aligned.bam" /dev/stdin
             else #one fastq
-                /usr/bin/biscuit align -t $cores -M -R "$read_group_id" "$reference_index" "$fastq1" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o "$outdir/aligned.bam" /dev/stdin
+                /usr/bin/biscuit align -t $cores -M -R "$read_group_id" "$reference_index" "$fastq1" | /usr/bin/sambamba view -S -f bam -l 0 /dev/stdin | /usr/bin/sambamba sort -t $cores -m 8G -o "aligned.bam" /dev/stdin
             fi
 
 arguments: [
@@ -40,7 +40,7 @@ inputs:
         inputBinding:
             position: 3
     fastqs:
-        type: File
+        type: File[]
         inputBinding:
             position: 4
     read_group_id:

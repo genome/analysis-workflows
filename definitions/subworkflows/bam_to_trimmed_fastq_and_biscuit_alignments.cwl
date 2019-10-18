@@ -35,6 +35,7 @@ outputs:
 steps:
     bam_to_trimmed_fastq:
         run: bam_to_trimmed_fastq.cwl
+        in:
             bam: bam
             paired_end: paired_end
             adapters: adapters
