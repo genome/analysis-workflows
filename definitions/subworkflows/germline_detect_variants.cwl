@@ -5,6 +5,9 @@ class: Workflow
 label: "exome alignment and germline variant detection"
 requirements:
     - class: SubworkflowFeatureRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/vep_custom_annotation.yml
 inputs:
     reference:
         type: string
@@ -40,14 +43,13 @@ inputs:
         type: File?
     annotate_coding_only:
         type: boolean?
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
+    vep_custom_annotations:
+        type:
+            - "null"
+            - type: array
+              items: ../types/vep_custom_annotation.yml#vep_custom_annotation
     limit_variant_intervals:
         type: File
-    custom_clinvar_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
     variants_to_table_fields:
         type: string[]?
         default: ['CHROM','POS','ID','REF','ALT']
@@ -110,8 +112,7 @@ steps:
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only
             reference: reference
-            custom_gnomad_vcf: custom_gnomad_vcf
-            custom_clinvar_vcf: custom_clinvar_vcf
+            custom_annotations: vep_custom_annotations
             plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]

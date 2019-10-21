@@ -5,6 +5,9 @@ class: Workflow
 label: "Detect Variants workflow"
 requirements:
     - class: SubworkflowFeatureRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/vep_custom_annotation.yml
 inputs:
     reference:
         type: string
@@ -97,12 +100,11 @@ inputs:
     vep_to_table_fields:
         type: string[]?
         default: [HGVSc,HGVSp]
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    custom_clinvar_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
+    vep_custom_annotations:
+        type:
+            - "null"
+            - type: array
+              items: ../types/vep_custom_annotation.yml#vep_custom_annotation
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -264,9 +266,8 @@ steps:
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only
             reference: reference
-            custom_gnomad_vcf: custom_gnomad_vcf
             pick: vep_pick
-            custom_clinvar_vcf: custom_clinvar_vcf
+            custom_annotations: vep_custom_annotations
             plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]

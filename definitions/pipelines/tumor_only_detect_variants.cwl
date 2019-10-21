@@ -7,6 +7,9 @@ requirements:
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
     - class: InlineJavascriptRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/vep_custom_annotation.yml
 inputs:
     reference:
         type: string
@@ -71,9 +74,11 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
+    vep_custom_annotations:
+        type:
+            - "null"
+            - type: array
+              items: ../types/vep_custom_annotation.yml#vep_custom_annotation
     readcount_minimum_mapping_quality:
         type: int?
     readcount_minimum_base_quality:
@@ -152,7 +157,7 @@ steps:
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only
             reference: reference
-            custom_gnomad_vcf: custom_gnomad_vcf
+            custom_annotations: vep_custom_annotations
             pick: vep_pick
             ensembl_assembly: vep_ensembl_assembly
             ensembl_version: vep_ensembl_version
@@ -199,10 +204,21 @@ steps:
         out:
             [filtered_vcf]
     af_filter:
-        run: ../tools/filter_vcf_gnomADe_allele_freq.cwl
+        run: ../tools/filter_vcf_custom_allele_freq.cwl
         in:
             vcf: hard_filter/filtered_vcf
             maximum_population_allele_frequency: maximum_population_allele_frequency
+            field_name:
+              source: vep_custom_annotations
+              valueFrom: | 
+                ${
+                    for(var i=0; i<self.length; i++){
+                        if(self[i].annotation.gnomad_filter){ 
+                            return(self[i].annotation.name + '_AF');
+                        }
+                    }
+                    return('gnomAD_AF');
+                }
         out:
             [filtered_vcf]
     coding_variant_filter:
