@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
 inputs:
     reference: string
@@ -67,16 +68,15 @@ inputs:
         type: File?
     annotate_coding_only:
         type: boolean?
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
     qc_minimum_mapping_quality:
         type: int?
     qc_minimum_base_quality:
         type: int?
-    custom_clinvar_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
+    vep_custom_annotations:
+        type:
+            - "null"
+            - type: array
+              items: ../types/vep_custom_annotation.yml#vep_custom_annotation
     variants_to_table_fields:
          type: string[]?
     variants_to_table_genotype_fields:
@@ -206,14 +206,13 @@ steps:
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             annotate_coding_only: annotate_coding_only
-            custom_gnomad_vcf: custom_gnomad_vcf
             limit_variant_intervals: target_intervals
-            custom_clinvar_vcf: custom_clinvar_vcf
             vep_ensembl_assembly: vep_ensembl_assembly
             vep_ensembl_version: vep_ensembl_version
             vep_ensembl_species: vep_ensembl_species
             vep_plugins: vep_plugins
             vep_to_table_fields: vep_to_table_fields
+            vep_custom_annotations: vep_custom_annotations
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
         out:
