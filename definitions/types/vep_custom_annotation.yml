@@ -1,0 +1,31 @@
+type: record
+name: vep_custom_annotation
+label: custom annotation file to be used by vep
+fields:
+    force_report_coordinates:
+        type: boolean
+    method:
+        type:
+            - type: enum
+              symbols: ['exact','overlap']
+    annotation:
+        type:
+            type: record
+            name: info
+            fields:
+              file:
+                  type: File
+              data_format:
+                type:
+                    type: enum
+                    name: 'format'
+                    symbols: ['bed','gff','gtf','vcf','bigwig']
+              name:
+                  type: string
+              vcf_fields:
+                  type: string[]?
+              gnomad_filter:
+                  type: boolean?
+              check_existing:
+                  type: boolean
+
