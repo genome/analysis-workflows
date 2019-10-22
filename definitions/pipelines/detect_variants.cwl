@@ -338,6 +338,19 @@ steps:
             tumor_bam: tumor_bam
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference
+            gnomad_field_name:
+              source: vep_custom_annotations
+              valueFrom: |
+                ${
+                   if  (typeof self !== 'undefined'){
+                        for(var i=0; i<self.length; i++){
+                            if(self[i].annotation.gnomad_filter){
+                                return(self[i].annotation.name + '_AF');
+                            }
+                        }
+                        return('gnomAD_AF');
+                    }
+                }
         out: 
             [filtered_vcf]
     annotated_filter_bgzip:
