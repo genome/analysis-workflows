@@ -198,9 +198,6 @@ outputs:
     tumor_wgs_metrics:
         type: File
         outputSource: tumor_alignment_and_qc/wgs_metrics
-    tumor_bamcoverage_bigwig:
-        type: File
-        outputSource: tumor_alignment_and_qc/bamcoverage_bigwig
 ##normal alignment and qc
     normal_cram:
         type: File
@@ -253,9 +250,6 @@ outputs:
     normal_wgs_metrics:
         type: File
         outputSource: normal_alignment_and_qc/wgs_metrics
-    normal_bamcoverage_bigwig:
-        type: File
-        outputSource: normal_alignment_and_qc/bamcoverage_bigwig
 ##variant calling
     mutect_unfiltered_vcf:
         type: File
@@ -340,7 +334,7 @@ outputs:
         outputSource: concordance/somalier_samples
 steps:
     tumor_alignment_and_qc:
-        run: wgs_alignment.cwl
+        run: alignment_wgs.cwl
         in:
             reference: reference
             sequence: tumor_sequence
@@ -358,9 +352,9 @@ steps:
             summary_intervals: summary_intervals
             sample_name: tumor_name
         out:
-            [bam, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics, bamcoverage_bigwig] 
+            [alignment_summary_metrics, bam, flagstats, gc_bias_metrics_chart, gc_bias_metrics_summary, gc_bias_metrics, insert_size_histogram, insert_size_metrics, mark_duplicates_metrics, per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics, verify_bam_id_depth, verify_bam_id_metrics, wgs_metrics]
     normal_alignment_and_qc:
-        run: wgs_alignment.cwl
+        run: alignment_wgs.cwl
         in:
             reference: reference
             sequence: normal_sequence
@@ -378,7 +372,7 @@ steps:
             summary_intervals: summary_intervals
             sample_name: normal_name
         out:
-            [bam, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, gc_bias_metrics, gc_bias_metrics_chart, gc_bias_metrics_summary, wgs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics, bamcoverage_bigwig] 
+            [alignment_summary_metrics, bam, flagstats, gc_bias_metrics_chart, gc_bias_metrics_summary, gc_bias_metrics, insert_size_histogram, insert_size_metrics, mark_duplicates_metrics, per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics, verify_bam_id_depth, verify_bam_id_metrics, wgs_metrics]
     concordance:
         run: ../tools/concordance.cwl
         in:
