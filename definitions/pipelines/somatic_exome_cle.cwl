@@ -129,7 +129,9 @@ inputs:
         type: File
     disclaimer_text:
         type: string?
-        default: "This laboratory developed test (LDT) was developed and its performance characteristics determined by the CLIA Licensed Environment laboratory at the McDonnell Genome Institute at Washington University (MGI-CLE, CLIA #26D2092546, CAP #9047655), Dr. David H. Spencer MD, PhD, FCAP, Medical Director. 4444 Forest Park Avenue, Rm 4127 St. Louis, Missouri 63108 (314) 286-1460 Fax: (314) 286-1810. The MGI-CLE laboratory is regulated under CLIA as certified to perform high-complexity testing. This test has not been cleared or approved by the FDA."
+        default: "#This laboratory developed test (LDT) was developed and its performance characteristics determined by the CLIA Licensed Environment laboratory at the McDonnell Genome Institute at Washington University (MGI-CLE, CLIA #26D2092546, CAP #9047655), Dr. David H. Spencer MD, PhD, FCAP, Medical Director. 4444 Forest Park Avenue, Rm 4127 St. Louis, Missouri 63108 (314) 286-1460 Fax: (314) 286-1810. The MGI-CLE laboratory is regulated under CLIA as certified to perform high-complexity testing. This test has not been cleared or approved by the FDA."
+    disclaimer_version:
+        type: string
 outputs:
     tumor_cram:
         type: File
@@ -255,7 +257,7 @@ outputs:
         secondaryFiles: [.tbi]
     final_tsv:
         type: File
-        outputSource: add_disclaimer_to_final_tsv/output_file
+        outputSource: add_disclaimer_version_to_final_tsv/output_file
     vep_summary:
         type: File
         outputSource: detect_variants/vep_summary
@@ -279,7 +281,7 @@ outputs:
         outputSource: concordance/somalier_samples
 steps:
     tumor_alignment_and_qc:
-        run: exome_alignment.cwl
+        run: alignment_exome.cwl
         in:
             reference: reference
             sequence: tumor_sequence
@@ -302,7 +304,7 @@ steps:
         out:
             [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     normal_alignment_and_qc:
-        run: exome_alignment.cwl
+        run: alignment_exome.cwl
         in:
             reference: reference
             sequence: normal_sequence
@@ -375,6 +377,15 @@ steps:
             line_number:
                 default: 1
             some_text: disclaimer_text
+        out:
+            [output_file]
+    add_disclaimer_version_to_final_tsv:
+        run: ../tools/add_string_at_line.cwl
+        in:
+            input_file: add_disclaimer_to_final_tsv/output_file
+            line_number:
+                default: 2
+            some_text: disclaimer_version
         out:
             [output_file]
     tumor_bam_to_cram:

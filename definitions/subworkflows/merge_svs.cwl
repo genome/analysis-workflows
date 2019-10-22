@@ -4,6 +4,7 @@ cwlVersion: v1.0
 class: Workflow
 label: "Merge, annotate, and generate a TSV for SVs"
 requirements:
+    - class: ScatterFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
     - class: InlineJavascriptRequirement
@@ -30,14 +31,23 @@ inputs:
     sv_vcfs:
         type: File[]
 outputs:
-    merged_sv_vcf:
+    bcftools_merged_sv_vcf:
         type: File
-        outputSource: bgzip_merged_sv_vcf/bgzipped_file
-    merged_annotated_tsv:
+        outputSource: bcftools_bgzip_merged_sv_vcf/bgzipped_file
+    bcftools_merged_annotated_tsv:
         type: File
-        outputSource: annotate_variants/sv_variants_tsv
+        outputSource: bcftools_annotate_variants/sv_variants_tsv
+    bcftools_merged_filtered_annotated_tsv:
+       type: File
+       outputSource: bcftools_annotsv_filter/filtered_tsv
+    survivor_merged_sv_vcf:
+        type: File
+        outputSource: survivor_bgzip_merged_sv_vcf/bgzipped_file
+    survivor_merged_annotated_tsv:
+        type: File
+        outputSource: survivor_annotate_variants/sv_variants_tsv
 steps:
-    merge_sv_vcfs:
+    survivor_merge_sv_vcfs:
         run: ../tools/survivor.cwl
         in: 
             vcfs: sv_vcfs
@@ -47,22 +57,63 @@ steps:
             same_strand: same_strand
             estimate_sv_distance: estimate_sv_distance
             minimum_sv_size: minimum_sv_size
-            cohort_name: cohort_name
+            cohort_name:
+                default: "SURVIVOR-sv-merged.vcf"
         out:
             [merged_vcf]
-    annotate_variants:
+    survivor_annotate_variants:
         run: ../tools/annotsv.cwl
         in:
             genome_build: genome_build
-            input_vcf: merge_sv_vcfs/merged_vcf
+            input_vcf: survivor_merge_sv_vcfs/merged_vcf
+            output_tsv_name:
+                default: "SURVIVOR-merged-AnnotSV.tsv"
             snps_vcf:
                 source: [snps_vcf]
                 valueFrom: ${ return [ self ]; }
         out:
             [sv_variants_tsv]
-    bgzip_merged_sv_vcf:
+    survivor_bgzip_merged_sv_vcf:
         run: ../tools/bgzip.cwl
         in:
-            file: merge_sv_vcfs/merged_vcf
+            file: survivor_merge_sv_vcfs/merged_vcf
+        out:
+            [bgzipped_file]
+    bcftools_merge_sv_vcfs:
+        run: ../tools/bcftools_merge.cwl
+        in:
+            merge_method:
+                default: "none"
+            output_type:
+                default: "v"
+            output_vcf_name:
+                default: "bcftools-sv-merged.vcf"
+            vcfs: sv_vcfs
+        out:
+            [merged_sv_vcf]
+    bcftools_annotate_variants:
+        run: ../tools/annotsv.cwl
+        in:
+            genome_build: genome_build
+            input_vcf: bcftools_merge_sv_vcfs/merged_sv_vcf
+            output_tsv_name:
+                default: "bcftools-merged-AnnotSV.tsv"
+            snps_vcf:
+                source: [snps_vcf]
+                valueFrom: ${ return [ self ]; }
+        out:
+            [sv_variants_tsv]
+    bcftools_annotsv_filter:
+        run: ../tools/annotsv_filter.cwl
+        in:
+            annotsv_tsv: bcftools_annotate_variants/sv_variants_tsv
+            filtering_frequency:
+                default: "0.05"
+        out:
+            [filtered_tsv]
+    bcftools_bgzip_merged_sv_vcf:
+        run: ../tools/bgzip.cwl
+        in:
+            file: bcftools_merge_sv_vcfs/merged_sv_vcf
         out:
             [bgzipped_file]

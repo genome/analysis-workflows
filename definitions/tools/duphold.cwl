@@ -10,7 +10,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 10000
     - class: DockerRequirement
-      dockerPull: "mgibio/duphold-cwl:0.1.4"
+      dockerPull: "mgibio/duphold-cwl:0.1.5"
 
 inputs:
     bam:
