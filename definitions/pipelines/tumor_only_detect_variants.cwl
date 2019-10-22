@@ -212,9 +212,11 @@ steps:
               source: vep_custom_annotations
               valueFrom: | 
                 ${
-                    for(var i=0; i<self.length; i++){
-                        if(self[i].annotation.gnomad_filter){ 
-                            return(self[i].annotation.name + '_AF');
+                    if(self){
+                        for(var i=0; i<self.length; i++){
+                            if(self[i].annotation.gnomad_filter){
+                                return(self[i].annotation.name + '_AF');
+                            }
                         }
                     }
                     return('gnomAD_AF');
