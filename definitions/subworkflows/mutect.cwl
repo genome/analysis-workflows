@@ -21,6 +21,8 @@ inputs:
         type: File
     scatter_count:
         type: int
+    tumor_sample_name:
+        type: string?
 outputs:
     unfiltered_vcf:
         type: File
@@ -67,6 +69,7 @@ steps:
             vcf: index/indexed_vcf
             variant_caller: 
                 valueFrom: "mutect"
+            sample_name: tumor_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
 

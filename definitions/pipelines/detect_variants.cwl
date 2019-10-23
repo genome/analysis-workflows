@@ -103,6 +103,8 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    tumor_sample_name:
+        type: string?
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -175,6 +177,7 @@ steps:
             normal_bam: normal_bam
             interval_list: interval_list
             scatter_count: mutect_scatter_count
+            tumor_sample_name: tumor_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     strelka:
