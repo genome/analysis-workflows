@@ -104,7 +104,9 @@ inputs:
         type: File?
         secondaryFiles: [.tbi]
     tumor_sample_name:
-        type: string?
+        type: string
+    normal_sample_name:
+        type: string
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -189,6 +191,8 @@ steps:
             interval_list: interval_list
             exome_mode: strelka_exome_mode
             cpu_reserved: strelka_cpu_reserved
+            normal_sample_name: normal_sample_name
+            tumor_sample_name: tumor_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     varscan:
