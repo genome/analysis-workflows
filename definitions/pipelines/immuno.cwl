@@ -719,10 +719,8 @@ steps:
             vep_ensembl_species: vep_ensembl_species
             synonyms_file: synonyms_file
             annotate_coding_only: annotate_coding_only
-            custom_gnomad_vcf: custom_gnomad_vcf
             qc_minimum_mapping_quality: qc_minimum_mapping_quality
             qc_minimum_base_quality: qc_minimum_base_quality
-            custom_clinvar_vcf: custom_clinvar_vcf
             optitype_name: optitype_name
         out:
             [cram,mark_duplicates_metrics,insert_size_metrics,insert_size_histogram,alignment_summary_metrics,hs_metrics,per_target_coverage_metrics,per_target_hs_metrics,per_base_coverage_metrics,per_base_hs_metrics,summary_hs_metrics,flagstats,verify_bam_id_metrics,verify_bam_id_depth,gvcf,final_vcf,coding_vcf,limited_vcf,vep_summary,optitype_tsv,optitype_plot]
