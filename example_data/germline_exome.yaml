@@ -4,9 +4,6 @@ bait_intervals:
   path: exome_workflow/chr17_test_bait.interval_list
 bqsr_intervals:
 - chr17
-custom_gnomad_vcf:
-  class: File
-  path: exome_workflow/chr17_test_gnomADe.vcf.gz
 dbsnp_vcf:
   class: File
   path: exome_workflow/chr17_test_dbsnp.vcf.gz
@@ -61,3 +58,16 @@ target_intervals:
   class: File
   path: exome_workflow/chr17_test_target.interval_list
 vep_cache_dir: "/gscmnt/gc2764/cad/jgarza/shared/exome_workflow"
+vep_custom_annotations:
+- method: 'exact'
+  force_report_coordinates: true
+  annotation:
+    file:
+      class: File
+      path: exome_workflow/chr17_test_gnomADe.vcf.gz
+      secondaryFiles: [{class: File, path: exome_workflow/chr17_test_gnomADe.vcf.gz.tbi}]
+    data_format: 'vcf'
+    name: 'gnomADe'
+    vcf_fields: ['AF','AF_AFR','AF_AMR','AF_ASJ','AF_EAS','AF_FIN','AF_NFE','AF_OTH','AF_SAS']
+    gnomad_filter: true
+    check_existing: true

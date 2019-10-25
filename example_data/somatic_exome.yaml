@@ -24,9 +24,6 @@ normal_sequence:
         class: File
         path: exome_workflow/2895499399.bam
     readgroup: "@RG\tID:2895499399\tPU:H7HY2CCXX.4.TGACCACG\tSM:H_NJ-HCC1395-HCC1395_BL\tLB:H_NJ-HCC1395-HCC1395_BL-lg21-lib1\tPL:Illumina\tCN:WUGSC"
-custom_gnomad_vcf:
-  class: File
-  path: exome_workflow/chr17_test_gnomADe.vcf.gz
 dbsnp_vcf:
   class: File
   path: exome_workflow/chr17_test_dbsnp.vcf.gz
@@ -74,6 +71,19 @@ varscan_min_var_freq: 0.02
 varscan_p_value: 0.99
 varscan_strand_filter: 0
 vep_cache_dir: "/gscmnt/gc2560/core/cwl/inputs/VEP_cache/"
+vep_custom_annotations:
+- method: 'exact'
+  force_report_coordinates: true
+  annotation:
+    file:
+      class: File
+      path: exome_workflow/chr17_test_gnomADe.vcf.gz
+      secondaryFiles: [{class: File, path: exome_workflow/chr17_test_gnomADe.vcf.gz.tbi}]
+    data_format: 'vcf'
+    name: 'gnomADe'
+    vcf_fields: ['AF','AF_AFR','AF_AMR','AF_ASJ','AF_EAS','AF_FIN','AF_NFE','AF_OTH','AF_SAS']
+    gnomad_filter: true
+    check_existing: true
 vep_ensembl_assembly: GRCh38
 vep_ensembl_version: 95
 vep_ensembl_species: homo_sapiens
