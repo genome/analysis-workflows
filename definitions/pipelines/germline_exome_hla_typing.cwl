@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
 inputs:
     reference: string
@@ -64,16 +65,16 @@ inputs:
         type: File?
     annotate_coding_only:
         type: boolean?
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
+    vep_custom_annotations:
+        type:
+            - "null"
+            - type: array
+              items: ../types/vep_custom_annotation.yml#vep_custom_annotation
+              doc: "custom type, check types directory for input format"
     qc_minimum_mapping_quality:
         type: int?
     qc_minimum_base_quality:
         type: int?
-    custom_clinvar_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
     optitype_name:
         type: string?
 outputs:
@@ -169,10 +170,9 @@ steps:
             vep_ensembl_species: vep_ensembl_species
             synonyms_file: synonyms_file
             annotate_coding_only: annotate_coding_only
-            custom_gnomad_vcf: custom_gnomad_vcf
+            vep_custom_annotations: vep_custom_annotations
             qc_minimum_mapping_quality: qc_minimum_mapping_quality
             qc_minimum_base_quality: qc_minimum_base_quality
-            custom_clinvar_vcf: custom_clinvar_vcf
         out:
             [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]
     optitype:

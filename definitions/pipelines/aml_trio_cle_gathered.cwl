@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
@@ -140,12 +141,12 @@ inputs:
     vep_to_table_fields:
         type: string[]
         default: [HGVSc,HGVSp]
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    custom_clinvar_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
+    vep_custom_annotations:
+        type:
+            - "null"
+            - type: array
+              items: ../types/vep_custom_annotation.yml#vep_custom_annotation
+              doc: "custom type, check types directory for input format"
     germline_tsv_prefix:
         type: string?
         default: 'germline_variants'
@@ -221,8 +222,7 @@ steps:
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
-            custom_gnomad_vcf: custom_gnomad_vcf
-            custom_clinvar_vcf: custom_clinvar_vcf
+            vep_custom_annotations: vep_custom_annotations
             somalier_vcf: somalier_vcf
             germline_tsv_prefix: germline_tsv_prefix
             germline_variants_to_table_fields: germline_variants_to_table_fields

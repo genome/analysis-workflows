@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
@@ -121,9 +122,12 @@ inputs:
     vep_to_table_fields:
         type: string[]
         default: [HGVSc,HGVSp]
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
+    vep_custom_annotations:
+        type:
+            - "null"
+            - type: array
+              items: ../types/vep_custom_annotation.yml#vep_custom_annotation
+              doc: "custom type, check types directory for input format"
     output_dir: 
         type: string
     somalier_vcf:
@@ -180,7 +184,7 @@ steps:
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
-            custom_gnomad_vcf: custom_gnomad_vcf
+            vep_custom_annotations: vep_custom_annotations
             somalier_vcf: somalier_vcf
             disclaimer_version: disclaimer_version
         out:
