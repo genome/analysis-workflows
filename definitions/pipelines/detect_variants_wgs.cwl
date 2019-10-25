@@ -5,6 +5,9 @@ class: Workflow
 label: "Detect Variants workflow for WGS pipeline"
 requirements:
     - class: SubworkflowFeatureRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/vep_custom_annotation.yml
 inputs:
     reference:
         type: string
@@ -97,12 +100,12 @@ inputs:
     vep_to_table_fields:
         type: string[]?
         default: [HGVSc,HGVSp]
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    custom_clinvar_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
+    vep_custom_annotations:
+        type:
+            - "null"
+            - type: array
+              items: ../types/vep_custom_annotation.yml#vep_custom_annotation
+              label: "custom type, check types directory for input format"
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -245,9 +248,8 @@ steps:
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only
             reference: reference
-            custom_gnomad_vcf: custom_gnomad_vcf
+            custom_annotations: vep_custom_annotations
             pick: vep_pick
-            custom_clinvar_vcf: custom_clinvar_vcf
             plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]
@@ -318,6 +320,19 @@ steps:
             tumor_bam: tumor_bam
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference
+            gnomad_field_name:
+              source: vep_custom_annotations
+              valueFrom: |
+                ${
+                   if(self){
+                        for(var i=0; i<self.length; i++){
+                            if(self[i].annotation.gnomad_filter){
+                                return(self[i].annotation.name + '_AF');
+                            }
+                        }
+                    }
+                    return('gnomAD_AF');
+                }
         out: 
             [filtered_vcf]
     annotated_filter_bgzip:
