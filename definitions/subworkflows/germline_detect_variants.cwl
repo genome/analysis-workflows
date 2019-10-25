@@ -48,6 +48,7 @@ inputs:
             - "null"
             - type: array
               items: ../types/vep_custom_annotation.yml#vep_custom_annotation
+              doc: "custom type, check types directory for input format"
     limit_variant_intervals:
         type: File
     variants_to_table_fields:

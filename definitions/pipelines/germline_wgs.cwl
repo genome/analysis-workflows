@@ -77,6 +77,7 @@ inputs:
             - "null"
             - type: array
               items: ../types/vep_custom_annotation.yml#vep_custom_annotation
+              doc: "custom type, check types directory for input format"
     cnvkit_diagram:
         type: boolean?
     cnvkit_drop_low_coverage: 

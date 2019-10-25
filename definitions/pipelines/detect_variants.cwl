@@ -105,6 +105,7 @@ inputs:
             - "null"
             - type: array
               items: ../types/vep_custom_annotation.yml#vep_custom_annotation
+              doc: "custom type, check types directory for input format"
 outputs:
     mutect_unfiltered_vcf:
         type: File
