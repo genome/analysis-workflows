@@ -5,13 +5,15 @@ class: CommandLineTool
 label: "collect WGS metrics"
 baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/usr/picard/picard.jar", "CollectWgsMetrics"]
 arguments:
-    ["O=", { valueFrom: $(runtime.outdir)/WgsMetrics.txt }]
+    ["O=", { valueFrom: $(runtime.outdir)/$(inputs.sample_name).WgsMetrics.txt }]
 requirements:
     - class: ResourceRequirement
       ramMin: 18000
     - class: DockerRequirement
       dockerPull: mgibio/picard-cwl:2.18.1
 inputs:
+    sample_name:
+        type: string
     bam:
         type: File
         inputBinding:
@@ -29,4 +31,4 @@ outputs:
     wgs_metrics:
         type: File
         outputBinding:
-            glob: "WgsMetrics.txt"
+            glob: "$(inputs.sample_name).WgsMetrics.txt"
