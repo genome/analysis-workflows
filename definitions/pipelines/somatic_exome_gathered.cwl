@@ -136,7 +136,7 @@ inputs:
             - "null"
             - type: array
               items: ../types/vep_custom_annotation.yml#vep_custom_annotation
-              doc: "custom type, check types directory for input format"
+              label: "custom type, check types directory for input format"
     output_dir: 
         type: string
     somalier_vcf:

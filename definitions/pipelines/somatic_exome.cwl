@@ -135,7 +135,7 @@ inputs:
             - "null"
             - type: array
               items: ../types/vep_custom_annotation.yml#vep_custom_annotation
-              doc: "custom type, check types directory for input format"
+              label: "custom type, check types directory for input format"
     manta_call_regions:
         type: File?
         secondaryFiles: [.tbi]

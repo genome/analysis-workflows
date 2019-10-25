@@ -79,7 +79,7 @@ inputs:
             - "null"
             - type: array
               items: ../types/vep_custom_annotation.yml#vep_custom_annotation
-              doc: "custom type, check types directory for input format"
+              label: "custom type, check types directory for input format"
     readcount_minimum_mapping_quality:
         type: int?
     readcount_minimum_base_quality:
