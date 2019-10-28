@@ -207,6 +207,8 @@ steps:
             min_var_freq: varscan_min_var_freq
             p_value: varscan_p_value
             max_normal_freq: varscan_max_normal_freq
+            normal_sample_name: normal_sample_name
+            tumor_sample_name: tumor_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     pindel:
