@@ -131,11 +131,8 @@ inputs:
         type: string[]
         default: [HGVSc,HGVSp]
     vep_custom_annotations:
-        type:
-            - "null"
-            - type: array
-              items: ../types/vep_custom_annotation.yml#vep_custom_annotation
-              label: "custom type, check types directory for input format"
+        type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
+        doc: "custom type, check types directory for input format"
     manta_call_regions:
         type: File?
         secondaryFiles: [.tbi]

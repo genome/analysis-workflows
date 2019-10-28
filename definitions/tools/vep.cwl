@@ -58,12 +58,9 @@ inputs:
             separate: false
             position: 7
     custom_annotations:
-        type:
-            - "null"
-            - type: array
-              items: ../types/vep_custom_annotation.yml#vep_custom_annotation
-              label: "custom type, check types directory for input format"
-              inputBinding:
+        type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
+        doc: "custom type, check types directory for input format"
+        inputBinding:
                   valueFrom: |
                        ${
                            return [self.annotation.check_existing ? '--check_existing' : '',

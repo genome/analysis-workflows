@@ -73,11 +73,8 @@ inputs:
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
     vep_custom_annotations:
-        type:
-            - "null"
-            - type: array
-              items: ../types/vep_custom_annotation.yml#vep_custom_annotation
-              label: "custom type, check types directory for input format"
+        type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
+        doc: "custom type, check types directory for input format"
     cnvkit_diagram:
         type: boolean?
     cnvkit_drop_low_coverage: 
