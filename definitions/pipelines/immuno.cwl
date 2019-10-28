@@ -714,6 +714,7 @@ steps:
             vep_ensembl_assembly: vep_ensembl_assembly
             vep_ensembl_version: vep_ensembl_version
             vep_ensembl_species: vep_ensembl_species
+            vep_custom_annotations: vep_custom_annotations
             synonyms_file: synonyms_file
             annotate_coding_only: annotate_coding_only
             qc_minimum_mapping_quality: qc_minimum_mapping_quality
