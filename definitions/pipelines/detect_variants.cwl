@@ -219,6 +219,8 @@ steps:
             normal_bam: normal_bam
             interval_list: interval_list
             insert_size: pindel_insert_size
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     docm:
