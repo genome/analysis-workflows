@@ -6,12 +6,12 @@ label: 'sort BAM by name'
 baseCommand: ["/usr/bin/sambamba", "sort"]
 arguments: 
     ["-t", { valueFrom: $(runtime.cores) },
-    "-m", "12G",
+    "-m", "22G",
     "-n",
     "-o", { valueFrom: "$(inputs.bam.nameroot).NameSorted.bam" }]
 requirements:
     - class: ResourceRequirement
-      ramMin: 16000
+      ramMin: 24000
       coresMin: 8
     - class: DockerRequirement
       dockerPull: "mgibio/sambamba-cwl:0.6.4"
