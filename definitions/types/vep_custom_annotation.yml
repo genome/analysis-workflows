@@ -1,0 +1,39 @@
+type: record
+name: vep_custom_annotation
+label: custom annotation file to be used by vep
+fields:
+    force_report_coordinates:
+        type: boolean
+        label: 'Force report the overlapping coordinates of custom feature instead of based on the exact coordinates'
+    method:
+        type:
+            - type: enum
+              symbols: ['exact','overlap']
+              label: 'Require exact or overlap to annotate variants'
+    annotation:
+        type:
+            type: record
+            name: info
+            fields:
+              file:
+                  type: File
+                  label: 'File to be used for annotation, include index file'
+              data_format:
+                type:
+                    type: enum
+                    name: 'format'
+                    symbols: ['bed','gff','gtf','vcf','bigwig']
+                    label: 'Annotation file type'
+              name:
+                  type: string
+                  label: 'Used as key for new VEP annotation'
+              vcf_fields:
+                  type: string[]?
+                  label: 'List of VCF fields to annotate'
+              gnomad_filter:
+                  type: boolean?
+                  label: 'Use this annotation for gnomad filtering?'
+              check_existing:
+                  type: boolean
+                  label: 'Identify known variants colocated with input variant'
+

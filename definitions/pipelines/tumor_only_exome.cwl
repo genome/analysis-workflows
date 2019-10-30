@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
 inputs:
     reference: string
@@ -92,9 +93,9 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
+    vep_custom_annotations:
+        type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
+        doc: "custom type, check types directory for input format"
     qc_minimum_mapping_quality:
         type: int?
     qc_minimum_base_quality:
@@ -217,7 +218,7 @@ steps:
             vep_to_table_fields: vep_to_table_fields
             sample_name: sample_name
             docm_vcf: docm_vcf
-            custom_gnomad_vcf: custom_gnomad_vcf
+            vep_custom_annotations: vep_custom_annotations
             readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
             readcount_minimum_base_quality: readcount_minimum_base_quality
         out:

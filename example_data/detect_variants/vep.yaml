@@ -8,6 +8,16 @@ synonyms_file:
 reference: /gscmnt/gc2764/cad/HCC1395/arvados/refseq/GRCh38DH/GRCh38_full_analysis_set_plus_decoy_hla.fa
 hgvs: true
 coding_only: true
-custom_gnomad_vcf:
-    class: File
-    path: /gscmnt/gc2560/core/model_data/genome-db-ensembl-gnomad/2dd4b53431674786b760adad60a29273/gnomad.exomes.r2.0.1.sites.GRCh38.noVEP.vcf.gz
+vep_custom_annotations:
+- method: 'exact'
+  force_report_coordinates: true
+  annotation:
+    file:
+      class: File
+      path: /gscmnt/gc2560/core/model_data/genome-db-ensembl-gnomad/2dd4b53431674786b760adad60a29273/gnomad.exomes.r2.0.1.sites.GRCh38.noVEP.vcf.gz
+      secondaryFiles: [{class: File, path: /gscmnt/gc2560/core/model_data/genome-db-ensembl-gnomad/2dd4b53431674786b760adad60a29273/gnomad.exomes.r2.0.1.sites.GRCh38.noVEP.vcf.gz.tbi}]
+    data_format: 'vcf'
+    name: 'gnomADe'
+    vcf_fields: ['AF','AF_AFR','AF_AMR','AF_ASJ','AF_EAS','AF_FIN','AF_NFE','AF_OTH','AF_SAS']
+    gnomad_filter: true
+    check_existing: true

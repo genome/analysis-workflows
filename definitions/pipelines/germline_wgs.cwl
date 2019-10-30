@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
 inputs:
     reference: string
@@ -59,9 +60,6 @@ inputs:
         type: File?
     annotate_coding_only:
         type: boolean?
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
     bqsr_intervals:
         type: string[]?
     minimum_mapping_quality:
@@ -74,9 +72,9 @@ inputs:
         type: ../types/labelled_file.yml#labelled_file[]
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
-    custom_clinvar_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
+    vep_custom_annotations:
+        type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
+        doc: "custom type, check types directory for input format"
     cnvkit_diagram:
         type: boolean?
     cnvkit_drop_low_coverage: 
@@ -336,9 +334,8 @@ steps:
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             annotate_coding_only: annotate_coding_only
-            custom_gnomad_vcf: custom_gnomad_vcf
             limit_variant_intervals: variant_reporting_intervals
-            custom_clinvar_vcf: custom_clinvar_vcf
+            vep_custom_annotations: vep_custom_annotations
             vep_ensembl_assembly: vep_ensembl_assembly
             vep_ensembl_version: vep_ensembl_version
             vep_ensembl_species: vep_ensembl_species

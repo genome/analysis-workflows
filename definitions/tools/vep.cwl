@@ -6,6 +6,9 @@ label: "Ensembl Variant Effect Predictor"
 baseCommand: ["/usr/bin/perl", "-I", "/opt/lib/perl/VEP/Plugins", "/usr/bin/variant_effect_predictor.pl"]
 requirements:
     - class: InlineJavascriptRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/vep_custom_annotation.yml
     - class: ResourceRequirement
       coresMin: 4
       ramMin: 64000
@@ -54,40 +57,32 @@ inputs:
             prefix: '--'
             separate: false
             position: 7
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-        inputBinding:
-            valueFrom: |
-                ${
-                    if (inputs.custom_gnomad_vcf) {
-                        return ['--check_existing', '--custom', inputs.custom_gnomad_vcf.path + ',gnomADe,vcf,exact,0,AF,AF_AFR,AF_AMR,AF_ASJ,AF_EAS,AF_FIN,AF_NFE,AF_OTH,AF_SAS']
-                    }
-                    else {
-                        return []
-                    }
-                }
-            position: 6
-    custom_clinvar_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-        inputBinding:
-            valueFrom: |
-                ${
-                    if (inputs.custom_clinvar_vcf) {
-                        return ["--custom", inputs.custom_clinvar_vcf.path + ",clinvar,vcf,exact,0,CLINSIGN,PHENOTYPE,SCORE,RCVACC,TESTEDINGTR,PHENOTYPELIST,NUMSUBMIT,GUIDELINES"]
-
-                    }
-                    else {
-                        return []
-                    }
-                }
-            position: 7
+    custom_annotations:
+        type:
+            - "null"
+            - type: array
+              items: ../types/vep_custom_annotation.yml#vep_custom_annotation
+              label: "custom type, check types directory for input format"
+              inputBinding:
+                  valueFrom: |
+                       ${
+                           return [self.annotation.check_existing ? '--check_existing' : '',
+                             '--custom',
+                             [self.annotation.file.path,
+                             self.annotation.name,
+                             self.annotation.data_format,
+                             self.method,
+                             self.force_report_coordinates ? 1 : 0,
+                             self.annotation.vcf_fields ? self.annotation.vcf_fields : ''
+                             ].filter(String).join(',')
+                           ].filter(String)
+                       }
+                  position: 6
     reference:
         type: string?
         inputBinding:
             prefix: "--fasta" 
-            position: 8
+            position: 7
     plugins:
         type:
             type: array
@@ -95,30 +90,30 @@ inputs:
             inputBinding:
                 prefix: "--plugin"
         inputBinding:
-            position: 9
+            position: 8
     everything:
         type: boolean?
         default: true
         inputBinding:
             prefix: "--everything"
-            position: 10
+            position: 9
     ensembl_assembly:
         type: string
         inputBinding:
             prefix: "--assembly"
-            position: 11
+            position: 10
         doc: "genome assembly to use in vep. Examples: 'GRCh38' or 'GRCm38'"
     ensembl_version:
         type: string
         inputBinding:
             prefix: "--cache_version"
-            position: 12
+            position: 11
         doc: "ensembl version - Must be present in the cache directory. Example: '95'"
     ensembl_species:
         type: string
         inputBinding:
             prefix: "--species"
-            position: 13
+            position: 12
         doc: "ensembl species - Must be present in the cache directory. Examples: 'homo_sapiens' or 'mus_musculus'"
 outputs:
     annotated_vcf:

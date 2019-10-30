@@ -42,12 +42,31 @@ vep_cache_dir: /gscmnt/gc2560/core/cwl/inputs/VEP_cache/
 synonyms_file:
   class: File
   path: /gscmnt/gc2560/core/model_data/2887491634/build50f99e75d14340ffb5b7d21b03887637/chromAlias.ensembl.txt
-custom_gnomad_vcf:
-  class: File
-  path: /gscmnt/gc2560/core/model_data/genome-db-ensembl-gnomad/2dd4b53431674786b760adad60a29273/fixed_b38_genome.vcf.gz
-custom_clinvar_vcf:
-  class: File
-  path: /gscmnt/gc2560/core/custom_clinvar_vcf/v20181028/custom.vcf.gz
+vep_custom_annotations:
+- method: 'exact'
+  force_report_coordinates: true
+  annotation:
+    file:
+      class: File
+      path: /gscmnt/gc2560/core/model_data/genome-db-ensembl-gnomad/2dd4b53431674786b760adad60a29273/fixed_b38_genome.vcf.gz
+      secondaryFiles: [{class: File, path: /gscmnt/gc2560/core/model_data/genome-db-ensembl-gnomad/2dd4b53431674786b760adad60a29273/fixed_b38_genome.vcf.gz.tbi}]
+    data_format: 'vcf'
+    name: 'gnomADe'
+    vcf_fields: ['AF','AF_AFR','AF_AMR','AF_ASJ','AF_EAS','AF_FIN','AF_NFE','AF_OTH','AF_SAS']
+    gnomad_filter: true
+    check_existing: true
+- method: 'exact'
+  force_report_coordinates: true
+  annotation:
+    file:
+      class: File
+      path: /gscmnt/gc2560/core/custom_clinvar_vcf/v20181028/custom.vcf.gz
+      secondaryFiles: [{class: File, path: /gscmnt/gc2560/core/custom_clinvar_vcf/v20181028/custom.vcf.gz.tbi}]
+    data_format: 'vcf'
+    name: 'clinvar'
+    vcf_fields: ['CLINSIGN','PHENOTYPE','SCORE','RCVACC','TESTEDINGTR','PHENOTYPELIST','NUMSUBMIT','GUIDELINES']
+    gnomad_filter: false
+    check_existing: false
 mutect_artifact_detection_mode: false
 somalier_vcf: "/gscmnt/gc2560/core/annotation_data/concordance_snps/GRC-human-build38_gnomad_exome_common_snps.vcf"
 vep_ensembl_assembly: GRCh38
