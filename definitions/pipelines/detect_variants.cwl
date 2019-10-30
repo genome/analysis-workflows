@@ -27,6 +27,7 @@ inputs:
         type: int?
     mutect_scatter_count:
         type: int?
+        default: 50
     varscan_strand_filter:
         type: int?
         default: 0
