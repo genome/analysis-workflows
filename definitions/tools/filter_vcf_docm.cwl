@@ -62,8 +62,8 @@ requirements:
                     unless ($normal_index and $tumor_index) {
                         die "Failed to get normal_index: $normal_index for $normal_name AND tumor_index: $tumor_index for $tumor_name";
                     }
-                    $columns[9]  = 'NORMAL';
-                    $columns[10] = 'TUMOR';
+                    $columns[9]  = $normal_name;
+                    $columns[10] = $tumor_name;
                     my $header = join "\t", @columns;
                     say $docm_out_fh $header;
                 }
