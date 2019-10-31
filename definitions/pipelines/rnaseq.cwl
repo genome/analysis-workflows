@@ -51,6 +51,12 @@ inputs:
             symbols: ["true", "false"]
         default: "true"
         doc: 'whether the sequence data is paired-end (for single-end override to false)'
+    fragment_length:
+        doc: 'fragment length - only needed for single end data. If not available, kallisto will use "reasonable" defaults'
+        type: int?
+    fragment_length_stddev:
+        doc: 'fragment length std deviation - only needed for single end data. If not available, kallisto will use "reasonable" defaults'
+        type: int?
     refFlat:
         type: File
     ribosomal_intervals:
@@ -61,6 +67,9 @@ inputs:
     assembly:
         type: string
         doc: 'the assembly used, such as GRCh37/38, GRCm37/38'
+    reference_transcriptome:
+        type: File
+
 outputs:
     final_bam:
         type: File
@@ -115,6 +124,9 @@ steps:
             kallisto_index: kallisto_index
             strand: strand
             fastqs: bam_to_trimmed_fastq_and_hisat_alignments/fastqs
+            paired_end: paired_end
+            fragment_length: fragment_length
+            fragment_length_stddev: fragment_length_stddev
         out:
             [expression_transcript_table,expression_transcript_h5,fusion_evidence]
     transcript_to_gene:
