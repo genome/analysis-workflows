@@ -22,8 +22,9 @@ inputs:
             prefix: "--minimum_depth"
             position: -3
     sample_names:
-        type: string
+        type: string[]
         inputBinding:
+            itemSeparator: ","
             position: -1
 outputs:
      depth_filtered_vcf:
