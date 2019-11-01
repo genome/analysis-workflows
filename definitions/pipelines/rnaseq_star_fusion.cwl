@@ -155,7 +155,7 @@ steps:
     star_fusion_detect:
         run: ../tools/star_fusion_detect.cwl
         in:
-            fusion_index: fusion_index
+            star_fusion_genome_dir: star_fusion_genome_dir
             chimera_file: star_align_fusion/chim_junc
         out:
             [fusion_predictions,fusion_abridged]
