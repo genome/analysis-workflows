@@ -25,6 +25,10 @@ inputs:
     filter_minimum_depth:
         type: int
     sample_names:
+        type: string[]
+    tumor_sample_name:
+        type: string
+    normal_sample_name:
         type: string
 outputs: 
     filtered_vcf:
@@ -67,6 +71,8 @@ steps:
         in:
             vcf: filter_vcf_depth/depth_filtered_vcf
             threshold: filter_somatic_llr_threshold
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out:
             [somatic_llr_filtered_vcf]
     set_final_vcf_name:

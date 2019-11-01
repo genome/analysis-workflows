@@ -22,6 +22,15 @@ inputs:
          inputBinding:
              prefix: "--llr-threshold"
              position: -2
+    tumor_sample_name:
+        type: string
+        inputBinding:
+            prefix: "--tumor-sample-name"
+            position: -3
+    normal_sample_name:
+        type: string
+        inputBinding:
+            prefix: "--normal-sample-name"
 outputs:
      somatic_llr_filtered_vcf:
          type: File
