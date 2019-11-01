@@ -7,7 +7,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 6000
     - class: DockerRequirement
-      dockerPull: perl:5.26
+      dockerPull: mgibio/cle:v1.3.1
     - class: InitialWorkDirRequirement
       listing:
       - entryname: 'split_interval_list_helper.pl'
