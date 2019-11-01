@@ -1,0 +1,23 @@
+# CACHE UPDATED 2019-05-01 03:49:05
+species	homo_sapiens
+assembly	GRCh38
+sift	b
+polyphen	b
+source_polyphen	2.2.2
+source_sift	sift5.2.2
+source_genebuild	2014-07
+source_gencode	GENCODE 29
+source_assembly	GRCh38.p12
+variation_cols	chr,variation_name,failed,somatic,start,end,allele_string,strand,minor_allele,minor_allele_freq,clin_sig,phenotype_or_disease,pubmed,AFR,AMR,EAS,EUR,SAS,AA,EA,gnomAD,gnomAD_AFR,gnomAD_AMR,gnomAD_ASJ,gnomAD_EAS,gnomAD_FIN,gnomAD_NFE,gnomAD_OTH,gnomAD_SAS
+source_COSMIC	86
+source_HGMD-PUBLIC	20174
+source_ESP	20141103
+source_ClinVar	201810
+source_dbSNP	151
+source_1000genomes	phase3
+source_ESP	V2-SSA137
+source_gnomAD	170228
+regulatory	1
+cell_types	A549,A673,Aorta,B_cell_ENCSR682AXR,B_cells_(PB)_Roadmap,CD14+CD16-_monocyte_(CB),CD14+CD16-_monocyte_(VB),CD14_positive_monocyte,CD38-_naive_B_cell_(VB),CD4+_ab_T_cell_(CB),CD4+_ab_T_cell_(VB),CD4_positive_CD25_positive_alpha_beta_regulatory_T_cell,CD4_positive_alpha_beta_T_cell,CD4_positive_alpha_beta_T_cell_ENCSR948ZKZ,CD4_positive_alpha_beta_memory_T_cell,CD8+_ab_T_cell_(CB),CM_CD4+_ab_T_cell_(VB),DND-41,EM_CD8+_ab_T_cell_(VB),EPC_(VB),Fetal_Adrenal_Gland,Fetal_Intestine_Large,Fetal_Intestine_Small,Fetal_Muscle_Leg,Fetal_Muscle_Trunk,Fetal_Stomach,Fetal_Thymus,GM12878,Gastric,H1-mesenchymal,H1-neuronal_progenitor,H1-trophoblast,H1ESC,H1_hESC,H1_hESC_ENCSR820QMS,H9,H9_ENCSR323FKB,HCT116,HMEC,HSMM,HSMMtube,HUES48,HUES6,HUES64,HUVEC,HUVEC_prol_(CB),HeLa-S3,HepG2,IMR90,IMR_90,K562,Karpas_422,Left_Ventricle,Lung,M0_macrophage_(CB),M0_macrophage_(VB),M1_macrophage_(CB),M1_macrophage_(VB),M2_macrophage_(CB),M2_macrophage_(VB),MCF_7,MM_1S,MSC_(VB),Monocytes-CD14+,Monocytes-CD14+_(PB)_Roadmap,NH-A,NHDF-AD,NHEK,NHLF,Natural_Killer_cells_(PB),Osteobl,Ovary,PC_3,PC_9,Pancreas,Placenta,Psoas_Muscle,Right_Atrium,SK_N_SH,Small_Intestine,Spleen,T_cells_(PB)_Roadmap,T_helper_17_cell,Thymus,astrocyte,bipolar_neuron,brain,cardiac_muscle_cell,common_myeloid_progenitor_CD34_positive,common_myeloid_progenitor_CD34_positive_ENCSR337XXD_1,common_myeloid_progenitor_CD34_positive_ENCSR722JRY,effector_memory_CD4_positive_alpha_beta_T_cell,endodermal_cell,endothelial_cell_of_umbilical_vein,eosinophil_(VB),erythroblast_(CB),esophagus,fibroblast_of_dermis,fibroblast_of_lung,heart,heart_right_ventricle,hepatocyte,iPS-20b,iPS_15b,iPS_DF_19.11,iPS_DF_6.9,keratinocyte,kidney,lung_ENCSR465WKM,mammary_epithelial_cell,myotube,naive_B_cell_(To),naive_B_cell_(VB),naive_thymus_derived_CD4_positive_alpha_beta_T_cell,neural_progenitor_cell,neural_stem_progenitor_cell,neuron,neutrophil,neutrophil_(CB),neutrophil_(VB),neutrophil_myelocyte_(BM),sigmoid_colon,skeletal_muscle_myoblast
+source_regbuild	1.0
+var_type	tabix

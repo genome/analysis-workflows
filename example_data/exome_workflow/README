@@ -1,0 +1,129 @@
+* Internal Path: /gscmnt/gc2560/core/model_data/596a862b07f24f3e89383cdc7183be6e/builda13bb49f383448aab9e5f1dc28e2fd2c/
+
+# Test Genome and Auxillary Files
+
+## Create regions of interest (ROI)
+perl -e 'print "chr17\t7661778\t7687550\tTP53\t.\t-\nchr17\t43044294\t43170245\tBRCA1\t.\t-\n"' > chr17_test_genes.bed
+slopBed -b 500  -i chr17_test_genes.bed -g /gscmnt/gc2560/core/model_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/all_sequences.fa.fai > chr17_test_genes_slop_500bp.bed
+
+## create minimal vep cache based on regions of interest within docker-cle image
+download cache from ensembl:
+curl -O ftp://ftp.ensembl.org/pub/release-95/variation/indexed_vep_cache/homo_sapiens_vep_95_GRCh38.tar.gz
+tar xzf homo_sapiens_vep_95_GRCh38.tar.gz
+index:
+bsub -R 'select[mem>64000] rusage[mem=64000]' -e index.err -o index.out -q research-hpc -a 'docker(mgibio/vep_helper-cwl:1.1.0)' /usr/bin/perl /opt/vep/src/ensembl-vep/convert_cache.pl -species homo_sapiens -version 95 --dir /gscmnt/gc2560/core/cwl/inputs/VEP_cache/ --bgzip /opt/vep/src/htslib/bgzip --tabix /opt/vep/src/htslib/tabix
+cd ./homo_sapiens/95_GRCh38
+remove everything but 17, chr_synonyms.txt, info.txt
+cd 17
+remove everything but 43000001-44000000.gz  43000001-44000000_reg.gz  43000001-44000000_var.gz  7000001-8000000.gz  7000001-8000000_reg.gz  7000001-8000000_var.gz  all_vars.gz  all_vars.gz.tbi
+/usr/bin/tabix -h all_vars.gz 17:7000001-8000000 17:43000001-44000000 > all_vars
+rm all_vars.gz all_vars.gz.tbi
+/opt/htslib/bin/bgzip all_vars
+/usr/bin/tabix -s 1 -b 5 -e 5 all_vars.gz
+
+## create clinvar vcf and index from regions
+custom.vcf.gz is from https://github.com/genome/docker-custom-clinvar-vcf
+/usr/bin/tabix -p vcf custom.vcf.gz
+/usr/bin/tabix -h -p vcf custom.vcf.gz 17:7661278-7688050 17:43043794-43170745 > chr17_custom_clinvar.vcf
+/opt/htslib/bin/bgzip chr17_custom_clinvar.vcf
+/usr/bin/tabix chr17_custom_clinvar.vcf.gz
+
+## Create FASTA from ROI
+samtools faidx /gscmnt/gc2560/core/model_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/all_sequences.fa chr17 > chr17.fa
+samtools faidx chr17.fa
+
+## Mask the complement of ROI
+bedtools complement -i chr17_test_genes_slop_500bp.bed -g chr17.fa.fai > chr17_test_genes_complement.bed
+maskFastaFromBed -fi chr17.fa -bed chr17_test_genes_complement.bed  -fo chr17_test.fa
+
+## chromAlias
+/bin/grep chr17 /gscmnt/gc2560/core/model_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/chromAlias.ensembl.txt | /bin/grep -v random > chromAlias.ensembl.txt
+
+## Index Files
+
+### Create sequence dictionary
+* Docker: mgibio/cle
+/usr/bin/java -Xmx4g -jar /usr/picard/picard.jar CreateSequenceDictionary R=chr17_test.fa O=chr17_test.dict GENOME_ASSEMBLY=GRCh38DH_chr17_test URI=ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/GRCh38_reference_genome/GRCh38_full_analysis_set_plus_decoy_hla.fa SPECIES=human
+
+### Create samtools Index
+/opt/samtools/bin/samtools faidx chr17_test.fa
+
+### Create BWA Index
+/usr/local/bin/bwa index chr17_test.fa
+
+## Convert BED to Interval List
+/usr/bin/java -Xmx4g -jar /usr/picard/picard.jar BedToIntervalList I=chr17_test_genes.bed  SD=chr17_test.dict O=chr17_test_genes.interval_list
+/usr/bin/java -Xmx4g -jar /usr/picard/picard.jar BedToIntervalList I=chr17_test_genes.bed  SD=/gscmnt/gc2560/core/model_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/all_sequences.dict O=chr17_test_genes_GRCh38DH.interval_list
+
+## Overlap GRCh38DH Interval List with Auxillary Inputs
+
+### Bait Intervals
+/usr/bin/java -Xmx4g -jar /usr/picard/picard.jar IntervalListTools SI=chr17_test_genes_GRCh38DH.interval_list I=/gscmnt/gc2560/core/model_data/interval-list/77bc684a411c44439ce418ff015fafa4/3e39243bb1c44b2584d60268540cd11a.interval_list ACTION=OVERLAPS O=GRCh38DH_bait.interval_list
+/usr/bin/java -Xmx4g -jar /usr/picard/picard.jar IntervalListToBed  I=GRCh38DH_bait.interval_list O=bait.bed
+/usr/bin/java -Xmx4g -jar /usr/picard/picard.jar BedToIntervalList I=bait.bed  SD=chr17_test.dict  O=chr17_test_bait.interval_list
+
+### Target Intervals
+/usr/bin/java -Xmx4g -jar /usr/picard/picard.jar IntervalListTools SI=chr17_test_genes_GRCh38DH.interval_list I=/gscmnt/gc2560/core/model_data/interval-list/818077f8d58d4270b7f27b69d6f8e1b2/3e39243bb1c44b2584d60268540cd11a.interval_list ACTION=OVERLAPS O=GRCh38DH_target.interval_list
+/usr/bin/java -Xmx4g -jar /usr/picard/picard.jar IntervalListToBed  I=GRCh38DH_target.interval_list O=target.bed
+/usr/bin/java -Xmx4g -jar /usr/picard/picard.jar BedToIntervalList I=target.bed  SD=chr17_test.dict  O=chr17_test_target.interval_list
+
+
+### Omni VCF
+/usr/bin/java -Xmx4g -jar /opt/GenomeAnalysisTK.jar -T SelectVariants -R /gscmnt/gc2560/core/model_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/all_sequences.fa --variant /gscmnt/gc2709/info/production_reference_GRCh38DH/accessory_vcf/omni25-ld-pruned-20000-2000-0.5-annotated.wchr.sites_only.b38.autosomes_only.vcf.gz -L chr17_test_genes_GRCh38DH.interval_list -o GRCh38DH_omni.vcf
+sed '/##contig=<ID=.*length=83257441/p;/##contig=<ID=/d' GRCh38DH_omni.vcf > chr17_test_omni.vcf
+/opt/htslib//bin/bgzip chr17_test_omni.vcf
+/usr/bin/tabix -p vcf chr17_test_omni.vcf.gz
+
+### Mills Indel VCF
+/usr/bin/java -Xmx4g -jar /opt/GenomeAnalysisTK.jar -T SelectVariants -R /gscmnt/gc2560/core/model_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/all_sequences.fa --variant /gscmnt/gc2764/cad/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-20211-26b393cc7ab04120ac68cc2cbd4a15df/indels.hq.vcf.gz -L chr17_test_genes_GRCh38DH.interval_list -o GRCh38DH_mills.vcf
+sed '/##contig=<ID=.*length=83257441/p;/##contig=<ID=/d' GRCh38DH_mills.vcf > chr17_test_mills.vcf
+/opt/htslib//bin/bgzip chr17_test_mills.vcf
+/usr/bin/tabix -p vcf chr17_test_mills.vcf.gz
+
+### Known Indels VCF
+/usr/bin/java -Xmx4g -jar /opt/GenomeAnalysisTK.jar -T SelectVariants -R /gscmnt/gc2560/core/model_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/all_sequences.fa --variant /gscmnt/gc2764/cad/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-20267-00cb8ff552914c17ad66d86031e10d30/indels.hq.vcf.gz -L chr17_test_genes_GRCh38DH.interval_list -o GRCh38DH_known_indels.vcf
+sed '/##contig=<ID=.*length=83257441/p;/##contig=<ID=/d' GRCh38DH_known_indels.vcf > chr17_test_known_indels.vcf
+/opt/htslib//bin/bgzip chr17_test_known_indels.vcf
+/usr/bin/tabix -p vcf chr17_test_known_indels.vcf.gz
+
+### DoCM VCF
+/usr/bin/java -Xmx4g -jar /opt/GenomeAnalysisTK.jar -T SelectVariants -R /gscmnt/gc2560/core/model_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/all_sequences.fa --variant /gscmnt/gc2764/cad/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-16572-a6fc7db1ea124431af5271c8cb23ee26/snvs.hq.vcf.gz -L chr17_test_genes_GRCh38DH.interval_list -o GRCh38DH_docm.vcf
+sed '/##contig=<ID=.*length=83257441/p;/##contig=<ID=/d' GRCh38DH_docm.vcf > chr17_test_docm.vcf
+/opt/htslib//bin/bgzip chr17_test_docm.vcf
+/usr/bin/tabix -p vcf chr17_test_docm.vcf.gz
+
+### dbSNP VCF
+/usr/bin/java -Xmx4g -jar /opt/GenomeAnalysisTK.jar -T SelectVariants -R /gscmnt/gc2560/core/model_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/all_sequences.fa --variant /gscmnt/gc2764/cad/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-19443-e48c595a620a432c93e8dd29e4af64f2/snvs.hq.vcf.gz -L chr17_test_genes_GRCh38DH.interval_list -o GRCh38DH_dbsnp.vcf
+sed '/##contig=<ID=.*length=83257441/p;/##contig=<ID=/d' GRCh38DH_dbsnp.vcf > chr17_test_dbsnp.vcf
+/opt/htslib//bin/bgzip chr17_test_dbsnp.vcf
+/usr/bin/tabix -p vcf chr17_test_dbsnp.vcf.gz
+
+### gnomADe VCF
+sed '/@SQ.*chr17\sLN/p;/@SQ/d' chr17_test_genes_GRCh38DH.interval_list | sed 's/chr17/17/g' > chr17_test_genes_GRCh38DH_woCHR.interval_list
+/usr/bin/java -Xmx4g -jar /opt/GenomeAnalysisTK.jar -T SelectVariants -R /gscmnt/gc2560/core/model_data/2887491634/build4ec1c5bd1f6941b8a99f2e230217cb91/all_sequences.fa --variant /gscmnt/gc2602/griffithlab/kcotto/fixed_b38_exome.vcf.gz -L chr17_test_genes_GRCh38DH_woCHR.interval_list -o GRCh38DH_gnomADe.vcf
+sed '/##contig=<ID=.*length=83257441/p;/##contig=<ID=/d' GRCh38DH_gnomADe.vcf > chr17_test_gnomADe.vcf
+/opt/htslib//bin/bgzip chr17_test_gnomADe.vcf
+/usr/bin/tabix -p vcf chr17_test_gnomADe.vcf.gz
+
+# Sequence Data
+
+## Subset aligned CRAM
+/usr/bin/java -Xmx4g -jar /usr/picard/picard.jar FilterSamReads IL=chr17_test_genes_GRCh38DH.interval_list FILTER=includePairedIntervals I=/gscmnt/gc2560/core/model_data/596a862b07f24f3e89383cdc7183be6e/builda13bb49f383448aab9e5f1dc28e2fd2c/results/final.cram O=chr17_test.cram R=/gscmnt/gc2560/core/model_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/all_sequences.fa
+
+## Revert to read group unaligned BAM
+/usr/bin/java -Xmx4g -jar /usr/picard/picard.jar RevertSam I=chr17_test.cram OUTPUT_BY_READGROUP=true SORT_ORDER=queryname OUTPUT_BY_READGROUP_FILE_FORMAT=bam ATTRIBUTE_TO_CLEAR=NM ATTRIBUTE_TO_CLEAR=UQ ATTRIBUTE_TO_CLEAR=PG ATTRIBUTE_TO_CLEAR=MD ATTRIBUTE_TO_CLEAR=MQ ATTRIBUTE_TO_CLEAR=SA ATTRIBUTE_TO_CLEAR=MC ATTRIBUTE_TO_CLEAR=AS ATTRIBUTE_TO_CLEAR=XS ATTRIBUTE_TO_CLEAR=XA O=$PWD
+
+# Cleanup
+rm chr17.fa chr17.fa.fai chr17_test.cram chr17_test.reads final.reads bait.bed target.bed chr17_test_genes_GRCh38DH.interval_list GRCh38DH_*
+
+# Expected results
+ 709  cp builda13bb49f383448aab9e5f1dc28e2fd2c/results/variants.annotated.tsv expected.variants.annotated.tsv
+  710  cp builda13bb49f383448aab9e5f1dc28e2fd2c/results/annotated.coding_variant_filtered.vcf.gz expected.annotated.coding_variant_filtered.vcf.gz
+    713  gunzip expected.annotated.coding_variant_filtered.vcf
+  714  sed '/##contig=<ID=.*length=83257441/p;/##contig=<ID=/d' expected.annotated.coding_variant_filtered.vcf > expected.annotated.coding_variant_filtered2.vcf
+  715  mv expected.annotated.coding_variant_filtered2.vcf expected.annotated.coding_variant_filtered.vcf
+    535  vim expected.annotated.coding_variant_filtered.vcf # Remove extra lines
+  536  vim expected.variants.annotated.tsv # Remove extra lines
+    720  /opt/htslib//bin/bgzip expected.annotated.coding_variant_filtered.vcf
+  721  /usr/bin/tabix -p vcf expected.annotated.coding_variant_filtered.vcf.gz
+    723  chmod -w *
