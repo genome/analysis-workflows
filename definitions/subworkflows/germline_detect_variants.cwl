@@ -58,28 +58,30 @@ inputs:
     final_tsv_prefix:
         type: string?
         default: 'variants'
+    filter_gnomAD_maximum_population_allele_frequency:
+        type: float?
+        default: 0.05
 outputs:
     gvcf:
         type: File[]
         outputSource: haplotype_caller/gvcf
     final_vcf:
         type: File
-        outputSource: index_annotated_vcf/indexed_vcf
+        outputSource: filter_vcf/final_vcf
         secondaryFiles: [.tbi]
-    coding_vcf:
+    filtered_vcf:
         type: File
-        outputSource: index_coding_vcf/indexed_vcf
-        secondaryFiles: [.tbi]
-    limited_vcf:
-        type: File
-        outputSource: limit_variants/filtered_vcf
+        outputSource: filter_vcf/filtered_vcf
         secondaryFiles: [.tbi]
     vep_summary:
         type: File
         outputSource: annotate_variants/vep_summary
     final_tsv:
         type: File
-        outputSource: add_vep_fields_to_table/annotated_variants_tsv
+        outputSource: set_final_tsv_name/replacement
+    filtered_tsv:
+        type: File
+        outputSource: set_filtered_tsv_name/replacement
 steps:
     haplotype_caller:
         run: gatk_haplotypecaller_iterator.cwl
@@ -126,48 +128,77 @@ steps:
             vcf: bgzip_annotated_vcf/bgzipped_file
         out:
             [indexed_vcf]
-    coding_variant_filter:
-        run: ../tools/filter_vcf_coding_variant.cwl
+    filter_vcf:
+        run: germline_filter_vcf.cwl
         in:
-            vcf: annotate_variants/annotated_vcf
-        out:
-            [filtered_vcf]
-    bgzip_coding_vcf:
-        run: ../tools/bgzip.cwl
-        in:
-            file: coding_variant_filter/filtered_vcf
-        out:
-            [bgzipped_file]
-    index_coding_vcf:
-        run: ../tools/index_vcf.cwl
-        in:
-            vcf: bgzip_coding_vcf/bgzipped_file
-        out:
-            [indexed_vcf]
-    limit_variants:
-        run: ../tools/select_variants.cwl
-        in:
+            annotated_vcf: annotate_variants/annotated_vcf
+            filter_gnomAD_maximum_population_allele_frequency: filter_gnomAD_maximum_population_allele_frequency
+            gnomad_field_name:
+               source: vep_custom_annotations
+               valueFrom: |
+                 ${
+                    if(self){
+                         for(var i=0; i<self.length; i++){
+                             if(self[i].annotation.gnomad_filter){
+                                 return(self[i].annotation.name + '_AF');
+                             }
+                         }
+                     }
+                     return('gnomAD_AF');
+                 }
+            limit_variant_intervals: limit_variant_intervals
             reference: reference
-            vcf: index_coding_vcf/indexed_vcf
-            interval_list: limit_variant_intervals
-            exclude_filtered:
-                default: true
         out:
-            [filtered_vcf]
-    variants_to_table:
+            [filtered_vcf, final_vcf]
+    filtered_variants_to_table:
         run: ../tools/variants_to_table.cwl
         in:
             reference: reference
-            vcf: limit_variants/filtered_vcf
+            vcf: filter_vcf/filtered_vcf
             fields: variants_to_table_fields
             genotype_fields: variants_to_table_genotype_fields
         out:
             [variants_tsv]
-    add_vep_fields_to_table:
+    filtered_add_vep_fields_to_table:
         run: ../tools/add_vep_fields_to_table.cwl
         in:
-            vcf: limit_variants/filtered_vcf
+            vcf: filter_vcf/filtered_vcf
             vep_fields: vep_to_table_fields
-            tsv: variants_to_table/variants_tsv
+            tsv: filtered_variants_to_table/variants_tsv
             prefix: final_tsv_prefix
-        out: [annotated_variants_tsv]
+        out:
+            [annotated_variants_tsv]
+    set_filtered_tsv_name:
+        run: ../tools/staged_rename.cwl
+        in:
+            original: filtered_add_vep_fields_to_table/annotated_variants_tsv
+            name:
+                valueFrom: 'annotated.filtered.tsv'
+        out:
+             [replacement]
+    final_variants_to_table:
+        run: ../tools/variants_to_table.cwl
+        in:
+            reference: reference
+            vcf: filter_vcf/final_vcf
+            fields: variants_to_table_fields
+            genotype_fields: variants_to_table_genotype_fields
+        out:
+            [variants_tsv]
+    final_add_vep_fields_to_table:
+        run: ../tools/add_vep_fields_to_table.cwl
+        in:
+            vcf: filter_vcf/final_vcf
+            vep_fields: vep_to_table_fields
+            tsv: final_variants_to_table/variants_tsv
+            prefix: final_tsv_prefix
+        out:
+            [annotated_variants_tsv]
+    set_final_tsv_name:
+        run: ../tools/staged_rename.cwl
+        in:
+            original: final_add_vep_fields_to_table/annotated_variants_tsv
+            name:
+                valueFrom: 'annotated.filtered.final.tsv'
+        out:
+             [replacement]

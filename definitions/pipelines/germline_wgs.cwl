@@ -172,13 +172,9 @@ outputs:
         type: File
         outputSource: detect_variants/final_vcf
         secondaryFiles: [.tbi]
-    coding_vcf:
+    filtered_vcf:
         type: File
-        outputSource: detect_variants/coding_vcf
-        secondaryFiles: [.tbi]
-    limited_vcf:
-        type: File
-        outputSource: detect_variants/limited_vcf
+        outputSource: detect_variants/filtered_vcf
         secondaryFiles: [.tbi]
     vep_summary:
         type: File
@@ -249,6 +245,9 @@ outputs:
     final_tsv:
         type: File
         outputSource: detect_variants/final_tsv
+    filtered_tsv:
+        type: File
+        outputSource: detect_variants/filtered_tsv
     cnvkit_filtered_vcf:
         type: File
         outputSource: sv_detect_variants/cnvkit_filtered_vcf
@@ -344,7 +343,7 @@ steps:
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
         out:
-            [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary, final_tsv]
+            [gvcf, final_vcf, filtered_vcf, vep_summary, final_tsv, filtered_tsv]
     sv_detect_variants:
         run: ../subworkflows/single_sample_sv_callers.cwl
         in:
