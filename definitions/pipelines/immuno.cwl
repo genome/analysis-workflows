@@ -552,13 +552,9 @@ outputs:
         type: File
         outputSource: germline/final_vcf
         secondaryFiles: [.tbi]
-    coding_vcf:
+    germline_filtered_vcf:
         type: File
-        outputSource: germline/coding_vcf
-        secondaryFiles: [.tbi]
-    limited_vcf:
-        type: File
-        outputSource: germline/limited_vcf
+        outputSource: germline/filtered_vcf
         secondaryFiles: [.tbi]
     germline_vep_summary:
         type: File
@@ -721,7 +717,7 @@ steps:
             qc_minimum_base_quality: qc_minimum_base_quality
             optitype_name: optitype_name
         out:
-            [cram,mark_duplicates_metrics,insert_size_metrics,insert_size_histogram,alignment_summary_metrics,hs_metrics,per_target_coverage_metrics,per_target_hs_metrics,per_base_coverage_metrics,per_base_hs_metrics,summary_hs_metrics,flagstats,verify_bam_id_metrics,verify_bam_id_depth,gvcf,final_vcf,coding_vcf,limited_vcf,vep_summary,optitype_tsv,optitype_plot]
+            [cram,mark_duplicates_metrics,insert_size_metrics,insert_size_histogram,alignment_summary_metrics,hs_metrics,per_target_coverage_metrics,per_target_hs_metrics,per_base_coverage_metrics,per_base_hs_metrics,summary_hs_metrics,flagstats,verify_bam_id_metrics,verify_bam_id_depth,gvcf,final_vcf,filtered_vcf,vep_summary,optitype_tsv,optitype_plot]
 
     rename_somatic_vcf_tumor_sample:
         run: ../tools/replace_vcf_sample_name.cwl
