@@ -173,11 +173,11 @@ outputs:
         outputSource: detect_variants/gvcf
     final_vcf:
         type: File
-        outputSource: add_disclaimer_final_vcf/output_file
+        outputSource: index_disclaimer_final_vcf/indexed_vcf
         secondaryFiles: [.tbi]
     filtered_vcf:
         type: File
-        outputSource: add_disclaimer_filtered_vcf/output_file
+        outputSource: index_disclaimer_filtered_vcf/indexed_vcf
         secondaryFiles: [.tbi]
     vep_summary:
         type: File
@@ -361,6 +361,12 @@ steps:
                 valueFrom: "$(self.basename)"
         out:
             [output_file]
+    index_disclaimer_filtered_vcf:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: add_disclaimer_filtered_vcf/output_file
+        out:
+            [indexed_vcf]
     add_disclaimer_final_vcf:
         run: ../tools/add_string_at_line_bgzipped.cwl
         in:
@@ -375,6 +381,12 @@ steps:
                 valueFrom: "$(self.basename)"
         out:
             [output_file]
+    index_disclaimer_final_vcf:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: add_disclaimer_final_vcf/output_file
+        out:
+            [indexed_vcf]
     add_disclaimer_filtered_tsv:
         run: ../tools/add_string_at_line.cwl
         in:
