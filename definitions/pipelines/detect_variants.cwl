@@ -5,7 +5,6 @@ class: Workflow
 label: "Detect Variants workflow"
 requirements:
     - class: SubworkflowFeatureRequirement
-    - class: MultipleInputFeatureRequirement
 inputs:
     reference:
         type: string
