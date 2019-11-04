@@ -273,9 +273,9 @@ inputs:
     pvacseq_threads:
         type: int?
 
-    immuno_tumor_sample_name:
+    tumor_sample_name:
         type: string
-    immuno_normal_sample_name:
+    normal_sample_name:
         type: string
 
 outputs:
@@ -735,8 +735,8 @@ steps:
             reference: reference
             reference_dict: reference_dict
             bam: somatic/tumor_cram
-            normal_sample_name: immuno_normal_sample_name
-            tumor_sample_name: immuno_tumor_sample_name
+            normal_sample_name: normal_sample_name
+            tumor_sample_name: tumor_sample_name
         out:
             [phased_vcf]
     extract_alleles:
@@ -748,9 +748,9 @@ steps:
     pvacseq:
         run: ../subworkflows/pvacseq.cwl
         in:
-            detect_variants_vcf: index_renamed_somatic/indexed_vcf
-            sample_name: immuno_tumor_sample_name
-            normal_sample_name: immuno_normal_sample_name
+            detect_variants_vcf: somatic/final_vcf
+            sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
             rnaseq_bam: rnaseq/final_bam
             reference_fasta: reference
             readcount_minimum_base_quality: readcount_minimum_base_quality
