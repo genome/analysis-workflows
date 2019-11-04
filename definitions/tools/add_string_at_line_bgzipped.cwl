@@ -22,7 +22,10 @@ inputs:
         type: int
     some_text:
         type: string
-stdout: "$(inputs.input_file.basename).commented.gz"
+    output_name:
+        type: string?
+        default: "$(inputs.input_file.basename).commented.gz"
+stdout: $(inputs.output_name)
 outputs:
     output_file:
         type: stdout
