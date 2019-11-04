@@ -128,6 +128,9 @@ inputs:
          type: string[]?
     cnv_filter_min_size:
          type: int?
+    disclaimer_text:
+        type: string?
+        default: 'Workflow source can be found at https://github.com/genome/analysis-workflows'
 outputs:
     cram:
         type: File
@@ -170,11 +173,11 @@ outputs:
         outputSource: detect_variants/gvcf
     final_vcf:
         type: File
-        outputSource: detect_variants/final_vcf
+        outputSource: add_disclaimer_final_vcf/output_file
         secondaryFiles: [.tbi]
     filtered_vcf:
         type: File
-        outputSource: detect_variants/filtered_vcf
+        outputSource: add_disclaimer_filtered_vcf/output_file
         secondaryFiles: [.tbi]
     vep_summary:
         type: File
@@ -244,10 +247,10 @@ outputs:
         outputSource: sv_detect_variants/smoove_output_variants
     final_tsv:
         type: File
-        outputSource: detect_variants/final_tsv
+        outputSource: add_disclaimer_final_tsv/output_file
     filtered_tsv:
         type: File
-        outputSource: detect_variants/filtered_tsv
+        outputSource: add_disclaimer_filtered_tsv/output_file
     cnvkit_filtered_vcf:
         type: File
         outputSource: sv_detect_variants/cnvkit_filtered_vcf
@@ -344,6 +347,62 @@ steps:
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
         out:
             [gvcf, final_vcf, filtered_vcf, vep_summary, final_tsv, filtered_tsv]
+    add_disclaimer_filtered_vcf:
+        run: ../tools/add_string_at_line_bgzipped.cwl
+        in:
+            input_file: detect_variants/filtered_vcf
+            line_number:
+                default: 2
+            some_text:
+                source: disclaimer_text
+                valueFrom: "##disclaimer=$(self)"
+            output_name:
+                source: detect_variants/filtered_vcf
+                valueFrom: "$(self.basename)"
+        out:
+            [output_file]
+    add_disclaimer_final_vcf:
+        run: ../tools/add_string_at_line_bgzipped.cwl
+        in:
+            input_file: detect_variants/final_vcf
+            line_number:
+                default: 2
+            some_text:
+                source: disclaimer_text
+                valueFrom: "##disclaimer=$(self)"
+            output_name:
+                source: detect_variants/final_vcf
+                valueFrom: "$(self.basename)"
+        out:
+            [output_file]
+    add_disclaimer_filtered_tsv:
+        run: ../tools/add_string_at_line.cwl
+        in:
+            input_file: detect_variants/filtered_tsv
+            line_number:
+                default: 1
+            some_text:
+                source: disclaimer_text
+                valueFrom: "#$(self)"
+            output_name:
+                source: detect_variants/filtered_tsv
+                valueFrom: "$(self.basename)"
+        out:
+            [output_file]
+    add_disclaimer_final_tsv:
+        run: ../tools/add_string_at_line.cwl
+        in:
+            input_file: detect_variants/final_tsv
+            line_number:
+                default: 1
+            some_text:
+                source: disclaimer_text
+                valueFrom: "#$(self)"
+            output_name:
+                source: detect_variants/final_tsv
+                valueFrom: "$(self.basename)"
+        out:
+            [output_file]
     sv_detect_variants:
         run: ../subworkflows/single_sample_sv_callers.cwl
         in:
