@@ -6,6 +6,7 @@ label: "Apply filters to VCF file"
 requirements:
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
+    - class: MultipleInputFeatureRequirement
 inputs:
     vcf:
         type: File
@@ -24,8 +25,6 @@ inputs:
         type: string
     filter_minimum_depth:
         type: int
-    sample_names:
-        type: string[]
     tumor_sample_name:
         type: string
     normal_sample_name:
@@ -63,7 +62,9 @@ steps:
         in:
             vcf: filter_vcf_cle/cle_filtered_vcf
             minimum_depth: filter_minimum_depth
-            sample_names: sample_names
+            sample_names:
+                source: [normal_sample_name, tumor_sample_name]
+                linkMerge: merge_flattened
         out:
             [depth_filtered_vcf]
     filter_vcf_somatic_llr:

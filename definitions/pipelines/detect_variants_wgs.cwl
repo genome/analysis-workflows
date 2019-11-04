@@ -322,9 +322,6 @@ steps:
             filter_mapq0_threshold: filter_mapq0_threshold
             filter_somatic_llr_threshold: filter_somatic_llr_threshold
             filter_minimum_depth: filter_minimum_depth
-            sample_names:
-                source: [normal_sample_name, tumor_sample_name]
-                linkMerge: merge_flattened
             tumor_bam: tumor_bam
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference
