@@ -23,6 +23,10 @@ inputs:
     cosmic_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    normal_sample_name:
+        type: string
+    tumor_sample_name:
+        type: string
 outputs:
     pon_vcf:
         type: File
@@ -45,6 +49,7 @@ steps:
                 default: true
             panel_of_normals_vcf:
                 default: null
+            tumor_sample_name: tumor_sample_name
         out:
             [unfiltered_vcf]
     combine:

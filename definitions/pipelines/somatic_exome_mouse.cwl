@@ -99,6 +99,10 @@ inputs:
     vep_to_table_fields:
         type: string[]
         default: ['Consequence','SYMBOL','Feature']
+    tumor_sample_name:
+        type: string
+    normal_sample_name:
+        type: string
 outputs:
     tumor_cram:
         type: File
@@ -291,6 +295,8 @@ steps:
             vep_ensembl_version: vep_ensembl_version
             vep_ensembl_species: vep_ensembl_species
             vep_to_table_fields: vep_to_table_fields
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
     tumor_bam_to_cram:

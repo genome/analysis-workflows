@@ -103,6 +103,10 @@ inputs:
     custom_clinvar_vcf:
         type: File?
         secondaryFiles: [.tbi]
+    tumor_sample_name:
+        type: string
+    normal_sample_name:
+        type: string
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -167,6 +171,7 @@ steps:
             normal_bam: normal_bam
             interval_list: interval_list
             scatter_count: mutect_scatter_count
+            tumor_sample_name: tumor_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     strelka:
@@ -178,6 +183,8 @@ steps:
             interval_list: interval_list
             exome_mode: strelka_exome_mode
             cpu_reserved: strelka_cpu_reserved
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     varscan:
@@ -192,6 +199,8 @@ steps:
             min_var_freq: varscan_min_var_freq
             p_value: varscan_p_value
             max_normal_freq: varscan_max_normal_freq
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     docm:
@@ -314,10 +323,13 @@ steps:
             filter_somatic_llr_threshold: filter_somatic_llr_threshold
             filter_minimum_depth: filter_minimum_depth
             sample_names:
-                default: 'NORMAL,TUMOR'
+                source: [normal_sample_name, tumor_sample_name]
+                linkMerge: merge_flattened
             tumor_bam: tumor_bam
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference
+            normal_sample_name: normal_sample_name
+            tumor_sample_name: tumor_sample_name
         out: 
             [filtered_vcf]
     annotated_filter_bgzip:
