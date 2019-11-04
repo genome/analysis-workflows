@@ -80,47 +80,6 @@ outputs:
         outputSource: generate_qc_metrics/metrics
     chart:
         type: File
-    stringtie_transcript_gtf:
-        type: File
-        outputSource: stringtie/transcript_gtf
-    stringtie_gene_expression_tsv:
-        type: File
-        outputSource: stringtie/gene_expression_tsv
-    transcript_abundance_tsv:
-        type: File
-        outputSource: kallisto/expression_transcript_table
-    transcript_abundance_h5:
-        type: File
-        outputSource: kallisto/expression_transcript_h5
-    gene_abundance:
-        type: File
-        outputSource: transcript_to_gene/gene_abundance
-    metrics:
-        type: File
-        outputSource: generate_qc_metrics/metrics
-    chart:
-        type: File
-    stringtie_transcript_gtf:
-        type: File
-        outputSource: stringtie/transcript_gtf
-    stringtie_gene_expression_tsv:
-        type: File
-        outputSource: stringtie/gene_expression_tsv
-    transcript_abundance_tsv:
-        type: File
-        outputSource: kallisto/expression_transcript_table
-    transcript_abundance_h5:
-        type: File
-        outputSource: kallisto/expression_transcript_h5
-    gene_abundance:
-        type: File
-        outputSource: transcript_to_gene/gene_abundance
-    metrics:
-        type: File
-        outputSource: generate_qc_metrics/metrics
-    chart:
-        type: File
-        outputSource: generate_qc_metrics/chart
     fusion_evidence:
         type: File
         outputSource: kallisto/fusion_evidence
