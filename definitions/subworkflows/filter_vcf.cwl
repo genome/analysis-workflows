@@ -14,6 +14,8 @@ inputs:
         type: float
     filter_gnomADe_maximum_population_allele_frequency:
         type: float
+    gnomad_field_name:
+        type: string
     tumor_bam: 
         type: File
         secondaryFiles: [.bai]
@@ -35,10 +37,11 @@ outputs:
         outputSource: set_final_vcf_name/replacement
 steps:
     filter_vcf_gnomADe_allele_freq:
-        run: ../tools/filter_vcf_gnomADe_allele_freq.cwl
+        run: ../tools/filter_vcf_custom_allele_freq.cwl
         in:
             vcf: vcf
             maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
+            field_name: gnomad_field_name
         out:
             [filtered_vcf]
     filter_vcf_mapq0:

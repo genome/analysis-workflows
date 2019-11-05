@@ -13,7 +13,8 @@ requirements:
       dockerPull: mgibio/picard-cwl:2.18.1
 inputs:
     sample_name:
-        type: string
+        type: string?
+        default: "final"
     bam:
         type: File
         inputBinding:
@@ -24,7 +25,7 @@ inputs:
         inputBinding:
             prefix: "R="
     intervals:
-        type: File
+        type: File?
         inputBinding:
             prefix: "INTERVALS="
 outputs:

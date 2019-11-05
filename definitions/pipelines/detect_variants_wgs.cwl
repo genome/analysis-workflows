@@ -5,6 +5,9 @@ class: Workflow
 label: "Detect Variants workflow for WGS pipeline"
 requirements:
     - class: SubworkflowFeatureRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/vep_custom_annotation.yml
 inputs:
     reference:
         type: string
@@ -97,16 +100,13 @@ inputs:
     vep_to_table_fields:
         type: string[]?
         default: [HGVSc,HGVSp]
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    custom_clinvar_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
     tumor_sample_name:
         type: string
     normal_sample_name:
         type: string
+    vep_custom_annotations:
+        type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
+        doc: "custom type, check types directory for input format"
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -254,9 +254,8 @@ steps:
             synonyms_file: synonyms_file
             coding_only: annotate_coding_only
             reference: reference
-            custom_gnomad_vcf: custom_gnomad_vcf
+            custom_annotations: vep_custom_annotations
             pick: vep_pick
-            custom_clinvar_vcf: custom_clinvar_vcf
             plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]
@@ -325,8 +324,24 @@ steps:
             tumor_bam: tumor_bam
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference
+<<<<<<< HEAD
             normal_sample_name: normal_sample_name
             tumor_sample_name: tumor_sample_name
+=======
+            gnomad_field_name:
+              source: vep_custom_annotations
+              valueFrom: |
+                ${
+                   if(self){
+                        for(var i=0; i<self.length; i++){
+                            if(self[i].annotation.gnomad_filter){
+                                return(self[i].annotation.name + '_AF');
+                            }
+                        }
+                    }
+                    return('gnomAD_AF');
+                }
+>>>>>>> master
         out: 
             [filtered_vcf]
     annotated_filter_bgzip:

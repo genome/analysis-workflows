@@ -15,7 +15,8 @@ requirements:
       dockerPull: mgibio/cle:v1.3.1
 inputs:
     sample_name:
-        type: string
+        type: string?
+        default: "final"
     bam:
         type: File
         inputBinding:

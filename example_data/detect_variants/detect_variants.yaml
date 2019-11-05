@@ -8,9 +8,6 @@ normal_bam:
 interval_list:
   class: File
   path: ../exome_workflow/chr17_test_genes.interval_list
-custom_gnomad_vcf:
-  class: File
-  path: ../exome_workflow/chr17_test_gnomADe.vcf.gz
 dbsnp_vcf:
   class: File
   path: ../exome_workflow/chr17_test_dbsnp.vcf.gz
@@ -40,3 +37,16 @@ hgvs_annotation: true
 variants_to_table_fields: [CHROM,POS,ID,REF,ALT,set,AC,AF]
 variants_to_table_genotype_fields: [GT,AD]
 vep_to_table_fields: [HGVSc,HGVSp]
+vep_custom_annotations:
+- method: 'exact'
+  force_report_coordinates: true
+  annotation:
+    file:
+      class: File
+      path: exome_workflow/chr17_test_gnomADe.vcf.gz
+      secondaryFiles: [{class: File, path: exome_workflow/chr17_test_gnomADe.vcf.gz.tbi}]
+    data_format: 'vcf'
+    name: 'gnomADe'
+    vcf_fields: ['AF','AF_AFR','AF_AMR','AF_ASJ','AF_EAS','AF_FIN','AF_NFE','AF_OTH','AF_SAS']
+    gnomad_filter: true
+    check_existing: true

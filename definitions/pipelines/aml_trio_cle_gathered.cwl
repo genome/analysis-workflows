@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
@@ -140,12 +141,9 @@ inputs:
     vep_to_table_fields:
         type: string[]
         default: [HGVSc,HGVSp]
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    custom_clinvar_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
+    vep_custom_annotations:
+        type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
+        doc: "custom type, check types directory for input format"
     germline_tsv_prefix:
         type: string?
         default: 'germline_variants'
@@ -225,8 +223,7 @@ steps:
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
-            custom_gnomad_vcf: custom_gnomad_vcf
-            custom_clinvar_vcf: custom_clinvar_vcf
+            vep_custom_annotations: vep_custom_annotations
             somalier_vcf: somalier_vcf
             germline_tsv_prefix: germline_tsv_prefix
             germline_variants_to_table_fields: germline_variants_to_table_fields
@@ -236,13 +233,13 @@ steps:
             tumor_sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name
         out:
-            [tumor_cram, tumor_mark_duplicates_metrics, tumor_insert_size_metrics, tumor_alignment_summary_metrics, tumor_hs_metrics, tumor_summary_hs_metrics, tumor_flagstats, tumor_verify_bam_id_metrics, tumor_verify_bam_id_depth, normal_cram, normal_mark_duplicates_metrics, normal_insert_size_metrics, normal_alignment_summary_metrics, normal_hs_metrics, normal_summary_hs_metrics, normal_flagstats, normal_verify_bam_id_metrics, normal_verify_bam_id_depth, followup_cram, followup_mark_duplicates_metrics, followup_insert_size_metrics, followup_alignment_summary_metrics, followup_hs_metrics, followup_summary_hs_metrics, followup_flagstats, followup_verify_bam_id_metrics, followup_verify_bam_id_depth, mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_filtered_vcf, pindel_region_vcf, tumor_final_vcf, tumor_final_filtered_vcf, tumor_final_tsv, tumor_vep_summary, germline_final_vcf, germline_coding_vcf, germline_limited_vcf, germline_final_tsv, alignment_stat_report, coverage_stat_report, full_variant_report, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv, followup_snv_bam_readcount_tsv, followup_indel_bam_readcount_tsv, somalier_concordance_metrics, somalier_concordance_statistics]
+            [tumor_cram, tumor_mark_duplicates_metrics, tumor_insert_size_metrics, tumor_alignment_summary_metrics, tumor_hs_metrics, tumor_summary_hs_metrics, tumor_flagstats, tumor_verify_bam_id_metrics, tumor_verify_bam_id_depth, normal_cram, normal_mark_duplicates_metrics, normal_insert_size_metrics, normal_alignment_summary_metrics, normal_hs_metrics, normal_summary_hs_metrics, normal_flagstats, normal_verify_bam_id_metrics, normal_verify_bam_id_depth, followup_cram, followup_mark_duplicates_metrics, followup_insert_size_metrics, followup_alignment_summary_metrics, followup_hs_metrics, followup_summary_hs_metrics, followup_flagstats, followup_verify_bam_id_metrics, followup_verify_bam_id_depth, mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_filtered_vcf, pindel_region_vcf, tumor_final_vcf, tumor_final_filtered_vcf, tumor_final_tsv, tumor_vep_summary, germline_final_vcf, germline_filtered_vcf, germline_final_tsv, germline_filtered_tsv, alignment_stat_report, coverage_stat_report, full_variant_report, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv, followup_snv_bam_readcount_tsv, followup_indel_bam_readcount_tsv, somalier_concordance_metrics, somalier_concordance_statistics]
     gatherer:
         run: ../tools/gatherer.cwl
         in:
             output_dir: output_dir
             all_files:
-                source: [aml_trio/tumor_cram, aml_trio/tumor_mark_duplicates_metrics, aml_trio/tumor_insert_size_metrics, aml_trio/tumor_alignment_summary_metrics, aml_trio/tumor_hs_metrics, aml_trio/tumor_summary_hs_metrics, aml_trio/tumor_flagstats, aml_trio/tumor_verify_bam_id_metrics, aml_trio/tumor_verify_bam_id_depth, aml_trio/normal_cram, aml_trio/normal_mark_duplicates_metrics, aml_trio/normal_insert_size_metrics, aml_trio/normal_alignment_summary_metrics, aml_trio/normal_hs_metrics, aml_trio/normal_summary_hs_metrics, aml_trio/normal_flagstats, aml_trio/normal_verify_bam_id_metrics, aml_trio/normal_verify_bam_id_depth, aml_trio/followup_cram, aml_trio/followup_mark_duplicates_metrics, aml_trio/followup_insert_size_metrics, aml_trio/followup_alignment_summary_metrics, aml_trio/followup_hs_metrics, aml_trio/followup_summary_hs_metrics, aml_trio/followup_flagstats, aml_trio/followup_verify_bam_id_metrics, aml_trio/followup_verify_bam_id_depth, aml_trio/mutect_unfiltered_vcf, aml_trio/mutect_filtered_vcf, aml_trio/strelka_unfiltered_vcf, aml_trio/strelka_filtered_vcf, aml_trio/varscan_unfiltered_vcf, aml_trio/varscan_filtered_vcf, aml_trio/pindel_unfiltered_vcf, aml_trio/pindel_filtered_vcf, aml_trio/docm_filtered_vcf, aml_trio/pindel_region_vcf, aml_trio/tumor_final_vcf, aml_trio/tumor_final_filtered_vcf, aml_trio/tumor_final_tsv, aml_trio/tumor_vep_summary, aml_trio/germline_final_vcf, aml_trio/germline_coding_vcf, aml_trio/germline_limited_vcf, aml_trio/germline_final_tsv, aml_trio/alignment_stat_report, aml_trio/coverage_stat_report, aml_trio/full_variant_report, aml_trio/tumor_snv_bam_readcount_tsv, aml_trio/tumor_indel_bam_readcount_tsv, aml_trio/normal_snv_bam_readcount_tsv, aml_trio/normal_indel_bam_readcount_tsv, aml_trio/followup_snv_bam_readcount_tsv, aml_trio/followup_indel_bam_readcount_tsv, aml_trio/somalier_concordance_metrics, aml_trio/somalier_concordance_statistics]
+                source: [aml_trio/tumor_cram, aml_trio/tumor_mark_duplicates_metrics, aml_trio/tumor_insert_size_metrics, aml_trio/tumor_alignment_summary_metrics, aml_trio/tumor_hs_metrics, aml_trio/tumor_summary_hs_metrics, aml_trio/tumor_flagstats, aml_trio/tumor_verify_bam_id_metrics, aml_trio/tumor_verify_bam_id_depth, aml_trio/normal_cram, aml_trio/normal_mark_duplicates_metrics, aml_trio/normal_insert_size_metrics, aml_trio/normal_alignment_summary_metrics, aml_trio/normal_hs_metrics, aml_trio/normal_summary_hs_metrics, aml_trio/normal_flagstats, aml_trio/normal_verify_bam_id_metrics, aml_trio/normal_verify_bam_id_depth, aml_trio/followup_cram, aml_trio/followup_mark_duplicates_metrics, aml_trio/followup_insert_size_metrics, aml_trio/followup_alignment_summary_metrics, aml_trio/followup_hs_metrics, aml_trio/followup_summary_hs_metrics, aml_trio/followup_flagstats, aml_trio/followup_verify_bam_id_metrics, aml_trio/followup_verify_bam_id_depth, aml_trio/mutect_unfiltered_vcf, aml_trio/mutect_filtered_vcf, aml_trio/strelka_unfiltered_vcf, aml_trio/strelka_filtered_vcf, aml_trio/varscan_unfiltered_vcf, aml_trio/varscan_filtered_vcf, aml_trio/pindel_unfiltered_vcf, aml_trio/pindel_filtered_vcf, aml_trio/docm_filtered_vcf, aml_trio/pindel_region_vcf, aml_trio/tumor_final_vcf, aml_trio/tumor_final_filtered_vcf, aml_trio/tumor_final_tsv, aml_trio/tumor_vep_summary, aml_trio/germline_final_vcf, aml_trio/germline_filtered_vcf, aml_trio/germline_final_tsv, aml_trio/germline_filtered_tsv, aml_trio/alignment_stat_report, aml_trio/coverage_stat_report, aml_trio/full_variant_report, aml_trio/tumor_snv_bam_readcount_tsv, aml_trio/tumor_indel_bam_readcount_tsv, aml_trio/normal_snv_bam_readcount_tsv, aml_trio/normal_indel_bam_readcount_tsv, aml_trio/followup_snv_bam_readcount_tsv, aml_trio/followup_indel_bam_readcount_tsv, aml_trio/somalier_concordance_metrics, aml_trio/somalier_concordance_statistics]
                 valueFrom: ${
                                 function flatten(inArr, outArr) {
                                     var arrLen = inArr.length;

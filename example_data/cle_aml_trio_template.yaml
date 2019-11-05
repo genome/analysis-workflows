@@ -28,12 +28,31 @@ bqsr_intervals:
 cosmic_vcf:
   class: File
   path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-774-52fa2dadc4ba4b6490abe0701907d394/snvs.hq.vcf.gz
-custom_clinvar_vcf:
-  class: File
-  path: /gscmnt/gc2560/core/custom_clinvar_vcf/v20181028/custom.vcf.gz
-custom_gnomad_vcf:
-  class: File
-  path: /gscmnt/gc2560/core/model_data/genome-db-ensembl-gnomad/2dd4b53431674786b760adad60a29273/fixed_b38_exome.vcf.gz
+vep_custom_annotations:
+- method: 'exact'
+  force_report_coordinates: true
+  annotation:
+    file:
+      class: File
+      path: exome_workflow/chr17_test_gnomADe.vcf.gz
+      secondaryFiles: [{class: File, path: exome_workflow/chr17_test_gnomADe.vcf.gz.tbi}]
+    data_format: 'vcf'
+    name: 'gnomADe'
+    vcf_fields: ['AF','AF_AFR','AF_AMR','AF_ASJ','AF_EAS','AF_FIN','AF_NFE','AF_OTH','AF_SAS']
+    gnomad_filter: true
+    check_existing: true
+- method: 'exact'
+  force_report_coordinates: true
+  annotation:
+    file:
+      class: File
+      path: /gscmnt/gc2560/core/custom_clinvar_vcf/v20181028/custom.vcf.gz
+      secondaryFiles: [{class: File, path: /gscmnt/gc2560/core/custom_clinvar_vcf/v20181028/custom.vcf.gz.tbi}]
+    data_format: 'vcf'
+    name: 'clinvar'
+    vcf_fields: ['CLINSIGN','PHENOTYPE','SCORE','RCVACC','TESTEDINGTR','PHENOTYPELIST','NUMSUBMIT','GUIDELINES']
+    gnomad_filter: false
+    check_existing: false
 dbsnp_vcf:
   class: File
   path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-19443-e48c595a620a432c93e8dd29e4af64f2/snvs.hq.vcf.gz

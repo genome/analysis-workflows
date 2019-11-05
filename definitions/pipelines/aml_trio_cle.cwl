@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
@@ -142,12 +143,9 @@ inputs:
         doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
     somalier_vcf:
         type: File
-    custom_gnomad_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    custom_clinvar_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
+    vep_custom_annotations:
+        type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
+        doc: "custom type, check types directory for input format"
     germline_tsv_prefix:
         type: string?
         default: 'germline_variants'
@@ -327,17 +325,16 @@ outputs:
         type: File
         outputSource: germline_detect_variants/final_vcf
         secondaryFiles: [.tbi]
-    germline_coding_vcf:
+    germline_filtered_vcf:
         type: File
-        outputSource: germline_detect_variants/coding_vcf
-        secondaryFiles: [.tbi]
-    germline_limited_vcf:
-        type: File
-        outputSource: germline_detect_variants/limited_vcf
+        outputSource: germline_detect_variants/filtered_vcf
         secondaryFiles: [.tbi]
     germline_final_tsv:
         type: File
         outputSource: add_disclaimer_version_to_germline_final_tsv/output_file
+    germline_filtered_tsv:
+        type: File
+        outputSource: germline_detect_variants/filtered_tsv
     somalier_concordance_metrics:
         type: File
         outputSource: concordance/somalier_pairs
@@ -464,10 +461,9 @@ steps:
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
-            custom_gnomad_vcf: custom_gnomad_vcf
-            custom_clinvar_vcf: custom_clinvar_vcf
             tumor_sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name
+            vep_custom_annotations: vep_custom_annotations
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
     add_disclaimer_to_tumor_final_tsv:
@@ -552,15 +548,14 @@ steps:
             vep_ensembl_species: vep_ensembl_species
             synonyms_file: synonyms_file
             annotate_coding_only: germline_coding_only
-            custom_gnomad_vcf: custom_gnomad_vcf
+            vep_custom_annotations: vep_custom_annotations
             limit_variant_intervals: variant_reporting_intervals
-            custom_clinvar_vcf: custom_clinvar_vcf
             variants_to_table_fields: germline_variants_to_table_fields
             variants_to_table_genotype_fields: germline_variants_to_table_genotype_fields
             vep_to_table_fields: germline_vep_to_table_fields
             final_tsv_prefix: germline_tsv_prefix
         out:
-            [final_vcf, coding_vcf, limited_vcf, final_tsv]
+            [final_vcf, filtered_vcf, final_tsv, filtered_tsv]
     add_disclaimer_to_germline_final_tsv:
         run: ../tools/add_string_at_line.cwl
         in:
