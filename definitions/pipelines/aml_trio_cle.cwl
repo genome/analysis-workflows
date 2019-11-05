@@ -321,17 +321,16 @@ outputs:
         type: File
         outputSource: germline_detect_variants/final_vcf
         secondaryFiles: [.tbi]
-    germline_coding_vcf:
+    germline_filtered_vcf:
         type: File
-        outputSource: germline_detect_variants/coding_vcf
-        secondaryFiles: [.tbi]
-    germline_limited_vcf:
-        type: File
-        outputSource: germline_detect_variants/limited_vcf
+        outputSource: germline_detect_variants/filtered_vcf
         secondaryFiles: [.tbi]
     germline_final_tsv:
         type: File
         outputSource: add_disclaimer_version_to_germline_final_tsv/output_file
+    germline_filtered_tsv:
+        type: File
+        outputSource: germline_detect_variants/filtered_tsv
     somalier_concordance_metrics:
         type: File
         outputSource: concordance/somalier_pairs
@@ -548,7 +547,7 @@ steps:
             vep_to_table_fields: germline_vep_to_table_fields
             final_tsv_prefix: germline_tsv_prefix
         out:
-            [final_vcf, coding_vcf, limited_vcf, final_tsv]
+            [final_vcf, filtered_vcf, final_tsv, filtered_tsv]
     add_disclaimer_to_germline_final_tsv:
         run: ../tools/add_string_at_line.cwl
         in:
