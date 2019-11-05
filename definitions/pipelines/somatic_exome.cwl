@@ -433,7 +433,6 @@ steps:
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
-            custom_clinvar_vcf: custom_clinvar_vcf
             tumor_sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name
             vep_custom_annotations: vep_custom_annotations

@@ -324,10 +324,8 @@ steps:
             tumor_bam: tumor_bam
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference
-<<<<<<< HEAD
             normal_sample_name: normal_sample_name
             tumor_sample_name: tumor_sample_name
-=======
             gnomad_field_name:
               source: vep_custom_annotations
               valueFrom: |
@@ -341,7 +339,6 @@ steps:
                     }
                     return('gnomAD_AF');
                 }
->>>>>>> master
         out: 
             [filtered_vcf]
     annotated_filter_bgzip:
