@@ -22,7 +22,7 @@ inputs:
     scatter_count:
         type: int
     tumor_sample_name:
-        type: string?
+        type: string
 outputs:
     unfiltered_vcf:
         type: File
