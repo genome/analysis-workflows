@@ -4,7 +4,7 @@ class: CommandLineTool
 baseCommand: ['/usr/bin/perl', 'intervals_to_bed.pl']
 requirements:
     - class: DockerRequirement
-      dockerPull: "ubuntu:xenial"
+      dockerPull: "ubuntu:bionic"
     - class: ResourceRequirement
       ramMin: 4000
     - class: InitialWorkDirRequirement

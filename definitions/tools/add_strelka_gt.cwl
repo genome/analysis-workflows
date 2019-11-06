@@ -5,7 +5,7 @@ class: CommandLineTool
 label: "add GT tags"
 requirements:
     - class: DockerRequirement
-      dockerPull: "ubuntu:xenial"
+      dockerPull: "ubuntu:bionic"
     - class: ResourceRequirement
       ramMin: 4000
     - class: InitialWorkDirRequirement
