@@ -268,7 +268,7 @@ outputs:
         outputSource: add_disclaimer_survivor_sv_vcf/output_file
     survivor_merged_annotated_tsv:
         type: File
-        outputSource: add_disclaimer_survivor_sv_vcf/output_file
+        outputSource: add_disclaimer_survivor_sv_tsv/output_file
     bcftools_merged_vcf:
         type: File
         outputSource: add_disclaimer_bcftools_sv_vcf/output_file
