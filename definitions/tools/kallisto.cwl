@@ -25,7 +25,8 @@ requirements:
             fragment_length="$5"
             fragment_length_stddev="$6"
 
-            fastqs="$7"
+            fastqs="${@:7}"
+
             if [[ "$paired" == "true" ]];then
               /usr/bin/kallisto quant -t $ncores -b 100 --fusion -o kallisto -i $index $strand $fastqs
             else
@@ -41,7 +42,6 @@ inputs:
     kallisto_index:
         type: File
         inputBinding:
-            prefix: "-i"
             position: 1
     strand:
         type:
@@ -90,7 +90,6 @@ inputs:
                 items: File
         inputBinding:
             position: 6
-            itemSeparator: " "
 
 outputs:
     expression_transcript_table:
