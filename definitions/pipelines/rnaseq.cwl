@@ -67,8 +67,6 @@ inputs:
     assembly:
         type: string
         doc: 'the assembly used, such as GRCh37/38, GRCm37/38'
-    reference_transcriptome:
-        type: File
 
 outputs:
     final_bam:
