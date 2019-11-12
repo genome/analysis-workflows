@@ -206,9 +206,6 @@ inputs:
     reference_dict:
         type: File
 
-    clinical_calls:
-        type: string[]?
-
     #pvacseq inputs
     readcount_minimum_base_quality:
         type: int?
@@ -583,12 +580,6 @@ outputs:
     allele_string:
         type: string[]
         outputSource: extract_alleles/allele_string
-    consensus_alleles:
-        type: string[]
-        outputSource: reconcile_calls/consensus_alleles
-    hla_call_files:
-        type: Directory
-        outputSource: reconcile_calls/hla_call_files
 
     annotated_vcf:
         type: File
@@ -776,13 +767,6 @@ steps:
             allele_file: germline/optitype_tsv
         out:
             [allele_string]
-    reconcile_calls:
-        run: ../tools/hla_consensus.cwl
-        in:
-            optitype_calls: extract_alleles/allele_string
-            clinical_calls: clinical_calls
-        out:
-            [consensus_alleles, hla_call_files]
     pvacseq:
         run: ../subworkflows/pvacseq.cwl
         in:
@@ -795,7 +779,7 @@ steps:
             readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
             gene_expression_file: rnaseq/gene_abundance
             transcript_expression_file: rnaseq/transcript_abundance_tsv
-            alleles: reconcile_calls/consensus_alleles
+            alleles: extract_alleles/allele_string
             prediction_algorithms: prediction_algorithms
             epitope_lengths: epitope_lengths
             binding_threshold: binding_threshold
