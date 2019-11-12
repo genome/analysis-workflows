@@ -25,9 +25,9 @@ requirements:
             gunzip mutect.vcf.gz #Unzipping the Mutect2 output vcf file to alter the header names.
             grep "^##" mutect.vcf >mutect.final.vcf #Extracting all the lines above #CHROM in the vcf to a new output vcf.
             grep "^#CHROM" mutect.vcf | sed "s/\<$TUMOR\>/TUMOR/g; s/\<$NORMAL\>/NORMAL/g" >> mutect.final.vcf #Concatenating the #CHROM line with substituted sample headers to the output vcf.
-            perl -nae 'print $_ unless $_ =~ /^#/' mutect.vcf >> mutect.final.vcf #Concatenating the sites to the output vcf. Changed grep to perl because grep throws a rc of 1 if the output is null.
-            bgzip mutect.final.vcf #Bzipping the final output vcf.
-            tabix mutect.final.vcf.gz #Indexing the bzipped output vcf.
+            /usr/bin/perl -nae 'print $_ unless $_ =~ /^#/' mutect.vcf >> mutect.final.vcf #Concatenating the sites to the output vcf. Changed grep to perl because grep throws a rc of 1 if the output is null.
+            /usr/bin/bgzip mutect.final.vcf #Bzipping the final output vcf.
+            /usr/bin/tabix mutect.final.vcf.gz #Indexing the bzipped output vcf.
             mv mutect.vcf.gz.stats mutect.final.vcf.gz.stats #Renaming the .stats file to match the name conversion of the final output vcf.
             /gatk/gatk FilterMutectCalls -R $2 -V mutect.final.vcf.gz -O mutect.final.filtered.vcf.gz #Running FilterMutectCalls on the output vcf.
 
