@@ -162,6 +162,8 @@ inputs:
         type: string
     disclaimer_version:
         type: string
+    disclaimer_text:
+        type: string?
 outputs:
     final_outputs:
         type: string[]
@@ -226,6 +228,7 @@ steps:
             germline_variants_to_table_genotype_fields: germline_variants_to_table_genotype_fields
             germline_vep_to_table_fields: germline_vep_to_table_fields 
             disclaimer_version: disclaimer_version
+            disclaimer_text: disclaimer_text
         out:
             [tumor_cram, tumor_mark_duplicates_metrics, tumor_insert_size_metrics, tumor_alignment_summary_metrics, tumor_hs_metrics, tumor_summary_hs_metrics, tumor_flagstats, tumor_verify_bam_id_metrics, tumor_verify_bam_id_depth, normal_cram, normal_mark_duplicates_metrics, normal_insert_size_metrics, normal_alignment_summary_metrics, normal_hs_metrics, normal_summary_hs_metrics, normal_flagstats, normal_verify_bam_id_metrics, normal_verify_bam_id_depth, followup_cram, followup_mark_duplicates_metrics, followup_insert_size_metrics, followup_alignment_summary_metrics, followup_hs_metrics, followup_summary_hs_metrics, followup_flagstats, followup_verify_bam_id_metrics, followup_verify_bam_id_depth, mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_filtered_vcf, pindel_region_vcf, tumor_final_vcf, tumor_final_filtered_vcf, tumor_final_tsv, tumor_vep_summary, germline_final_vcf, germline_filtered_vcf, germline_final_tsv, germline_filtered_tsv, alignment_stat_report, coverage_stat_report, full_variant_report, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv, followup_snv_bam_readcount_tsv, followup_indel_bam_readcount_tsv, somalier_concordance_metrics, somalier_concordance_statistics]
     gatherer:
