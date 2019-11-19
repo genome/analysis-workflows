@@ -51,7 +51,7 @@ inputs:
     refFlat:
         type: File
     ribosomal_intervals:
-        type: File
+        type: File?
 
     #somatic inputs
     reference:
@@ -305,7 +305,7 @@ outputs:
         type: File
         outputSource: rnaseq/metrics
     chart:
-        type: File
+        type: File?
         outputSource: rnaseq/chart
 
     tumor_cram:

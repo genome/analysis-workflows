@@ -48,7 +48,7 @@ inputs:
     refFlat:
         type: File
     ribosomal_intervals:
-        type: File
+        type: File?
     species:
         type: string
         doc: 'the species being analyzed, such as homo_sapiens or mus_musculus'
@@ -79,7 +79,7 @@ outputs:
         type: File
         outputSource: generate_qc_metrics/metrics
     chart:
-        type: File
+        type: File?
         outputSource: generate_qc_metrics/chart
     fusion_evidence:
         type: File
