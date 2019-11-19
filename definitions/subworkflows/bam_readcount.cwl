@@ -12,7 +12,10 @@ inputs:
     sample:
         type: string
     reference_fasta:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     bam:
         type: File
         secondaryFiles: [.bai]

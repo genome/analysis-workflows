@@ -21,7 +21,10 @@ inputs:
             prefix: "I="
         secondaryFiles: [^.bai]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "R="
     intervals:

@@ -10,7 +10,11 @@ requirements:
           - $import: ../types/sequence_data.yml
     - class: SubworkflowFeatureRequirement
 inputs:
-    reference: string
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     mills:

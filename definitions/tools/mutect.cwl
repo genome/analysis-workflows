@@ -30,7 +30,10 @@ arguments:
 
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             position: 2
     tumor_bam:

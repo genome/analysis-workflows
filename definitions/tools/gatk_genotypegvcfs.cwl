@@ -14,7 +14,10 @@ arguments:
     ["-o", 'genotype.vcf.gz']
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "-R"
             position: 1

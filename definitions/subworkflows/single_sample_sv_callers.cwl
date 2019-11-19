@@ -14,7 +14,10 @@ inputs:
         type: File
         secondaryFiles: [.bai,^.bai]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .index]
 
     cnvkit_diagram:
         type: boolean?

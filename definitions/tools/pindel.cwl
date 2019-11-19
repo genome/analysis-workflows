@@ -61,7 +61,10 @@ inputs:
         inputBinding:
             position: 5
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "-f"
             position: 6

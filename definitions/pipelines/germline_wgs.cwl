@@ -11,7 +11,11 @@ requirements:
           - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
 inputs:
-    reference: string
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa, .index]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     mills:
@@ -268,7 +272,7 @@ outputs:
         outputSource: add_disclaimer_survivor_sv_vcf/output_file
     survivor_merged_annotated_tsv:
         type: File
-        outputSource: add_disclaimer_survivor_sv_vcf/output_file
+        outputSource: add_disclaimer_survivor_sv_tsv/output_file
     bcftools_merged_vcf:
         type: File
         outputSource: add_disclaimer_bcftools_sv_vcf/output_file

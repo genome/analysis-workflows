@@ -77,7 +77,10 @@ inputs:
         inputBinding:
             prefix: '-g'
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.amb, .ann, .bwt, .pac, .sa]
         inputBinding:
             position: 4
             prefix: '-r'

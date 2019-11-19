@@ -12,7 +12,11 @@ requirements:
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
-    reference: string
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa, .index]
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     tumor_cram_name:

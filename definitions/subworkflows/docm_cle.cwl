@@ -7,7 +7,10 @@ requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     tumor_bam:
         type: File
         secondaryFiles: [^.bai]
