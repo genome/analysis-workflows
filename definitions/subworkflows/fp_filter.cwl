@@ -10,7 +10,10 @@ inputs:
         type: File
         secondaryFiles: [.bai,^.bai]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     vcf:
         type: File
         secondaryFiles: [.tbi]

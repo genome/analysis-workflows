@@ -18,7 +18,10 @@ inputs:
         inputBinding:
             prefix: "-p"
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "-r"
     ref_name:

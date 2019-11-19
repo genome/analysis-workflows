@@ -11,7 +11,11 @@ requirements:
           - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
 inputs:
-    reference: string
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa, .index]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     mills:

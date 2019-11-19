@@ -19,7 +19,10 @@ inputs:
         type: File
         secondaryFiles: ['.bai']
     reference_fasta:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     readcount_minimum_base_quality:
         type: int?
     readcount_minimum_mapping_quality:

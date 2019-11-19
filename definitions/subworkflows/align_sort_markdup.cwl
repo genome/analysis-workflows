@@ -14,7 +14,10 @@ inputs:
     readgroups:
         type: string[]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     final_name:
         type: string?
         default: 'final.bam'

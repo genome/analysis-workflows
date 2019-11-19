@@ -19,7 +19,10 @@ inputs:
         inputBinding:
             prefix: "--input"
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "--ref"
 outputs:

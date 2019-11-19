@@ -16,7 +16,10 @@ inputs:
     limit_variant_intervals:
         type: File
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
 outputs: 
     filtered_vcf:
         type: File

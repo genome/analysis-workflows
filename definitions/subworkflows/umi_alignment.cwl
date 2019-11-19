@@ -10,7 +10,11 @@ inputs:
         type: File
     read_structure:
         type: string[]
-    reference: string
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.amb, .ann, .bwt, .pac, .sa]
 outputs:
     aligned_bam:
         type: File

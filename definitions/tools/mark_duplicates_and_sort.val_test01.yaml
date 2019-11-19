@@ -1,0 +1,3 @@
+bam:
+  class: File
+  path: ../../example_data/bisulfite/test1.bam

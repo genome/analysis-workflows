@@ -29,7 +29,10 @@ inputs:
             position: 4
         secondaryFiles: [.bai,^.bai]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: '--referenceFasta='
             separate: false

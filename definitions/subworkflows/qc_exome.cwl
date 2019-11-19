@@ -14,7 +14,10 @@ inputs:
         type: File
         secondaryFiles: [^.bai]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     bait_intervals:
         type: File
     target_intervals:

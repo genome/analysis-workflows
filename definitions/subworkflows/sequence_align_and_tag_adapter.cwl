@@ -16,7 +16,10 @@ inputs:
         type: ../types/sequence_data.yml#sequence_data
         doc: "the unaligned sequence data with readgroup information"
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.amb, .ann, .bwt, .pac, .sa]
         doc: 'bwa-indexed reference file'
 outputs:
     aligned_bam:

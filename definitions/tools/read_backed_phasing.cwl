@@ -15,7 +15,10 @@ arguments:
      "-o", { valueFrom: $(runtime.outdir)/phased.vcf }]
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "-R"
             position: 1

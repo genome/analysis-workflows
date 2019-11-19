@@ -22,7 +22,10 @@ inputs:
     read_structure:
         type: string[]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     target_intervals:
        type: File?
 outputs:

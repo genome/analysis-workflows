@@ -29,7 +29,11 @@ inputs:
             position: 3
             prefix: "--targets"
     reference:
-        type: string?
+        type:
+            - "null"
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             position: 4
             prefix: "--fasta"

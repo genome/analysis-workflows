@@ -19,7 +19,10 @@ inputs:
             prefix: "-s"
             position: 1
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "-f"
             position: 2

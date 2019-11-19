@@ -30,7 +30,10 @@ inputs:
         default: "SV"
         doc: "Used for naming the output file"
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: --fasta
             position: 3
