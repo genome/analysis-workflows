@@ -27,6 +27,10 @@ inputs:
     cpu_reserved:
         type: int?
         default: 8
+    normal_sample_name:
+        type: string
+    tumor_sample_name:
+        type: string
 outputs:
     unfiltered_vcf:
         type: File
@@ -60,10 +64,28 @@ steps:
             vcfs: process/processed_vcf
         out:
             [merged_vcf]
+    rename_tumor_sample:
+        run: ../tools/replace_vcf_sample_name.cwl
+        in:
+            input_vcf: merge/merged_vcf
+            sample_to_replace:
+                default: 'TUMOR'
+            new_sample_name: tumor_sample_name
+        out:
+            [renamed_vcf]
+    rename_normal_sample:
+        run: ../tools/replace_vcf_sample_name.cwl
+        in:
+            input_vcf: rename_tumor_sample/renamed_vcf
+            sample_to_replace:
+                default: 'NORMAL'
+            new_sample_name: normal_sample_name
+        out:
+            [renamed_vcf]
     index_full:
         run: ../tools/index_vcf.cwl
         in:
-            vcf: merge/merged_vcf
+            vcf: rename_normal_sample/renamed_vcf
         out:
             [indexed_vcf]
     region_filter:
@@ -82,5 +104,6 @@ steps:
             vcf: region_filter/filtered_vcf
             variant_caller: 
                 valueFrom: "strelka"
+            sample_name: tumor_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]

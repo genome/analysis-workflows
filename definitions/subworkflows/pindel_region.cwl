@@ -28,6 +28,10 @@ inputs:
     output_name:
         type: string?
         default: "pindel.vcf"
+    tumor_sample_name:
+        type: string
+    normal_sample_name:
+        type: string
 outputs:
     pindel_region_vcf:
         type: File
@@ -42,6 +46,8 @@ steps:
             normal_bam: normal_bam
             insert_size: insert_size
             region_file: region_file
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out:
             [deletions, insertions, tandems, long_insertions, inversions]
     cat:

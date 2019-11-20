@@ -2,12 +2,28 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: ['/usr/bin/perl', '/usr/bin/split_interval_list_helper.pl']
+baseCommand: ['/usr/bin/perl', 'split_interval_list_helper.pl']
 requirements:
     - class: ResourceRequirement
       ramMin: 6000
     - class: DockerRequirement
       dockerPull: mgibio/cle:v1.3.1
+    - class: InitialWorkDirRequirement
+      listing:
+      - entryname: 'split_interval_list_helper.pl'
+        entry: |
+            use File::Copy;
+
+            my $retval = system('/usr/bin/java', '-jar', '/usr/picard/picard.jar', 'IntervalListTools', @ARGV);
+            exit $retval if $retval != 0;
+
+            my $i = 1;
+            for(glob('*/scattered.interval_list')) {
+                #create unique names and relocate all the scattered intervals to a single directory
+                File::Copy::move($_, qq{$i.interval_list});
+                $i++
+            }
+
 arguments:
     [{ valueFrom: OUTPUT=$(runtime.outdir) }]
 inputs:

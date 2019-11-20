@@ -28,6 +28,10 @@ inputs:
     scatter_count:
         type: int
         default: 50
+    tumor_sample_name:
+        type: string
+    normal_sample_name:
+        type: string
 outputs:
     unfiltered_vcf:
         type: File
@@ -54,6 +58,8 @@ steps:
             normal_bam: normal_bam
             region_file: split_interval_list_to_bed/split_beds
             insert_size: insert_size
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out:
             [per_region_pindel_out]
     cat_all:

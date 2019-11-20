@@ -143,6 +143,10 @@ inputs:
         type: boolean?
     somalier_vcf:
         type: File
+    tumor_sample_name:
+        type: string
+    normal_sample_name:
+        type: string
     known_variants:
         type: File?
         secondaryFiles: [.tbi]
@@ -420,6 +424,8 @@ steps:
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
             vep_custom_annotations: vep_custom_annotations
             known_variants: known_variants
         out:

@@ -100,6 +100,10 @@ inputs:
     vep_to_table_fields:
         type: string[]?
         default: [HGVSc,HGVSp]
+    tumor_sample_name:
+        type: string
+    normal_sample_name:
+        type: string
     vep_custom_annotations:
         type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
         doc: "custom type, check types directory for input format"
@@ -171,6 +175,7 @@ steps:
             normal_bam: normal_bam
             interval_list: interval_list
             scatter_count: mutect_scatter_count
+            tumor_sample_name: tumor_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     strelka:
@@ -182,6 +187,8 @@ steps:
             interval_list: interval_list
             exome_mode: strelka_exome_mode
             cpu_reserved: strelka_cpu_reserved
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     varscan:
@@ -196,6 +203,8 @@ steps:
             min_var_freq: varscan_min_var_freq
             p_value: varscan_p_value
             max_normal_freq: varscan_max_normal_freq
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     docm:
@@ -316,11 +325,11 @@ steps:
             filter_mapq0_threshold: filter_mapq0_threshold
             filter_somatic_llr_threshold: filter_somatic_llr_threshold
             filter_minimum_depth: filter_minimum_depth
-            sample_names:
-                default: 'NORMAL,TUMOR'
             tumor_bam: tumor_bam
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference
+            normal_sample_name: normal_sample_name
+            tumor_sample_name: tumor_sample_name
             gnomad_field_name:
               source: vep_custom_annotations
               valueFrom: |
