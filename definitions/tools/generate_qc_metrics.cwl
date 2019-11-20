@@ -19,7 +19,7 @@ inputs:
             prefix: "REF_FLAT="
             separate: false
     ribosomal_intervals:
-        type: File
+        type: File?
         inputBinding:
             prefix: "RIBOSOMAL_INTERVALS="
             separate: false
@@ -54,6 +54,6 @@ outputs:
         outputBinding:
             glob: "rna_metrics.txt"
     chart:
-        type: File
+        type: File?
         outputBinding:
             glob: "rna_metrics.pdf"

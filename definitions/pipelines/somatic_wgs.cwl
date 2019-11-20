@@ -147,6 +147,10 @@ inputs:
         type: string
     normal_sample_name:
         type: string
+    known_variants:
+        type: File?
+        secondaryFiles: [.tbi]
+        doc: "Previously discovered variants to be flagged in this pipelines's output vcf"
 outputs:
 ##tumor alignment and QC
     tumor_cram:
@@ -423,6 +427,7 @@ steps:
             tumor_sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name
             vep_custom_annotations: vep_custom_annotations
+            known_variants: known_variants
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
     manta: 
