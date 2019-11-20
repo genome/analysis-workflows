@@ -32,6 +32,7 @@ inputs:
     known_variants:
         type: File?
         secondaryFiles: [.tbi]
+        doc: "Previously discovered variants to be flagged in this workflow's output vcf"
 outputs: 
     filtered_vcf:
         type: File

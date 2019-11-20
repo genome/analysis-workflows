@@ -107,6 +107,7 @@ inputs:
     known_variants:
         type: File?
         secondaryFiles: [.tbi]
+        doc: "Previously discovered variants to be flagged in this pipelines's output vcf"
 outputs:
     mutect_unfiltered_vcf:
         type: File
