@@ -115,7 +115,7 @@ steps:
         run: ../tools/star_fusion_detect.cwl
         in:
             star_fusion_genome_dir: star_fusion_genome_dir
-            chimera_file: star_align_fusion/chim_junc
+            junction_file: star_align_fusion/chim_junc
         out:
             [fusion_predictions,fusion_abridged]
     kallisto:
