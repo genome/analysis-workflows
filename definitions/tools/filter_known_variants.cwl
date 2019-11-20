@@ -26,11 +26,13 @@ inputs:
                 ${
                     return [ '-a', self.path, '-m', 'PREVIOUSLY_DISCOVERED' ];
                 }
+        doc: "A vcf of previously discovered variants to be marked in the second input vcf; if not provided, this tool does nothing but rename the second input vcf"
     vcf:
         type: File
         secondaryFiles: [.tbi]
         inputBinding:
             position: 2
+        doc: "Each variant in this file that is also in the above file (if supplied) will be marked with a PREVIOUSLY_DISCOVERED flag in its INFO field"
 outputs:
     known_filtered:
         type: File
