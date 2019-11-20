@@ -29,7 +29,7 @@ inputs:
         type: int
     sample_names:
         type: string
-    cle_variants:
+    known_variants:
         type: File?
         secondaryFiles: [.tbi]
 outputs: 
@@ -37,17 +37,17 @@ outputs:
         type: File
         outputSource: set_final_vcf_name/replacement
 steps:
-    filter_cle_variants:
-        run: ../tools/filter_cle_variants.cwl
+    filter_known_variants:
+        run: ../tools/filter_known_variants.cwl
         in:
-            cle_variants: cle_variants
+            known_variants: known_variants
             vcf: vcf
         out:
-            [cle_flagged]
+            [known_filtered]
     filter_vcf_gnomADe_allele_freq:
         run: ../tools/filter_vcf_custom_allele_freq.cwl
         in:
-            vcf: filter_cle_variants/cle_flagged
+            vcf: filter_known_variants/known_filtered
             maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
             field_name: gnomad_field_name
         out:

@@ -2,7 +2,7 @@
  
 cwlVersion: v1.0
 class: CommandLineTool
-label: "Adds an INFO tag (CLE) to variants in the target file present in a CLE-validated vcf file"
+label: "Adds an INFO tag (PREVIOUSLY_DISCOVERED) flagging variants in the target vcf present in a known-variants file"
 
 requirements:
     - class: ShellCommandRequirement
@@ -14,17 +14,17 @@ requirements:
 
 baseCommand: ["/opt/bcftools/bin/bcftools", "annotate"]
 arguments:
-    [ "-Oz", "-o", "cle_variants_flagged.vcf.gz" ]  
+    [ "-Oz", "-o", "known_variants_filtered.vcf.gz" ]  
 
 inputs:
-    cle_variants:
+    known_variants:
         type: File?
         secondaryFiles: [.tbi]
         inputBinding:
             position: 1
             valueFrom: |
                 ${
-                    return [ '-a', inputs.cle_variants.path, '-m', 'CLE' ];
+                    return [ '-a', self.path, '-m', 'PREVIOUSLY_DISCOVERED' ];
                 }
     vcf:
         type: File
@@ -32,7 +32,7 @@ inputs:
         inputBinding:
             position: 2
 outputs:
-    cle_flagged:
+    known_filtered:
         type: File
         outputBinding:
-            glob: "cle_variants_flagged.vcf.gz"
+            glob: "known_variants_filtered.vcf.gz"

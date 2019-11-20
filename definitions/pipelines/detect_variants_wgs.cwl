@@ -103,7 +103,7 @@ inputs:
     vep_custom_annotations:
         type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
         doc: "custom type, check types directory for input format"
-    cle_variants:
+    known_variants:
         type: File?
         secondaryFiles: [.tbi]
 outputs:
@@ -333,7 +333,7 @@ steps:
                     }
                     return('gnomAD_AF');
                 }
-            cle_variants: cle_variants
+            known_variants: known_variants
         out: 
             [filtered_vcf]
     annotated_filter_bgzip:
