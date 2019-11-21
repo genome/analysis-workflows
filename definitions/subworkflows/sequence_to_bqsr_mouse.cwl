@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "Aligning chipseq data of mouse"
+label: "Alignment without BQSR"
 requirements:
     - class: SchemaDefRequirement
       types:
