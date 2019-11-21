@@ -13,7 +13,10 @@ inputs:
         type: File
         secondaryFiles: [^.bai]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     picard_metric_accumulation_level:
         type: string?
         default: ALL_READS
