@@ -80,6 +80,7 @@ outputs:
         outputSource: generate_qc_metrics/metrics
     chart:
         type: File
+        outputSource: generate_qc_metrics/chart
     fusion_evidence:
         type: File
         outputSource: kallisto/fusion_evidence
