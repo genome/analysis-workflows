@@ -11,7 +11,7 @@ arguments:
     "-o", { valueFrom: "$(inputs.bam.nameroot).NameSorted.bam" }]
 requirements:
     - class: ResourceRequirement
-      ramMin: 24000
+      ramMin: 26000
       coresMin: 8
     - class: DockerRequirement
       dockerPull: "mgibio/sambamba-cwl:0.6.4"
