@@ -22,7 +22,7 @@ jobs:
         - cd analysis-workflows.wiki/
         - python scripts/create_cwl_documentation.py
         - git add .
-        - git commit -m "Automated Documentation Update\n${TRAVIS_BUILD_WEB_URL}"
+        - git diff-index --quiet HEAD || git commit -m "Automated Documentation Update\n${TRAVIS_BUILD_WEB_URL}"
         - git push
 
 notifications:
