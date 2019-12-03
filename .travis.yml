@@ -10,7 +10,7 @@ install:
 stages:
   - 'Tests'
   - name: 'Generate Docs'
-    if: branch = master AND env(TRAVIS_PULL_REQUEST) = false
+    if: branch = master AND type = push
 
 jobs:
   include:
