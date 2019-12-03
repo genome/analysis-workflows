@@ -49,12 +49,6 @@ inputs:
         prefix: '--STAR_PATH'
         position: 5
 
-  fusion_inspect:
-    type: string
-    default: "validate"
-    inputBinding:
-        prefix: '--FusionInspector'
-        position: 6
 
 outputs:
     fusion_predictions:
