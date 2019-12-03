@@ -17,7 +17,7 @@ https://github.com/genome/analysis-workflows/wiki
 
 ## Docker Images
 
-The master branch specifies `DockerRequirement` for each tool in the workflow. All available on [DockerHub](https://hub.docker.com/u/mgibio/):
+The master branch specifies `DockerRequirement` for each tool in the workflow. All available on mgibio DockerHub: https://hub.docker.com/u/mgibio/
 
 
 [![DOI](https://zenodo.org/badge/64162512.svg)](https://zenodo.org/badge/latestdoi/64162512)
