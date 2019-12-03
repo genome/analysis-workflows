@@ -1,6 +1,8 @@
 # analysis-workflows
 
-This repo contains CWL workflow defintions for executing MGI analysis pipelines. The structure of the repo is as follows:
+This repo contains CWL workflow defintions for executing MGI analysis pipelines. 
+
+The structure of the repo is as follows:
 
 | Path | Description |
 | --- | --- |
@@ -8,7 +10,7 @@ This repo contains CWL workflow defintions for executing MGI analysis pipelines.
 | definitions/pipelines | all workflows which rely on subworkflows and tools to produce final outputs |
 | definitions/subworkflows | workflows that combine multiple tools to produce intermediate (used as inputs to other subworkflows) pipeline outputs |
 | definitions/tools | CWL that wrap command line interfaces or scripts connecting multiple tools |
-| example_data | example input data, inputs YAML files, and expected output files |
+| example_data | example input data, input YAML files, and expected output files for testing |
 
 ## CWL Documentation
 
