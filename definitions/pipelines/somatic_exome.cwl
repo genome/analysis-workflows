@@ -109,19 +109,19 @@ inputs:
         type: File
         label: "bait_intervals: interval_list file of baits used in the sequencing experiment"
         doc: |
-        bait_intervals is an interval_list corresponding to the baits used in sequencing reagent.
-        These are essentially coordinates for regions you were able to design probes for in the reagent.
-        Typically the reagent provider has this information available in bed format and it can be
-        converted to an interval_list with Picards BedToIntervalList. Astrazeneca also maintains a repo
-        of baits for common sequencing reagents available at https://github.com/AstraZeneca-NGS/reference_data
+          bait_intervals is an interval_list corresponding to the baits used in sequencing reagent.
+          These are essentially coordinates for regions you were able to design probes for in the reagent.
+          Typically the reagent provider has this information available in bed format and it can be
+          converted to an interval_list with Picards BedToIntervalList. Astrazeneca also maintains a repo
+          of baits for common sequencing reagents available at https://github.com/AstraZeneca-NGS/reference_data
     target_intervals:
         type: File
         label: "target_intervals: interval_list file of targets used in the sequencing experiment"
         doc: |
-        target_intervals is an interval_list corresponding to the targets for the sequencing reagent.
-        These are essentially coordinates for regions you wanted to design probes for in the reagent.
-        Bed files with this information can be converted to interval_lists with Picards BedToIntervalList.
-        In general for a WES exome reagent bait_intervals and target_intervals are the same.
+          target_intervals is an interval_list corresponding to the targets for the sequencing reagent.
+          These are essentially coordinates for regions you wanted to design probes for in the reagent.
+          Bed files with this information can be converted to interval_lists with Picards BedToIntervalList.
+          In general for a WES exome reagent bait_intervals and target_intervals are the same.
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
     per_target_intervals:
