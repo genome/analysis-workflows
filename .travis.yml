@@ -10,19 +10,21 @@ install:
 stages:
   - 'Tests'
   - name: 'Generate Docs'
-    if: branch = master AND env(TRAVIS_PULL_REQUEST) = false
+    if: branch = master AND type = push
 
 jobs:
   include:
     - stage: 'Tests'
-      script: find . -name '*.cwl' | xargs -n 1 cwltool --validate
+      script:
+        - find . -name '*.cwl' | xargs -n 1 cwltool --validate
+        - echo "$(env | grep TRAVIS)"
     - stage: 'Generate Docs'
       script:
         - git clone "https://${GITHUB_TOKEN}@github.com/genome/analysis-workflows.wiki.git"
         - cd analysis-workflows.wiki/
         - python scripts/create_cwl_documentation.py
         - git add .
-        - git commit -m "Automated Documentation Update\n${TRAVIS_BUILD_WEB_URL}"
+        - git diff-index --quiet HEAD || git commit -m "Automated Documentation Update\n${TRAVIS_BUILD_WEB_URL}"
         - git push
 
 notifications:
