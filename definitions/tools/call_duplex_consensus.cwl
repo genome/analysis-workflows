@@ -12,7 +12,7 @@ requirements:
       ramMin: 6000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: mgibio/dna-alignment:1.0.0:1.0.0
+      dockerPull: mgibio/dna-alignment:1.0.0
 inputs:
     bam:
         type: File
