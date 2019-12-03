@@ -28,5 +28,6 @@ inputs:
 outputs:
     clipped_bam:
         type: File
+        secondaryFiles: [^.bai]
         outputBinding:
             glob: "clipped.bam"
