@@ -15,7 +15,9 @@ stages:
 jobs:
   include:
     - stage: 'Tests'
-      script: find . -name '*.cwl' | xargs -n 1 cwltool --validate
+      script:
+        - find . -name '*.cwl' | xargs -n 1 cwltool --validate
+        - echo "$(env | grep TRAVIS)"
     - stage: 'Generate Docs'
       script:
         - git clone "https://${GITHUB_TOKEN}@github.com/genome/analysis-workflows.wiki.git"
