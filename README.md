@@ -19,7 +19,7 @@ https://github.com/genome/analysis-workflows/wiki
 
 All supported Docker images are available on mgibio DockerHub: https://hub.docker.com/u/mgibio/
 
-Many tools utilize Docker images hosted publically on DockerHub as well as [BioContainers]https://biocontainers.pro.
+Many tools utilize Docker images hosted publically on DockerHub as well as [BioContainers](https://biocontainers.pro).
 
 
 [![DOI](https://zenodo.org/badge/64162512.svg)](https://zenodo.org/badge/latestdoi/64162512)
