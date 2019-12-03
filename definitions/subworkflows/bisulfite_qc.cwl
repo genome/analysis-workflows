@@ -16,7 +16,7 @@ inputs:
       QCannotation:
            type: File
       output_dir:
-           type: string?
+           type: string
            default: bisulfite_QC
 
 outputs:

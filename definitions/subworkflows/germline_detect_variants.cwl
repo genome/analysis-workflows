@@ -16,6 +16,7 @@ inputs:
         secondaryFiles: [.fai, ^.dict, .index]
     bam:
         type: File
+        secondaryFiles: [^.bai]
     emit_reference_confidence:
         type: string
     gvcf_gq_bands:
@@ -40,7 +41,7 @@ inputs:
         type: string
         doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
     vep_plugins:
-        type: string[]?
+        type: string[]
         default: [Downstream, Wildtype]
     synonyms_file:
         type: File?
@@ -62,7 +63,7 @@ inputs:
         type: string?
         default: 'variants'
     filter_gnomAD_maximum_population_allele_frequency:
-        type: float?
+        type: float
         default: 0.05
 outputs:
     gvcf:

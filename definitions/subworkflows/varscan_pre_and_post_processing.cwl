@@ -15,7 +15,7 @@ inputs:
         secondaryFiles: [.fai, ^.dict]
     tumor_bam:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.bai, .bai]
     normal_bam:
         type: File
         secondaryFiles: [^.bai]
