@@ -23,9 +23,11 @@ inputs:
 outputs: 
     filtered_vcf:
         type: File
+        secondaryFiles: [.tbi]
         outputSource: index_filtered_vcf/indexed_vcf
     final_vcf:
         type: File
+        secondaryFiles: [.tbi]
         outputSource: limit_variants/filtered_vcf
 steps:
     coding_variant_filter:

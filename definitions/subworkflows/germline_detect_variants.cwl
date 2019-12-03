@@ -16,6 +16,7 @@ inputs:
         secondaryFiles: [.fai, ^.dict, .index]
     bam:
         type: File
+        secondaryFiles: [^.bai]
     emit_reference_confidence:
         type: string
     gvcf_gq_bands:
