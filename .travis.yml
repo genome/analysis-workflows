@@ -24,3 +24,6 @@ jobs:
         - git add .
         - git commit -m "Automated Documentation Update\n${TRAVIS_BUILD_WEB_URL}"
         - git push
+
+notifications:
+  email: false
