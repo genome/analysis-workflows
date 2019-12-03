@@ -12,12 +12,14 @@ This repo contains CWL workflow defintions for executing MGI analysis pipelines.
 
 ## CWL Documentation
 
-For all Documentation of pipelines, subworkflows and tools as well as additional information regarding test data, continous integration and configuration, please see the GitHub wiki:
+For all documentation of pipelines, subworkflows and tools as well as additional information regarding test data, continous integration and configuration, please see the GitHub wiki:
 https://github.com/genome/analysis-workflows/wiki
 
 ## Docker Images
 
-The master branch specifies `DockerRequirement` for each tool in the workflow. All available on mgibio DockerHub: https://hub.docker.com/u/mgibio/
+All supported Docker images are available on mgibio DockerHub: https://hub.docker.com/u/mgibio/
+
+Many tools utilize Docker images hosted publically on DockerHub as well as [BioContainers]https://biocontainers.pro.
 
 
 [![DOI](https://zenodo.org/badge/64162512.svg)](https://zenodo.org/badge/latestdoi/64162512)
