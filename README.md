@@ -1,12 +1,17 @@
 # analysis-workflows
 
-CWL workflow defintions for executing MGI analysis pipelines.
+This repo contains CWL workflow defintions for executing MGI analysis pipelines. The structure of the repo is as follows:
+| Path | Description |
+| --- | --- |
+| definitions | parent directory containing all CWL tool and workflow definitions |
+| definitions/pipelines | all workflows which rely on subworkflows and tools to produce final outputs |
+| definitions/subworkflows | workflows that combine multiple tools to produce intermediate (used as inputs to other subworkflows) pipeline outputs |
+| definitions/tools | CWL that wrap command line interfaces or scripts connecting multiple tools |
+| example_data | Example input data, inputs YAML files, and expected output files |
 
 ## Docker Images
 
-The master branch specifies `DockerRequirement` for each tool in the workflow.
-
-By contrast, the toil_compatibility branch relies on large, a/k/a fat, Docker images. Below is a mapping of workflow to Docker image name, all available on [DockerHub](https://hub.docker.com/u/mgibio/):
+The master branch specifies `DockerRequirement` for each tool in the workflow. All available on [DockerHub](https://hub.docker.com/u/mgibio/):
 
 | Workflow | Docker Image | Main CWL |
 | --- | --- | --- |
