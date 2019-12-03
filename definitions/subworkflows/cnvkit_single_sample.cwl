@@ -23,7 +23,7 @@ inputs:
     reference_cnn:
         type: File
     cnvkit_vcf_name:
-        type: string?
+        type: string
         default: "cnvkit.vcf"
     segment_filter:
         type:
