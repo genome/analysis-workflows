@@ -5,4 +5,22 @@ install:
     - pip install 'setuptools>=18.5'
     - pip install 'cwltool==1.0.20181217162649'
     - pip install 'ruamel.yaml==0.15.77'
-script: find . -name '*.cwl' | xargs -n 1 cwltool --validate
+    - pip install 'mdutils==1.0.0'
+
+stages:
+  - 'Tests'
+  - name: 'Generate Docs'
+    if: branch = master
+
+jobs:
+  include:
+    - stage: 'Tests'
+      script: find . -name '*.cwl' | xargs -n 1 cwltool --validate
+    - stage: 'Generate Docs'
+      script:
+        - git clone "https://${GITHUB_TOKEN}@github.com/genome/analysis-workflows.wiki.git"
+        - cd analysis-workflows.wiki/
+        - python scripts/create_cwl_documentation.py
+        - git add .
+        - git commit -m "Automated Documentation Update\n${TRAVIS_BUILD_WEB_URL}"
+        - git push
