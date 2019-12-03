@@ -1,5 +1,7 @@
 # analysis-workflows
 
+[![Build Status](https://travis-ci.org/genome/analysis-workflows.svg?branch=master)](https://travis-ci.org/genome/analysis-workflows)
+
 CWL workflow defintions for executing MGI analysis pipelines.
 
 ## Docker Images
