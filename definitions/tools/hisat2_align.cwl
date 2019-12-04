@@ -43,7 +43,7 @@ requirements:
             done
 
 
-            #collapse readgroups into separastring
+            #set readgroup fields as separate arguments
             rg=""
             for i in $read_group_fields;do
                 rg+="--rg $i "
