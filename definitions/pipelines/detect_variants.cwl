@@ -13,7 +13,7 @@ inputs:
         type:
             - string
             - File
-        secondaryFiles: [.fai, ^.dict, .index]
+        secondaryFiles: [.fai, ^.dict]
     tumor_bam:
         type: File
         secondaryFiles: [.bai,^.bai]

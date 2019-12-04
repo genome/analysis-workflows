@@ -25,7 +25,7 @@ inputs:
         type:
             - string
             - File
-        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa, .index]
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
         label: "reference: Reference fasta file for a desired assembly"
         doc: |
           reference contains the nucleotide sequence for a given assembly (hg37, hg38, etc.)

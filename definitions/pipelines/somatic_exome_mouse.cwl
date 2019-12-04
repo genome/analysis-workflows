@@ -14,7 +14,7 @@ inputs:
         type:
             - string
             - File
-        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa, .index]
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     tumor_bams:
         type: File[]
     tumor_readgroups:
