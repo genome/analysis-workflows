@@ -16,7 +16,7 @@ inputs:
         type:
             - string
             - File
-        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa, .index]
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     tumor_cram_name:

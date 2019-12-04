@@ -83,7 +83,7 @@ inputs:
             - "null"
             - string
             - File
-        secondaryFiles: [.fai, ^.dict, .index]
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "--fasta" 
             position: 7
