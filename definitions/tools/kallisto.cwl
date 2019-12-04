@@ -30,8 +30,6 @@ requirements:
             if [[ "$paired" == "true" ]];then
               /usr/bin/kallisto quant -t $ncores -b 100 --fusion -o kallisto -i $index $strand $fastqs
             else
-              ##"Reasonable" values for fragment length and stddev are hardcoded here. If your input data is substantially different
-              ##then you'll need to specify that
               /usr/bin/kallisto quant -t $ncores -b 100 --fusion -o kallisto -l $fragment_length -s $fragment_length_stddev -i $index $strand --single $fastqs
             fi
 
