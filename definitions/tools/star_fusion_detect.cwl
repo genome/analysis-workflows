@@ -26,7 +26,7 @@ inputs:
         position: 2
         prefix: '--genome_lib_dir'
     doc: '
-    fusion genome dir
+    fusion genome dir directory containing genome lib (see http://STAR-Fusion.github.io)
     '
 
   junction_file:
