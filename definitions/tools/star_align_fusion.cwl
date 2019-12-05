@@ -14,17 +14,103 @@ requirements:
       listing:
       - entryname: 'star.sh'
         entry: |
-            
+
             set -eou pipefail
 
-            passthrough_args=${@:1:25}
-            paired="$26"
-            fastqs="$27"
-            
+            while getopts "c:r:i:g:p:s:f:" opt; do
+                case "$opt" in
+                    c)
+                        cores="$OPTARG"
+                        ;;
+                case "$opt" in
+                    f)
+                        fastqs="$OPTARG"
+                        ;;
+                case "$opt" in
+                    s)
+                        chimSegmentMin="$OPTARG"
+                        ;;
+                case "$opt" in
+                    j)
+                        chimJunctionOverhangMin="$OPTARG"
+                        ;;
+                case "$opt" in
+                    b)
+                        alignSJDBoverhangMin="$OPTARG"
+                        ;;
+                case "$opt" in
+                    q)
+                        alignMatesGapMax="$OPTARG"
+                        ;;
+                case "$opt" in
+                    i)
+                        alignIntronMax="$OPTARG"
+                        ;;
+                case "$opt" in
+                    r)
+                        chimSegmentReadGapMax="$OPTARG"
+                        ;;
+                case "$opt" in
+                    m)
+                        alignSJstitchMismatchNmax="$OPTARG"
+                        ;;
+                case "$opt" in
+                    t)
+                        outSAMstrandField="$OPTARG"
+                        ;;
+                case "$opt" in
+                    u)
+                        outSAMunmapped="$OPTARG"
+                        ;;
+                case "$opt" in
+                    a)
+                        outSAMattrRGline="$OPTARG"
+                        ;;
+                case "$opt" in
+                    h)
+                        chimMultimapNmax="$OPTARG"
+                        ;;
+                case "$opt" in
+                    d)
+                        chimNonchimScoreDropMin="$OPTARG"
+                        ;;
+                case "$opt" in
+                    o)
+                        peOverlapNbasesMin="$OPTARG"
+                        ;;
+                case "$opt" in
+                    p)
+                        peOverlapMMp="$OPTARG"
+                        ;;
+                case "$opt" in
+                    v)
+                        chimOutJunctionFormat="$OPTARG"
+                        ;;
+                case "$opt" in
+                    g)
+                        genomeDir="$OPTARG"
+                        ;;
+                case "$opt" in
+                    w)
+                        twopassMode="$OPTARG"
+                        ;;
+                case "$opt" in
+                    k)
+                        sjdbGTFfile="$OPTARG"
+                        ;;
+                case "$opt" in
+                    e)
+                        paired="$OPTARG"
+                        ;;
+
+                esac
+            done
+
+            fqfinal=""
             if [[ "$paired" == "false" ]];then
                 #run star with all the fastqs in single-end mode
-                /usr/local/bin/STAR "$passthrough_args" --readFilesIn $(join , $fastqs)
-            else 
+                fqfinal=`join , $fastqs`
+            else
                 #split interleaved fastqs into fq1/2 arguments
                 i=0
                 fastq_array=(${fastqs})
@@ -32,98 +118,78 @@ requirements:
                 fq2=()
                 while [[ "$i" -lt ${#fastq_array[*]} ]];do
                     fq1+=( "${fastq_array[$i]}" )
-                    fq2+=( "${fastq_array[$(($i+1))]}" )
-                    let "i=$i+2"
+                    let "i=$i+1"
+                    fq2+=( "${fastq_array[$i]}" )
+                    let "i=$i+1"
                 done
-                /usr/local/bin/STAR "$passthrough_args" --readFilesIn $(join , "${fq1[@]}") $(join , "${fq2[@]}")
+                fqfinal=`join , "${fq1[@]}"` `join , "${fq2[@]}"`
+            fi
+
+            /usr/local/bin/STAR --runMode alignReads --outSAMtype BAM Unsorted --outReadsUnmapped None --outFileNamePrefix STAR_ --readFilesCommand cat --outSAMattributes NH HI AS NM MD --runThreadN "$cores" --readFilesIn "$fqfinal"--chimSegmentMin "$chimSegmentMin" --chimJunctionOverhangMin "$chimJunctionOverhangMin" --alignSJDBoverhangMin "$alignSJDBoverhangMin" --alignMatesGapMax "$alignMatesGapMax" --alignIntronMax "$alignIntronMax" --chimSegmentReadGapMax "$chimSegmentReadGapMax" --alignSJstitchMismatchNmax "$alignSJstitchMismatchNmax" --outSAMstrandField "$outSAMstrandField" --outSAMunmapped "$outSAMunmapped" --outSAMattrRGline "$outSAMattrRGline" --chimMultimapNmax "$chimMultimapNmax" --chimNonchimScoreDropMin "$chimNonchimScoreDropMin" --peOverlapNbasesMin "$peOverlapNbasesMin" --peOverlapMMp "$peOverlapMMp" --chimOutJunctionFormat "$chimOutJunctionFormat" --genomeDir "$genomeDir" --twopassMode "$twopassMode" --sjdbGTFfile "$sjdbGTFfile"
 
 arguments: [
-    $(runtime.cores)
+    {valueFrom: "$(runtime.cores)", position: 1, prefix: "-c"}
 ]
 inputs:
-    run_mode:
-        type: string
-        default: "alignReads"
-        inputBinding:
-            position: 2
-            prefix: "--runMode"
-    out_samtype:
-        type: string[]
-        default: ["BAM", "Unsorted"]
-        inputBinding:
-            position: 3
-            prefix: '--outSAMtype'
-    out_reads_unmapped:
-        type: string
-        default: "None"
-        inputBinding:
-            position: 4
-            prefix: '--outReadsUnmapped'
     chim_segment_min:
         type: int
         default: "12"
         inputBinding:
             position: 5
-            prefix: '--chimSegmentMin'
+            prefix: '-s'
     chim_junction_overhang_min:
         type: int
         default: "12"
         inputBinding:
             position: 6
-            prefix: '--chimJunctionOverhangMin'
+            prefix: '-j'
     align_sjdb_overhang_min:
         type: int
         default: 10
         inputBinding:
             position: 7
-            prefix: '--alignSJDBoverhangMin'
+            prefix: '-b'
     align_mates_gapmax:
         type: int?
         default: 100000
         inputBinding:
             position: 8
-            prefix: '--alignMatesGapMax'
+            prefix: '-q'
     align_intron_max:
         type: int
         default: 100000
         inputBinding:
             position: 9
-            prefix: '--alignIntronMax'
+            prefix: '-i'
     chim_segment_read_gapmax:
         type: int
         default: 3
         inputBinding:
             position: 10
-            prefix: '--chimSegmentReadGapMax'
+            prefix: '-r'
     align_sjstitch_mismatch_nmax:
         type: int[]
         default: [5, -1, 5, 5]
         inputBinding:
             position: 11
-            prefix: '--alignSJstitchMismatchNmax'
+            prefix: '-m'
             itemSeparator: ' '
             shellQuote: False
-    outsam_strand_field:
-        type: string
-        default: "intronMotif"
-        inputBinding:
-            position: 12
-            prefix: '--outSAMstrandField'
     outsam_unmapped:
         type: string
         default: Within
         inputBinding:
             position: 13
-            prefix: '--outSAMunmapped'
+            prefix: '-u'
     outsam_attrrg_line:
         type:
             type: array
             items: string
         inputBinding:
             position: 14
-            itemSeparator: ' , ' 
+            itemSeparator: ' , '
             shellQuote: False
-            prefix: '--outSAMattrRGline'
+            prefix: '-a'
         doc: '
             string(s): SAM/BAM read group line. The first word contains the read group
             identifier and must start with ID:, e.g. –outSAMattrRGline ID:xxx CN:yy
@@ -138,70 +204,48 @@ inputs:
         default: 10
         inputBinding:
             position: 15
-            prefix: '--chimMultimapNmax'
+            prefix: '-h'
     chim_nonchim_scoredrop_min:
         type: int
         default: 10
         inputBinding:
             position: 16
-            prefix: '--chimNonchimScoreDropMin'
+            prefix: '-d'
     peoverlap_nbases_min:
         type: int
         default: 12
         inputBinding:
             position: 17
-            prefix: '--peOverlapNbasesMin'
+            prefix: '-o'
     peoverlap_mmp:
         type: float
         default: 0.1
         inputBinding:
             position: 18
-            prefix: '--peOverlapMMp'
+            prefix: '-p'
     chimout_junction_format:
         type: int
         default: 1
         inputBinding:
             position: 19
-            prefix: '--chimOutJunctionFormat'
+            prefix: '-v'
     star_genome_dir:
         type: Directory
         inputBinding:
             position: 20
-            prefix: '--genomeDir'
-        doc: '
-            specifies path to the directory where the genome indices are stored
-            '
+            prefix: '-g'
+        doc: 'specifies path to the directory where the genome indices are stored'
     twopass_mode:
         type: string
         default: "Basic"
         inputBinding:
             position: 21
-            prefix: '--twopassMode'
+            prefix: '-w'
     gtf_file:
         type: File?
         inputBinding:
             position: 22
-            prefix: '--sjdbGTFfile'
-    outfile_name_prefix:
-        type: string
-        default: "STAR_"
-        inputBinding:
-            position: 23
-            prefix: '--outFileNamePrefix'
-    read_files_command:
-        default: "cat"
-        type: string?
-        inputBinding:
-            position: 24
-            prefix: '--readFilesCommand'
-    outsam_attributes:
-        type: string[]
-        default: [NH, HI, AS, NM, MD]
-        inputBinding:
-            position: 25
-            prefix: '--outSAMattributes'
-            itemSeparator: ' '
-            shellQuote: False
+            prefix: '-k'
     paired_end:
         type:
             type: enum
@@ -210,14 +254,16 @@ inputs:
         doc: 'whether the sequence data is paired-end (for single-end override to false)'
         inputBinding:
             position: 26
+            prefix: '-e'
     fastqs:
-        type: 
+        type:
             type: array
             items:
                 type: array
                 items: File
         inputBinding:
             position: 27
+            prefix: '-f'
 
 outputs:
     aligned_bam:
