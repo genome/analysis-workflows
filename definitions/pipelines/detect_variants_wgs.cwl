@@ -8,6 +8,7 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/vep_custom_annotation.yml
+    - class: StepInputExpressionRequirement
 inputs:
     reference:
         type: string

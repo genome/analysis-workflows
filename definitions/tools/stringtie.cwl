@@ -10,6 +10,7 @@ requirements:
       coresMin: 12
     - class: DockerRequirement
       dockerPull: "mgibio/rnaseq"
+    - class: StepInputExpressionRequirement
 arguments: [
     "-o", "$(runtime.outdir)/stringtie_transcripts.gtf",
     "-A", "$(runtime.outdir)/stringtie_gene_expression.tsv",

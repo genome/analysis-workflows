@@ -11,6 +11,7 @@ requirements:
       coresMin: 16
     - class: DockerRequirement
       dockerPull: "mgibio/rnaseq"
+    - class: StepInputExpressionRequirement
 arguments: [
     "-p", $(runtime.cores),
     "--dta",

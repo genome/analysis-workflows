@@ -10,6 +10,7 @@ requirements:
       coresMin: 1
     - class: DockerRequirement
       dockerPull: mgibio/rnaseq
+    - class: StepInputExpressionRequirement
 arguments: [ {valueFrom: "O=$(runtime.outdir)/rna_metrics.txt"},
              {valueFrom: "CHART=$(runtime.outdir)/rna_metrics.pdf"} ]
 inputs:

@@ -12,6 +12,7 @@ requirements:
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
       dockerPull: "mgibio/picard-cwl:2.18.1"
+    - class: StepInputExpressionRequirement
 inputs:
     bam:
         type: File

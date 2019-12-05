@@ -14,6 +14,7 @@ requirements:
       dockerPull: "mgibio/cle:v1.3.1"
     - class: ResourceRequirement
       ramMin: 4000
+    - class: StepInputExpressionRequirement
 inputs:
     variants:
         type: File

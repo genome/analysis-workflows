@@ -10,6 +10,7 @@ requirements:
       dockerPull: "mgibio/samtools-cwl:1.0.0"
     - class: ResourceRequirement
       ramMin: 4000
+    - class: StepInputExpressionRequirement
 arguments:
     [ { valueFrom: $(inputs.input_file.path) } , { shellQuote: false, valueFrom: "|" },
       "awk", "-v", { valueFrom: n=$(inputs.line_number) }, "-v", { valueFrom: s=$(inputs.some_text) }, 'NR == n {print s} {print}', { shellQuote: false, valueFrom: "|" },

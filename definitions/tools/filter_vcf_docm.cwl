@@ -9,6 +9,7 @@ requirements:
       dockerPull: "mgibio/cle:v1.4.2"
     - class: ResourceRequirement
       ramMin: 4000
+    - class: StepInputExpressionRequirement
     - class: InitialWorkDirRequirement
       listing:
       - entryname: 'docm_filter.pl'
