@@ -9,7 +9,7 @@ requirements:
       ramMin: 18000
       coresMin: 1
     - class: DockerRequirement
-      dockerPull: mgibio/rnaseq
+      dockerPull: mgibio/rnaseq:1.0.0
 arguments: [ {valueFrom: "O=$(runtime.outdir)/rna_metrics.txt"},
              {valueFrom: "CHART=$(runtime.outdir)/rna_metrics.pdf"} ]
 inputs:
