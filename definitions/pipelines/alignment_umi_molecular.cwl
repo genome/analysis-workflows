@@ -29,10 +29,18 @@ inputs:
     target_intervals:
        type: File?
 outputs:
-    aligned_cram:
+    umi_aligned_cram:
         type: File
         secondaryFiles: [.crai, ^.crai]
-        outputSource: index_cram/indexed_cram
+        outputSource: umi_index_cram/indexed_cram
+    grouped_aligned_cram:
+        type: File
+        secondaryFiles: [.crai, ^.crai]
+        outputSource: grouped_index_cram/indexed_cram
+    consensus_aligned_cram:
+        type: File
+        secondaryFiles: [.crai, ^.crai]
+        outputSource: consensus_index_cram/indexed_cram
     adapter_histogram:
         type: File[]
         outputSource: alignment_workflow/adapter_histogram
@@ -62,17 +70,43 @@ steps:
             reference: reference
             target_intervals: target_intervals
         out:
-            [aligned_bam, adapter_histogram, duplex_seq_metrics]
-    bam_to_cram:
+            [umi_aligned_bam, grouped_aligned_bam, consensus_aligned_bam,  adapter_histogram, duplex_seq_metrics]
+    umi_bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
-            bam: alignment_workflow/aligned_bam
+            bam: alignment_workflow/umi_aligned_bam
             reference: reference
         out:
             [cram]
-    index_cram:
+    umi_index_cram:
+        run: ../tools/index_cram.cwl
+        in: 
+            cram: umi_bam_to_cram/cram
+        out:
+            [indexed_cram]
+    grouped_bam_to_cram:
+        run: ../tools/bam_to_cram.cwl
+        in:
+            bam: alignment_workflow/grouped_aligned_bam
+            reference: reference
+        out:
+            [cram]
+    grouped_index_cram:
+        run: ../tools/index_cram.cwl
+        in:
+            cram: grouped_bam_to_cram/cram
+        out:
+            [indexed_cram]
+    consensus_bam_to_cram:
+        run: ../tools/bam_to_cram.cwl
+        in:
+            bam: alignment_workflow/consensus_aligned_bam
+            reference: reference
+        out:
+            [cram]
+    consensus_index_cram:
          run: ../tools/index_cram.cwl
          in:
-            cram: bam_to_cram/cram
+            cram: consensus_bam_to_cram/cram
          out:
             [indexed_cram]
