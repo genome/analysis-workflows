@@ -4,7 +4,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Run CNVnator to calculate copy number variations in WGS samples"
 
-arguments: ["source", "/opt/root/bin/thisroot.sh", { shellQuote: false, valueFrom: "&&" },  "/bin/bash", "run_cnvnator.sh"]
+baseCommand: ["/bin/bash", "run_cnvnator.sh"]
 
 requirements:
     - class: DockerRequirement
@@ -13,12 +13,15 @@ requirements:
       ramMin: 20000
       coresMin: 1
       tmpdirMin: 10000
-    - class: ShellCommandRequirement
     - class: InitialWorkDirRequirement
       listing:
       - entryname: "run_cnvnator.sh"
         entry: |
           #!/bin/bash
+
+          #set up the environment
+          source /opt/root/bin/thisroot.sh
+
           set -eou pipefail
 
           # set vars
