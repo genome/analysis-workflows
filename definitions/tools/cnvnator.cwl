@@ -35,7 +35,7 @@ requirements:
           # while with later versions of CNVnator these steps will accept a fasta.gz file the cnvnator2VCF.pl will not
           mkdir FASTA_CHRS
           awk 'BEGIN { CHROM="" } { if ($1~"^>") CHROM=substr($1,2); print $0 > "FASTA_CHRS/"CHROM".fa" }' "$REFERENCE"
-                    
+
           # extract read mapping from input bam(single sample)
           cnvnator -root "${SAMPLE}.root" -tree "$BAM" -chrom $CHROMOSOMES
           # generate read depth histogram
