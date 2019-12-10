@@ -37,18 +37,18 @@ requirements:
           awk 'BEGIN { CHROM="" } { if ($1~"^>") CHROM=substr($1,2); print $0 > "FASTA_CHRS/"CHROM".fa" }' "$REFERENCE"
 
           # extract read mapping from input bam(single sample)
-          cnvnator -root "${SAMPLE}.root" -tree "$BAM" -chrom $CHROMOSOMES
+          cnvnator -root "$SAMPLE.root" -tree "$BAM" -chrom $CHROMOSOMES
           # generate read depth histogram
-          cnvnator -root "${SAMPLE}.root" -his "${BIN_SIZE}" -d FASTA_CHRS/ -chrom $CHROMOSOMES
+          cnvnator -root "$SAMPLE.root" -his "$BIN_SIZE" -d FASTA_CHRS/ -chrom $CHROMOSOMES
           # calculate statistics
-          cnvnator -root "${SAMPLE}.root" -stat "${BIN_SIZE}" -chrom $CHROMOSOMES
+          cnvnator -root "$SAMPLE.root" -stat "$BIN_SIZE" -chrom $CHROMOSOMES
           # read depth signal partitioning
-          cnvnator -root "${SAMPLE}.root" -partition "${BIN_SIZE}" -chrom $CHROMOSOMES
+          cnvnator -root "$SAMPLE.root" -partition "$BIN_SIZE" -chrom $CHROMOSOMES
           # cnv calling
-          cnvnator -root "${SAMPLE}.root" -call "${BIN_SIZE}" -chrom $CHROMOSOMES > "${SAMPLE}.CNVnator.cn"
+          cnvnator -root "$SAMPLE.root" -call "$BIN_SIZE" -chrom $CHROMOSOMES > "$SAMPLE.CNVnator.cn"
 
           # convert to vcf
-          cnvnator2VCF.pl -reference "$REFERENCE" "${SAMPLE}.CNVnator.cn" FASTA_CHRS/ >  "${SAMPLE}.CNVnator.vcf"
+          cnvnator2VCF.pl -reference "$REFERENCE" "$SAMPLE.CNVnator.cn" FASTA_CHRS/ >  "$SAMPLE.CNVnator.vcf"
           exit 0
 inputs:
     bam:
