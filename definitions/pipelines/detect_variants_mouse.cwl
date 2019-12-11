@@ -29,7 +29,7 @@ inputs:
     readcount_minimum_mapping_quality:
         type: int?
     mutect_scatter_count:
-        type: int?
+        type: int
     varscan_strand_filter:
         type: int?
         default: 0
