@@ -32,7 +32,7 @@ inputs:
     readcount_minimum_mapping_quality:
         type: int?
     mutect_scatter_count:
-        type: int?
+        type: int
         default: 50
     varscan_strand_filter:
         type: int?
@@ -55,7 +55,7 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     filter_docm_variants:
-        type: boolean?
+        type: boolean
         default: true
     vep_cache_dir:
         type: string
@@ -78,31 +78,31 @@ inputs:
             - type: enum
               symbols: ["pick", "flag_pick", "pick_allele", "per_gene", "pick_allele_gene", "flag_pick_allele", "flag_pick_allele_gene"]
     vep_plugins:
-        type: string[]?
+        type: string[]
         default: [Downstream, Wildtype]
     filter_gnomADe_maximum_population_allele_frequency:
-        type: float?
+        type: float
         default: 0.001
     filter_mapq0_threshold:
-        type: float?
+        type: float
         default: 0.15
     filter_minimum_depth:
-        type: int?
+        type: int
         default: 1
     cle_vcf_filter:
-        type: boolean?
+        type: boolean
         default: false
     filter_somatic_llr_threshold:
-        type: float?
+        type: float
         default: 5
     variants_to_table_fields:
-        type: string[]?
+        type: string[]
         default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
     variants_to_table_genotype_fields:
-        type: string[]?
+        type: string[]
         default: [GT,AD]
     vep_to_table_fields:
-        type: string[]?
+        type: string[]
         default: [HGVSc,HGVSp]
     tumor_sample_name:
         type: string

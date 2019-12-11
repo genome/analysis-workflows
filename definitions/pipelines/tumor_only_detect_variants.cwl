@@ -53,7 +53,7 @@ inputs:
     synonyms_file:
         type: File?
     annotate_coding_only:
-        type: boolean?
+        type: boolean
         default: true
     vep_pick:
         type:
@@ -61,16 +61,16 @@ inputs:
             - type: enum
               symbols: ["pick", "flag_pick", "pick_allele", "per_gene", "pick_allele_gene", "flag_pick_allele", "flag_pick_allele_gene"]
     variants_to_table_fields:
-        type: string[]?
+        type: string[]
         default: [CHROM,POS,REF,ALT,set]
     variants_to_table_genotype_fields:
-        type: string[]?
+        type: string[]
         default: [GT,AD,AF,DP]
     vep_to_table_fields:
-        type: string[]?
+        type: string[]
         default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,gnomADe_AF,CLIN_SIG,SOMATIC,PHENO]
     vep_plugins:
-        type: string[]?
+        type: string[]
         default: [Downstream, Wildtype]
     sample_name:
         type: string
