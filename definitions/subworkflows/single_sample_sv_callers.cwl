@@ -17,7 +17,7 @@ inputs:
         type:
             - string
             - File
-        secondaryFiles: [.fai, ^.dict, .index]
+        secondaryFiles: [.fai, ^.dict]
 
     cnvkit_diagram:
         type: boolean?

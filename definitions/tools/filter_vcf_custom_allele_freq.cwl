@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "gnomADe_AF filter"
+label: "Custom allele frequency filter"
 baseCommand: ["/usr/bin/perl", "/usr/bin/vcf_check.pl"]
 requirements:
     - class: InlineJavascriptRequirement

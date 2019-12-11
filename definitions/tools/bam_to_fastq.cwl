@@ -10,7 +10,7 @@ requirements:
       ramMin: 6000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: "mgibio/rnaseq"
+      dockerPull: "mgibio/rnaseq:1.0.0"
 arguments: [ {valueFrom: "F=$(runtime.outdir)/read1.fastq"},
              {valueFrom: "F2=$(runtime.outdir)/read2.fastq"} ]
 inputs:

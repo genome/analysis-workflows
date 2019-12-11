@@ -19,7 +19,7 @@ inputs:
             - File
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     final_name:
-        type: string?
+        type: string
         default: 'final.bam'
 outputs:
     final_bam:

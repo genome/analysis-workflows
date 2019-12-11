@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/genome/analysis-workflows.svg?branch=master)](https://travis-ci.org/genome/analysis-workflows)
+
 # analysis-workflows
 
 This repo contains CWL workflow defintions for executing MGI analysis pipelines. 

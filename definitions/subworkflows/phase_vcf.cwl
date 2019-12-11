@@ -10,6 +10,7 @@ requirements:
 inputs:
     somatic_vcf:
         type: File
+        secondaryFiles: [.tbi]
     germline_vcf:
         type: File
     reference:

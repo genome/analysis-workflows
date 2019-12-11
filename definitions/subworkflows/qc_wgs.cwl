@@ -26,7 +26,7 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     picard_metric_accumulation_level:
-        type: string?
+        type: string
         default: ALL_READS
     minimum_mapping_quality:
         type: int?

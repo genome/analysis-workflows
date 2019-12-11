@@ -9,7 +9,7 @@ requirements:
       ramMin: 16000
       coresMin: 12
     - class: DockerRequirement
-      dockerPull: "mgibio/rnaseq"
+      dockerPull: "mgibio/rnaseq:1.0.0"
 arguments: [
     "-o", "$(runtime.outdir)/stringtie_transcripts.gtf",
     "-A", "$(runtime.outdir)/stringtie_gene_expression.tsv",

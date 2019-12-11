@@ -25,7 +25,7 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     final_name:
-        type: string?
+        type: string
         default: 'final'
     mills:
         type: File

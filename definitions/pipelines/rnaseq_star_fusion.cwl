@@ -14,6 +14,8 @@ inputs:
         type: string[]
     star_genome_dir:
         type: Directory
+    star_fusion_genome_dir:
+        type: Directory
     gtf_file:
         type: File
     trimming_adapters:
@@ -49,6 +51,15 @@ outputs:
     star_junction_out:
         type: File
         outputSource: star_align_fusion/splice_junction_out
+    star_fusion_log:
+        type: File
+        outputSource: star_align_fusion/log_final
+    star_fusion_predict:
+        type: File
+        outputSource: star_fusion_detect/fusion_predictions
+    star_fusion_abridge:
+        type: File
+        outputSource: star_fusion_detect/fusion_abridged
     stringtie_transcript_gtf:
         type: File
         outputSource: stringtie/transcript_gtf
@@ -100,7 +111,14 @@ steps:
                 source: bam_to_trimmed_fastq/fastq2
                 linkMerge: merge_flattened
         out:
-            [aligned_bam, chim_junc, splice_junction_out]
+            [aligned_bam, chim_junc, splice_junction_out,log_final]
+    star_fusion_detect:
+        run: ../tools/star_fusion_detect.cwl
+        in:
+            star_fusion_genome_dir: star_fusion_genome_dir
+            junction_file: star_align_fusion/chim_junc
+        out:
+            [fusion_predictions,fusion_abridged]
     kallisto:
         run: ../tools/kallisto.cwl
         in:
