@@ -215,6 +215,7 @@ inputs:
 
     clinical_calls:
         type: string[]?
+        doc: "Clinical HLA typing results; element format: HLA-X*01:02[/HLA-X...]"
 
     #pvacseq inputs
     readcount_minimum_base_quality:

@@ -22,12 +22,18 @@ requirements:
                         #be exactly the same (text ordering may differ, depending on the order calls are given in the input). 
                         #If the clinical calls and optitype calls do not match, mismatched_calls.txt is then produced;
                         #each line represents a gene. See below (section 'write out call files') for more mismatch details.
-                        #NOTE: optitype only produces MHC class I calls, 
+                        #NOTE: optitype only produces MHC class I calls
 
-                        #optitype input format:
-                        #HLA-[A,B,C, ...]*xx:xx
-                        #clinical input format:
-                        # HLA-C*12:02/HLA-C*12:228/HLA-C*12:243 (everything first slash and after is optional)
+                        #optitype input format (should be automatic):
+                        #HLA-X*01:02
+                        #clinical input format (each element of the input array):
+                        #note that each individual call should be a single element of the array
+                        #a group of alleles separated by '/' indicates an uncertain call and the
+                        #its possible alleles; the entire group comprises a single element of the array
+                        #HLA-X*01:02[/HLA-X...]
+                        #NOTE: hla calls may have up to 4 ':' separated fields; however, this tool strips all
+                        #      but the first 2, because the downstream tools only support 2 fields
+                        #      eg HLA-X*01:02:03:04, while valid, will be treated as HLA-X*01:02
 
                         import sys, os
                         from collections import defaultdict
