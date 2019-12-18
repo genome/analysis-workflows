@@ -4,29 +4,49 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "downsample unaligned BAM"
 
-baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/opt/picard/picard.jar", "DownsampleSam"]
+baseCommand: ["/gatk/gatk", "--java-options", "-Xmx16g", "DownsampleSam"]
 arguments:
-    ["OUTPUT=", { valueFrom: $(runtime.outdir)/downsampled.bam }]
+    ["--OUTPUT=", { valueFrom: $(runtime.outdir)/$(inputs.sam.nameroot).bam }, "--CREATE_INDEX", "--CREATE_MD5_FILE"]
 requirements:
     - class: ResourceRequirement
       ramMin: 18000
     - class: DockerRequirement
-      dockerPull: "mgibio/cle:v1.3.1"
+      dockerPull: "broadinstitute/gatk:4.1.4.1"
 inputs:
-    bam:
+    sam:
         type: File
         inputBinding:
-            prefix: "INPUT="
+            prefix: "--INPUT="
+            separate: false
     probability:
         type: float
         inputBinding:
-            prefix: "PROBABILITY="
+            prefix: "--PROBABILITY="
+            separate: false
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
-            prefix: "REFERENCE_SEQUENCE="
+            prefix: "--REFERENCE_SEQUENCE="
+            separate: false
+    random_seed:
+        type: int?
+        inputBinding:
+            prefix: "--RANDOM_SEED="
+            separate: false
+    strategy:
+        type: 
+            - "null"
+            - type: enum
+              symbols: ["HighAccuracy", "ConstantMemory", "Chained"]
+        inputBinding:
+            prefix: "--STRATEGY="
+            separate: false
 outputs:
-    downsampled_bam:
+    downsampled_sam:
         type: File
+        secondaryFiles: ['.md5', '^.bai']
         outputBinding:
-            glob: "downsampled.bam"
+            glob: $(inputs.sam.nameroot).bam
