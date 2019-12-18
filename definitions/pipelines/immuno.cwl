@@ -213,6 +213,10 @@ inputs:
     reference_dict:
         type: File
 
+    clinical_calls:
+        type: string[]?
+        doc: "Clinical HLA typing results; element format: HLA-X*01:02[/HLA-X...]"
+
     #pvacseq inputs
     readcount_minimum_base_quality:
         type: int?
@@ -583,6 +587,12 @@ outputs:
     allele_string:
         type: string[]
         outputSource: extract_alleles/allele_string
+    consensus_alleles:
+        type: string[]
+        outputSource: hla_consensus/consensus_alleles
+    hla_call_files:
+        type: Directory
+        outputSource: hla_consensus/hla_call_files
 
     annotated_vcf:
         type: File
@@ -749,6 +759,13 @@ steps:
             allele_file: germline/optitype_tsv
         out:
             [allele_string]
+    hla_consensus:
+        run: ../tools/hla_consensus.cwl
+        in:
+            optitype_calls: extract_alleles/allele_string
+            clinical_calls: clinical_calls
+        out:
+            [consensus_alleles, hla_call_files]
     pvacseq:
         run: ../subworkflows/pvacseq.cwl
         in:
@@ -761,7 +778,7 @@ steps:
             readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
             gene_expression_file: rnaseq/gene_abundance
             transcript_expression_file: rnaseq/transcript_abundance_tsv
-            alleles: extract_alleles/allele_string
+            alleles: hla_consensus/consensus_alleles
             prediction_algorithms: prediction_algorithms
             epitope_lengths: epitope_lengths
             binding_threshold: binding_threshold
