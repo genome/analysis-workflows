@@ -197,7 +197,9 @@ inputs:
 
     #germline inputs
     emit_reference_confidence:
-        type: string
+        type:
+            type: enum
+            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
     gvcf_gq_bands:
         type: string[]
     gatk_haplotypecaller_intervals:

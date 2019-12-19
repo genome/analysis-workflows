@@ -25,7 +25,9 @@ inputs:
             position: 2
         secondaryFiles: [^.bai]
     emit_reference_confidence:
-        type: string
+        type:
+            type: enum
+            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
         inputBinding:
             prefix: "-ERC"
             position: 3
