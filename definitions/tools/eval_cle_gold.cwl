@@ -26,21 +26,22 @@ requirements:
             my $tn_query_snv_size = bed_size($tn_query_snv_bed);
             my $tn_query_indel_size = bed_size($tn_query_indel_bed);
 
-            my $snv_specificity   = sprintf("%.6f", ($tn_size-$tn_query_snv_size)/$tn_size);
-            my $indel_specificity = sprintf("%.6f", ($tn_size-$tn_query_indel_size)/$tn_size);            
+            my $snv_specificity   = sprintf("%.9f", ($tn_size-$tn_query_snv_size)/$tn_size);
+            my $indel_specificity = sprintf("%.9f", ($tn_size-$tn_query_indel_size)/$tn_size);
             open(my $sompy_fh, $sompy_out) or die("couldn't open $sompy_out to read");
             open(my $eval_out_fh, ">$out_dir/gold_eval.out") or die("couldn't open gold_eval.out for write");
           
             while (<$sompy_fh>) {
                next if /^\s+$|\s+records\s+/;
+               chomp;
                if (/^\s+type\s+/) {
-                   say $eval_out_fh $_."\tspecificity";
+                   say $eval_out_fh $_."  specificity";
                }
                elsif (/\s+indels\s+/) {
-                   say $eval_out_fh $_."\t".$indel_specificity;
+                   say $eval_out_fh $_."  ".$indel_specificity;
                }
                elsif (/\s+SNVs\s+/) {
-                   say $eval_out_fh $_."\t".$snv_specificity;
+                   say $eval_out_fh $_."  ".$snv_specificity;
                }
             }
             close $sompy_fh;
@@ -93,7 +94,7 @@ requirements:
                 open(my $fh, $bed) or die "could not open $bed for read";
                 while (<$fh>) {
                     my (undef, $start, $end) = split /\t/, $_;
-                    $size += $end - $start + 1;
+                    $size += $end - $start;
                 }
                 close $fh;
                 return $size;
