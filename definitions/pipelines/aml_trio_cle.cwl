@@ -53,7 +53,9 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     emit_reference_confidence:
-        type: string
+        type:
+            type: enum
+            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
     gvcf_gq_bands:
         type: string[]
     intervals:

@@ -45,7 +45,9 @@ inputs:
     picard_metric_accumulation_level:
         type: string
     emit_reference_confidence:
-        type: string
+        type:
+            type: enum
+            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
     gvcf_gq_bands:
         type: string[]
     intervals:
