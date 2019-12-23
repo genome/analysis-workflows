@@ -36,19 +36,19 @@ outputs:
         outputSource: align_workflow/mark_duplicates_metrics_file
 steps:
     downsample:
-        scatter: [bam]
+        scatter: [sam]
         scatterMethod: dotproduct
         run: ../tools/downsample.cwl
         in:
-            bam: bams
+            sam: bams
             probability: downsample_probability
             reference: reference
         out:
-            [downsampled_bam]
+            [downsampled_sam]
     align_workflow:
         run: bam_to_bqsr.cwl
         in:
-            bams: downsample/downsampled_bam
+            bams: downsample/downsampled_sam
             readgroups: readgroups
             reference: reference
             dbsnp_vcf: dbsnp_vcf
