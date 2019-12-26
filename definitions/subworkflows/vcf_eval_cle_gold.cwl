@@ -28,13 +28,12 @@ inputs:
         secondaryFiles: [.tbi]
     true_negative_bed:
         type: File
+    output_dir:
+        type: string
 outputs:
-    eval_out:
-        type: File
-        outputSource: evaluation/eval_out
-    vaf_report_out:
-        type: File
-        outputSource: evaluation/vaf_report
+    output_directory:
+        type: Directory
+        outputSource: gather_to_sub_directory/gathered_directory
 steps:
     normal_cram_to_bam_and_index:
         run: cram_to_bam_and_index.cwl
@@ -132,13 +131,13 @@ steps:
         out:
             [intersect_result] 
     sompy:
-         run: ../tools/sompy.cwl
-         in:
+        run: ../tools/sompy.cwl
+        in:
             reference: reference
             roi_bed:  roi_bed
             truth_vcf: gold_vcf
             query_vcf: query_vcf_pass/filtered_vcf
-         out:
+        out:
             [sompy_out]
     evaluation:
         run: ../tools/eval_cle_gold.cwl
@@ -154,4 +153,10 @@ steps:
             tumor_indel_bam_readcount_tsv: tumor_bam_readcount/indel_bam_readcount_tsv
         out:
             [eval_out, vaf_report]
-
+    gather_to_sub_directory:
+        run: ../tools/gather_to_sub_directory.cwl
+        in:
+            outdir: output_dir
+            files: [evaluation/eval_out,evaluation/vaf_report]
+        out:
+            [gathered_directory]

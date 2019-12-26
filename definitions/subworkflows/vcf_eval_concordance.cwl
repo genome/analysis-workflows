@@ -32,13 +32,12 @@ inputs:
     query_vcf:
         type: File
         secondaryFiles: [.tbi]
+    output_dir:
+        type: string
 outputs:
-    concordance_out:
-        type: File
-        outputSource: sompy/sompy_out
-    vaf_report_out:
-        type: File
-        outputSource: vaf_report/out_file
+    output_directory:
+        type: Directory
+        outputSource: gather_to_sub_directory/gathered_directory
 steps:
     base_normal_cram_to_bam_and_index:
         run: cram_to_bam_and_index.cwl
@@ -157,4 +156,10 @@ steps:
             query_tumor_indel_bam_readcount_tsv: query_tumor_bam_readcount/indel_bam_readcount_tsv
         out:
             [out_file]
-
+    gather_to_sub_directory:
+        run: ../tools/gather_to_sub_directory.cwl
+        in:
+            outdir: output_dir
+            files: [sompy/sompy_out,vaf_report/out_file]
+        out:
+            [gathered_directory]
