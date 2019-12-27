@@ -32,6 +32,12 @@ inputs:
     query_vcf:
         type: File
         secondaryFiles: [.tbi]
+    normal_sample_name:
+        type: string?
+        default: 'NORMAL'
+    tumor_sample_name:
+        type: string?
+        default: 'TUMOR'
     output_dir:
         type: string
 outputs:
@@ -97,8 +103,7 @@ steps:
         run: ../tools/bam_readcount.cwl
         in:
             vcf: combine_vcf/combined_vcf
-            sample:
-                default: 'NORMAL'
+            sample: normal_sample_name
             reference_fasta: reference
             bam: base_normal_cram_to_bam_and_index/bam
         out:
@@ -107,8 +112,7 @@ steps:
         run: ../tools/bam_readcount.cwl
         in:
             vcf: combine_vcf/combined_vcf
-            sample:
-                default: 'TUMOR'
+            sample: tumor_sample_name
             reference_fasta: reference
             bam: base_tumor_cram_to_bam_and_index/bam
         out:
@@ -117,8 +121,7 @@ steps:
         run: ../tools/bam_readcount.cwl
         in:
             vcf: combine_vcf/combined_vcf
-            sample:
-                default: 'NORMAL'
+            sample: normal_sample_name
             reference_fasta: reference
             bam: query_normal_cram_to_bam_and_index/bam
         out:
@@ -127,8 +130,7 @@ steps:
         run: ../tools/bam_readcount.cwl
         in:
             vcf: combine_vcf/combined_vcf
-            sample:
-                default: 'TUMOR'
+            sample: tumor_sample_name
             reference_fasta: reference
             bam: query_tumor_cram_to_bam_and_index/bam
         out:
