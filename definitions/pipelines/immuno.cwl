@@ -51,10 +51,15 @@ inputs:
     refFlat:
         type: File
     ribosomal_intervals:
-        type: File
+        type: File?
 
     #somatic inputs
-    reference: string
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
+
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     tumor_name:
@@ -185,10 +190,16 @@ inputs:
         type: boolean?
     somalier_vcf:
         type: File
+    known_variants:
+        type: File?
+        secondaryFiles: [.tbi]
+        doc: "Previously discovered variants to be flagged in this pipelines's output vcf"
 
     #germline inputs
     emit_reference_confidence:
-        type: string
+        type:
+            type: enum
+            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
     gvcf_gq_bands:
         type: string[]
     gatk_haplotypecaller_intervals:
@@ -203,6 +214,10 @@ inputs:
     #phase_vcf inputs
     reference_dict:
         type: File
+
+    clinical_calls:
+        type: string[]?
+        doc: "Clinical HLA typing results; element format: HLA-X*01:02[/HLA-X...]"
 
     #pvacseq inputs
     readcount_minimum_base_quality:
@@ -271,9 +286,9 @@ inputs:
     pvacseq_threads:
         type: int?
 
-    immuno_tumor_sample_name:
+    tumor_sample_name:
         type: string
-    immuno_normal_sample_name:
+    normal_sample_name:
         type: string
 
 outputs:
@@ -300,7 +315,7 @@ outputs:
         type: File
         outputSource: rnaseq/metrics
     chart:
-        type: File
+        type: File?
         outputSource: rnaseq/chart
 
     tumor_cram:
@@ -552,13 +567,9 @@ outputs:
         type: File
         outputSource: germline/final_vcf
         secondaryFiles: [.tbi]
-    coding_vcf:
+    germline_filtered_vcf:
         type: File
-        outputSource: germline/coding_vcf
-        secondaryFiles: [.tbi]
-    limited_vcf:
-        type: File
-        outputSource: germline/limited_vcf
+        outputSource: germline/filtered_vcf
         secondaryFiles: [.tbi]
     germline_vep_summary:
         type: File
@@ -578,6 +589,12 @@ outputs:
     allele_string:
         type: string[]
         outputSource: extract_alleles/allele_string
+    consensus_alleles:
+        type: string[]
+        outputSource: hla_consensus/consensus_alleles
+    hla_call_files:
+        type: Directory
+        outputSource: hla_consensus/hla_call_files
 
     annotated_vcf:
         type: File
@@ -689,6 +706,9 @@ steps:
             manta_non_wgs: manta_non_wgs
             manta_output_contigs: manta_output_contigs
             somalier_vcf: somalier_vcf
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
+            known_variants: known_variants
         out:
             [tumor_cram,tumor_mark_duplicates_metrics,tumor_insert_size_metrics,tumor_alignment_summary_metrics,tumor_hs_metrics,tumor_per_target_coverage_metrics,tumor_per_target_hs_metrics,tumor_per_base_coverage_metrics,tumor_per_base_hs_metrics,tumor_summary_hs_metrics,tumor_flagstats,tumor_verify_bam_id_metrics,tumor_verify_bam_id_depth,normal_cram,normal_mark_duplicates_metrics,normal_insert_size_metrics,normal_alignment_summary_metrics,normal_hs_metrics,normal_per_target_coverage_metrics,normal_per_target_hs_metrics,normal_per_base_coverage_metrics,normal_per_base_hs_metrics,normal_summary_hs_metrics,normal_flagstats,normal_verify_bam_id_metrics,normal_verify_bam_id_depth,mutect_unfiltered_vcf,mutect_filtered_vcf,strelka_unfiltered_vcf,strelka_filtered_vcf,varscan_unfiltered_vcf,varscan_filtered_vcf,pindel_unfiltered_vcf,pindel_filtered_vcf,docm_filtered_vcf,final_vcf,final_filtered_vcf,final_tsv,vep_summary,tumor_snv_bam_readcount_tsv,tumor_indel_bam_readcount_tsv,normal_snv_bam_readcount_tsv,normal_indel_bam_readcount_tsv,intervals_antitarget,intervals_target,normal_antitarget_coverage,normal_target_coverage,reference_coverage,cn_diagram,cn_scatter_plot,tumor_antitarget_coverage,tumor_target_coverage,tumor_bin_level_ratios,tumor_segmented_ratios,diploid_variants,somatic_variants,all_candidates,small_candidates,tumor_only_variants,somalier_concordance_metrics,somalier_concordance_statistics]
     germline:
@@ -721,40 +741,18 @@ steps:
             qc_minimum_base_quality: qc_minimum_base_quality
             optitype_name: optitype_name
         out:
-            [cram,mark_duplicates_metrics,insert_size_metrics,insert_size_histogram,alignment_summary_metrics,hs_metrics,per_target_coverage_metrics,per_target_hs_metrics,per_base_coverage_metrics,per_base_hs_metrics,summary_hs_metrics,flagstats,verify_bam_id_metrics,verify_bam_id_depth,gvcf,final_vcf,coding_vcf,limited_vcf,vep_summary,optitype_tsv,optitype_plot]
+            [cram,mark_duplicates_metrics,insert_size_metrics,insert_size_histogram,alignment_summary_metrics,hs_metrics,per_target_coverage_metrics,per_target_hs_metrics,per_base_coverage_metrics,per_base_hs_metrics,summary_hs_metrics,flagstats,verify_bam_id_metrics,verify_bam_id_depth,gvcf,final_vcf,filtered_vcf,vep_summary,optitype_tsv,optitype_plot]
 
-    rename_somatic_vcf_tumor_sample:
-        run: ../tools/replace_vcf_sample_name.cwl
-        in:
-            input_vcf: somatic/final_vcf
-            sample_to_replace:
-                default: 'TUMOR'
-            new_sample_name: immuno_tumor_sample_name
-        out: [renamed_vcf]
-    rename_somatic_vcf_normal_sample:
-        run: ../tools/replace_vcf_sample_name.cwl
-        in:
-            input_vcf: rename_somatic_vcf_tumor_sample/renamed_vcf
-            sample_to_replace:
-                default: 'NORMAL'
-            new_sample_name: immuno_normal_sample_name
-        out: [renamed_vcf]
-    index_renamed_somatic:
-        run: ../tools/index_vcf.cwl
-        in:
-            vcf: rename_somatic_vcf_normal_sample/renamed_vcf
-        out:
-            [indexed_vcf]
     phase_vcf:
         run: ../subworkflows/phase_vcf.cwl
         in:
-            somatic_vcf: index_renamed_somatic/indexed_vcf
+            somatic_vcf: somatic/final_vcf
             germline_vcf: germline/final_vcf
             reference: reference
             reference_dict: reference_dict
             bam: somatic/tumor_cram
-            normal_sample_name: immuno_normal_sample_name
-            tumor_sample_name: immuno_tumor_sample_name
+            normal_sample_name: normal_sample_name
+            tumor_sample_name: tumor_sample_name
         out:
             [phased_vcf]
     extract_alleles:
@@ -763,19 +761,26 @@ steps:
             allele_file: germline/optitype_tsv
         out:
             [allele_string]
+    hla_consensus:
+        run: ../tools/hla_consensus.cwl
+        in:
+            optitype_calls: extract_alleles/allele_string
+            clinical_calls: clinical_calls
+        out:
+            [consensus_alleles, hla_call_files]
     pvacseq:
         run: ../subworkflows/pvacseq.cwl
         in:
-            detect_variants_vcf: index_renamed_somatic/indexed_vcf
-            sample_name: immuno_tumor_sample_name
-            normal_sample_name: immuno_normal_sample_name
+            detect_variants_vcf: somatic/final_vcf
+            sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
             rnaseq_bam: rnaseq/final_bam
             reference_fasta: reference
             readcount_minimum_base_quality: readcount_minimum_base_quality
             readcount_minimum_mapping_quality: readcount_minimum_mapping_quality
             gene_expression_file: rnaseq/gene_abundance
             transcript_expression_file: rnaseq/transcript_abundance_tsv
-            alleles: extract_alleles/allele_string
+            alleles: hla_consensus/consensus_alleles
             prediction_algorithms: prediction_algorithms
             epitope_lengths: epitope_lengths
             binding_threshold: binding_threshold

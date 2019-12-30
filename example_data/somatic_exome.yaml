@@ -13,6 +13,7 @@ tumor_sequence:
         class: File
         path: exome_workflow/2895499237.bam
     readgroup: "@RG\tID:2895499237\tPU:H7HY2CCXX.4.ATCACGGT\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:Illumina\tCN:WUGSC"
+tumor_sample_name: 'H_NJ-HCC1395-HCC1395'
 normal_sequence:
   - sequence:
       bam:
@@ -24,6 +25,7 @@ normal_sequence:
         class: File
         path: exome_workflow/2895499399.bam
     readgroup: "@RG\tID:2895499399\tPU:H7HY2CCXX.4.TGACCACG\tSM:H_NJ-HCC1395-HCC1395_BL\tLB:H_NJ-HCC1395-HCC1395_BL-lg21-lib1\tPL:Illumina\tCN:WUGSC"
+normal_sample_name: 'H_NJ-HCC1395-HCC1395_BL'
 dbsnp_vcf:
   class: File
   path: exome_workflow/chr17_test_dbsnp.vcf.gz

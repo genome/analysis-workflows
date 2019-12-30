@@ -10,10 +10,14 @@ requirements:
 inputs:
     somatic_vcf:
         type: File
+        secondaryFiles: [.tbi]
     germline_vcf:
         type: File
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     reference_dict:
         type: File
     bam:

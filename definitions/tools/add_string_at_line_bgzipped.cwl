@@ -8,6 +8,8 @@ requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
       dockerPull: "mgibio/samtools-cwl:1.0.0"
+    - class: ResourceRequirement
+      ramMin: 4000
 arguments:
     [ { valueFrom: $(inputs.input_file.path) } , { shellQuote: false, valueFrom: "|" },
       "awk", "-v", { valueFrom: n=$(inputs.line_number) }, "-v", { valueFrom: s=$(inputs.some_text) }, 'NR == n {print s} {print}', { shellQuote: false, valueFrom: "|" },
@@ -20,7 +22,10 @@ inputs:
         type: int
     some_text:
         type: string
-stdout: "$(inputs.input_file.basename).commented.gz"
+    output_name:
+        type: string?
+        default: "$(inputs.input_file.basename).commented.gz"
+stdout: $(inputs.output_name)
 outputs:
     output_file:
         type: stdout

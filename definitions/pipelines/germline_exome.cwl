@@ -11,7 +11,11 @@ requirements:
           - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
 inputs:
-    reference: string
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     mills:
@@ -41,7 +45,9 @@ inputs:
     picard_metric_accumulation_level:
         type: string
     emit_reference_confidence:
-        type: string
+        type:
+            type: enum
+            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
     gvcf_gq_bands:
         type: string[]
     intervals:
@@ -131,13 +137,9 @@ outputs:
         type: File
         outputSource: detect_variants/final_vcf
         secondaryFiles: [.tbi]
-    coding_vcf:
+    filtered_vcf:
         type: File
-        outputSource: detect_variants/coding_vcf
-        secondaryFiles: [.tbi]
-    limited_vcf:
-        type: File
-        outputSource: detect_variants/limited_vcf
+        outputSource: detect_variants/filtered_vcf
         secondaryFiles: [.tbi]
     vep_summary:
         type: File
@@ -145,6 +147,9 @@ outputs:
     final_tsv:
        type: File
        outputSource: detect_variants/final_tsv
+    filtered_tsv:
+       type: File
+       outputSource: detect_variants/filtered_tsv
 steps:
     alignment_and_qc:
         run: alignment_exome.cwl
@@ -214,7 +219,7 @@ steps:
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
         out:
-            [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary, final_tsv]
+            [gvcf, final_vcf, filtered_vcf, vep_summary, final_tsv, filtered_tsv]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:

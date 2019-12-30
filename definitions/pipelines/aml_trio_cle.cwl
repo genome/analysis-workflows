@@ -53,7 +53,9 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     emit_reference_confidence:
-        type: string
+        type:
+            type: enum
+            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
     gvcf_gq_bands:
         type: string[]
     intervals:
@@ -160,8 +162,12 @@ inputs:
         default: [HGVSc,HGVSp]
     disclaimer_text:
         type: string?
-        default: "#This laboratory developed test (LDT) was developed and its performance characteristics determined by the CLIA Licensed Environment laboratory at the McDonnell Genome Institute at Washington University (MGI-CLE, CLIA #26D2092546, CAP #9047655), Dr. David H. Spencer MD, PhD, FCAP, Medical Director. 4444 Forest Park Avenue, Rm 4127 St. Louis, Missouri 63108 (314) 286-1460 Fax: (314) 286-1810. The MGI-CLE laboratory is regulated under CLIA as certified to perform high-complexity testing. This test has not been cleared or approved by the FDA."
+        default: "This laboratory developed test (LDT) was developed and its performance characteristics determined by the CLIA Licensed Environment laboratory at the McDonnell Genome Institute at Washington University (MGI-CLE, CLIA #26D2092546, CAP #9047655), Dr. David H. Spencer MD, PhD, FCAP, Medical Director. 4444 Forest Park Avenue, Rm 4127 St. Louis, Missouri 63108 (314) 286-1460 Fax: (314) 286-1810. The MGI-CLE laboratory is regulated under CLIA as certified to perform high-complexity testing. This test has not been cleared or approved by the FDA."
     disclaimer_version:
+        type: string
+    tumor_sample_name:
+        type: string
+    normal_sample_name:
         type: string
 outputs:
     tumor_cram:
@@ -309,7 +315,7 @@ outputs:
         secondaryFiles: [.tbi]
     tumor_final_filtered_vcf:
         type: File
-        outputSource: tumor_detect_variants/final_filtered_vcf
+        outputSource: annotated_filter_vcf_index/indexed_vcf
         secondaryFiles: [.tbi]
     tumor_final_tsv:
         type: File
@@ -321,17 +327,16 @@ outputs:
         type: File
         outputSource: germline_detect_variants/final_vcf
         secondaryFiles: [.tbi]
-    germline_coding_vcf:
+    germline_filtered_vcf:
         type: File
-        outputSource: germline_detect_variants/coding_vcf
-        secondaryFiles: [.tbi]
-    germline_limited_vcf:
-        type: File
-        outputSource: germline_detect_variants/limited_vcf
+        outputSource: germline_detect_variants/filtered_vcf
         secondaryFiles: [.tbi]
     germline_final_tsv:
         type: File
         outputSource: add_disclaimer_version_to_germline_final_tsv/output_file
+    germline_filtered_tsv:
+        type: File
+        outputSource: germline_detect_variants/filtered_tsv
     somalier_concordance_metrics:
         type: File
         outputSource: concordance/somalier_pairs
@@ -458,6 +463,8 @@ steps:
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
             vep_custom_annotations: vep_custom_annotations
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
@@ -467,7 +474,12 @@ steps:
             input_file: tumor_detect_variants/final_tsv
             line_number:
                 default: 1
-            some_text: disclaimer_text
+            some_text:
+                source: disclaimer_text
+                valueFrom: "#$(self)"
+            output_name:
+                source: tumor_detect_variants/final_tsv
+                valueFrom: "$(self.basename)"
         out:
             [output_file]
     add_disclaimer_version_to_tumor_final_tsv:
@@ -476,9 +488,48 @@ steps:
             input_file: add_disclaimer_to_tumor_final_tsv/output_file
             line_number:
                 default: 2
-            some_text: disclaimer_version
+            some_text:
+                source: disclaimer_version
+                valueFrom: "#The software version is $(self)"
+            output_name:
+                source: add_disclaimer_to_tumor_final_tsv/output_file
+                valueFrom: "$(self.basename)" 
         out:
             [output_file]
+    add_disclaimer_to_tumor_final_filtered_vcf:
+        run: ../tools/add_string_at_line_bgzipped.cwl
+        in:
+            input_file: tumor_detect_variants/final_filtered_vcf
+            line_number:
+                default: 2
+            some_text:
+                source: disclaimer_text
+                valueFrom: "##DisclaimerText=$(self)"
+            output_name:
+                source: tumor_detect_variants/final_filtered_vcf
+                valueFrom: "$(self.basename)"
+        out:
+            [output_file]
+    add_disclaimer_version_to_tumor_final_filtered_vcf:
+        run: ../tools/add_string_at_line_bgzipped.cwl
+        in:
+            input_file: add_disclaimer_to_tumor_final_filtered_vcf/output_file
+            line_number:
+                default: 3
+            some_text:
+                source: disclaimer_version
+                valueFrom: "##CLESoftwareVersion=$(self)"
+            output_name:
+                source: add_disclaimer_to_tumor_final_filtered_vcf/output_file 
+                valueFrom: "$(self.basename)"
+        out:
+            [output_file]
+    annotated_filter_vcf_index:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: add_disclaimer_version_to_tumor_final_filtered_vcf/output_file
+        out:
+            [indexed_vcf]
     pindel_region:
         run: ../subworkflows/pindel_region.cwl
         in:
@@ -487,6 +538,8 @@ steps:
             normal_bam: normal_alignment_and_qc/bam
             region_file: pindel_region_file
             insert_size: pindel_insert_size
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out:
             [pindel_region_vcf]
     followup_bam_readcount:
@@ -548,14 +601,19 @@ steps:
             vep_to_table_fields: germline_vep_to_table_fields
             final_tsv_prefix: germline_tsv_prefix
         out:
-            [final_vcf, coding_vcf, limited_vcf, final_tsv]
+            [final_vcf, filtered_vcf, final_tsv, filtered_tsv]
     add_disclaimer_to_germline_final_tsv:
         run: ../tools/add_string_at_line.cwl
         in:
             input_file: germline_detect_variants/final_tsv
             line_number:
                 default: 1
-            some_text: disclaimer_text
+            some_text:
+                source: disclaimer_text
+                valueFrom: "#$(self)"
+            output_name:
+                source: germline_detect_variants/final_tsv
+                valueFrom: "$(self.basename)"
         out:
             [output_file]
     add_disclaimer_version_to_germline_final_tsv:
@@ -564,7 +622,12 @@ steps:
             input_file: add_disclaimer_to_germline_final_tsv/output_file
             line_number:
                 default: 2
-            some_text: disclaimer_version
+            some_text:
+                source: disclaimer_version
+                valueFrom: "#The software version is $(self)"
+            output_name:
+                source: add_disclaimer_to_germline_final_tsv/output_file
+                valueFrom: "$(self.basename)" 
         out:
             [output_file]
     alignment_stat_report:
@@ -601,7 +664,12 @@ steps:
             input_file: full_variant_report/full_variant_report
             line_number:
                 default: 1
-            some_text: disclaimer_text
+            some_text:
+                source: disclaimer_text
+                valueFrom: "#$(self)"
+            output_name:
+                source: full_variant_report/full_variant_report
+                valueFrom: "$(self.basename)"
         out:
             [output_file]
     add_disclaimer_version_to_full_variant_report:
@@ -610,7 +678,12 @@ steps:
             input_file: add_disclaimer_to_full_variant_report/output_file
             line_number:
                 default: 2
-            some_text: disclaimer_version
+            some_text:
+                source: disclaimer_version
+                valueFrom: "#The software version is $(self)"
+            output_name:
+                source: add_disclaimer_to_full_variant_report/output_file
+                valueFrom: "$(self.basename)" 
         out:
             [output_file]
     normal_bam_to_cram:

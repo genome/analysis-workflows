@@ -11,7 +11,11 @@ requirements:
           - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
 inputs:
-    reference: string
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     mills:
@@ -41,7 +45,9 @@ inputs:
     picard_metric_accumulation_level:
         type: string
     emit_reference_confidence:
-        type: string
+        type:
+            type: enum
+            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
     gvcf_gq_bands:
         type: string[]
     intervals:
@@ -124,13 +130,9 @@ outputs:
         type: File
         outputSource: germline_exome/final_vcf
         secondaryFiles: [.tbi]
-    coding_vcf:
+    filtered_vcf:
         type: File
-        outputSource: germline_exome/coding_vcf
-        secondaryFiles: [.tbi]
-    limited_vcf:
-        type: File
-        outputSource: germline_exome/limited_vcf
+        outputSource: germline_exome/filtered_vcf
         secondaryFiles: [.tbi]
     vep_summary:
         type: File
@@ -171,7 +173,7 @@ steps:
             qc_minimum_mapping_quality: qc_minimum_mapping_quality
             qc_minimum_base_quality: qc_minimum_base_quality
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary]
+            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, gvcf, final_vcf, filtered_vcf, vep_summary]
     optitype:
         run: ../tools/optitype_dna.cwl
         in:

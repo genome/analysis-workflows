@@ -11,7 +11,11 @@ requirements:
           - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
 inputs:
-    reference: string
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     mills:
@@ -29,7 +33,9 @@ inputs:
     picard_metric_accumulation_level:
         type: string
     emit_reference_confidence:
-        type: string
+        type:
+            type: enum
+            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
     gvcf_gq_bands:
         type: string[]
     intervals:
@@ -128,6 +134,9 @@ inputs:
          type: string[]?
     cnv_filter_min_size:
          type: int?
+    disclaimer_text:
+        type: string?
+        default: 'Workflow source can be found at https://github.com/genome/analysis-workflows'
 outputs:
     cram:
         type: File
@@ -170,15 +179,11 @@ outputs:
         outputSource: detect_variants/gvcf
     final_vcf:
         type: File
-        outputSource: detect_variants/final_vcf
+        outputSource: index_disclaimer_final_vcf/indexed_vcf
         secondaryFiles: [.tbi]
-    coding_vcf:
+    filtered_vcf:
         type: File
-        outputSource: detect_variants/coding_vcf
-        secondaryFiles: [.tbi]
-    limited_vcf:
-        type: File
-        outputSource: detect_variants/limited_vcf
+        outputSource: index_disclaimer_filtered_vcf/indexed_vcf
         secondaryFiles: [.tbi]
     vep_summary:
         type: File
@@ -248,7 +253,10 @@ outputs:
         outputSource: sv_detect_variants/smoove_output_variants
     final_tsv:
         type: File
-        outputSource: detect_variants/final_tsv
+        outputSource: add_disclaimer_final_tsv/output_file
+    filtered_tsv:
+        type: File
+        outputSource: add_disclaimer_filtered_tsv/output_file
     cnvkit_filtered_vcf:
         type: File
         outputSource: sv_detect_variants/cnvkit_filtered_vcf
@@ -263,19 +271,19 @@ outputs:
         outputSource: sv_detect_variants/smoove_filtered_vcf
     survivor_merged_vcf:
         type: File
-        outputSource: sv_detect_variants/survivor_merged_vcf
+        outputSource: add_disclaimer_survivor_sv_vcf/output_file
     survivor_merged_annotated_tsv:
         type: File
-        outputSource: sv_detect_variants/survivor_merged_annotated_tsv
+        outputSource: add_disclaimer_survivor_sv_tsv/output_file
     bcftools_merged_vcf:
         type: File
-        outputSource: sv_detect_variants/bcftools_merged_vcf
+        outputSource: add_disclaimer_bcftools_sv_vcf/output_file
     bcftools_merged_annotated_tsv:
         type: File
-        outputSource: sv_detect_variants/bcftools_merged_annotated_tsv
+        outputSource: add_disclaimer_bcftools_sv_tsv/output_file
     bcftools_merged_filtered_annotated_tsv:
         type: File
-        outputSource: sv_detect_variants/bcftools_merged_filtered_annotated_tsv
+        outputSource: add_disclaimer_bcftools_filtered_sv_tsv/output_file
 steps:
     alignment_and_qc:
         run: alignment_wgs.cwl
@@ -344,7 +352,75 @@ steps:
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
         out:
-            [gvcf, final_vcf, coding_vcf, limited_vcf, vep_summary, final_tsv]
+            [gvcf, final_vcf, filtered_vcf, vep_summary, final_tsv, filtered_tsv]
+    add_disclaimer_filtered_vcf:
+        run: ../tools/add_string_at_line_bgzipped.cwl
+        in:
+            input_file: detect_variants/filtered_vcf
+            line_number:
+                default: 2
+            some_text:
+                source: disclaimer_text
+                valueFrom: "##disclaimer=$(self)"
+            output_name:
+                source: detect_variants/filtered_vcf
+                valueFrom: "$(self.basename)"
+        out:
+            [output_file]
+    index_disclaimer_filtered_vcf:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: add_disclaimer_filtered_vcf/output_file
+        out:
+            [indexed_vcf]
+    add_disclaimer_final_vcf:
+        run: ../tools/add_string_at_line_bgzipped.cwl
+        in:
+            input_file: detect_variants/final_vcf
+            line_number:
+                default: 2
+            some_text:
+                source: disclaimer_text
+                valueFrom: "##disclaimer=$(self)"
+            output_name:
+                source: detect_variants/final_vcf
+                valueFrom: "$(self.basename)"
+        out:
+            [output_file]
+    index_disclaimer_final_vcf:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: add_disclaimer_final_vcf/output_file
+        out:
+            [indexed_vcf]
+    add_disclaimer_filtered_tsv:
+        run: ../tools/add_string_at_line.cwl
+        in:
+            input_file: detect_variants/filtered_tsv
+            line_number:
+                default: 1
+            some_text:
+                source: disclaimer_text
+                valueFrom: "#$(self)"
+            output_name:
+                source: detect_variants/filtered_tsv
+                valueFrom: "$(self.basename)"
+        out:
+            [output_file]
+    add_disclaimer_final_tsv:
+        run: ../tools/add_string_at_line.cwl
+        in:
+            input_file: detect_variants/final_tsv
+            line_number:
+                default: 1
+            some_text:
+                source: disclaimer_text
+                valueFrom: "#$(self)"
+            output_name:
+                source: detect_variants/final_tsv
+                valueFrom: "$(self.basename)"
+        out:
+            [output_file]
     sv_detect_variants:
         run: ../subworkflows/single_sample_sv_callers.cwl
         in:
@@ -377,6 +453,76 @@ steps:
             genome_build: vep_ensembl_assembly
         out: 
            [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf, cnvnator_cn_file, cnvnator_root, cnvnator_vcf, manta_diploid_variants, manta_somatic_variants, manta_all_candidates, manta_small_candidates, manta_tumor_only_variants, smoove_output_variants, cnvkit_filtered_vcf, cnvnator_filtered_vcf, manta_filtered_vcf, smoove_filtered_vcf, survivor_merged_vcf, survivor_merged_annotated_tsv, bcftools_merged_vcf, bcftools_merged_annotated_tsv, bcftools_merged_filtered_annotated_tsv]
+    add_disclaimer_survivor_sv_vcf:
+        run: ../tools/add_string_at_line_bgzipped.cwl
+        in:
+            input_file: sv_detect_variants/survivor_merged_vcf
+            line_number:
+                default: 2
+            some_text:
+                source: disclaimer_text
+                valueFrom: "##disclaimer=$(self)"
+            output_name:
+                source: sv_detect_variants/survivor_merged_vcf
+                valueFrom: "$(self.basename)"
+        out:
+            [output_file]
+    add_disclaimer_bcftools_sv_vcf:
+        run: ../tools/add_string_at_line_bgzipped.cwl
+        in:
+            input_file: sv_detect_variants/bcftools_merged_vcf
+            line_number:
+                default: 2
+            some_text:
+                source: disclaimer_text
+                valueFrom: "##disclaimer=$(self)"
+            output_name:
+                source: sv_detect_variants/bcftools_merged_vcf
+                valueFrom: "$(self.basename)"
+        out:
+            [output_file]
+    add_disclaimer_survivor_sv_tsv:
+        run: ../tools/add_string_at_line.cwl
+        in:
+            input_file: sv_detect_variants/survivor_merged_annotated_tsv
+            line_number:
+                default: 1
+            some_text:
+                source: disclaimer_text
+                valueFrom: "#$(self)"
+            output_name:
+                source: sv_detect_variants/survivor_merged_annotated_tsv
+                valueFrom: "$(self.basename)"
+        out:
+            [output_file]
+    add_disclaimer_bcftools_sv_tsv:
+        run: ../tools/add_string_at_line.cwl
+        in:
+            input_file: sv_detect_variants/bcftools_merged_annotated_tsv
+            line_number:
+                default: 1
+            some_text:
+                source: disclaimer_text
+                valueFrom: "#$(self)"
+            output_name:
+                source: sv_detect_variants/bcftools_merged_annotated_tsv
+                valueFrom: "$(self.basename)"
+        out:
+            [output_file]
+    add_disclaimer_bcftools_filtered_sv_tsv:
+        run: ../tools/add_string_at_line.cwl
+        in:
+            input_file: sv_detect_variants/bcftools_merged_filtered_annotated_tsv
+            line_number:
+                default: 1
+            some_text:
+                source: disclaimer_text
+                valueFrom: "#$(self)"
+            output_name:
+                source: sv_detect_variants/bcftools_merged_filtered_annotated_tsv
+                valueFrom: "$(self.basename)"
+        out:
+            [output_file]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:

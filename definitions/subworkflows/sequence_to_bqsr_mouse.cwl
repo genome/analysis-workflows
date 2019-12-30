@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "Aligning chipseq data of mouse"
+label: "Alignment without BQSR"
 requirements:
     - class: SchemaDefRequirement
       types:
@@ -15,9 +15,12 @@ inputs:
     unaligned:
         type: ../types/sequence_data.yml#sequence_data[]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     final_name:
-        type: string?
+        type: string
         default: 'final.bam'
 outputs:
     final_bam:

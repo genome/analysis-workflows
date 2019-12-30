@@ -19,7 +19,10 @@ inputs:
             prefix: "I="
         secondaryFiles: [^.bai]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "REFERENCE_SEQUENCE="
     metric_accumulation_level:

@@ -9,7 +9,11 @@ requirements:
           - $import: ../types/labelled_file.yml
     - class: SubworkflowFeatureRequirement
 inputs:
-    reference: string
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     bams:
         type: File[]
     readgroups:

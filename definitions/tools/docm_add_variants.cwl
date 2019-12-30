@@ -9,7 +9,7 @@ requirements:
       ramMin: 9000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: mgibio/cle
+      dockerPull: mgibio/cle:v1.4.2
 arguments:
     ["-genotypeMergeOptions", "PRIORITIZE",
      "--rod_priority_list", "callers,docm",
@@ -17,7 +17,10 @@ arguments:
      "-o", { valueFrom: $(runtime.outdir)/merged.vcf.gz }]
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "-R"
             position: 1

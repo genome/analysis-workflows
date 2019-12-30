@@ -34,7 +34,10 @@ inputs:
             prefix: "--tumorBam"
         secondaryFiles: ${if (self.nameext === ".bam") {return self.basename + ".bai"} else {return self.basename + ".crai"}}
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             position: -4
             prefix: "--referenceFasta"

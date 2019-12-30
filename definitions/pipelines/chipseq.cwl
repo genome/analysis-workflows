@@ -11,7 +11,11 @@ requirements:
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
-    reference: string
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     final_name:
         type: string?
     chipseq_sequence:
@@ -31,13 +35,13 @@ inputs:
     intervals:
         type: File
     per_base_intervals:
-        type: ../types/labelled_file.yml#labelled_file[]?
+        type: ../types/labelled_file.yml#labelled_file[]
         default: []
     per_target_intervals:
-        type: ../types/labelled_file.yml#labelled_file[]?
+        type: ../types/labelled_file.yml#labelled_file[]
         default: []
     summary_intervals:
-        type: ../types/labelled_file.yml#labelled_file[]?
+        type: ../types/labelled_file.yml#labelled_file[]
         default: []
     picard_metric_accumulation_level:
         type: string

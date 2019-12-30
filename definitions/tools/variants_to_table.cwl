@@ -14,7 +14,10 @@ arguments:
     ["--allowMissingData", "-o", { valueFrom: $(runtime.outdir)/variants.tsv }]
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "-R"
             position: 1

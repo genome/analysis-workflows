@@ -2,13 +2,14 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "exome alignment with qc"
+label: "alignment for mouse with qc"
 requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     reference:
         type:
@@ -17,43 +18,27 @@ inputs:
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-    mills:
-        type: File
-        secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
-    bqsr_intervals:
-        type: string[]?
-    bait_intervals:
-        type: File
     final_name:
         type: string?
-    target_intervals:
-        type: File
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
+        default: []
     per_target_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
+        default: []
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
-    omni_vcf:
-        type: File
-        secondaryFiles: [.tbi]
+        default: []
     picard_metric_accumulation_level:
         type: string
-    qc_minimum_mapping_quality:
+    minimum_mapping_quality:
         type: int?
-    qc_minimum_base_quality:
+    minimum_base_quality:
         type: int?
 outputs:
     bam:
         type: File
         outputSource: alignment/final_bam
-        secondaryFiles: [.bai, ^.bai]
     mark_duplicates_metrics:
         type: File
         outputSource: alignment/mark_duplicates_metrics_file
@@ -66,58 +51,57 @@ outputs:
     alignment_summary_metrics:
         type: File
         outputSource: qc/alignment_summary_metrics
-    hs_metrics:
+    wgs_metrics:
         type: File
-        outputSource: qc/hs_metrics
-    per_target_coverage_metrics:
-        type: File[]
-        outputSource: qc/per_target_coverage_metrics
-    per_target_hs_metrics:
-        type: File[]
-        outputSource: qc/per_target_hs_metrics
+        outputSource: qc/wgs_metrics
+    gc_bias_metrics:
+        type: File
+        outputSource: qc/gc_bias_metrics
+    gc_bias_metrics_chart:
+        type: File
+        outputSource: qc/gc_bias_metrics_chart
+    gc_bias_metrics_summary:
+        type: File
+        outputSource: qc/gc_bias_metrics_summary
+    flagstats:
+        type: File
+        outputSource: qc/flagstats
     per_base_coverage_metrics:
         type: File[]
         outputSource: qc/per_base_coverage_metrics
     per_base_hs_metrics:
         type: File[]
         outputSource: qc/per_base_hs_metrics
+    per_target_coverage_metrics:
+        type: File[]
+        outputSource: qc/per_target_coverage_metrics
     summary_hs_metrics:
         type: File[]
         outputSource: qc/summary_hs_metrics
-    flagstats:
+    per_target_hs_metrics:
+        type: File[]
+        outputSource: qc/per_target_hs_metrics
+    bamcoverage_bigwig:
         type: File
-        outputSource: qc/flagstats
-    verify_bam_id_metrics:
-        type: File
-        outputSource: qc/verify_bam_id_metrics
-    verify_bam_id_depth:
-        type: File
-        outputSource: qc/verify_bam_id_depth
+        outputSource: qc/bamcoverage_bigwig
+
 steps:
     alignment:
-        run: ../subworkflows/sequence_to_bqsr.cwl
+        run: ../subworkflows/sequence_to_bqsr_mouse.cwl
         in:
             reference: reference
             unaligned: sequence
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
-            bqsr_intervals: bqsr_intervals
             final_name: final_name
         out: [final_bam,mark_duplicates_metrics_file]
     qc:
-        run: ../subworkflows/qc_exome.cwl
+        run: ../subworkflows/qc_wgs_mouse.cwl
         in:
             bam: alignment/final_bam
             reference: reference
-            bait_intervals: bait_intervals
-            target_intervals: target_intervals
+            picard_metric_accumulation_level: picard_metric_accumulation_level
+            minimum_mapping_quality: minimum_mapping_quality
+            minimum_base_quality: minimum_base_quality
             per_base_intervals: per_base_intervals
             per_target_intervals: per_target_intervals
             summary_intervals: summary_intervals
-            omni_vcf: omni_vcf
-            picard_metric_accumulation_level: picard_metric_accumulation_level
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
-        out: [insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
-
+        out: [insert_size_metrics,insert_size_histogram,alignment_summary_metrics,gc_bias_metrics,gc_bias_metrics_chart,gc_bias_metrics_summary,flagstats,per_base_coverage_metrics,per_base_hs_metrics,per_target_coverage_metrics,summary_hs_metrics,per_target_hs_metrics,bamcoverage_bigwig,wgs_metrics]

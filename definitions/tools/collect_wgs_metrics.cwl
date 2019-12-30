@@ -21,13 +21,26 @@ inputs:
             prefix: "I="
         secondaryFiles: [^.bai]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "R="
     intervals:
         type: File?
         inputBinding:
             prefix: "INTERVALS="
+    minimum_mapping_quality:
+        type: int?
+        doc: 'Minimum mapping quality for a read to contribute coverage.'
+        inputBinding:
+            prefix: "MINIMUM_MAPPING_QUALITY="
+    minimum_base_quality:
+        type: int?
+        doc: 'Minimum base quality for a base to contribute coverage. (N bases are considered to have negative infinite quality and will be excluded regardless of this value.)'
+        inputBinding:
+            prefix: "MINIMUM_BASE_QUALITY="
 outputs:
     wgs_metrics:
         type: File

@@ -9,7 +9,7 @@ requirements:
       ramMin: 18000
       coresMin: 1
     - class: DockerRequirement
-      dockerPull: mgibio/rnaseq
+      dockerPull: mgibio/rnaseq:1.0.0
 arguments: [ {valueFrom: "O=$(runtime.outdir)/rna_metrics.txt"},
              {valueFrom: "CHART=$(runtime.outdir)/rna_metrics.pdf"} ]
 inputs:
@@ -19,7 +19,7 @@ inputs:
             prefix: "REF_FLAT="
             separate: false
     ribosomal_intervals:
-        type: File
+        type: File?
         inputBinding:
             prefix: "RIBOSOMAL_INTERVALS="
             separate: false
@@ -54,6 +54,6 @@ outputs:
         outputBinding:
             glob: "rna_metrics.txt"
     chart:
-        type: File
+        type: File?
         outputBinding:
             glob: "rna_metrics.pdf"

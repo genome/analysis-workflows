@@ -23,15 +23,18 @@ inputs:
             position: 2
         secondaryFiles: [.bai]
     reference: 
-         type: string
-         inputBinding:
-             position: 3
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
+        inputBinding:
+            position: 3
     threshold: 
-         type: float
-         inputBinding:
-             position: 4
+        type: float
+        inputBinding:
+            position: 4
 outputs:
-     mapq0_filtered_vcf:
-         type: File
-         outputBinding:
-             glob: "mapq_filtered.vcf.gz"
+    mapq0_filtered_vcf:
+        type: File
+        outputBinding:
+            glob: "mapq_filtered.vcf.gz"

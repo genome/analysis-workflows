@@ -12,18 +12,22 @@ requirements:
       ramMin: 6000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: mgibio/dna-alignment
+      dockerPull: mgibio/dna-alignment:1.0.0
 inputs:
     bam:
         type: File
         inputBinding:
             prefix: "--input"
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "--ref"
 outputs:
     clipped_bam:
         type: File
+        secondaryFiles: [^.bai]
         outputBinding:
             glob: "clipped.bam"

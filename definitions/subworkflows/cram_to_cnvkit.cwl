@@ -6,8 +6,10 @@ label: "Subworkflow to allow calling cnvkit with cram instead of bam files"
 inputs:
     normal_cram:
         type: File
+        secondaryFiles: [^.crai]
     tumor_cram:
         type: File
+        secondaryFiles: [^.crai]
     reference:
         type: string
     bait_intervals:

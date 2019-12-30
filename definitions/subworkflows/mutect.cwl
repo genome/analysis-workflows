@@ -10,10 +10,13 @@ requirements:
     - class: StepInputExpressionRequirement
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     tumor_bam:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.bai, .bai]
     normal_bam:
         type: File?
         secondaryFiles: [^.bai]
@@ -21,6 +24,8 @@ inputs:
         type: File
     scatter_count:
         type: int
+    tumor_sample_name:
+        type: string
 outputs:
     unfiltered_vcf:
         type: File
@@ -67,6 +72,7 @@ steps:
             vcf: index/indexed_vcf
             variant_caller: 
                 valueFrom: "mutect"
+            sample_name: tumor_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
 

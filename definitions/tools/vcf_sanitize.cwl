@@ -31,7 +31,7 @@ requirements:
                 cat "$1" | perl -a -F'\t' -ne 'print $_ if $_ =~ /^#/ || $F[3] !~ /[^ACTGNactgn]/' | sed -e "s/ALT_F1R2/ALTF1R2/g;s/ALT_F2R1/ALTF2R1/g;s/REF_F1R2/REFF1R2/g;s/REF_F2R1/REFF2R1/g" >$outbase.sanitized.vcf
             fi
             /opt/htslib/bin/bgzip $outbase.sanitized.vcf
-            tabix -p vcf $outbase.sanitized.vcf.gz
+            /usr/bin/tabix -p vcf $outbase.sanitized.vcf.gz
 inputs:
     vcf:
         type: File

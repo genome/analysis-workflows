@@ -12,7 +12,11 @@ requirements:
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
-    reference: string
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     tumor_cram_name:
@@ -138,6 +142,14 @@ inputs:
         type: string
     somalier_vcf:
         type: File
+    tumor_sample_name:
+        type: string
+    normal_sample_name:
+        type: string
+    known_variants:
+        type: File?
+        secondaryFiles: [.tbi]
+        doc: "Previously discovered variants to be flagged in this pipelines's output vcf"
 outputs:
     final_outputs:
         type: string[]
@@ -193,6 +205,9 @@ steps:
             vep_to_table_fields: vep_to_table_fields
             vep_custom_annotations: vep_custom_annotations
             somalier_vcf: somalier_vcf
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
+            known_variants: known_variants
         out:
             [tumor_cram, tumor_mark_duplicates_metrics, tumor_insert_size_metrics, tumor_alignment_summary_metrics, tumor_hs_metrics, tumor_per_target_coverage_metrics, tumor_per_base_coverage_metrics, tumor_per_base_hs_metrics, tumor_summary_hs_metrics, tumor_flagstats, tumor_verify_bam_id_metrics, tumor_verify_bam_id_depth, normal_cram, normal_mark_duplicates_metrics, normal_insert_size_metrics, normal_alignment_summary_metrics, normal_hs_metrics, normal_per_target_coverage_metrics, normal_per_target_hs_metrics, normal_per_base_coverage_metrics, normal_per_base_hs_metrics, normal_summary_hs_metrics, normal_flagstats, normal_verify_bam_id_metrics, normal_verify_bam_id_depth, mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv, somalier_concordance_metrics, somalier_concordance_statistics]
     gatherer:

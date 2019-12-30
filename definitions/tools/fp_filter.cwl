@@ -16,7 +16,10 @@ arguments:
     "--output", { valueFrom: $(runtime.outdir)/$(inputs.output_vcf_basename).vcf }]
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "--reference"
             position: 1

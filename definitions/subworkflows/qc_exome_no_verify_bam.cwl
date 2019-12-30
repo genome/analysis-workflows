@@ -13,13 +13,16 @@ inputs:
         type: File
         secondaryFiles: [^.bai]
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     bait_intervals:
         type: File
     target_intervals:
         type: File
     picard_metric_accumulation_level:
-        type: string?
+        type: string
         default: ALL_READS
     minimum_mapping_quality:
         type: int?

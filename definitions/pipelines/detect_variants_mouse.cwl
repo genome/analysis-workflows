@@ -7,7 +7,10 @@ requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     tumor_bam:
         type: File
         secondaryFiles: [.bai,^.bai]
@@ -26,7 +29,7 @@ inputs:
     readcount_minimum_mapping_quality:
         type: int?
     mutect_scatter_count:
-        type: int?
+        type: int
     varscan_strand_filter:
         type: int?
         default: 0
@@ -65,29 +68,33 @@ inputs:
             - type: enum
               symbols: ["pick", "flag_pick", "pick_allele", "per_gene", "pick_allele_gene", "flag_pick_allele", "flag_pick_allele_gene"]
     vep_plugins:
-        type: string[]?
+        type: string[]
         default: [Downstream, Wildtype]
     filter_mapq0_threshold:
-        type: float?
+        type: float
         default: 0.15
     filter_minimum_depth:
-        type: int?
+        type: int
         default: 1
     cle_vcf_filter:
-        type: boolean?
+        type: boolean
         default: false
     filter_somatic_llr_threshold:
-        type: float?
+        type: float
         default: 5
     variants_to_table_fields:
-        type: string[]?
+        type: string[]
         default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
     variants_to_table_genotype_fields:
-        type: string[]?
+        type: string[]
         default: [GT,AD]
     vep_to_table_fields:
-        type: string[]?
+        type: string[]
         default: []
+    tumor_sample_name:
+        type: string
+    normal_sample_name:
+        type: string
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -156,6 +163,7 @@ steps:
             normal_bam: normal_bam
             interval_list: interval_list
             scatter_count: mutect_scatter_count
+            tumor_sample_name: tumor_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     strelka:
@@ -167,6 +175,8 @@ steps:
             interval_list: interval_list
             exome_mode: strelka_exome_mode
             cpu_reserved: strelka_cpu_reserved
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     varscan:
@@ -181,6 +191,8 @@ steps:
             min_var_freq: varscan_min_var_freq
             p_value: varscan_p_value
             max_normal_freq: varscan_max_normal_freq
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     pindel:
@@ -191,6 +203,8 @@ steps:
             normal_bam: normal_bam
             interval_list: interval_list
             insert_size: pindel_insert_size
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     combine:
@@ -291,11 +305,11 @@ steps:
             filter_mapq0_threshold: filter_mapq0_threshold
             filter_somatic_llr_threshold: filter_somatic_llr_threshold
             filter_minimum_depth: filter_minimum_depth
-            sample_names:
-                default: 'NORMAL,TUMOR'
             tumor_bam: tumor_bam
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference
+            tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out: 
             [filtered_vcf]
     annotated_filter_bgzip:
