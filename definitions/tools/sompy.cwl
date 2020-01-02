@@ -9,7 +9,7 @@ requirements:
       coresMin: 1
       ramMin: 16000
     - class: DockerRequirement
-      dockerPull: "pkrusche/hap.py"
+      dockerPull: "pkrusche/hap.py:v0.3.9"
 arguments: [
     "-N",
     "-o", "sompy",
