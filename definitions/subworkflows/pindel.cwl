@@ -107,5 +107,6 @@ steps:
             vcf: reindex/indexed_vcf
             variant_caller: 
                 valueFrom: "pindel"
+            sample_name: tumor_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
