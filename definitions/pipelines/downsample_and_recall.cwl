@@ -90,7 +90,7 @@ steps:
         out: [downsampled_sam]
     haplotype_caller:
         run: ../subworkflows/gatk_haplotypecaller_iterator.cwl
-        scatter: [bam, contamination_fraction]
+        scatter: [bam, contamination_fraction, output_prefix]
         scatterMethod: dotproduct
         in:
             reference: reference
@@ -106,6 +106,9 @@ steps:
             variant_index_type: variant_index_type
             variant_index_parameter: variant_index_parameter
             read_filter: read_filter
+            output_prefix:
+                source: downsample/downsampled_sam
+                valueFrom: '$(self.nameroot + ".downsampled.")'
         out: [gvcf]
     collect_wgs_metrics:
         run: ../tools/collect_wgs_metrics.cwl

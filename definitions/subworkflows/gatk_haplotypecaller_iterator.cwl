@@ -44,6 +44,9 @@ inputs:
         type: string?
     read_filter:
         type: string?
+    output_prefix:
+        type: string?
+        doc: 'an optional string to prepend to the output filename'
 outputs:
     gvcf:
         type: File[]
@@ -66,11 +69,13 @@ steps:
             variant_index_parameter: variant_index_parameter
             read_filter: read_filter
             output_file_name:
+                source: output_prefix
                 valueFrom: '${
+                    var prefix = self !== null ? self : "";
                     if (inputs.intervals.length == 1 && inputs.intervals[0].match(/^[0-9A-Za-z]+$/)) {
-                        return inputs.intervals[0] + ".g.vcf.gz";
+                        return prefix + inputs.intervals[0] + ".g.vcf.gz";
                     } else {
-                        return "output.g.vcf.gz";
+                        return prefix + "output.g.vcf.gz";
                     }
                 }'
         out:
