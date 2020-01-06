@@ -13,7 +13,10 @@ arguments:
         ["-o", { valueFrom: $(runtime.outdir)/$(inputs.cram.nameroot).bam }]
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             prefix: "-T"
             position: 1

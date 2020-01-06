@@ -46,6 +46,15 @@ inputs:
             prefix: "--sample_name"
             position: 5
         doc: 'include genotypes from this sample'
+    select_type:
+        type:
+            - "null"
+            - type: enum
+              symbols: ["INDEL", "SNP", "MIXED", "MNP", "SYMBOLIC", "NO_VARIATION"]
+        inputBinding:
+            prefix: "-selectType"
+            position: 6
+        doc: 'select only a certain type of variants' 
 outputs:
     filtered_vcf:
         type: File
