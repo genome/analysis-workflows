@@ -7,6 +7,8 @@ requirements:
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: ScatterFeatureRequirement
+    - class: InlineJavascriptRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     instrument_data_bams:
         type: File[]
@@ -90,6 +92,9 @@ outputs:
     fusion_evidence:
         type: File
         outputSource: kallisto/fusion_evidence
+    outfile:
+        type: File
+        outputSource: echo_output/outfile
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
@@ -114,7 +119,25 @@ steps:
             paired_end: paired_end
             fastqs:
                 source: bam_to_trimmed_fastq/trimmed_fastqs
-                linkMerge: merge_flattened
+                valueFrom: | 
+                          ${
+                                function flatten(inArr, outArr) {
+                                    var arrLen = inArr.length;
+                                    for (var i = 0; i < arrLen; i++) {
+                                        if (Array.isArray(inArr[i])) {
+                                            flatten(inArr[i], outArr);
+                                        }
+                                        else {
+                                            outArr.push(inArr[i]);
+                                        }
+                                    }
+                                    return outArr;
+                                }
+                                var fastqs = [];
+                                var result = flatten(self, fastqs);
+                                return result;
+                            }
+
         out:
             [aligned_bam, chim_junc, splice_junction_out,log_final]
     star_fusion_detect:

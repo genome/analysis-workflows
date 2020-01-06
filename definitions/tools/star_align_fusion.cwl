@@ -2,7 +2,7 @@
 class: CommandLineTool
 cwlVersion: v1.0
 label: "STAR: align reads to transcriptome"
-baseCommand: ["/bin/bash star.sh"]
+baseCommand: ["/bin/bash","star.sh"]
 requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
@@ -14,118 +14,96 @@ requirements:
       listing:
       - entryname: 'star.sh'
         entry: |
-
             set -eou pipefail
 
-            while getopts "c:r:i:g:p:s:f:" opt; do
+            while getopts "c:f:s:j:b:q:i:r:m:t:u:a:h:d:o:p:v:g:w:k:e:" opt; do
                 case "$opt" in
-                    c)
-                        cores="$OPTARG"
-                        ;;
-                case "$opt" in
-                    f)
-                        fastqs="$OPTARG"
-                        ;;
-                case "$opt" in
-                    s)
-                        chimSegmentMin="$OPTARG"
-                        ;;
-                case "$opt" in
-                    j)
-                        chimJunctionOverhangMin="$OPTARG"
-                        ;;
-                case "$opt" in
-                    b)
-                        alignSJDBoverhangMin="$OPTARG"
-                        ;;
-                case "$opt" in
-                    q)
-                        alignMatesGapMax="$OPTARG"
-                        ;;
-                case "$opt" in
-                    i)
-                        alignIntronMax="$OPTARG"
-                        ;;
-                case "$opt" in
-                    r)
-                        chimSegmentReadGapMax="$OPTARG"
-                        ;;
-                case "$opt" in
-                    m)
-                        alignSJstitchMismatchNmax="$OPTARG"
-                        ;;
-                case "$opt" in
-                    t)
-                        outSAMstrandField="$OPTARG"
-                        ;;
-                case "$opt" in
-                    u)
-                        outSAMunmapped="$OPTARG"
-                        ;;
-                case "$opt" in
-                    a)
-                        outSAMattrRGline="$OPTARG"
-                        ;;
-                case "$opt" in
-                    h)
-                        chimMultimapNmax="$OPTARG"
-                        ;;
-                case "$opt" in
-                    d)
-                        chimNonchimScoreDropMin="$OPTARG"
-                        ;;
-                case "$opt" in
-                    o)
-                        peOverlapNbasesMin="$OPTARG"
-                        ;;
-                case "$opt" in
-                    p)
-                        peOverlapMMp="$OPTARG"
-                        ;;
-                case "$opt" in
-                    v)
-                        chimOutJunctionFormat="$OPTARG"
-                        ;;
-                case "$opt" in
-                    g)
-                        genomeDir="$OPTARG"
-                        ;;
-                case "$opt" in
-                    w)
-                        twopassMode="$OPTARG"
-                        ;;
-                case "$opt" in
-                    k)
-                        sjdbGTFfile="$OPTARG"
-                        ;;
-                case "$opt" in
-                    e)
-                        paired="$OPTARG"
-                        ;;
-
+                    c) cores="$OPTARG";;
+                    f) fastqs="$OPTARG";;
+                    s) chimSegmentMin="$OPTARG";;
+                    j) chimJunctionOverhangMin="$OPTARG";;
+                    b) alignSJDBoverhangMin="$OPTARG";;
+                    q) alignMatesGapMax="$OPTARG";;
+                    i) alignIntronMax="$OPTARG";;
+                    r) chimSegmentReadGapMax="$OPTARG";;
+                    m) alignSJstitchMismatchNmax="$OPTARG";;
+                    u) outSAMunmapped="$OPTARG";;
+                    a) outSAMattrRGline="$OPTARG";;
+                    h) chimMultimapNmax="$OPTARG";;
+                    d) chimNonchimScoreDropMin="$OPTARG";;
+                    o) peOverlapNbasesMin="$OPTARG";;
+                    p) peOverlapMMp="$OPTARG";;
+                    v) chimOutJunctionFormat="$OPTARG";;
+                    g) genomeDir="$OPTARG";;
+                    w) twopassMode="$OPTARG";;
+                    e) paired="$OPTARG";;
+                    k) sjdbGTFfile="$OPTARG";;
                 esac
             done
+            echo $cores
+            echo $fastqs
+            echo $chimSegmentMin
+            echo $chimJunctionOverhangMin
+            echo $alignSJDBoverhangMin
+            echo $alignMatesGapMax
+            echo $alignIntronMax
+            echo $chimSegmentReadGapMax
+            echo $alignSJstitchMismatchNmax
+            echo $outSAMunmapped
+            echo $outSAMattrRGline
+            echo $chimMultimapNmax
+            echo $chimNonchimScoreDropMin
+            echo $peOverlapNbasesMin
+            echo $peOverlapMMp
+            echo $chimOutJunctionFormat
+            echo $genomeDir
+            echo $twopassMode
+            echo $sjdbGTFfile
+            echo $paired
 
             fqfinal=""
             if [[ "$paired" == "false" ]];then
                 #run star with all the fastqs in single-end mode
-                fqfinal=`join , $fastqs`
+                fqfinal=$fastqs
             else
                 #split interleaved fastqs into fq1/2 arguments
+                #can't use arrays so this gets a bit unweildy
+                fq1=""
+                fq2=""
                 i=0
-                fastq_array=(${fastqs})
-                fq1=()
-                fq2=()
-                while [[ "$i" -lt ${#fastq_array[*]} ]];do
-                    fq1+=( "${fastq_array[$i]}" )
+                oldifs=$IFS
+                IFS=$'\n' # can't use standard separator, because spaces could have files in the name
+                # this gets a bit unweildy because array syntax 
+                # chokes CWL (can't use dollar sign curly braces)
+                for fq in `echo $fastqs | tr "," "\n"`;do
+                    echo "test $fq"
+                    mod=`echo $i % 2`
+                    if [[ $mod -eq 0 ]];then
+                        count=`printf "%s" "$fq1" | wc -c`
+                        if [[ $count -gt 0 ]];then
+                            fq1="$fq1,$fq";
+                        else
+                            fq1="$fq";
+                        fi
+                    else
+                        count=`printf "%s" "$fq2" | wc -c`
+                        if [[ $count -gt 0 ]];then
+                            fq2="$fq2,$fq";
+                        else
+                            fq2="$fq";
+                        fi
+                    fi
                     let "i=$i+1"
-                    fq2+=( "${fastq_array[$i]}" )
-                    let "i=$i+1"
-                done
-                fqfinal=`join , "${fq1[@]}"` `join , "${fq2[@]}"`
+                 done
+                IFS=$oldifs #clean up after ourselves (though I don't think it's really needed)                
+                fqfinal="$fq1 $fq2"
             fi
 
-            /usr/local/bin/STAR --runMode alignReads --outSAMtype BAM Unsorted --outReadsUnmapped None --outFileNamePrefix STAR_ --readFilesCommand cat --outSAMattributes NH HI AS NM MD --runThreadN "$cores" --readFilesIn "$fqfinal"--chimSegmentMin "$chimSegmentMin" --chimJunctionOverhangMin "$chimJunctionOverhangMin" --alignSJDBoverhangMin "$alignSJDBoverhangMin" --alignMatesGapMax "$alignMatesGapMax" --alignIntronMax "$alignIntronMax" --chimSegmentReadGapMax "$chimSegmentReadGapMax" --alignSJstitchMismatchNmax "$alignSJstitchMismatchNmax" --outSAMstrandField "$outSAMstrandField" --outSAMunmapped "$outSAMunmapped" --outSAMattrRGline "$outSAMattrRGline" --chimMultimapNmax "$chimMultimapNmax" --chimNonchimScoreDropMin "$chimNonchimScoreDropMin" --peOverlapNbasesMin "$peOverlapNbasesMin" --peOverlapMMp "$peOverlapMMp" --chimOutJunctionFormat "$chimOutJunctionFormat" --genomeDir "$genomeDir" --twopassMode "$twopassMode" --sjdbGTFfile "$sjdbGTFfile"
+            echo "/usr/local/bin/STAR --runMode alignReads --outSAMtype BAM Unsorted --outReadsUnmapped None --outFileNamePrefix STAR_ --readFilesCommand cat --outSAMattributes NH HI AS NM MD --runThreadN \"$cores\" --readFilesIn \"$fqfinal\" --chimSegmentMin \"$chimSegmentMin\" --chimJunctionOverhangMin \"$chimJunctionOverhangMin\" --alignSJDBoverhangMin \"$alignSJDBoverhangMin\" --alignMatesGapMax \"$alignMatesGapMax\" --alignIntronMax \"$alignIntronMax\" --chimSegmentReadGapMax \"$chimSegmentReadGapMax\" --alignSJstitchMismatchNmax \"$alignSJstitchMismatchNmax\" --outSAMstrandField \"intronMotif\" --outSAMunmapped \"$outSAMunmapped\" --outSAMattrRGline \"$outSAMattrRGline\" --chimMultimapNmax \"$chimMultimapNmax\" --chimNonchimScoreDropMin \"$chimNonchimScoreDropMin\" --peOverlapNbasesMin \"$peOverlapNbasesMin\" --peOverlapMMp \"$peOverlapMMp\" --chimOutJunctionFormat \"$chimOutJunctionFormat\" --genomeDir \"$genomeDir\" --twopassMode \"$twopassMode\" --sjdbGTFfile \"$sjdbGTFfile\""
+
+            /usr/local/bin/STAR --runMode alignReads --outSAMtype BAM Unsorted --outReadsUnmapped None --outFileNamePrefix STAR_ --readFilesCommand cat --outSAMattributes NH HI AS NM MD --runThreadN $cores --readFilesIn $fqfinal --chimSegmentMin $chimSegmentMin --chimJunctionOverhangMin $chimJunctionOverhangMin --alignSJDBoverhangMin $alignSJDBoverhangMin --alignMatesGapMax $alignMatesGapMax --alignIntronMax $alignIntronMax --chimSegmentReadGapMax $chimSegmentReadGapMax --alignSJstitchMismatchNmax $alignSJstitchMismatchNmax --outSAMstrandField intronMotif --outSAMunmapped $outSAMunmapped --outSAMattrRGline $outSAMattrRGline --chimMultimapNmax $chimMultimapNmax --chimNonchimScoreDropMin $chimNonchimScoreDropMin --peOverlapNbasesMin $peOverlapNbasesMin --peOverlapMMp $peOverlapMMp --chimOutJunctionFormat $chimOutJunctionFormat --genomeDir $genomeDir --twopassMode $twopassMode --sjdbGTFfile $sjdbGTFfile
+
+#touch STAR_Aligned.out.bam STAR_Log.final.out STAR_Log.out STAR_Log.progress.out STAR_SJ.out.tab STAR_Chimeric.out.junction
 
 arguments: [
     {valueFrom: "$(runtime.cores)", position: 1, prefix: "-c"}
@@ -174,7 +152,7 @@ inputs:
             position: 11
             prefix: '-m'
             itemSeparator: ' '
-            shellQuote: False
+            shellQuote: True
     outsam_unmapped:
         type: string
         default: Within
@@ -188,7 +166,7 @@ inputs:
         inputBinding:
             position: 14
             itemSeparator: ' , '
-            shellQuote: False
+            shellQuote: True
             prefix: '-a'
         doc: '
             string(s): SAM/BAM read group line. The first word contains the read group
@@ -256,37 +234,33 @@ inputs:
             position: 26
             prefix: '-e'
     fastqs:
-        type:
-            type: array
-            items:
-                type: array
-                items: File
+        type: File[]
         inputBinding:
             position: 27
-            prefix: '-f'
-
+            prefix: "-f"
+            itemSeparator: ","
 outputs:
     aligned_bam:
         type: File
         outputBinding:
-          glob: "$(inputs.outfile_name_prefix)Aligned.out.bam"
+          glob: "STAR_Aligned.out.bam"
     log_final:
         type: File
         outputBinding:
-          glob: "$(inputs.outfile_name_prefix)Log.final.out"
+          glob: "STAR_Log.final.out"
     log:
         type: File
         outputBinding:
-          glob: "$(inputs.outfile_name_prefix)Log.out"
+          glob: "STAR_Log.out"
     log_progress:
         type: File
         outputBinding:
-          glob: "$(inputs.outfile_name_prefix)Log.progress.out"
+          glob: "STAR_Log.progress.out"
     splice_junction_out:
         type: File
         outputBinding:
-            glob: "$(inputs.outfile_name_prefix)SJ.out.tab"
+            glob: "STAR_SJ.out.tab"
     chim_junc:
         type: File
         outputBinding:
-            glob: "$(inputs.outfile_name_prefix)Chimeric.out.junction"
+            glob: "STAR_Chimeric.out.junction"
