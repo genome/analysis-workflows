@@ -285,6 +285,9 @@ inputs:
         type: boolean?
     pvacseq_threads:
         type: int?
+    vep_to_table_prefix:
+        type: string?
+        default: 'pvacseq'
 
     tumor_sample_name:
         type: string
@@ -808,5 +811,6 @@ steps:
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
+            vep_to_table_prefix: vep_to_table_prefix
         out:
             [annotated_vcf, annotated_tsv, mhc_i_all_epitopes, mhc_i_filtered_epitopes, mhc_i_ranked_epitopes, mhc_ii_all_epitopes, mhc_ii_filtered_epitopes, mhc_ii_ranked_epitopes, combined_all_epitopes, combined_filtered_epitopes, combined_ranked_epitopes]
