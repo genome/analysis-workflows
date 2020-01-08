@@ -106,9 +106,6 @@ inputs:
     vep_to_table_fields:
         type: string[]?
         default: [HGVSc,HGVSp]
-    vep_to_table_prefix:
-        type: string?
-        default: 'pvacseq'
 outputs:
     annotated_vcf:
         type: File
@@ -250,5 +247,6 @@ steps:
             vcf: index/indexed_vcf
             vep_fields: vep_to_table_fields
             tsv: variants_to_table/variants_tsv
-            prefix: vep_to_table_prefix
+            prefix:
+                default: 'pvacseq'
         out: [annotated_variants_tsv]
