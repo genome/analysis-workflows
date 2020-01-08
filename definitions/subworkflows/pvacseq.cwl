@@ -108,6 +108,7 @@ inputs:
         default: [HGVSc,HGVSp]
     vep_to_table_prefix:
         type: string?
+        default: 'pvacseq'
 outputs:
     annotated_vcf:
         type: File
