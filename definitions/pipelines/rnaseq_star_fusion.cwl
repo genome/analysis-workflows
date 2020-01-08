@@ -92,9 +92,6 @@ outputs:
     fusion_evidence:
         type: File
         outputSource: kallisto/fusion_evidence
-    outfile:
-        type: File
-        outputSource: echo_output/outfile
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
