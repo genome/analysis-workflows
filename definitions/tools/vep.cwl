@@ -24,7 +24,7 @@ arguments:
     "--offline",
     "--cache",
     "--symbol",
-    "-o", { valueFrom: $(runtime.outdir)/annotated.vcf }]
+    "-o", { valueFrom: $(runtime.outdir)/$(inputs.vcf.nameroot)_annotated.vcf }]
 inputs:
     vcf:
         type: File
@@ -123,8 +123,8 @@ outputs:
     annotated_vcf:
         type: File
         outputBinding:
-            glob: "annotated.vcf"
+            glob: "$(inputs.vcf.nameroot)_annotated.vcf"
     vep_summary:
         type: File
         outputBinding:
-            glob: "annotated.vcf_summary.html"
+            glob: "$(inputs.vcf.nameroot)_annotated.vcf_summary.html"
