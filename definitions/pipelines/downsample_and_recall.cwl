@@ -112,10 +112,14 @@ steps:
         out: [gvcf]
     collect_wgs_metrics:
         run: ../tools/collect_wgs_metrics.cwl
-        scatter: [bam]
+        scatter: [bam, sample_name]
+        scatterMethod: dotproduct
         in:
             bam: downsample/downsampled_sam
             reference: reference
             minimum_mapping_quality: qc_minimum_mapping_quality
             minimum_base_quality: qc_minimum_base_quality
+            sample_name:
+                source: downsample/downsampled_sam
+                valueFrom: $(self.nameroot)
         out: [wgs_metrics]
