@@ -179,5 +179,6 @@ steps:
         in:
             optitype_name: optitype_name
             cram: germline_exome/cram
+            reference: reference
         out:
             [optitype_tsv, optitype_plot]
