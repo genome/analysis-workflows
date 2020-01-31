@@ -32,7 +32,9 @@ inputs:
             prefix: "-i"
             position: 1
     cache_dir:
-        type: string
+        type:
+            - string
+            - Directory
         inputBinding:
             prefix: "--dir"
             position: 4
