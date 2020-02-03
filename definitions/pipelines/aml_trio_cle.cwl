@@ -110,7 +110,9 @@ inputs:
         type: int?
         default: 20
     vep_cache_dir:
-        type: string
+        type:
+            - string
+            - Directory
     synonyms_file:
         type: File?
     annotate_coding_only:
