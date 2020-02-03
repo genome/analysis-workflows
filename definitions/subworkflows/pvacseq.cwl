@@ -247,4 +247,6 @@ steps:
             vcf: index/indexed_vcf
             vep_fields: vep_to_table_fields
             tsv: variants_to_table/variants_tsv
+            prefix:
+                default: 'pvacseq'
         out: [annotated_variants_tsv]

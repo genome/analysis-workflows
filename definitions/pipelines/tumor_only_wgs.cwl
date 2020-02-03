@@ -37,7 +37,9 @@ inputs:
     variant_detection_intervals:
         type: File
     vep_cache_dir:
-        type: string
+        type:
+            - string
+            - Directory
     vep_ensembl_assembly:
         type: string
         doc: "genome assembly to use in vep. Examples: GRCh38 or GRCm38"

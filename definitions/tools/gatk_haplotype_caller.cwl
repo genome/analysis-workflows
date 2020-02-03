@@ -25,7 +25,9 @@ inputs:
             position: 2
         secondaryFiles: [^.bai]
     emit_reference_confidence:
-        type: string
+        type:
+            type: enum
+            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
         inputBinding:
             prefix: "-ERC"
             position: 3
@@ -56,12 +58,39 @@ inputs:
         inputBinding:
             prefix: "-contamination"
             position: 7
+    max_alternate_alleles:
+        type: int?
+        doc: 'maximum number of alternate alleles to genotype'
+        inputBinding:
+            prefix: '--max_alternate_alleles'
+            position: 8
+    variant_index_type:
+        type:
+            - 'null'
+            - type: enum
+              symbols: ['DYNAMIC_SEEK', 'DYNAMIC_SIZE', 'LINEAR', 'INTERVAL']
+        doc: 'type of IndexCreator to use for VCF/BCF indices'
+        inputBinding:
+            prefix: '--variant_index_type'
+            position: 9
+    variant_index_parameter:
+        type: string?
+        doc: 'parameter to pass to the index creator'
+        inputBinding:
+            prefix: '--variant_index_parameter'
+            position: 10
+    read_filter:
+        type: string?
+        doc: 'filters to apply to reads before analysis'
+        inputBinding:
+            prefix: '--read_filter'
+            position: 11
     output_file_name:
         type: string
         default: "output.g.vcf.gz"
         inputBinding:
             prefix: "-o"
-            position: 8
+            position: 12
 outputs:
     gvcf:
         type: File

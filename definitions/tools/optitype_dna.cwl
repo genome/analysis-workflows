@@ -13,7 +13,7 @@ requirements:
       coresMin: 4
       tmpdirMin: 20000
     - class: DockerRequirement
-      dockerPull: "mgibio/immuno_tools-cwl:1.0.0"
+      dockerPull: "mgibio/immuno_tools-cwl:1.0.1"
 inputs:
     optitype_name:
         type: string?
@@ -26,6 +26,14 @@ inputs:
         doc: "File to be HLA-typed"
         inputBinding:
             position: 2
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai]
+        doc: "Reference fasta used to make the cram"
+        inputBinding:
+            position: 3
 outputs:
     optitype_tsv:
         type: File

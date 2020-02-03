@@ -45,7 +45,9 @@ inputs:
     picard_metric_accumulation_level:
         type: string
     emit_reference_confidence:
-        type: string
+        type:
+            type: enum
+            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
     gvcf_gq_bands:
         type: string[]
     intervals:
@@ -55,7 +57,9 @@ inputs:
                 type: array
                 items: string
     vep_cache_dir:
-        type: string
+        type:
+            - string
+            - Directory
     vep_ensembl_assembly:
         type: string
         doc: "genome assembly to use in vep. Examples: GRCh38 or GRCm38"
@@ -177,5 +181,6 @@ steps:
         in:
             optitype_name: optitype_name
             cram: germline_exome/cram
+            reference: reference
         out:
             [optitype_tsv, optitype_plot]

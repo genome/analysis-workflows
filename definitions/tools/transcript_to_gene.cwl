@@ -12,7 +12,7 @@ requirements:
       ramMin: 2000
       coresMin: 1
     - class: DockerRequirement
-      dockerPull: "mgibio/rnaseq"
+      dockerPull: "mgibio/rnaseq:1.0.0"
 inputs:
     gene_transcript_lookup_table:
         type: File

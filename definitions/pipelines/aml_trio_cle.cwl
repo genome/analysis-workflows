@@ -53,7 +53,9 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
     emit_reference_confidence:
-        type: string
+        type:
+            type: enum
+            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
     gvcf_gq_bands:
         type: string[]
     intervals:
@@ -108,7 +110,9 @@ inputs:
         type: int?
         default: 20
     vep_cache_dir:
-        type: string
+        type:
+            - string
+            - Directory
     synonyms_file:
         type: File?
     annotate_coding_only:
