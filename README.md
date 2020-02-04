@@ -2,9 +2,12 @@
 
 # analysis-workflows
 
-This repo contains CWL workflow defintions for executing MGI analysis pipelines. 
+## Overview
+The [McDonnell Genome Institute](https://www.genome.wustl.edu/) (MGI) and collaborating labs and departments of [Washington University School of Medicine](https://medicine.wustl.edu/) share [Common Workflow Language](https://www.commonwl.org/) (CWL) workflow defintions focused on reusable, reproducible analysis pipelines for genomics data.  
 
-The structure of the repo is as follows:
+## Structure
+
+The main structure of this repo is described in the following table:
 
 | Path | Description |
 | --- | --- |
@@ -15,17 +18,25 @@ The structure of the repo is as follows:
 | definitions/types | custom CWL data types for inputs to tools and workflows |
 | example_data | example input data, input YAML files, and expected output files for testing |
 
-## CWL Documentation
+## Documentation
 
-For all documentation of pipelines, subworkflows and tools as well as additional information regarding test data, continous integration and configuration, please see the GitHub wiki:
+All documentation of CWL pipelines, subworkflows, and tools as well as additional information regarding test data, continous integration, and configuration can be found on the GitHub wiki:
 https://github.com/genome/analysis-workflows/wiki
 
-## Docker Images
+## Images
 
 All MGI supported Docker images used in the tool workflow definitions are available on [mgibio DockerHub](https://hub.docker.com/u/mgibio/): 
 
 Many tools rely on third-party Docker images publicly available from sources such as [Docker Hub](https://hub.docker.com) and [BioContainers](https://biocontainers.pro).
 
+## Installation
+
+No software installation is necessary to use these CWL definitions. 
+
+Each CWL file is validated using [cwltool](https://github.com/common-workflow-language/cwltool). Additionl workflow definition testing is performed with [Cromwell](https://github.com/broadinstitute/cromwell). However, currently there are no automated workflow tests using Cromwell.
+
+### Workflow Execution Service
+
+These workflow definitions are built for interoperability with any [Workflow Execution Service](https://github.com/ga4gh/workflow-execution-service-schemas) (WES) schema compatible implementation that supports CWL.
 
 [![DOI](https://zenodo.org/badge/64162512.svg)](https://zenodo.org/badge/latestdoi/64162512)
-
