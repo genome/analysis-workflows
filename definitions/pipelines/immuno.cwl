@@ -298,27 +298,51 @@ outputs:
         type: File
         outputSource: rnaseq/final_bam
         secondaryFiles: [.bai]
+        label: "Sorted BAM from tumor RNA sample"
+        doc: |
+          Sorted BAM file of sequencing read alignments by HISAT2 with duplicate reads tagged
     stringtie_transcript_gtf:
         type: File
         outputSource: rnaseq/stringtie_transcript_gtf
+        label: "Transcript GTF assembled from tumor RNA sample by StringTie"
+        doc: |
+          GTF file containing the transcripts assembled from the tumor RNA sample, created by StringTie
     stringtie_gene_expression_tsv:
         type: File
         outputSource: rnaseq/stringtie_gene_expression_tsv
+        label: "Gene abundance table from tumor RNA sample by StringTie"
+        doc: |
+          Tab-delimited file containing gene abundances in FPKM and TPM, created by StringTie
     transcript_abundance_tsv:
         type: File
         outputSource: rnaseq/transcript_abundance_tsv
+        label: "Transcript-level abundance table by kallisto"
+        doc: |
+          Tab-delimited file containing transcript-level abundance estimates in TPM, created by kallisto
     transcript_abundance_h5:
         type: File
         outputSource: rnaseq/transcript_abundance_h5
+        label: "Transcript-level abundance table in HDF5 format by kallisto"
+        doc: |
+          HDF5 binary file containing transcript-level abundance esimates, bootstrap estimate, and so on, created by kallisto
     gene_abundance:
         type: File
         outputSource: rnaseq/gene_abundance
+        label: "Gene-level abundance output by tximport with kallisto output"
+        doc: |
+          Tab-delmited file containing the abundance estimates summarized in the gene level with kallisto output by Bioconductor tximport tool
     metrics:
         type: File
         outputSource: rnaseq/metrics
+        label: "RNA-seq diagnostics/quality metrics"
+        doc: |
+          RNA-seq diagnostics/quality metrics showing the distribution of the bases within the transcripts, created by picard CollectRnaSeqMetrics tool
     chart:
         type: File?
         outputSource: rnaseq/chart
+        label: "Plot for RNA-seq diagnostics/quality metrics"
+        doc: |
+          PDF file for the plot of RNA sequencing coverage at the normalized position across transcript as RNA-seq diagnostics/quality metrics, created by picard CollectRnaSeqMetrics tool
 
     tumor_cram:
         type: File
