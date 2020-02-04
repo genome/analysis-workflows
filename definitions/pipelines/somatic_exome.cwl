@@ -225,6 +225,7 @@ inputs:
     manta_non_wgs:
         type: boolean?
         default: true
+        doc: "toggles on settings for WES"
     manta_output_contigs:
         type: boolean?
     somalier_vcf:
