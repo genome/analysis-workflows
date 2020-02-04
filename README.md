@@ -3,7 +3,7 @@
 # analysis-workflows
 
 ## Overview
-The [McDonnell Genome Institute](https://www.genome.wustl.edu/) (MGI) and [contributing](https://github.com/genome/analysis-workflows#contributors) labs and departments of [Washington University School of Medicine](https://medicine.wustl.edu/) (WUSM) share [Common Workflow Language](https://www.commonwl.org/) (CWL) workflow defintions focused on reusable, reproducible analysis pipelines for genomics data.  
+The [McDonnell Genome Institute](https://www.genome.wustl.edu/) (MGI) and [contributing](https://github.com/genome/analysis-workflows#contributions) staff, faculty, labs and departments of [Washington University School of Medicine](https://medicine.wustl.edu/) (WUSM) share [Common Workflow Language](https://www.commonwl.org/) (CWL) workflow defintions focused on reusable, reproducible analysis pipelines for genomics data.  
 
 ## Structure
 
@@ -41,7 +41,7 @@ These workflow definitions are built for interoperability with any [Workflow Exe
 
 ## Contributions
 
-For a complete list of contributions to this repo, please see [GitHub Contributors](https://github.com/genome/analysis-workflows/graphs/contributors).
+A big thanks to all of the developers, bioinformaticians and scientists who built this resource. For a complete list of software contributions, i.e. commits, to this repository, please see the [GitHub Contributors](https://github.com/genome/analysis-workflows/graphs/contributors) section.
 
 ### Collaborators
 
