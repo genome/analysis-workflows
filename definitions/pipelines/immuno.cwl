@@ -59,32 +59,103 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
+        label: "reference: Reference fasta file for a desired assembly"
+        doc: |
+          reference contains the nucleotide sequence for a given assembly (hg37, hg38, etc.)
+          in fasta format for the entire genome. This is what reads will be aligned to.
+          Appropriate files can be found on ensembl at https://ensembl.org/info/data/ftp/index.html
+          When providing the reference secondary files corresponding to reference indices must be
+          located in the same directory as the reference itself. These files can be created with
+          samtools index, bwa index, and picard CreateSequenceDictionary.
 
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+        label: "tumor_sequence: yml file specifying the location of MT sequencing data"
+        doc: |
+          tumor_sequence is a yml file for which to pass information regarding
+          sequencing data for single sample (i.e. fastq files). If more than one fastq file exist
+          for a sample, as in the case for multiple instrument data, the sequence tag is simply
+          repeated with the additional data (see example input file). Note that in the @RG field
+          ID and SM are required.
     tumor_name:
         type: string?
         default: 'tumor'
+        label: "tumor_name: String specifying the name of the MT sample"
+        doc: |
+          tumor_name provides a string for what the MT sample will be referred to in the various
+          outputs, for exmaple the VCF files.
     normal_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+        label: "normal_sequence: yml file specifying the location of WT sequencing data"
+        doc: |
+          normal_sequence is a yml file for which to pass information regarding
+          sequencing data for single sample (i.e. fastq files). If more than one fastq file exist
+          for a sample, as in the case for multiple instrument data, the sequence tag is simply
+          repeated with the additional data (see example input file). Note that in the @RG field
+          ID and SM are required.
     normal_name:
         type: string?
         default: 'normal'
+        label: "normal_name: String specifying the name of the WT sample"
+        doc: |
+          normal_name provides a string for what the WT sample will be referred to in the various
+          outputs, for exmaple the VCF files.
     mills:
         type: File
         secondaryFiles: [.tbi]
+        label: "mills: File specifying common polymorphic indels from mills et al."
+        doc: |
+          mills provides known polymorphic indels recommended by GATK for a variety of
+          tools including the BaseRecalibrator. This file is part of the GATK resource
+          bundle available at http://www.broadinstitute.org/gatk/guide/article?id=1213
+          Essentially it is a list of known indels originally discovered by mill et al.
+          https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1557762/
+          File should be in vcf format, and tabix indexed.
     known_indels:
         type: File
         secondaryFiles: [.tbi]
+        label: "known_indels: File specifying common polymorphic indels from 1000G"
+        doc: |
+          known_indels provides known indels reecommended by GATK for a variety of tools
+          including the BaseRecalibrator. This file is part of the GATK resource bundle
+          available at http://www.broadinstitute.org/gatk/guide/article?id=1213
+          Essintially it is a list of known indels from 1000 Genomes Phase I indel calls.
+          File should be in vcf format, and tabix indexed.
     dbsnp_vcf:
         type: File
         secondaryFiles: [.tbi]
+        label: "dbsnp_vcf: File specifying common polymorphic indels from dbSNP"
+        doc: |
+          dbsnp_vcf provides known indels reecommended by GATK for a variety of tools
+          including the BaseRecalibrator. This file is part of the GATK resource bundle
+          available at http://www.broadinstitute.org/gatk/guide/article?id=1213
+          Essintially it is a list of known indels from dbSNP. File should be in vcf format,
+          and tabix indexed.
     bqsr_intervals:
         type: string[]
+        label: "bqsr_intervals: Array of strings specifying regions for base quality score recalibration"
+        doc: |
+          bqsr_intervals provides an array of genomic intervals for which to apply
+          GATK base quality score recalibrations. Typically intervals are given
+          for the entire chromosome (i.e. chr1, chr2, etc.), these names should match
+          the format in the reference file.
     bait_intervals:
         type: File
+        label: "bait_intervals: interval_list file of baits used in the sequencing experiment"
+        doc: |
+          bait_intervals is an interval_list corresponding to the baits used in sequencing reagent.
+          These are essentially coordinates for regions you were able to design probes for in the reagent.
+          Typically the reagent provider has this information available in bed format and it can be
+          converted to an interval_list with Picards BedToIntervalList. Astrazeneca also maintains a repo
+          of baits for common sequencing reagents available at https://github.com/AstraZeneca-NGS/reference_data
     target_intervals:
         type: File
+        label: "target_intervals: interval_list file of targets used in the sequencing experiment"
+        doc: |
+          target_intervals is an interval_list corresponding to the targets for the sequencing reagent.
+          These are essentially coordinates for regions you wanted to design probes for in the reagent.
+          Bed files with this information can be converted to interval_lists with Picards BedToIntervalList.
+          In general for a WES exome reagent bait_intervals and target_intervals are the same.
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
     per_target_intervals:
