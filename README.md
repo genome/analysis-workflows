@@ -20,7 +20,7 @@ The main structure of this repo is described in the following table:
 
 ## Documentation
 
-All documentation of CWL pipelines, subworkflows and tools as well as additional information regarding test data, continous integration and configuration, please see the GitHub wiki:
+All documentation of CWL pipelines, subworkflows, and tools as well as additional information regarding test data, continous integration, and configuration can be found on the GitHub wiki:
 https://github.com/genome/analysis-workflows/wiki
 
 ## Images
@@ -40,4 +40,3 @@ Each CWL file is validated using [cwltool](https://github.com/common-workflow-la
 These workflow definitions are built for interoperability with any [Workflow Execution Service](https://github.com/ga4gh/workflow-execution-service-schemas) (WES) schema compatible implementation that supports CWL.
 
 [![DOI](https://zenodo.org/badge/64162512.svg)](https://zenodo.org/badge/latestdoi/64162512)
-
