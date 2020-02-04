@@ -70,9 +70,9 @@ inputs:
 
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-        label: "tumor_sequence: yml file specifying the location of MT sequencing data"
+        label: "tumor_sequence: file specifying the location of MT sequencing data"
         doc: |
-          tumor_sequence is a yml file for which to pass information regarding
+          tumor_sequence is a data structure described in sequence_data.yml used to pass information regarding
           sequencing data for single sample (i.e. fastq files). If more than one fastq file exist
           for a sample, as in the case for multiple instrument data, the sequence tag is simply
           repeated with the additional data (see example input file). Note that in the @RG field
@@ -86,9 +86,9 @@ inputs:
           outputs, for exmaple the VCF files.
     normal_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-        label: "normal_sequence: yml file specifying the location of WT sequencing data"
+        label: "normal_sequence: file specifying the location of WT sequencing data"
         doc: |
-          normal_sequence is a yml file for which to pass information regarding
+          normal_sequence is a data structure described in sequence_data.yml used to pass information regarding
           sequencing data for single sample (i.e. fastq files). If more than one fastq file exist
           for a sample, as in the case for multiple instrument data, the sequence tag is simply
           repeated with the additional data (see example input file). Note that in the @RG field
