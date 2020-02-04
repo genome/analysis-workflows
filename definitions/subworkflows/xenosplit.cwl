@@ -5,13 +5,23 @@ class: Workflow
 label: "Xenosplit workflow"
 requirements:
     - class: SubworkflowFeatureRequirement
+
 inputs:
-    graftbam:
-        type: File
-        secondaryFiles: [.bai]
-    hostbam:
-        type: File
-        secondaryFiles: [.bai]
+    graft_reference:
+        type: Directory
+    host_reference:
+        type: Directory
+    fastq:
+        type: File[]
+    fastq2:
+        type: File[]
+    graft_outfile_name_prefix:
+        type: string?
+        default: "Graft_"
+    host_outfile_name_prefix:
+        type: string?
+        default: "Host_"
+
 outputs:
     xenosplitbam:
         type: File
@@ -19,12 +29,31 @@ outputs:
     xenosplitscore:
         type: File
         outputSource: xenosplit/goodnessOfMapping
+
 steps:
+    graft_star_alignment:
+        run: ../tools/xenosplit_align.cwl
+        in:
+            fastq: fastq
+            fastq2: fastq2
+            star_genome_dir: graft_reference
+            outfile_name_prefix: graft_outfile_name_prefix
+        out:
+            [aligned_bam]
+    host_star_alignment:
+        run: ../tools/xenosplit_align.cwl
+        in:
+            fastq: fastq
+            fastq2: fastq2
+            star_genome_dir: host_reference
+            outfile_name_prefix: host_outfile_name_prefix
+        out:
+            [aligned_bam]
     xenosplit_bam_conversion:
         run: ../tools/xenosplit_bam_conversion.cwl
         in:
-            graftbam: graftbam
-            hostbam: hostbam
+            graftbam: graft_star_alignment/aligned_bam
+            hostbam: host_star_alignment/aligned_bam
         out:
             [graftbam_accepted, hostbam_accepted]
     xenosplit:
