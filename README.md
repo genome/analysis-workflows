@@ -3,7 +3,9 @@
 # analysis-workflows
 
 ## Overview
-The [McDonnell Genome Institute](https://www.genome.wustl.edu/) (MGI) and collaborating labs and departments of [Washington University School of Medicine](https://medicine.wustl.edu/) share [Common Workflow Language](https://www.commonwl.org/) (CWL) workflow definitions focused on reusable, reproducible analysis pipelines for genomics data.  
+
+The [McDonnell Genome Institute](https://www.genome.wustl.edu/) (MGI) and [contributing](https://github.com/genome/analysis-workflows#contributions) staff, faculty, labs and departments of [Washington University School of Medicine](https://medicine.wustl.edu/) (WUSM) share [Common Workflow Language](https://www.commonwl.org/) (CWL) workflow definitions focused on reusable, reproducible analysis pipelines for genomics data.  
+
 
 ## Structure
 
@@ -39,4 +41,26 @@ Each CWL file is validated using [cwltool](https://github.com/common-workflow-la
 
 These workflow definitions are built for interoperability with any [Workflow Execution Service](https://github.com/ga4gh/workflow-execution-service-schemas) (WES) schema compatible implementation that supports CWL.
 
+## Contributions
+
+A big thanks to all of the developers, bioinformaticians and scientists who built this resource. For a complete list of software contributions, i.e. commits, to this repository, please see the [GitHub Contributors](https://github.com/genome/analysis-workflows/graphs/contributors) section.
+
+### Collaborators
+
+The following WUSM collaborators have provided significant contributions in terms of workflow design, scientific direction, and validation of [analysis-workflows](https://github.com/genome/analysis-workflows) output.
+
+* [Chris Miller, PhD](https://www.genome.wustl.edu/people/chris-miller-phd/)
+* [David Spencer, MD, PhD](https://www.genome.wustl.edu/people/david-spencer/)
+* [Malachi Griffith, PhD](https://www.genome.wustl.edu/people/malachi-griffith/)
+* [Obi L. Griffith, PhD](https://www.genome.wustl.edu/people/obi-griffith/)
+
+### Departments, Institutes, and Labs
+* [Department of Genetics](http://genetics.wustl.edu/)
+* [Department of Medicine, Divisions of Hematology and Oncology](https://oncology.wustl.edu/)
+* [Griffith Lab](https://www.genome.wustl.edu/research/labs/griffith-lab/)
+* [Institue of Clinical and Translational Sciences](https://icts.wustl.edu/)
+* [McDonnell Genome Institute](https://www.genome.wustl.edu/)
+
+
 [![DOI](https://zenodo.org/badge/64162512.svg)](https://zenodo.org/badge/latestdoi/64162512)
+
