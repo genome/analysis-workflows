@@ -145,12 +145,21 @@ inputs:
           A vcf file from the illumina omni platform specifying genotype information. Used for the identification of sample swaps with the the tool verifyBamId. VCf files suitable for this can be found here: ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/supporting/hd_genotype_chip/. File must be tabix indexed and on the same genome assembly as the alignments you are producing.
     picard_metric_accumulation_level:
         type: string
+        label: "picard_metric_accumulation_level: picard tool flag specifying how to aggregate QC metrics"
+        doc: |
+          A string, one of ALL_READS, SAMPLE, LIBRARY, READ_GROUP, specifying how relevant picard tools should summarize QC metrics. Currently used in picards CollectInsertSizeMetrics, CollectAlignmentSummaryMetrics
     qc_minimum_mapping_quality:
         type: int?
         default: 0
+        label: "qc_minimum_mapping_quality: minimum read mapping quality picard uses when summarizing QC metrics"
+        doc: |
+          An integer specifying the minimum read mapping quality picard requires to summarize QC metrics. Commonly set at 20.
     qc_minimum_base_quality:
         type: int?
         default: 0
+        label: "qc_minimum_base_quality: minimum base quality picard uses when summarizing QC metrics"
+        doc: |
+          An integer specifying the minimum base quality within a read picard requires to summarize QC metrics. Commonly set at 20.
     interval_list:
         type: File
     cosmic_vcf:
