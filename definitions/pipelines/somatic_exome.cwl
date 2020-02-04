@@ -229,7 +229,7 @@ inputs:
         type: boolean?
     somalier_vcf:
         type: File
-        doc: "a vcf file of known polymorphic sites"
+        doc: "a vcf file of known polymorphic sites for somalier to compare normal and tumor samples for identity; sites files can be found at: https://github.com/brentp/somalier/releases"
     tumor_sample_name:
         type: string
     normal_sample_name:
