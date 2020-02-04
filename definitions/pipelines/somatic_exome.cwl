@@ -227,6 +227,7 @@ inputs:
         default: true
     manta_output_contigs:
         type: boolean?
+        doc: "if true, outputs assembled contig sequences in final VCF files, in the INFO field CONTIG"
     somalier_vcf:
         type: File
     tumor_sample_name:
