@@ -92,7 +92,7 @@ inputs:
         secondaryFiles: [.tbi]
         label: "dbsnp_vcf: File specifying common polymorphic indels from dbSNP"
         doc: |
-          dbsnp_vcf provides known indels recomended by GATK for a variety of tools
+          dbsnp_vcf provides known indels recommended by GATK for a variety of tools
           including the BaseRecalibrator. This file is part of the GATK resource bundle
           available at http://www.broadinstitute.org/gatk/guide/article?id=1213
           Essintially it is a list of known indels from dbSNP. File should be in vcf format,
