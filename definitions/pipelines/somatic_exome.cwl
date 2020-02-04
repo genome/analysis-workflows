@@ -225,7 +225,7 @@ inputs:
     manta_non_wgs:
         type: boolean?
         default: true
-        doc: "toggles on settings for WES"
+        doc: "toggles on or off manta settings for WES vs. WGS mode for structural variant detection"
     manta_output_contigs:
         type: boolean?
     somalier_vcf:
