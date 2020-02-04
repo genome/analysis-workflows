@@ -92,7 +92,7 @@ inputs:
         secondaryFiles: [.tbi]
         label: "dbsnp_vcf: File specifying common polymorphic indels from dbSNP"
         doc: |
-          dbsnp_vcf provides known indels reecommended by GATK for a variety of tools
+          dbsnp_vcf provides known indels recomended by GATK for a variety of tools
           including the BaseRecalibrator. This file is part of the GATK resource bundle
           available at http://www.broadinstitute.org/gatk/guide/article?id=1213
           Essintially it is a list of known indels from dbSNP. File should be in vcf format,
@@ -124,13 +124,25 @@ inputs:
           In general for a WES exome reagent bait_intervals and target_intervals are the same.
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
+        label: "per_base_intervals: yaml file specifying name and input for picard CollectHsMetrics"
+        doc: |
+          Optional input, redundant with bait_intervals, provides a way to name name the output file from running picard CollectHsMetrics. See ../types/labelled_file.yml for an example.
     per_target_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
+        label: "per_target_intervals: yaml file specifying name and input for picard CollectHsMetrics"
+        doc: |
+          Optional input, redundant with target_intervals, provides a way to name name the output file from running picard CollectHsMetrics. See ../types/labelled_file.yml for an example.
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
+        label: "summary_intervals: yaml file specifying name and input for picard CollectHsMetrics"
+        doc: |
+          Optional input, redundant with bait_intervals and target_intervals, supplies the same file for BAIT_INTERVALS= and TARGET_INTERVALS= parameters in picard CollectHsMetrics. Provides a way to name name the output file from running the picard command. See ../types/labelled_file.yml for an example.
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
+        label: "omni_vcf: An omni VCF file from 1000 genomes specifying genotype information"
+        doc: |
+          A vcf file from the illumina omni platform specifying genotype information. Used for the identification of sample swaps with the the tool verifyBamId. VCf files suitable for this can be found here: ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/supporting/hd_genotype_chip/. File must be tabix indexed and on the same genome assembly as the alignments you are producing.
     picard_metric_accumulation_level:
         type: string
     qc_minimum_mapping_quality:
