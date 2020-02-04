@@ -9,7 +9,7 @@ requirements:
       ramMin: 9000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: mgibio/cle:v1.3.1
+      dockerPull: mgibio/gatk-cwl:3.6.0
 arguments:
     ["-genotypeMergeOptions", "PRIORITIZE",
      "--rod_priority_list", "mutect,varscan,strelka",
