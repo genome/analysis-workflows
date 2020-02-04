@@ -18,35 +18,33 @@ requirements:
         entry: |
             set -o pipefail
             set -o errexit
-            
-            /opt/samtools/bin/samtools view -h -F 256 -F 2048 $1 > graftbam.bam
-            /opt/samtools/bin/samtools sort -n -o graftbam_accepted.bam graftbam.bam
-            /opt/samtools/bin/samtools index graftbam_accepted.bam
 
-            /opt/samtools/bin/samtools view -h -F 256 -F 2048 $2 > hostbam.bam
+            /opt/samtools/bin/samtools sort -o graftsorted.bam $1
+            /opt/samtools/bin/samtools index graftsorted.bam
+            /opt/samtools/bin/samtools view -h -F 256 -F 2048 graftsorted.bam > graftbam.bam
+            /opt/samtools/bin/samtools sort -n -o graftbam_accepted.bam graftbam.bam
+
+            /opt/samtools/bin/samtools sort -o hostsorted.bam $2
+            /opt/samtools/bin/samtools index hostsorted.bam
+            /opt/samtools/bin/samtools view -h -F 256 -F 2048 hostsorted.bam > hostbam.bam
             /opt/samtools/bin/samtools sort -n -o hostbam_accepted.bam hostbam.bam
-            /opt/samtools/bin/samtools index hostbam_accepted.bam
 
 inputs:
     graftbam:
         type: File
         inputBinding:
             position: 1
-        secondaryFiles: [.bai]
     hostbam:
         type: File?
         inputBinding:
             position: 2
-        secondaryFiles: [.bai]
 
 outputs:
     graftbam_accepted:
         type: File
         outputBinding:
             glob: "graftbam_accepted.bam"
-        secondaryFiles: [.bai]
     hostbam_accepted:
         type: File
         outputBinding:
             glob: "hostbam_accepted.bam"
-        secondaryFiles: [.bai]
