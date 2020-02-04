@@ -19,20 +19,18 @@ requirements:
             set -o pipefail
             set -o errexit
             
-            python /opt/xenosplit.py --pairedEnd --out graftOut.bam $1 $2
-            python /opt/xenosplit.py --count $1 $2 > goodnessOfMapping.txt
+            python /opt/Xenosplit.py --pairedEnd --out graftOut.bam $1 $2
+            python /opt/Xenosplit.py --count $1 $2 > goodnessOfMapping.txt
 
 inputs:
     graftbam:
         type: File
         inputBinding:
             position: 1
-        secondaryFiles: [.bai]
     hostbam:
         type: File
         inputBinding:
             position: 2
-        secondaryFiles: [.bai]
 
 outputs:
     graftOut:
