@@ -222,6 +222,7 @@ inputs:
     manta_call_regions:
         type: File?
         secondaryFiles: [.tbi]
+        doc: "bgzip-compressed, tabix-indexed BED file specifiying regions to which variant analysis will be restricted"
     manta_non_wgs:
         type: boolean?
         default: true
