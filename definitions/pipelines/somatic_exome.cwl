@@ -126,12 +126,12 @@ inputs:
         type: ../types/labelled_file.yml#labelled_file[]
         label: "per_base_intervals: yaml file specifying name and input for picard CollectHsMetrics"
         doc: |
-          Optional input, redundant with bait_intervals, provides a way to name name the output file from running picard CollectHsMetrics. See ../types/labelled_file.yml for an example.
+          Optional input, redundant with bait_intervals, provides a way to name name the output file from running picard CollectHsMetrics. Also triggers picard to output per-base metrics. See ../types/labelled_file.yml for an example.
     per_target_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
         label: "per_target_intervals: yaml file specifying name and input for picard CollectHsMetrics"
         doc: |
-          Optional input, redundant with target_intervals, provides a way to name name the output file from running picard CollectHsMetrics. See ../types/labelled_file.yml for an example.
+          Optional input, redundant with target_intervals, provides a way to name name the output file from running picard CollectHsMetrics. Also triggers picard to output per-base metrics. See ../types/labelled_file.yml for an example.
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
         label: "summary_intervals: yaml file specifying name and input for picard CollectHsMetrics"
