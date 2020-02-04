@@ -290,7 +290,9 @@ inputs:
 
     clinical_calls:
         type: string[]?
-        doc: "Clinical HLA typing results; element format: HLA-X*01:02[/HLA-X...]"
+        label: "clinical_calls: Clinical HLA typing results; element format: HLA-X*01:02[/HLA-X...]"
+        doc: |
+        "clinical_calls is used to provide clinical HLA typing results; element format: HLA-X*01:02[/HLA-X...] when available.
 
     #pvacseq inputs
     readcount_minimum_base_quality:
@@ -352,17 +354,36 @@ inputs:
             - "null"
             - type: enum
               symbols: ["cterm", "20s"]
+         label: "net_chop_method: NetChop prediction method to use ("cterm" for C term 3.0, "20s" for 20S 3.0)"
+         doc: |
+         net_chop_method is used to specify which NetChop prediction method to use ("cterm" for C term 3.0, "20s" for 20S 3.0).
+         C-term 3.0 is trained with publicly available MHC class I ligands and the authors believe that is performs best in predicting the
+         boundaries of CTL epitopes. 20S is trained with in vitro degradation data.
     net_chop_threshold:
         type: float?
+        label: "net_chop_threshold: NetChop prediction threshold"
+        doc: |
+        net_chop_threshold specifies the threshold to use for NetChop prediction; increasing the threshold results in better specificity, but worse sensitivity.
     netmhc_stab:
         type: boolean?
+        label: "netmhc_stab: sets an option whether to run  NetMHCStabPan or not"
+        doc: |
+        netmhc_stab sets an option that decides whether it will run NetMHCStabPan after all filtering and add stability predictions to predicted epitopes.
     pvacseq_threads:
         type: int?
-
+        label: "pvacseq_threads: Number of threads to use for parallelizing pvacseq prediction"
+        doc: |
+          pvacseq_threads specifies the number of threads to use for parallelizing peptide-MHC binding prediction calls.
     tumor_sample_name:
         type: string
+        label: "tumor_sample_name: Name of the tumor sample"
+        doc: |
+        tumor_sample_name is the name of the tumor sample being processed. When processing a multi-sample VCF the sample name must be a sample ID in the input VCF #CHROM header line.
     normal_sample_name:
         type: string
+        label: "tumor_sample_name: Name of the normal sample"
+        doc: |
+        normal_sample_name is the name of the normal sample to use for phasing of germline variants.
 
 outputs:
     final_bam:
