@@ -3,7 +3,7 @@
 # analysis-workflows
 
 ## Overview
-The [McDonnell Genome Institute](https://www.genome.wustl.edu/) (MGI) and collaborating labs and departments of [Washington University School of Medicine](https://medicine.wustl.edu/) share [Common Workflow Language](https://www.commonwl.org/) (CWL) workflow defintions focused on reusable, reproducible analysis pipelines for genomics data.  
+The [McDonnell Genome Institute](https://www.genome.wustl.edu/) (MGI) and collaborating labs and departments of [Washington University School of Medicine](https://medicine.wustl.edu/) share [Common Workflow Language](https://www.commonwl.org/) (CWL) workflow definitions focused on reusable, reproducible analysis pipelines for genomics data.  
 
 ## Structure
 
