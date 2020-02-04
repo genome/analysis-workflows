@@ -229,6 +229,7 @@ inputs:
         type: boolean?
     somalier_vcf:
         type: File
+        doc: "a vcf file of known polymorphic sites"
     tumor_sample_name:
         type: string
     normal_sample_name:
