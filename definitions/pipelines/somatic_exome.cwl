@@ -213,6 +213,7 @@ inputs:
     variants_to_table_genotype_fields:
         type: string[]
         default: [GT,AD]
+        doc: "The name of a genotype field to include in the output table"
     vep_to_table_fields:
         type: string[]
         default: [HGVSc,HGVSp]
