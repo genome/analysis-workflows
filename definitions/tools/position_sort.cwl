@@ -13,7 +13,7 @@ requirements:
       ramMin: 12000
       coresMin: 8
     - class: DockerRequirement
-      dockerPull: "mgibio/cle:v1.3.1"
+      dockerPull: "mgibio/sambamba-cwl:0.6.4"
 inputs:
     bam:
         type: File
