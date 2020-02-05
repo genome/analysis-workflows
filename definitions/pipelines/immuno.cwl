@@ -292,7 +292,7 @@ inputs:
         type: string[]?
         label: "clinical_calls: Clinical HLA typing results; element format: HLA-X*01:02[/HLA-X...]"
         doc: |
-        clinical_calls is used to provide clinical HLA typing results; element format: HLA-X*01:02[/HLA-X...] when available.
+        clinical_calls is used to provide clinical HLA typing results in the format HLA-X*01:02[/HLA-X...] when available.
 
     #pvacseq inputs
     readcount_minimum_base_quality:
