@@ -210,6 +210,7 @@ inputs:
     variants_to_table_fields:
         type: string[]
         default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
+        doc: "The names of one or more standard VCF fields or INFO fields to include in the output table"
     variants_to_table_genotype_fields:
         type: string[]
         default: [GT,AD]
