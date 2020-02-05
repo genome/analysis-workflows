@@ -227,6 +227,7 @@ inputs:
         default: true
     manta_output_contigs:
         type: boolean?
+        doc: "if set to true configures manta to output assembled contig sequences in the final VCF files"
     somalier_vcf:
         type: File
         doc: "a vcf file of known polymorphic sites for somalier to compare normal and tumor samples for identity; sites files can be found at: https://github.com/brentp/somalier/releases"
