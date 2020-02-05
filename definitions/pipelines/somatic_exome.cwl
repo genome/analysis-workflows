@@ -216,6 +216,7 @@ inputs:
     vep_to_table_fields:
         type: string[]
         default: [HGVSc,HGVSp]
+        doc: "VEP fields in final output"
     vep_custom_annotations:
         type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
         doc: "custom type, check types directory for input format"
