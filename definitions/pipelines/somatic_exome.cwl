@@ -225,6 +225,7 @@ inputs:
     manta_non_wgs:
         type: boolean?
         default: true
+        doc: "toggles on or off manta settings for WES vs. WGS mode for structural variant detection"
     manta_output_contigs:
         type: boolean?
         doc: "if set to true configures manta to output assembled contig sequences in the final VCF files"
