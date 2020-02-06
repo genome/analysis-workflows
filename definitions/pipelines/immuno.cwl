@@ -298,19 +298,19 @@ outputs:
         type: File
         outputSource: rnaseq/final_bam
         secondaryFiles: [.bai]
-        label: "Sorted BAM from tumor RNA sample"
+        label: "Sorted BAM from tumor RNA"
         doc: |
           Sorted BAM file of sequencing read alignments by HISAT2 with duplicate reads tagged
     stringtie_transcript_gtf:
         type: File
         outputSource: rnaseq/stringtie_transcript_gtf
-        label: "Transcript GTF assembled from tumor RNA sample by StringTie"
+        label: "Transcript GTF assembled from tumor RNA by StringTie"
         doc: |
           GTF file containing the transcripts assembled from the tumor RNA sample, created by StringTie
     stringtie_gene_expression_tsv:
         type: File
         outputSource: rnaseq/stringtie_gene_expression_tsv
-        label: "Gene abundance table from tumor RNA sample by StringTie"
+        label: "Gene abundance table from tumor RNA by StringTie"
         doc: |
           Tab-delimited file containing gene abundances in FPKM and TPM, created by StringTie
     transcript_abundance_tsv:
@@ -330,19 +330,19 @@ outputs:
         outputSource: rnaseq/gene_abundance
         label: "Gene-level abundance output by tximport with kallisto output"
         doc: |
-          Tab-delmited file containing the abundance estimates summarized in the gene level with kallisto output by Bioconductor tximport tool
+          Tab-delimited file containing the abundance estimates summarized in the gene level with kallisto output by Bioconductor tximport tool
     metrics:
         type: File
         outputSource: rnaseq/metrics
-        label: "RNA-seq diagnostics/quality metrics"
+        label: "RNA-seq Diagnosis/quality metrics from tumor RNA"
         doc: |
-          RNA-seq diagnostics/quality metrics showing the distribution of the bases within the transcripts, created by picard CollectRnaSeqMetrics tool
+          RNA-seq Diagnosis/quality metrics showing the distribution of the bases within the transcripts, created by picard CollectRnaSeqMetrics tool
     chart:
         type: File?
         outputSource: rnaseq/chart
-        label: "Plot for RNA-seq diagnostics/quality metrics"
+        label: "Plot for RNA-seq diagnosis/quality metrics"
         doc: |
-          PDF file for the plot of RNA sequencing coverage at the normalized position across transcript as RNA-seq diagnostics/quality metrics, created by picard CollectRnaSeqMetrics tool
+          PDF file for the plot of RNA sequencing coverage at the normalized position across transcript as RNA-seq diagnosis/quality metrics, created by picard CollectRnaSeqMetrics tool
 
     tumor_cram:
         type: File
@@ -359,45 +359,45 @@ outputs:
     tumor_insert_size_metrics:
         type: File
         outputSource: somatic/tumor_insert_size_metrics
-        label: "Paired-end sequencing diagnostics/quality metrics from tumor DNA"
+        label: "Paired-end sequencing diagnosis/quality metrics from tumor DNA"
         doc: |
-          Diagnostics/quality metrics including the insert size distribution and read orientation of the paired-end libraries from a tumor DNA sample
+          Diagnosis/quality metrics including the insert size distribution and read orientation of the paired-end libraries from a tumor DNA sample
     tumor_alignment_summary_metrics:
         type: File
         outputSource: somatic/tumor_alignment_summary_metrics
         label: "Sequencign alignment summary from tumor DNA"
         doc: |
-          Diagnostics/quality metrics summarizing the quality of sequencing read alignments from a tumor DNA sample, reported by the picard CollectAlignmentSummaryMetrics tool
+          Diagnosis/quality metrics summarizing the quality of sequencing read alignments from a tumor DNA sample, reported by the picard CollectAlignmentSummaryMetrics tool
     tumor_hs_metrics:
         type: File
         outputSource: somatic/tumor_hs_metrics
         label: "Sequencing coverage summary of target intervals from tumor DNA"
         doc: |
-          Diagnostics/quality metrics specific for sequencing data generated through hybrid-selection (e.g. whole exome) from a tumor DNA sample, for example to assess target coverage
+          Diagnosis/quality metrics specific for sequencing data generated through hybrid-selection (e.g. whole exome) from a tumor DNA sample, for example to assess target coverage of WES
     tumor_per_target_coverage_metrics:
         type: File[]
         outputSource: somatic/tumor_per_target_coverage_metrics
-        label: "Sequencing per-target coverage summary of 59 ACMG genes from tumor DNA"
+        label: "Sequencing per-target coverage summary of target intervals from tumor DNA"
         doc: |
-          Diagnostics/quality metrics showing detailed sequencing coverage per target interval for 59 genes (source: ACMG) from a tumor DNA sample
+          Diagnosis/quality metrics showing detailed sequencing coverage per target interval (optional, 59 genes recommended by ACMG for clinical exome and genome sequencing for example) from a tumor DNA sample
     tumor_per_target_hs_metrics:
         type: File[]
         outputSource: somatic/tumor_per_target_hs_metrics
-        label: "Sequencing coverage summary of 59 ACMG genes from tumor DNA"
+        label: "Sequencing coverage summary of target intervals from tumor DNA"
         doc: |
-          Diagnostics/quality metrics for sequencing coverage for the exons of 59 genes (source: ACMG) from a tumor DNA sample, recommended for clinical exome and genome sequencing by ACMG
+          Diagnosis/quality metrics for sequencing coverage for target intervals (optional, 59 genes recommended by ACMG for clinical exome and genome sequencing for example) from a tumor DNA sample
     tumor_per_base_coverage_metrics:
         type: File[]
         outputSource: somatic/tumor_per_base_coverage_metrics
-        label: "Sequencing per-base coverage summary at ClinVar sites from tumor DNA"
+        label: "Sequencing per-base coverage summary at target sites from tumor DNA"
         doc: |
-          Diagnostics/quality metrics showing detailed sequencing coverage per target base for known variant sites of clinical significance (source: ClinVar) from a tumor DNA sample
+          Diagnosis/quality metrics showing detailed sequencing coverage per target site (optional, known variant sites of clinical significance from ClinVar for example) from a tumor DNA sample
     tumor_per_base_hs_metrics:
         type: File[]
         outputSource: somatic/tumor_per_base_hs_metrics
-        label: "Sequencing coverage summary at ClinVar sites from tumor DNA"
+        label: "Sequencing coverage summary at target sites from tumor DNA"
         doc: |
-          Diagnostics/quality metrics for sequencing coverage at known variant sites of clinical significance (source: ClinVar) from a tumor DNA sample
+          Diagnosis/quality metrics for sequencing coverage at target sites (optional, known variant sites of clinical significance from ClinVar for example) from a tumor DNA sample
     tumor_summary_hs_metrics:
         type: File[]
         outputSource: somatic/tumor_summary_hs_metrics
@@ -434,45 +434,45 @@ outputs:
     normal_insert_size_metrics:
         type: File
         outputSource: somatic/normal_insert_size_metrics
-        label: "Paired-end sequencing diagnostics/quality metrics from normal DNA"
+        label: "Paired-end sequencing diagnosis/quality metrics from normal DNA"
         doc: |
-          Diagnostics/quality metrics including the insert size distribution and read orientation of the paired-end libraries from a normal DNA sample
+          Diagnosis/quality metrics including the insert size distribution and read orientation of the paired-end libraries from a normal DNA sample
     normal_alignment_summary_metrics:
         type: File
         outputSource: somatic/normal_alignment_summary_metrics
         label: "Sequencign alignment summary from normal DNA"
         doc: |
-          Diagnostics/quality metrics summarizing the quality of sequencing read alignments from a normal DNA sample, reported by the picard CollectAlignmentSummaryMetrics tool
+          Diagnosis/quality metrics summarizing the quality of sequencing read alignments from a normal DNA sample, reported by the picard CollectAlignmentSummaryMetrics tool
     normal_hs_metrics:
         type: File
         outputSource: somatic/normal_hs_metrics
         label: "Sequencing coverage summary of target intervals from normal DNA"
         doc: |
-          Diagnostics/quality metrics specific for sequencing data generated through hybrid-selection (e.g. whole exome) from a normal DNA sample, for example to assess target coverage
+          Diagnosis/quality metrics specific for sequencing data generated through hybrid-selection (e.g. whole exome) from a normal DNA sample, for example to assess target coverage
     normal_per_target_coverage_metrics:
         type: File[]
         outputSource: somatic/normal_per_target_coverage_metrics
-        label: "Sequencing per-target coverage summary of 59 ACMG genes from normal DNA"
+        label: "Sequencing per-target coverage summary of target intervals from normal DNA"
         doc: |
-          Diagnostics/quality metrics showing detailed sequencing coverage per target interval for 59 genes (source: ACMG) from a normal DNA sample
+          Diagnosis/quality metrics showing detailed sequencing coverage per target interval (optional, 59 genes recommended by ACMG for clinical exome and genome sequencing for example) from a normal DNA sample
     normal_per_target_hs_metrics:
         type: File[]
         outputSource: somatic/normal_per_target_hs_metrics
-        label: "Sequencing coverage summary of 59 ACMG genes from normal DNA"
+        label: "Sequencing coverage summary of target intervals from normal DNA"
         doc: |
-          Diagnostics/quality metrics for sequencing coverage for the exons of 59 genes (source: ACMG) from a normal DNA sample, recommended for clinical exome and genome sequencing by ACMG
+          Diagnosis/quality metrics for sequencing coverage for target intervals (optional, 59 genes recommended by ACMG for clinical exome and genome sequencing for example) from a normal DNA sample
     normal_per_base_coverage_metrics:
         type: File[]
         outputSource: somatic/normal_per_base_coverage_metrics
-        label: "Sequencing per-base coverage summary at ClinVar sites from normal DNA"
+        label: "Sequencing per-base coverage summary at target sites from normal DNA"
         doc: |
-          Diagnostics/quality metrics showing detailed sequencing coverage per target base for known variant sites of clinical significance (source: ClinVar) from a normal DNA sample
+          Diagnosis/quality metrics showing detailed sequencing coverage per target site (optional, known variant sites of clinical significance from ClinVar for example) from a normal DNA sample
     normal_per_base_hs_metrics:
         type: File[]
         outputSource: somatic/normal_per_base_hs_metrics
-        label: "Sequencing coverage summary at ClinVar sites from normal DNA"
+        label: "Sequencing coverage summary at target sites from normal DNA"
         doc: |
-          Diagnostics/quality metrics for sequencing coverage at known variant sites of clinical significance (source: ClinVar) from a normal DNA sample
+          Diagnosis/quality metrics for sequencing coverage at target sites (optional, known variant sites of clinical significance from ClinVar for example) from a normal DNA sample
     normal_summary_hs_metrics:
         type: File[]
         outputSource: somatic/normal_summary_hs_metrics
