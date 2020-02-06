@@ -347,81 +347,153 @@ outputs:
     tumor_cram:
         type: File
         outputSource: somatic/tumor_cram
+        label: "Sorted CRAM from tumor DNA"
+        doc: |
+          Sorted CRAM file of sequencing read alignments by bwa-mem from a tumor DNA sample with duplicate reads tagged
     tumor_mark_duplicates_metrics:
         type: File
         outputSource: somatic/tumor_mark_duplicates_metrics
+        label: "Sequencing duplicate metrics from tumor DNA"
+        doc: |
+          Duplication metrics on duplicate sequencing reads from a tumor DNA sample, identified by picard MarkDuplicates tool
     tumor_insert_size_metrics:
         type: File
         outputSource: somatic/tumor_insert_size_metrics
+        label: "Paired-end sequencing diagnostics/quality metrics from tumor DNA"
+        doc: |
+          Diagnostics/quality metrics including the insert size distribution and read orientation of the paired-end libraries from a tumor DNA sample
     tumor_alignment_summary_metrics:
         type: File
         outputSource: somatic/tumor_alignment_summary_metrics
+        label: "Sequencign alignment summary from tumor DNA"
+        doc: |
+          Diagnostics/quality metrics summarizing the quality of sequencing read alignments from a tumor DNA sample, reported by the picard CollectAlignmentSummaryMetrics tool
     tumor_hs_metrics:
         type: File
         outputSource: somatic/tumor_hs_metrics
+        label: "Sequencing coverage summary of target intervals from tumor DNA"
+        doc: |
+          Diagnostics/quality metrics specific for sequencing data generated through hybrid-selection (e.g. whole exome) from a tumor DNA sample, for example to assess target coverage
     tumor_per_target_coverage_metrics:
         type: File[]
         outputSource: somatic/tumor_per_target_coverage_metrics
+        label: "Sequencing per-target coverage summary of 59 ACMG genes from tumor DNA"
+        doc: |
+          Diagnostics/quality metrics showing detailed sequencing coverage per target interval for 59 genes (source: ACMG) from a tumor DNA sample
     tumor_per_target_hs_metrics:
         type: File[]
         outputSource: somatic/tumor_per_target_hs_metrics
+        label: "Sequencing coverage summary of 59 ACMG genes from tumor DNA"
+        doc: |
+          Diagnostics/quality metrics for sequencing coverage for the exons of 59 genes (source: ACMG) from a tumor DNA sample, recommended for clinical exome and genome sequencing by ACMG
     tumor_per_base_coverage_metrics:
         type: File[]
         outputSource: somatic/tumor_per_base_coverage_metrics
+        label: "Sequencing per-base coverage summary at ClinVar sites from tumor DNA"
+        doc: |
+          Diagnostics/quality metrics showing detailed sequencing coverage per target base for known variant sites of clinical significance (source: ClinVar) from a tumor DNA sample
     tumor_per_base_hs_metrics:
         type: File[]
         outputSource: somatic/tumor_per_base_hs_metrics
+        label: "Sequencing coverage summary at ClinVar sites from tumor DNA"
+        doc: |
+          Diagnostics/quality metrics for sequencing coverage at known variant sites of clinical significance (source: ClinVar) from a tumor DNA sample
     tumor_summary_hs_metrics:
         type: File[]
         outputSource: somatic/tumor_summary_hs_metrics
     tumor_flagstats:
         type: File
         outputSource: somatic/tumor_flagstats
+        label: "Sequencing count metrics based on SAM FLAG field from tumor sample"
+        doc: |
+          Summary with the count numbers of alignments for each FLAG type from a tumor DNA sample, including 13 categories based on the bit flags in the FLAG field
     tumor_verify_bam_id_metrics:
         type: File
         outputSource: somatic/tumor_verify_bam_id_metrics
+        label: "Sequencing quality assessment metric for tumor sample contamination"
+        doc: |
+          verifyBamID output files containing the contamination estimate in a tumor DNA sample, across all readGroups and per readGroup separately
     tumor_verify_bam_id_depth:
         type: File
         outputSource: somatic/tumor_verify_bam_id_depth
+        label: "Sequencing quality assessment metric for tumor sample genotyping"
+        doc: |
+          verifyBamID output files showing the sequencing depth distribution at the marker positions from Omni genotype data with a tumor DNA sample, across all readGroups and per readGroup separately
     normal_cram:
         type: File
         outputSource: somatic/normal_cram
+        label: "Sorted CRAM from normal DNA"
+        doc: |
+          Sorted CRAM file of sequencing read alignments by bwa-mem from a normal DNA sample with duplicate reads tagged
     normal_mark_duplicates_metrics:
         type: File
         outputSource: somatic/normal_mark_duplicates_metrics
+        label: "Sequencing duplicate metrics from normal DNA"
+        doc: |
+          Duplication metrics on duplicate sequencing reads from a normal DNA sample, identified by picard MarkDuplicates tool
     normal_insert_size_metrics:
         type: File
         outputSource: somatic/normal_insert_size_metrics
+        label: "Paired-end sequencing diagnostics/quality metrics from normal DNA"
+        doc: |
+          Diagnostics/quality metrics including the insert size distribution and read orientation of the paired-end libraries from a normal DNA sample
     normal_alignment_summary_metrics:
         type: File
         outputSource: somatic/normal_alignment_summary_metrics
+        label: "Sequencign alignment summary from normal DNA"
+        doc: |
+          Diagnostics/quality metrics summarizing the quality of sequencing read alignments from a normal DNA sample, reported by the picard CollectAlignmentSummaryMetrics tool
     normal_hs_metrics:
         type: File
         outputSource: somatic/normal_hs_metrics
+        label: "Sequencing coverage summary of target intervals from normal DNA"
+        doc: |
+          Diagnostics/quality metrics specific for sequencing data generated through hybrid-selection (e.g. whole exome) from a normal DNA sample, for example to assess target coverage
     normal_per_target_coverage_metrics:
         type: File[]
         outputSource: somatic/normal_per_target_coverage_metrics
+        label: "Sequencing per-target coverage summary of 59 ACMG genes from normal DNA"
+        doc: |
+          Diagnostics/quality metrics showing detailed sequencing coverage per target interval for 59 genes (source: ACMG) from a normal DNA sample
     normal_per_target_hs_metrics:
         type: File[]
         outputSource: somatic/normal_per_target_hs_metrics
+        label: "Sequencing coverage summary of 59 ACMG genes from normal DNA"
+        doc: |
+          Diagnostics/quality metrics for sequencing coverage for the exons of 59 genes (source: ACMG) from a normal DNA sample, recommended for clinical exome and genome sequencing by ACMG
     normal_per_base_coverage_metrics:
         type: File[]
         outputSource: somatic/normal_per_base_coverage_metrics
+        label: "Sequencing per-base coverage summary at ClinVar sites from normal DNA"
+        doc: |
+          Diagnostics/quality metrics showing detailed sequencing coverage per target base for known variant sites of clinical significance (source: ClinVar) from a normal DNA sample
     normal_per_base_hs_metrics:
         type: File[]
         outputSource: somatic/normal_per_base_hs_metrics
+        label: "Sequencing coverage summary at ClinVar sites from normal DNA"
+        doc: |
+          Diagnostics/quality metrics for sequencing coverage at known variant sites of clinical significance (source: ClinVar) from a normal DNA sample
     normal_summary_hs_metrics:
         type: File[]
         outputSource: somatic/normal_summary_hs_metrics
     normal_flagstats:
         type: File
         outputSource: somatic/normal_flagstats
+        label: "Sequencing count metrics based on SAM FLAG field from normal sample"
+        doc: |
+          Summary with the count numbers of alignments for each FLAG type from a normal DNA sample, including 13 categories based on the bit flags in the FLAG field
     normal_verify_bam_id_metrics:
         type: File
         outputSource: somatic/normal_verify_bam_id_metrics
+        label: "Sequencing quality assessment metric for normal sample contamination"
+        doc: |
+          verifyBamID output files containing the contamination estimate in a normal DNA sample, across all readGroups and per readGroup separately
     normal_verify_bam_id_depth:
         type: File
         outputSource: somatic/normal_verify_bam_id_depth
+        label: "Sequencing quality assessment metric for normal sample genotyping"
+        doc: |
+          verifyBamID output files showing the sequencing depth distribution at the marker positions from Omni genotype data with a normal DNA sample, across all readGroups and per readGroup separately
     mutect_unfiltered_vcf:
         type: File
         outputSource: somatic/mutect_unfiltered_vcf
