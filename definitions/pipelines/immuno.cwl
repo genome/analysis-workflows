@@ -217,7 +217,7 @@ inputs:
     reference_dict:
         type: File
 
-    clinical_alleles:
+    clinical_hla_alleles:
         type: string[]?
         doc: "Clinical HLA typing results; element format: HLA-X*01:02[/HLA-X...]"
 
@@ -766,8 +766,8 @@ steps:
     hla_consensus:
         run: ../tools/hla_consensus.cwl
         in:
-            optitype_alleles: extract_alleles/allele_string
-            clinical_alleles: clinical_alleles
+            optitype_hla_alleles: extract_alleles/allele_string
+            clinical_hla_alleles: clinical_hla_alleles
         out:
             [consensus_alleles, hla_call_files]
     pvacseq:
