@@ -179,6 +179,7 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+        doc: "The set of alleles that gatk haplotype caller will use to force-call regardless of evidence"
     filter_docm_variants:
         type: boolean?
         default: true
@@ -186,6 +187,7 @@ inputs:
         type:
             - string
             - Directory
+        doc: "path to the vep cache directory, available at: https://useast.ensembl.org/info/docs/tools/vep/script/vep_cache.html#pre"
     vep_ensembl_assembly:
         type: string
         doc: "genome assembly to use in vep. Examples: GRCh38 or GRCm38"
@@ -197,13 +199,16 @@ inputs:
         doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
     synonyms_file:
         type: File?
+        doc: "synonyms_file allows the use of different chromosome identifiers in vep inputs or annotation files (cache, database, GFF, custom file, fasta). File should be tab-delimited with the primary identifier in column 1 and the synonym in column 2."
     annotate_coding_only:
         type: boolean?
+        doc: "if set to true, vep only returns consequences that fall in the coding regions of transcripts"
     vep_pick:
         type:
             - "null"
             - type: enum
               symbols: ["pick", "flag_pick", "pick_allele", "per_gene", "pick_allele_gene", "flag_pick_allele", "flag_pick_allele_gene"]
+        doc: "configures how vep will annotate genomic features that each variant overlaps; for a detailed description of each option see https://useast.ensembl.org/info/docs/tools/vep/script/vep_other.html#pick_allele_gene_eg"
     cle_vcf_filter:
         type: boolean
         default: false
