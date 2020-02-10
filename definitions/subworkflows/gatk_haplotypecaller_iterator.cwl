@@ -6,6 +6,7 @@ label: "scatter GATK HaplotypeCaller over intervals"
 requirements:
     - class: InlineJavascriptRequirement
     - class: ScatterFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     reference:
         type:

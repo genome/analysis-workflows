@@ -5,6 +5,7 @@ class: Workflow
 label: "fp_filter workflow"
 requirements:
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     bam:
         type: File

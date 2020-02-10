@@ -11,6 +11,7 @@ requirements:
       dockerPull: "mgibio/bcftools-cwl:1.9"
     - class: ResourceRequirement
       ramMin: 8000
+    - class: StepInputExpressionRequirement
 
 baseCommand: ["/opt/bcftools/bin/bcftools", "annotate"]
 arguments:

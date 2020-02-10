@@ -10,6 +10,7 @@ requirements:
           - $import: ../types/sequence_data.yml
           - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     reference:
         type:

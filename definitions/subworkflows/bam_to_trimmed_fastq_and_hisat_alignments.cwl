@@ -7,6 +7,7 @@ requirements:
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: InlineJavascriptRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     bam:
         type: File
