@@ -231,13 +231,13 @@ requirements:
 
 baseCommand: ['python', 'hla_consensus.py']
 inputs:
-    optitype_calls:
+    optitype_hla_alleles:
         type: string[]
         inputBinding:
             position: 1
             itemSeparator: ','
             separate: false
-    clinical_calls:
+    clinical_hla_alleles:
         type: string[]?
         inputBinding:
             position: 2
