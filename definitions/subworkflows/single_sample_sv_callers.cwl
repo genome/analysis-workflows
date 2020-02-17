@@ -167,6 +167,7 @@ steps:
             cnvkit_vcf_name: cnvkit_vcf_name
             segment_filter:
                 default: "cn"
+            fasta_reference: reference
         out:
             [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf]
     run_cnvkit_raw_bgzip:

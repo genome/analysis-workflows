@@ -7,6 +7,11 @@ requirements:
     - class: StepInputExpressionRequirement
 
 inputs:
+    fasta_reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai]
     tumor_bam:
         type: File
     method:
@@ -66,6 +71,7 @@ steps:
             drop_low_coverage: drop_low_coverage
             male_reference: male_reference
             reference_cnn: reference_cnn
+            reference: fasta_reference
         out:
             [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios]            
             
