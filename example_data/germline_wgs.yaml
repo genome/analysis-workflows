@@ -41,9 +41,14 @@ synonyms_file:
   class: File
   path: exome_workflow/chromAlias.ensembl.txt
 variant_reporting_intervals:
-    class: File
-    path: exome_workflow/chr17_test_genes.interval_list
-vep_cache_dir: /gscmnt/gc2764/cad/jgarza/shared/exome_workflow
+  class: File
+  path: exome_workflow/chr17_test_genes.interval_list
+vep_cache_dir:
+  class: Directory
+  path: 'exome_workflow'
+vep_ensembl_species: 'homo_sapiens'
+vep_ensembl_version: '95'
+vep_ensembl_assembly: 'GRCh38'
 vep_custom_annotations:
 - method: 'exact'
   force_report_coordinates: true
@@ -57,3 +62,10 @@ vep_custom_annotations:
     vcf_fields: ['AF','AF_AFR','AF_AMR','AF_ASJ','AF_EAS','AF_FIN','AF_NFE','AF_OTH','AF_SAS']
     gnomad_filter: true
     check_existing: true
+manta_output_contigs: 'true'
+merge_estimate_sv_distance: 'true'
+merge_max_distance: 1000
+merge_min_sv_size: 1
+merge_min_svs: 1
+merge_same_strand: 'true'
+merge_same_type: 'true'
