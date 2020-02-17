@@ -10,8 +10,10 @@ inputs:
     tumor_bam:
         type: File
     method:
-        type: string?
-        default: "hybrid"
+        type:
+          - "null"
+          - type: enum
+            symbols: ["hybrid", "amplicon", "wgs"]
     diagram:
         type: boolean?
     scatter_plot:

@@ -24,7 +24,10 @@ inputs:
     cnvkit_drop_low_coverage:
         type: boolean?
     cnvkit_method:
-        type: string?
+        type:
+          - "null"
+          - type: enum
+            symbols: ["hybrid", "amplicon", "wgs"]
     cnvkit_reference_cnn:
         type: File
     cnvkit_scatter_plot:

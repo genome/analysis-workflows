@@ -43,7 +43,10 @@ inputs:
             position: 5
             prefix: "--access"
     method:
-        type: string?
+        type:
+            - "null"
+            - type: enum
+              symbols: ["hybrid", "amplicon", "wgs"]
         default: "hybrid"
         inputBinding:
             position: 6
