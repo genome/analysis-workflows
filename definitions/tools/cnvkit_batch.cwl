@@ -76,6 +76,11 @@ inputs:
         type: File?
         inputBinding:
             prefix: "-r"
+    target_average_size:
+        type: int?
+        inputBinding:
+            position: 5
+            prefix: "--target-avg-size"
 outputs:
     intervals_antitarget:
         type: File?
