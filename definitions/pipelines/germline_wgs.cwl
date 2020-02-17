@@ -95,7 +95,7 @@ inputs:
             symbols: ["hybrid", "amplicon", "wgs"]
         default: "wgs"
     cnvkit_reference_cnn: 
-        type: File
+        type: File?
     cnvkit_scatter_plot:
         type: boolean?
     cnvkit_male_reference:

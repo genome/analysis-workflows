@@ -13,6 +13,8 @@ requirements:
       ramMin: 4000
       tmpdirMin: 10000
     - class: InlineJavascriptRequirement
+arguments:
+    ["--normal"]
 inputs:
     tumor_bam:
         type: File

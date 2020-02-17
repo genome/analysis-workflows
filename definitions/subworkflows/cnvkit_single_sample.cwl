@@ -23,7 +23,7 @@ inputs:
     male_reference:
         type: boolean?
     reference_cnn:
-        type: File
+        type: File?
     cnvkit_vcf_name:
         type: string
         default: "cnvkit.vcf"
