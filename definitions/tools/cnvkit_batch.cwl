@@ -66,20 +66,22 @@ inputs:
     drop_low_coverage:
         type: boolean?
         inputBinding:
-            position: 10
+            position: 9
             prefix: "--drop-low-coverage"
     male_reference:
         type: boolean?
         inputBinding:
+            position: 10
             prefix: "-y"
     reference_cnn:
         type: File?
         inputBinding:
+            position: 11
             prefix: "-r"
     target_average_size:
         type: int?
         inputBinding:
-            position: 5
+            position: 12
             prefix: "--target-avg-size"
 outputs:
     intervals_antitarget:
