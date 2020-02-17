@@ -29,7 +29,7 @@ inputs:
           - type: enum
             symbols: ["hybrid", "amplicon", "wgs"]
     cnvkit_reference_cnn:
-        type: File
+        type: File?
     cnvkit_scatter_plot:
         type: boolean?
     cnvkit_male_reference:
