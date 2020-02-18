@@ -9,8 +9,6 @@ inputs:
         type: double?
     duplication_depth:
         type: double?
-    reference:
-        type: string
     min_sv_size:
         type: int?
     output_vcf_name:
