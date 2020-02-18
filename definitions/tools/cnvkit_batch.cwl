@@ -23,13 +23,12 @@ inputs:
     normal_bam:
         type: File?
         inputBinding:
-            position: 2
-            prefix: "--normal"
+            position: 1
         doc: "Normal samples (.bam) used to construct the pooled, paired, or flat reference. If this option is used but no filenames are given, a 'flat' reference will be built. Otherwise, all filenames following this option will be used."
     bait_intervals:
         type: File?
         inputBinding:
-            position: 3
+            position: 2
             prefix: "--targets"
     reference:
       type:
@@ -39,7 +38,7 @@ inputs:
             cnn_file:
               type: File?
               inputBinding:
-                position: 11
+                position: 3
                 prefix: "--reference"
               doc: "Previously generated reference.cnn file"
         - type: record
@@ -50,11 +49,12 @@ inputs:
                 - string
                 - File
               inputBinding:
+                position: 3
                 prefix: "--fasta"
     access:
         type: File?
         inputBinding:
-            position: 5
+            position: 4
             prefix: "--access"
         doc: "Regions of accessible sequence on chromosomes (.bed), as output by the 'access' command"
     method:
@@ -64,37 +64,37 @@ inputs:
               symbols: ["hybrid", "amplicon", "wgs"]
         default: "hybrid"
         inputBinding:
-            position: 6
+            position: 5
             prefix: "--method"
         doc: "Sequencing protocol used for input data"
     diagram:
         type: boolean?
         inputBinding:
-            position: 7
+            position: 6
             prefix: "--diagram"
         doc: "Create an ideogram of copy ratios on chromosomes as a PDF"
     scatter_plot:
         type: boolean?
         inputBinding:
-            position: 8
+            position: 7
             prefix: "--scatter"
         doc: "Create a whole-genome copy ratio profile as a PDF scatter plot"
     drop_low_coverage:
         type: boolean?
         inputBinding:
-            position: 9
+            position: 8
             prefix: "--drop-low-coverage"
         doc: "Drop very-low-coverage bins before segmentation to avoid false-positive deletions in poor-quality tumor samples"
     male_reference:
         type: boolean?
         inputBinding:
-            position: 10
+            position: 9
             prefix: "--male-reference"
         doc: "Use or assume a male reference (i.e. female samples will have +1 log-CNR of chrX; otherwise male samples would have -1 chrX)"
     target_average_size:
         type: int?
         inputBinding:
-            position: 12
+            position: 10
             prefix: "--target-avg-size"
         doc: "Average size of split target bins (results are approximate)"
 outputs:
