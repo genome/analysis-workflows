@@ -19,7 +19,7 @@ inputs:
     tumor_bam:
         type: File
         inputBinding:
-            position: 1
+            position: -1
     normal_bam:
         type: File?
         inputBinding:
