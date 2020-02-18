@@ -32,14 +32,25 @@ inputs:
             position: 3
             prefix: "--targets"
     reference:
-        type:
-            - "null"
-            - string
-            - File
-        secondaryFiles: [.fai, ^.dict]
-        inputBinding:
-            position: 4
-            prefix: "--fasta"
+      type:
+        - type: record
+          name: cnn_file
+          fields:
+            cnn_file:
+              type: File?
+              inputBinding:
+                position: 11
+                prefix: "--reference"
+              doc: "Previously generated reference.cnn file"
+        - type: record
+          name: fasta_file
+          fields:
+            fasta_file:
+              type:
+                - string
+                - File
+              inputBinding:
+                prefix: "--fasta"
     access:
         type: File?
         inputBinding:
@@ -80,12 +91,6 @@ inputs:
             position: 10
             prefix: "--male-reference"
         doc: "Use or assume a male reference (i.e. female samples will have +1 log-CNR of chrX; otherwise male samples would have -1 chrX)"
-    reference_cnn:
-        type: File?
-        inputBinding:
-            position: 11
-            prefix: "--reference"
-        doc: "Previously generated reference.cnn file"
     target_average_size:
         type: int?
         inputBinding:
