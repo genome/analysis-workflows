@@ -77,9 +77,15 @@ steps:
         run: ../tools/cnvkit_batch.cwl
         in:
             tumor_bam: tumor_cram_to_bam/bam
-            normal_bam: normal_cram_to_bam/bam
+            reference:
+                source: [normal_cram_to_bam/bam, reference]
+                valueFrom: |
+                    ${
+                      var normal = self[0];
+                      var fasta = self[1];
+                      return {'normal_bam': normal, 'fasta_file': fasta};
+                    }
             bait_intervals: bait_intervals
-            reference: reference
             access: access
             method: method
             diagram: diagram

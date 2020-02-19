@@ -76,7 +76,7 @@ steps:
                     ${
                       var cnn = self[0];
                       var fasta = self[1];
-                      return {'reference': {'reference_cnn': cnn, 'reference_fasta': fasta}};
+                      return {'cnn_file': cnn, 'fasta_file': fasta};
                     }
         out:
             [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios]            

@@ -13,22 +13,16 @@ requirements:
       ramMin: 4000
       tmpdirMin: 10000
     - class: InlineJavascriptRequirement
-arguments:
-    ["--normal"]
+arguments: [{ valueFrom: "$((inputs.reference.hasOwnProperty('cnn_file'))? '' : '--normal')" }]
 inputs:
     tumor_bam:
         type: File
         inputBinding:
             position: -1
-    normal_bam:
-        type: File?
-        inputBinding:
-            position: 1
-        doc: "Normal samples (.bam) used to construct the pooled, paired, or flat reference. If this option is used but no filenames are given, a 'flat' reference will be built. Otherwise, all filenames following this option will be used."
     bait_intervals:
         type: File?
         inputBinding:
-            position: 2
+            position: 3
             prefix: "--targets"
     reference:
       type:
@@ -36,9 +30,9 @@ inputs:
           name: cnn_file
           fields:
             cnn_file:
-              type: File?
+              type: File
               inputBinding:
-                position: 3
+                position: 2
                 prefix: "--reference"
               doc: "Previously generated reference.cnn file"
         - type: record
@@ -49,8 +43,13 @@ inputs:
                 - string
                 - File
               inputBinding:
-                position: 3
+                position: 2
                 prefix: "--fasta"
+            normal_bam:
+              type: File?
+              inputBinding:
+                position: 1
+              doc: "Normal samples (.bam) used to construct the pooled, paired, or flat reference. If this option is used but no filenames are given, a 'flat' reference will be built. Otherwise, all filenames following this option will be used."
     access:
         type: File?
         inputBinding:
