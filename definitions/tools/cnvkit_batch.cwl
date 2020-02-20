@@ -13,7 +13,7 @@ requirements:
       ramMin: 4000
       tmpdirMin: 10000
     - class: InlineJavascriptRequirement
-arguments: [{ valueFrom: "$((inputs.reference.hasOwnProperty('cnn_file'))? '' : '--normal')" }]
+arguments: [{ valueFrom: "$((inputs.reference.hasOwnProperty('cnn_file'))? null : '--normal')" }]
 inputs:
     tumor_bam:
         type: File
