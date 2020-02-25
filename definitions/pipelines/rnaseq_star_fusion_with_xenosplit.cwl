@@ -15,20 +15,27 @@ inputs:
         type: string[]
     graft_star_genome_dir:
         type: Directory
+        doc: "Location of the STAR human reference directory"
     graft_outfile_name_prefix:
         type: string?
         default: "Graft_"
+        doc: "Prefix name for the graft bam - human"
     host_star_genome_dir:
         type: Directory
+        doc: "Location of the STAR mouse reference directory"
     host_outfile_name_prefix:
         type: string?
         default: "Host_"
+        doc: "Prefix name for the host bam - mouse"
     star_fusion_genome_dir:
         type: Directory
+        doc: "As the fusion would be called on only the final graftOutbam i.e. the human xenograft bam without any mouse reads we only need the star fusion directory for the human"
     graft_gtf_file:
         type: File
+        doc: "GTF file corresponding the to the Human STAR reference"
     host_gtf_file:
         type: File
+        doc: "GFT file corresponding to the Mouse STAR reference"
     trimming_adapters:
         type: File
     trimming_adapter_trim_end:
@@ -142,18 +149,11 @@ steps:
                 linkMerge: merge_flattened
         out:
             [aligned_bam, chim_junc, splice_junction_out,log_final]   
-    xenosplit_bam_conversion:
-        run: ../tools/xenosplit_bam_conversion.cwl
-        in:
-            graftbam: graft_star_align_fusion/aligned_bam
-            hostbam: host_star_align_fusion/aligned_bam
-        out:
-            [graftbam_accepted, hostbam_accepted]
     xenosplit:
         run: ../tools/xenosplit.cwl
         in:
-            graftbam: xenosplit_bam_conversion/graftbam_accepted
-            hostbam: xenosplit_bam_conversion/hostbam_accepted
+            graftbam: graft_star_align_fusion/aligned_bam
+            hostbam: host_star_align_fusion/aligned_bam
         out:
             [graftOut, goodnessOfMapping]
     graftbam_to_fastq:
