@@ -11,7 +11,7 @@ requirements:
       ramMin: 20000
       tmpdirMin: 100000
     - class: DockerRequirement
-      dockerPull: "mgibio/xenosplit:0.2"
+      dockerPull: "mgibio/xenosplit:0.5"
     - class: InitialWorkDirRequirement
       listing:
       - entryname: 'Xenosplit.sh'
@@ -19,8 +19,20 @@ requirements:
             set -o pipefail
             set -o errexit
             
-            python /opt/Xenosplit.py --pairedEnd --out graftOut.bam $1 $2
-            python /opt/Xenosplit.py --count $1 $2 > goodnessOfMapping.txt
+            # Filtering the bam files and preparing them for xenosplit
+            /opt/samtools/bin/samtools sort -o graftsorted.bam $1
+            /opt/samtools/bin/samtools index graftsorted.bam
+            /opt/samtools/bin/samtools view -h -F 256 -F 2048 graftsorted.bam > graftbam.bam
+            /opt/samtools/bin/samtools sort -n -o graftbam_accepted.bam graftbam.bam
+
+            /opt/samtools/bin/samtools sort -o hostsorted.bam $2
+            /opt/samtools/bin/samtools index hostsorted.bam
+            /opt/samtools/bin/samtools view -h -F 256 -F 2048 hostsorted.bam > hostbam.bam
+            /opt/samtools/bin/samtools sort -n -o hostbam_accepted.bam hostbam.bam
+
+            # Running xenosplit
+            python /opt/Xenosplit.py --pairedEnd --out graftOut.bam graftbam_accepted.bam hostbam_accepted.bam
+            python /opt/Xenosplit.py --count graftbam_accepted.bam hostbam_accepted.bam > goodnessOfMapping.txt
 
 inputs:
     graftbam:
