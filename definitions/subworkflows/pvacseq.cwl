@@ -113,33 +113,15 @@ outputs:
     annotated_tsv:
         type: File
         outputSource: add_vep_fields_to_table/annotated_variants_tsv
-    mhc_i_all_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_i_all_epitopes
-    mhc_i_filtered_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_i_filtered_epitopes
-    mhc_i_ranked_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_i_ranked_epitopes
-    mhc_ii_all_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_ii_all_epitopes
-    mhc_ii_filtered_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_ii_filtered_epitopes
-    mhc_ii_ranked_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_ii_ranked_epitopes
-    combined_all_epitopes:
-        type: File?
-        outputSource: pvacseq/combined_all_epitopes
-    combined_filtered_epitopes:
-        type: File?
-        outputSource: pvacseq/combined_filtered_epitopes
-    combined_ranked_epitopes:
-        type: File?
-        outputSource: pvacseq/combined_ranked_epitopes
+    mhc_i_epitopes:
+        type: Directory?
+        outputSource: pvacseq/mhc_i_epitopes
+    mhc_ii_epitopes:
+        type: Directory?
+        outputSource: pvacseq/mhc_ii_epitopes
+    combined_epitopes:
+        type: Directory?
+        outputSource: pvacseq/combined_epitopes
 steps:
     tumor_rna_bam_readcount:
         run: bam_readcount.cwl
@@ -221,17 +203,7 @@ steps:
             netmhc_stab: netmhc_stab
             n_threads: n_threads
         out:
-            [
-                mhc_i_all_epitopes,
-                mhc_i_filtered_epitopes,
-                mhc_i_ranked_epitopes,
-                mhc_ii_all_epitopes,
-                mhc_ii_filtered_epitopes,
-                mhc_ii_ranked_epitopes,
-                combined_all_epitopes,
-                combined_filtered_epitopes,
-                combined_ranked_epitopes,
-            ]
+            [mhc_i_epitopes, mhc_ii_epitopes, combined_epitopes]
     variants_to_table:
         run: ../tools/variants_to_table.cwl
         in:

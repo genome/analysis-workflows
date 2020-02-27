@@ -167,39 +167,15 @@ inputs:
             prefix: "--n-threads"
         default: 8
 outputs:
-    mhc_i_all_epitopes:
-        type: File?
+    mhc_i_epitopes:
+        type: Directory?
         outputBinding:
-            glob: "MHC_Class_I/$(inputs.sample_name).all_epitopes.tsv"
-    mhc_i_filtered_epitopes:
-        type: File?
+            glob: "MHC_Class_I"
+    mhc_ii_epitopes:
+        type: Directory?
         outputBinding:
-            glob: "MHC_Class_I/$(inputs.sample_name).filtered.tsv"
-    mhc_i_ranked_epitopes:
-        type: File?
+            glob: "MHC_Class_II"
+    combined_epitopes:
+        type: Directory?
         outputBinding:
-            glob: "MHC_Class_I/$(inputs.sample_name).filtered.condensed.ranked.tsv"
-    mhc_ii_all_epitopes:
-        type: File?
-        outputBinding:
-            glob: "MHC_Class_II/$(inputs.sample_name).all_epitopes.tsv"
-    mhc_ii_filtered_epitopes:
-        type: File?
-        outputBinding:
-            glob: "MHC_Class_II/$(inputs.sample_name).filtered.tsv"
-    mhc_ii_ranked_epitopes:
-        type: File?
-        outputBinding:
-            glob: "MHC_Class_II/$(inputs.sample_name).filtered.condensed.ranked.tsv"
-    combined_all_epitopes:
-        type: File?
-        outputBinding:
-            glob: "combined/$(inputs.sample_name).all_epitopes.tsv"
-    combined_filtered_epitopes:
-        type: File?
-        outputBinding:
-            glob: "combined/$(inputs.sample_name).filtered.tsv"
-    combined_ranked_epitopes:
-        type: File?
-        outputBinding:
-            glob: "combined/$(inputs.sample_name).filtered.condensed.ranked.tsv"
+            glob: "combined"
