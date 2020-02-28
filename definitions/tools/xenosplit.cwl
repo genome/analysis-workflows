@@ -20,19 +20,12 @@ requirements:
             set -o errexit
             
             # Filtering the bam files and preparing them for xenosplit
-            /opt/samtools/bin/samtools sort -o graftsorted.bam $1
-            /opt/samtools/bin/samtools index graftsorted.bam
-            /opt/samtools/bin/samtools view -h -F 256 -F 2048 graftsorted.bam > graftbam.bam
-            /opt/samtools/bin/samtools sort -n -o graftbam_accepted.bam graftbam.bam
-
-            /opt/samtools/bin/samtools sort -o hostsorted.bam $2
-            /opt/samtools/bin/samtools index hostsorted.bam
-            /opt/samtools/bin/samtools view -h -F 256 -F 2048 hostsorted.bam > hostbam.bam
-            /opt/samtools/bin/samtools sort -n -o hostbam_accepted.bam hostbam.bam
+            /opt/samtools/bin/samtools view -h -F 256 -F 2048 $1 | /opt/samtools/bin/samtools sort -n -o graftbam_accepted.bam
+            /opt/samtools/bin/samtools view -h -F 256 -F 2048 $2 | /opt/samtools/bin/samtools sort -n -o hostbam_accepted.bam
 
             # Running xenosplit
             python /opt/Xenosplit.py --pairedEnd --out graftOut.bam graftbam_accepted.bam hostbam_accepted.bam
-            python /opt/Xenosplit.py --count graftbam_accepted.bam hostbam_accepted.bam > goodnessOfMapping.txt
+            python /opt/Xenosplit.py --count graftbam_accepted.bam hostbam_accepted.bam > xenosplit_statistics.txt
 
 inputs:
     graftbam:
@@ -49,7 +42,7 @@ outputs:
         type: File
         outputBinding:
             glob: "graftOut.bam"
-    goodnessOfMapping:
+    xenosplit_statistics:
         type: File
         outputBinding:
-            glob: "goodnessOfMapping.txt"
+            glob: "xenosplit_statistics.txt"
