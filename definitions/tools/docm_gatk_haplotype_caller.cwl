@@ -3,15 +3,30 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "HaplotypeCaller (GATK 3.6)"
-baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "HaplotypeCaller"]
+baseCommand: ["/bin/bash", "docm_haplotypeCaller.sh"]
 requirements:
     - class: ResourceRequirement
       ramMin: 9000
     - class: DockerRequirement
       dockerPull: "mgibio/gatk-cwl:3.6.0"
-arguments:
-    ["-gt_mode", "GENOTYPE_GIVEN_ALLELES",
-    "-o", { valueFrom: $(runtime.outdir)/docm_raw_variants.vcf }]
+    - class: InitialWorkDirRequirement
+      listing:
+      - entryname: 'docm_haplotypeCaller.sh'
+        entry: |
+             set -o pipefail
+             set -o errexit
+
+             # Extracting the regions from the interval list to match the DoCM VCF file
+             cat $5 | grep '^@' > docm.interval_list
+             zcat $4 | grep ^chr | awk '{FS = "\t";OFS = "\t";print $1,$2-100,$2+100,"+",$1"_"$2-100"_"$2+100}' >> docm.interval_list
+
+             # Running haplotype caller using the newly created interval list
+             if [[ "$2" eq "" ]];then
+                 /usr/bin/java -Xmx8g -jar /opt/GenomeAnalysisTK.jar -T HaplotypeCaller -R $1 -I $3 --alleles $4 -L docm.interval_list -gt_mode GENOTYPE_GIVEN_ALLELES -o docm_raw_variants.vcf # if normal_bam is not provided
+             else
+                 /usr/bin/java -Xmx8g -jar /opt/GenomeAnalysisTK.jar -T HaplotypeCaller -R $1 -I $2 -I $3 --alleles $4 -L docm.interval_list -gt_mode GENOTYPE_GIVEN_ALLELES -o docm_raw_variants.vcf # if normal_bam is provided
+             fi
+
 inputs:
     reference:
         type:
