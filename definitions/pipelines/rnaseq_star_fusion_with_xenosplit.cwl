@@ -15,27 +15,27 @@ inputs:
         type: string[]
     graft_star_genome_dir:
         type: Directory
-        doc: "Location of the STAR human reference directory"
+        doc: "Location of the STAR reference for the graft species (usually human)"
     graft_outfile_name_prefix:
         type: string?
         default: "Graft_"
-        doc: "Prefix name for the graft bam - human"
+        doc: "Prefix name for the graft bam (often 'human')"
     host_star_genome_dir:
         type: Directory
-        doc: "Location of the STAR mouse reference directory"
+        doc: "Location of the STAR reference for the host species (usually mouse)"
     host_outfile_name_prefix:
         type: string?
         default: "Host_"
-        doc: "Prefix name for the host bam - mouse"
+        doc: "Prefix name for the host bam (often 'mouse')"
     star_fusion_genome_dir:
         type: Directory
-        doc: "As the fusion would be called on only the final graftOutbam i.e. the human xenograft bam without any mouse reads we only need the star fusion directory for the human"
+        doc: "star fusion directory for the graft species (often human) - fusions are only called on the xenograft-filtered bam"
     graft_gtf_file:
         type: File
-        doc: "GTF file corresponding the to the Human STAR reference"
+        doc: "GTF file corresponding the to the graft species (often human)"
     host_gtf_file:
         type: File
-        doc: "GFT file corresponding to the Mouse STAR reference"
+        doc: "GTF file corresponding the to the host species (often mouse)"
     trimming_adapters:
         type: File
     trimming_adapter_trim_end:
@@ -102,9 +102,9 @@ outputs:
     fusion_evidence:
         type: File
         outputSource: kallisto/fusion_evidence
-    xenosplit_goodnessofmapping:
+    xenosplit_statistics:
         type: File
-        outputSource: xenosplit/goodnessOfMapping
+        outputSource: xenosplit/xenosplit_statistics
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
@@ -155,7 +155,7 @@ steps:
             graftbam: graft_star_align_fusion/aligned_bam
             hostbam: host_star_align_fusion/aligned_bam
         out:
-            [graftOut, goodnessOfMapping]
+            [graftOut, xenosplit_statistics]
     graftbam_to_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
         in:
