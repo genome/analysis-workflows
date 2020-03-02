@@ -16,7 +16,7 @@ arguments: [
     "/opt/conda/bin/pvacseq", "run",
     "--iedb-install-directory", "/opt/iedb",
     "--pass-only",
-    { position: 5, valueFrom: $(runtime.outdir) },
+    { position: 5, valueFrom: "pvacseq_epitopes" },
 ]
 requirements:
     - class: ShellCommandRequirement
@@ -167,15 +167,7 @@ inputs:
             prefix: "--n-threads"
         default: 8
 outputs:
-    mhc_i_epitopes:
-        type: Directory?
+    pvacseq_epitopes:
+        type: Directory
         outputBinding:
-            glob: "MHC_Class_I"
-    mhc_ii_epitopes:
-        type: Directory?
-        outputBinding:
-            glob: "MHC_Class_II"
-    combined_epitopes:
-        type: Directory?
-        outputBinding:
-            glob: "combined"
+            glob: "pvacseq_epitopes"
