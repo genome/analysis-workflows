@@ -113,9 +113,9 @@ outputs:
     annotated_tsv:
         type: File
         outputSource: add_vep_fields_to_table/annotated_variants_tsv
-    pvacseq_epitopes:
+    pvacseq_predictions:
         type: Directory
-        outputSource: pvacseq/pvacseq_epitopes
+        outputSource: pvacseq/pvacseq_predictions
 steps:
     tumor_rna_bam_readcount:
         run: bam_readcount.cwl
@@ -197,7 +197,7 @@ steps:
             netmhc_stab: netmhc_stab
             n_threads: n_threads
         out:
-            [pvacseq_epitopes]
+            [pvacseq_predictions]
     variants_to_table:
         run: ../tools/variants_to_table.cwl
         in:

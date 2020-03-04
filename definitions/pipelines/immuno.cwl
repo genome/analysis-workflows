@@ -696,9 +696,9 @@ outputs:
     annotated_tsv:
         type: File
         outputSource: pvacseq/annotated_tsv
-    pvacseq_epitopes:
+    pvacseq_predictions:
         type: Directory
-        outputSource: pvacseq/pvacseq_epitopes
+        outputSource: pvacseq/pvacseq_predictions
 steps:
     rnaseq:
         run: rnaseq.cwl
@@ -879,4 +879,4 @@ steps:
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
         out:
-            [annotated_vcf, annotated_tsv, pvacseq_epitopes]
+            [annotated_vcf, annotated_tsv, pvacseq_predictions]

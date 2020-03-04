@@ -16,7 +16,7 @@ arguments: [
     "/opt/conda/bin/pvacseq", "run",
     "--iedb-install-directory", "/opt/iedb",
     "--pass-only",
-    { position: 5, valueFrom: "pvacseq_epitopes" },
+    { position: 5, valueFrom: "pvacseq_predictions" },
 ]
 requirements:
     - class: ShellCommandRequirement
@@ -167,7 +167,7 @@ inputs:
             prefix: "--n-threads"
         default: 8
 outputs:
-    pvacseq_epitopes:
+    pvacseq_predictions:
         type: Directory
         outputBinding:
-            glob: "pvacseq_epitopes"
+            glob: "pvacseq_predictions"
