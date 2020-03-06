@@ -55,6 +55,25 @@ steps:
             reference: reference
         out:
             [bam]
+    gold_vcf_roi:
+        run: ../tools/bedtools_intersect.cwl
+        in:
+            file_a: gold_vcf
+            file_b: roi_bed
+            output_file_a:
+                default: false
+            unique_result:
+                default: false
+            output_name:
+                default: 'gold_roi.vcf'
+        out:
+            [intersect_result]
+    bgzip_and_index_gold_roi:
+        run: bgzip_and_index.cwl
+        in:
+            vcf: gold_vcf_roi/intersect_result
+        out:
+            [indexed_vcf]
     query_vcf_pass:
         run: ../tools/select_variants.cwl
         in:
@@ -64,12 +83,31 @@ steps:
                 default: true
         out:
             [filtered_vcf]
+    query_vcf_pass_roi:
+        run: ../tools/bedtools_intersect.cwl
+        in:
+            file_a: query_vcf_pass/filtered_vcf
+            file_b: roi_bed
+            output_file_a:
+                default: false
+            unique_result:
+                default: false
+            output_name:
+                default: 'query_pass_roi.vcf'
+        out:
+            [intersect_result]
+    bgzip_and_index_query_pass_roi:
+        run: bgzip_and_index.cwl
+        in:
+            vcf: query_vcf_pass_roi/intersect_result
+        out:
+            [indexed_vcf]
     combine_vcf:
         run: ../tools/combine_variants_concordance.cwl
         in:
             reference: reference
-            base_vcf: gold_vcf
-            query_vcf: query_vcf_pass/filtered_vcf
+            base_vcf: bgzip_and_index_gold_roi/indexed_vcf
+            query_vcf: bgzip_and_index_query_pass_roi/indexed_vcf
         out:
            [combined_vcf]
     normal_bam_readcount:
@@ -94,7 +132,7 @@ steps:
         run: ../tools/select_variants.cwl
         in:
             reference: reference
-            vcf: query_vcf_pass/filtered_vcf
+            vcf: bgzip_and_index_query_pass_roi/indexed_vcf
             select_type: 
                 default: 'SNP'
         out:
@@ -103,37 +141,50 @@ steps:
         run: ../tools/select_variants.cwl
         in:
             reference: reference
-            vcf: query_vcf_pass/filtered_vcf
+            vcf: bgzip_and_index_query_pass_roi/indexed_vcf
             select_type: 
                 default: 'INDEL'
         out:
             [filtered_vcf]
+    true_negative_roi:
+        run: ../tools/bedtools_intersect.cwl
+        in:
+            file_a: true_negative_bed
+            file_b: roi_bed
+            output_file_a:
+                default: false
+            unique_result:
+                default: false
+            output_name:
+                default: 'tn_roi.bed'
+        out:
+            [intersect_result]
     true_negative_intersect_query_snv:
         run: ../tools/bedtools_intersect.cwl
         in:
-            file_a: true_negative_bed
+            file_a: true_negative_roi/intersect_result
             file_b: query_vcf_pass_snv/filtered_vcf
-            output_file_a: 
+            output_file_a:
                 default: false
-            unique_result: 
+            unique_result:
                 default: false
             output_name:
-                default: 'tn_x_query_snv.bed'   
+                default: 'tn_x_query_snv.bed'
         out:
-            [intersect_result] 
+            [intersect_result]
     true_negative_intersect_query_indel:
         run: ../tools/bedtools_intersect.cwl
         in:
-            file_a: true_negative_bed
+            file_a: true_negative_roi/intersect_result
             file_b: query_vcf_pass_indel/filtered_vcf
-            output_file_a: 
+            output_file_a:
                 default: false
-            unique_result: 
+            unique_result:
                 default: false
             output_name: 
-                default: 'tn_x_query_indel.bed'   
+                default: 'tn_x_query_indel.bed'
         out:
-            [intersect_result] 
+            [intersect_result]
     sompy:
         run: ../tools/sompy.cwl
         in:
@@ -147,7 +198,7 @@ steps:
         run: ../tools/eval_cle_gold.cwl
         in:
             sompy_out: sompy/sompy_out
-            true_negative_bed: true_negative_bed
+            true_negative_bed: true_negative_roi/intersect_result
             tn_x_query_snv: true_negative_intersect_query_snv/intersect_result
             tn_x_query_indel: true_negative_intersect_query_indel/intersect_result
             combined_vcf: combine_vcf/combined_vcf
