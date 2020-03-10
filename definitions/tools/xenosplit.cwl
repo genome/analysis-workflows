@@ -38,7 +38,7 @@ inputs:
             position: 2
 
 outputs:
-    graftOut:
+    graft_bam:
         type: File
         outputBinding:
             glob: "graftOut.bam"

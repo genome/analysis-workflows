@@ -155,11 +155,11 @@ steps:
             graftbam: graft_star_align_fusion/aligned_bam
             hostbam: host_star_align_fusion/aligned_bam
         out:
-            [graftOut, xenosplit_statistics]
+            [graft_bam, xenosplit_statistics]
     graftbam_to_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
         in:
-            bam: xenosplit/graftOut
+            bam: xenosplit/graft_bam
             adapters: trimming_adapters
             adapter_trim_end: trimming_adapter_trim_end
             adapter_min_overlap: trimming_adapter_min_overlap
@@ -209,7 +209,7 @@ steps:
     sort_bam:
         run: ../tools/samtools_sort.cwl
         in:
-            input_bam: xenosplit/graftOut
+            input_bam: xenosplit/graft_bam
         out:
             [sorted_bam]
     mark_dup:
