@@ -239,16 +239,16 @@ inputs:
             position: 1
             itemSeparator: ','
             separate: false
-    clinical_MHCcI_alleles:
+    clinical_mhc_classI_alleles:
         type: string[]?
         inputBinding:
             position: 2
             itemSeparator: ','
             separate: false
-    clinical_MHCcII_alleles:
+    clinical_mhc_classII_alleles:
         type: string[]?
         inputBinding:
-            position: 2
+            position: 3
             itemSeparator: ','
             separate: false
 outputs:
