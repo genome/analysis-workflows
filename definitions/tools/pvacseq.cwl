@@ -167,6 +167,42 @@ inputs:
             prefix: "--n-threads"
         default: 8
 outputs:
+    mhc_i_all_epitopes:
+        type: File?
+        outputBinding:
+            glob: "pvacseq_predictions/MHC_Class_I/$(inputs.sample_name).all_epitopes.tsv"
+    mhc_i_filtered_epitopes:
+        type: File?
+        outputBinding:
+            glob: "pvacseq_predictions/MHC_Class_I/$(inputs.sample_name).filtered.tsv"
+    mhc_i_ranked_epitopes:
+        type: File?
+        outputBinding:
+            glob: "pvacseq_predictions/MHC_Class_I/$(inputs.sample_name).filtered.condensed.ranked.tsv"
+    mhc_ii_all_epitopes:
+        type: File?
+        outputBinding:
+            glob: "pvacseq_predictions/MHC_Class_II/$(inputs.sample_name).all_epitopes.tsv"
+    mhc_ii_filtered_epitopes:
+        type: File?
+        outputBinding:
+            glob: "pvacseq_predictions/MHC_Class_II/$(inputs.sample_name).filtered.tsv"
+    mhc_ii_ranked_epitopes:
+        type: File?
+        outputBinding:
+            glob: "pvacseq_predictions/MHC_Class_II/$(inputs.sample_name).filtered.condensed.ranked.tsv"
+    combined_all_epitopes:
+        type: File?
+        outputBinding:
+            glob: "pvacseq_predictions/combined/$(inputs.sample_name).all_epitopes.tsv"
+    combined_filtered_epitopes:
+        type: File?
+        outputBinding:
+            glob: "pvacseq_predictions/combined/$(inputs.sample_name).filtered.tsv"
+    combined_ranked_epitopes:
+        type: File?
+        outputBinding:
+            glob: "pvacseq_predictions/combined/$(inputs.sample_name).filtered.condensed.ranked.tsv"
     pvacseq_predictions:
         type: Directory
         outputBinding:
