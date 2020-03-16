@@ -288,11 +288,14 @@ inputs:
     reference_dict:
         type: File
 
-    clinical_hla_alleles:
+    clinical_mhc_classI_alleles:
         type: string[]?
-        label: "clinical_calls: Clinical HLA typing results; element format: HLA-X*01:02[/HLA-X...]"
-        doc: |
-          clinical_calls is used to provide clinical HLA typing results in the format HLA-X*01:02[/HLA-X...] when available.
+        label: "Clinical HLA typing results, limited to MHC Class I alleles; element format: HLA-X*01:02[/HLA-X...]"
+        doc: "used to provide clinical HLA typing results in the format HLA-X*01:02[/HLA-X...] when available."
+    clinical_mhc_classII_alleles:
+        type: string[]?
+        label: "Clinical HLA typing results, limited to MHC Class II alleles"
+        doc: "used to provide clinical HLA typing results; separated from class I due to nomenclature inconsistencies"
 
     #pvacseq inputs
     readcount_minimum_base_quality:
@@ -955,7 +958,8 @@ steps:
         run: ../tools/hla_consensus.cwl
         in:
             optitype_hla_alleles: extract_alleles/allele_string
-            clinical_hla_alleles: clinical_hla_alleles
+            clinical_mhc_classI_alleles: clinical_mhc_classI_alleles
+            clinical_mhc_classII_alleles: clinical_mhc_classII_alleles
         out:
             [consensus_alleles, hla_call_files]
     pvacseq:
