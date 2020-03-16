@@ -88,12 +88,13 @@ requirements:
                         optitype_calls = sys.argv[1].split(",")
 
                         if clinical_exists:
-                            raw_clinical_calls = sys.argv[2].split(",")
+                            raw_clinical_i_calls = sys.argv[2].split(",") #MHC Class I clinical typing results
+                            raw_clinical_ii_calls = sys.argv[3].split(",") #MHC Class II clinical typing results
                             #Each clinical call may be a single high confidence call,
                             #or a list of uncertain calls separated by slashes
                             hc_clinical_calls = []
                             u_clinical_calls = []
-                            for call in raw_clinical_calls:
+                            for call in raw_clinical_i_calls:
                                 if "/" in call:
                                     u_clinical_calls.append(call)
                                 else:
@@ -180,7 +181,7 @@ requirements:
                         #other relevant files for convenience/later review.
                         if clinical_exists:
                             with open("hla_calls/clinical_calls.txt", "w") as c_c:
-                                c_c.write( ",".join(raw_clinical_calls) )
+                                c_c.write( ",".join(raw_clinical_i_calls + raw_clinical_ii_calls) )
 
                         #########################################################
                         ### Generate consensus (superset if callers disagree) ###
@@ -205,6 +206,7 @@ requirements:
                                 c_c.write( ",".join(optitype_calls) )
                         else:
                             consensus_calls = []
+                            consensus_calls.extend(raw_clinical_ii_calls)
                             mismatch_written = False
                             for gene in hla_calls:
                                 mismatches = {'optitype': [], 'clinical': []}
@@ -217,7 +219,7 @@ requirements:
                                         #resulting in leaves with empty sets; these can be ignored
                                         if callers:
                                             #there are now only 3 possibilities for the contents of $callers:
-                                            #{optitype, clinical}, {optitype}, {clinical}
+                                            #[optitype, clinical], [optitype], [clinical]
                                             #all will be added to the consensus, possibly creating a superset
                                             #those with only 1 caller represent mismatches between the 2
                                             consensus_calls.append( build_hla_str(gene, allele_group, spec_allele) )
@@ -237,7 +239,13 @@ inputs:
             position: 1
             itemSeparator: ','
             separate: false
-    clinical_hla_alleles:
+    clinical_MHCcI_alleles:
+        type: string[]?
+        inputBinding:
+            position: 2
+            itemSeparator: ','
+            separate: false
+    clinical_MHCcII_alleles:
         type: string[]?
         inputBinding:
             position: 2
