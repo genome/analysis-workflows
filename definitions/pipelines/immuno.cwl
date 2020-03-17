@@ -795,33 +795,9 @@ outputs:
     annotated_tsv:
         type: File
         outputSource: pvacseq/annotated_tsv
-    mhc_i_all_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_i_all_epitopes
-    mhc_i_filtered_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_i_filtered_epitopes
-    mhc_i_ranked_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_i_ranked_epitopes
-    mhc_ii_all_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_ii_all_epitopes
-    mhc_ii_filtered_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_ii_filtered_epitopes
-    mhc_ii_ranked_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_ii_ranked_epitopes
-    combined_all_epitopes:
-        type: File?
-        outputSource: pvacseq/combined_all_epitopes
-    combined_filtered_epitopes:
-        type: File?
-        outputSource: pvacseq/combined_filtered_epitopes
-    combined_ranked_epitopes:
-        type: File?
-        outputSource: pvacseq/combined_ranked_epitopes
+    pvacseq_predictions:
+        type: Directory
+        outputSource: pvacseq/pvacseq_predictions
 steps:
     rnaseq:
         run: rnaseq.cwl
@@ -1003,4 +979,4 @@ steps:
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
         out:
-            [annotated_vcf, annotated_tsv, mhc_i_all_epitopes, mhc_i_filtered_epitopes, mhc_i_ranked_epitopes, mhc_ii_all_epitopes, mhc_ii_filtered_epitopes, mhc_ii_ranked_epitopes, combined_all_epitopes, combined_filtered_epitopes, combined_ranked_epitopes]
+            [annotated_vcf, annotated_tsv, pvacseq_predictions]
