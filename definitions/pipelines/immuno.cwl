@@ -941,7 +941,7 @@ steps:
     pvacseq:
         run: ../subworkflows/pvacseq.cwl
         in:
-            detect_variants_vcf: somatic/final_vcf
+            detect_variants_vcf: somatic/final_filtered_vcf
             sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name
             rnaseq_bam: rnaseq/final_bam
