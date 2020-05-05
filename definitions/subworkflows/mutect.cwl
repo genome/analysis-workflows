@@ -53,7 +53,7 @@ steps:
         out:
             [vcf]
     merge:
-        run: ../tools/merge_vcf.cwl
+        run: ../tools/concat_vcf.cwl
         in:
             vcfs: mutect/vcf
         out:

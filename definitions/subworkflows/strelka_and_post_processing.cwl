@@ -59,7 +59,7 @@ steps:
         out:
             [processed_vcf]
     merge:
-        run: ../tools/merge_vcf.cwl
+        run: ../tools/concat_vcf.cwl
         in:
             vcfs: process/processed_vcf
         out:

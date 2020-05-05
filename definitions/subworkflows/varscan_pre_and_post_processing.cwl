@@ -122,7 +122,7 @@ steps:
         out:
             [indexed_vcf]
     merge:
-        run: ../tools/merge_vcf.cwl
+        run: ../tools/concat_vcf.cwl
         in:
             vcfs: [index_snvs/indexed_vcf, index_indels/indexed_vcf]
         out:

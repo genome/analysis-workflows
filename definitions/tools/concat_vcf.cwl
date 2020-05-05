@@ -2,14 +2,18 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "merge VCF files from non-overlapping sample sets"
-baseCommand: ["/opt/bcftools/bin/bcftools", "merge"]
+label: "concatenate or combine multiple VCF files that contain variants from the same samples"
+baseCommand: ["/opt/bcftools/bin/bcftools", "concat"]
 requirements:
     - class: DockerRequirement
       dockerPull: mgibio/bcftools-cwl:1.3.1
     - class: ResourceRequirement
       ramMin: 4000
 arguments:
+    - "--allow-overlaps"
+    - "--remove-duplicates"
+    - "--output-type"
+    - "z"
     - "-o"
     - { valueFrom: $(runtime.outdir)/$(inputs.merged_vcf_basename).vcf.gz }
 inputs:
