@@ -8,7 +8,7 @@ baseCommand: ["/usr/bin/python", "bam_readcount_helper.py"]
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "mgibio/bam_readcount_helper-cwl:1.1.1"
+      dockerPull: "mgibio/bam_readcount_helper-cwl:1.2"
     - class: ResourceRequirement
       ramMin: 16000
     - class: InlineJavascriptRequirement
@@ -147,7 +147,7 @@ inputs:
         type: File
         inputBinding:
             position: -5
-        secondaryFiles: [.bai]
+        secondaryFiles: [.bai, .crai]
     prefix:
         type: string?
         default: 'NOPREFIX'
