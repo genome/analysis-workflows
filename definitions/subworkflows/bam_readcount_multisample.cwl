@@ -34,7 +34,9 @@ inputs:
 outputs:
     readcount_vcf:
         type: File
-        outputSource: merge_vcfs/merged_vcf
+        outputSource: index/indexed_vcf
+        secondaryFiles: [.tbi]
+
 steps:
     get_readcounts:
         scatter: [bam, sample_name]
@@ -67,3 +69,10 @@ steps:
             vcfs: subset_vcfs_by_sample/subset_vcf
         out:
             [merged_vcf]
+
+    index:
+        run: bgzip_and_index.cwl
+        in:
+            vcf: merge_vcfs/merged_vcf
+        out:
+            [indexed_vcf]

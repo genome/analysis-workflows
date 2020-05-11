@@ -12,6 +12,7 @@ inputs:
     vcfs:
         type: File[]
         secondaryFiles: [.tbi]
+        doc: annotated somatic VCFs, such as those produced by the detect_variants workflow (or other somatic workflows)
     tumor_bams:
         type: File[]
         secondaryFiles: ${if (self.nameext === ".bam") {return self.basename + ".bai"} else {return self.basename + ".crai"}}
@@ -40,10 +41,27 @@ inputs:
             - type: enum
               symbols: ["DNA", "RNA"]
         doc: for now, this only accepts either "DNA" or "RNA" and assumes it applies to all samples/bams to avoid having to pass in an array
+    variants_to_table_fields:
+        type: string[]
+        default: [CHROM,POS,ID,REF,ALT,set,AC]
+        doc: vcf fields to output in the merged table
+    variants_to_table_genotype_fields:
+        type: string[]
+        default: [GT,AD,AF,DP]
+        doc: gt fields to output in the merged table
+    vep_to_table_fields:
+        type: string[]
+        default: [Gene,SYMBOL,IMPACT,Consequence,cDNA_position,Protein_position,Amino_acids,Codons,gnomAD_AF,HGVSc,HGVSp]
+        doc: vep fields to output in the merged table
+
 outputs:
     merged_readcount_vcf:
         type: File
         outputSource: add_readcounts/readcount_vcf
+        secondaryFiles: [.tbi]
+    merged_readcount_table:
+        type: File
+        outputSource: add_vep_fields_to_table/annotated_variants_tsv
 steps:
     merge_vcfs:
         run: ../tools/merge_somatic_vcfs.cwl
@@ -84,4 +102,20 @@ steps:
             data_type: data_type
         out:
             [readcount_vcf]
-##todo - index the vcf
+
+    variants_to_table:
+        run: ../tools/variants_to_table.cwl
+        in:
+            reference: reference_fasta
+            vcf: add_readcounts/readcount_vcf
+            fields: variants_to_table_fields
+            genotype_fields: variants_to_table_genotype_fields
+        out:
+            [variants_tsv]
+    add_vep_fields_to_table:
+        run: ../tools/add_vep_fields_to_table.cwl
+        in:
+            vcf: add_readcounts/readcount_vcf
+            vep_fields: vep_to_table_fields
+            tsv: variants_to_table/variants_tsv
+        out: [annotated_variants_tsv]

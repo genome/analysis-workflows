@@ -11,7 +11,7 @@ requirements:
       ramMin: 4000
 arguments:
     - "-o"
-    - { valueFrom: $(runtime.outdir)/$(inputs.merged_vcf_basename).vcf.gz }
+    - { valueFrom: $(runtime.outdir)/$(inputs.merged_vcf_basename).vcf }
 inputs:
     vcfs:
         type: File[]
@@ -25,4 +25,4 @@ outputs:
     merged_vcf:
         type: File
         outputBinding:
-            glob: $(inputs.merged_vcf_basename).vcf.gz
+            glob: $(inputs.merged_vcf_basename).vcf
