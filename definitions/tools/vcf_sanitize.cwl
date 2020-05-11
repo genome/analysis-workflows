@@ -45,7 +45,7 @@ outputs:
         outputBinding:
             glob: |
                   ${
-                    if(inputs.vcf.nameext.equals(".gz")){
+                    if(inputs.vcf.nameext === ".gz"){
                       return inputs.vcf.nameroot.replace(/.vcf$/, "") + ".sanitized.vcf.gz";
                     }
                     return inputs.vcf.nameroot + ".sanitized.vcf.gz";
