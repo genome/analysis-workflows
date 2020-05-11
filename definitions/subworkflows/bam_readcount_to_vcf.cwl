@@ -5,6 +5,7 @@ class: Workflow
 label: "Get snv and indel readcounts for one sample and one bam and add them to a vcf"
 requirements:
     - class: SubworkflowFeatureRequirement
+    - class: InlineJavascriptRequirement
 inputs:
     vcf:
         type: File
@@ -18,7 +19,8 @@ inputs:
         secondaryFiles: [.fai, ^.dict]
     bam:
         type: File
-        secondaryFiles: [.bai, .crai]
+        secondaryFiles: ${if (self.nameext === ".bam") {return self.basename + ".bai"} else {return self.basename + ".crai"}}
+        doc: accepts either bam or cram
     min_base_quality:
         type: int?
     min_mapping_quality:
@@ -71,7 +73,7 @@ steps:
         run: ../tools/vcf_readcount_annotator.cwl
         in:
             vcf: add_snv_bam_readcount_to_vcf/annotated_bam_readcount_vcf
-            bam_readcount_tsv: indel_bam_readcount_tsv
+            bam_readcount_tsv: bam_readcount/indel_bam_readcount_tsv
             data_type: data_type
             sample_name: sample_name
             variant_type:

@@ -42,7 +42,7 @@ inputs:
             position: 1
         doc: "multi-sample vcf"
     sample_name:
-        type: String
+        type: string
         inputBinding:
             position: 2
         doc: "sample name to keep"

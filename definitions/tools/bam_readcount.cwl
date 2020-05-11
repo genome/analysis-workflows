@@ -8,7 +8,8 @@ baseCommand: ["/usr/bin/python", "bam_readcount_helper.py"]
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "mgibio/bam_readcount_helper-cwl:1.2"
+      #dockerPull: "mgibio/bam_readcount_helper-cwl:1.2"
+      dockerPull: "chrisamiller/bam_readcount_helper-cwl:cramtest"
     - class: ResourceRequirement
       ramMin: 16000
     - class: InlineJavascriptRequirement
@@ -35,7 +36,7 @@ requirements:
                 return fh.name
 
             def filter_sites_in_hash(region_list, bam_file, ref_fasta, prefixed_sample, output_dir, insertion_centric, map_qual, base_qual):
-                bam_readcount_cmd = ['/usr/bin/bam-readcount', '-f', ref_fasta, '-l', region_list, '-w', '0', '-b', str(base_qual), '-q', str(map_qual)]
+                bam_readcount_cmd = ['/opt/bam-readcount/bam-readcount', '-f', ref_fasta, '-l', region_list, '-w', '0', '-b', str(base_qual), '-q', str(map_qual)]
                 if insertion_centric:
                     bam_readcount_cmd.append('-i')
                     output_file = os.path.join(output_dir, prefixed_sample + '_bam_readcount_indel.tsv')
@@ -147,7 +148,8 @@ inputs:
         type: File
         inputBinding:
             position: -5
-        secondaryFiles: [.bai, .crai]
+        secondaryFiles: ${if (self.nameext === ".bam") {return self.basename + ".bai"} else {return self.basename + ".crai"}}
+        doc: accepts either bam or cram
     prefix:
         type: string?
         default: 'NOPREFIX'
