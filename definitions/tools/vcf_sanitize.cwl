@@ -5,6 +5,7 @@ class: CommandLineTool
 label: "Sanitize a VCF"
 baseCommand: ["/bin/bash","sanitize.sh"]
 requirements:
+    - class: InlineJavascriptRequirement
     - class: ResourceRequirement
       ramMin: 4000
       coresMin: 1
