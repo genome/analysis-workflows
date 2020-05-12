@@ -30,20 +30,18 @@ requirements:
             
             # prep all the tumor vcfs for merging
             for i in ${!vcf_array[*]}; do
-                echo "loop: $i";
                 samp=${sample_array[$i]};
                 vcf=${vcf_array[$i]};
-                echo $samp
-                echo $vcf
                 #assumes the input VCF contains the samples in the order NORMAL TUMOR
                 normal_name_in_vcf=`gunzip -c "$vcf" | grep "^#CHROM" | cut -f 10`;
                 tumor_name_in_vcf=`gunzip -c "$vcf" | grep "^#CHROM" | cut -f 11`;
-                /usr/local/bin/bcftools view -s $tumor_name_in_vcf $vcf | /usr/local/bin/bcftools reheader -s <(echo $samp) | /usr/local/bin/bgzip -c >$samp.tumor_only.vcf.gz;
-                /usr/local/bin/tabix -p vcf $samp.tumor_only.vcf.gz;
+                #use index for name of temp files (instead of sample names) to avoid potential weird character issues
+                /usr/local/bin/bcftools view -s "$tumor_name_in_vcf" "$vcf" | /usr/local/bin/bcftools reheader -s <(echo "$samp") | /usr/local/bin/bgzip -c >"$i.tumor_only.vcf.gz";
+                /usr/local/bin/tabix -p vcf "$i.tumor_only.vcf.gz";
                 
                 #also create normal-only vcfs
-                /usr/local/bin/bcftools view -s $normal_name_in_vcf $vcf | /usr/local/bin/bcftools reheader -s <(echo $normal_sample_name) | /usr/local/bin/bgzip -c >$samp.normal_only.vcf.gz;
-                /usr/local/bin/tabix -p vcf $samp.normal_only.vcf.gz;
+                /usr/local/bin/bcftools view -s "$normal_name_in_vcf" "$vcf" | /usr/local/bin/bcftools reheader -s <(echo "$normal_sample_name") | /usr/local/bin/bgzip -c >"$i.normal_only.vcf.gz";
+                /usr/local/bin/tabix -p vcf "$i.normal_only.vcf.gz";
             done
                 
             #create a merged normal vcf that includes all variants from all samples - this isn't strictly necessary,
@@ -53,16 +51,13 @@ requirements:
             
             #finally, merge them all into one big VCF, keeping FILTER field as PASS if it is PASS in any sample
             cmd="/usr/local/bin/bcftools merge -F x merged.normal.vcf.gz"
-            for samp in ${sample_array[@]};do
-                cmd="$cmd $samp.tumor_only.vcf.gz"
+            for i in ${!sample_array[*]};do
+                cmd="$cmd $i.tumor_only.vcf.gz"
             done
-            #cmd | /usr/local/bin/bgzip -c >merged.vcf.gz";
-            echo $cmd;
+            echo "Running: $cmd";
             `$cmd >merged.vcf`
             /usr/local/bin/bgzip merged.vcf
             /usr/local/bin/tabix -p vcf merged.vcf.gz
-
-#=========="
 
 inputs:
     vcfs:

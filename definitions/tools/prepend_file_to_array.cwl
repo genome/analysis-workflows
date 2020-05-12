@@ -9,7 +9,7 @@ inputs:
 outputs:
     file_array: File[]
 requirements:
-    InlineJavascriptRequirement: {}
+    - class: InlineJavascriptRequirement
 expression: |
    ${
       var afile = inputs.file;

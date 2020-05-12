@@ -9,7 +9,7 @@ inputs:
 outputs:
     string_array: string[]
 requirements:
-    InlineJavascriptRequirement: {}
+    - class: InlineJavascriptRequirement
 expression: |
    ${
       var astring = inputs.string;

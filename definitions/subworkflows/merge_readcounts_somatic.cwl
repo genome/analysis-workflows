@@ -92,10 +92,8 @@ steps:
         run: bam_readcount_multisample.cwl
         in:
             vcf: merge_vcfs/merged_vcf
-            bams:
-                source: prepend_normal_bam/file_array
-            sample_names: 
-                source: prepend_normal_name/string_array
+            bams: prepend_normal_bam/file_array
+            sample_names: prepend_normal_name/string_array
             reference_fasta: reference_fasta
             min_base_quality: min_base_quality
             min_mapping_quality: min_mapping_quality
