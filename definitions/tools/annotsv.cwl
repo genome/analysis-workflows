@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-arguments: ["AnnotSV", "-bedtools", "/usr/bin/bedtools", "-outputDir", "$(runtime.outdir)"]
+arguments: ["/opt/AnnotSV_2.1/bin/AnnotSV", "-bedtools", "/usr/bin/bedtools", "-outputDir", "$(runtime.outdir)"]
 requirements:
     - class: ResourceRequirement
       ramMin: 8000

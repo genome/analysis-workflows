@@ -24,9 +24,12 @@ inputs:
     cnvkit_drop_low_coverage:
         type: boolean?
     cnvkit_method:
-        type: string?
+        type:
+          - "null"
+          - type: enum
+            symbols: ["hybrid", "amplicon", "wgs"]
     cnvkit_reference_cnn:
-        type: File
+        type: File?
     cnvkit_scatter_plot:
         type: boolean?
     cnvkit_male_reference:
@@ -164,6 +167,7 @@ steps:
             cnvkit_vcf_name: cnvkit_vcf_name
             segment_filter:
                 default: "cn"
+            fasta_reference: reference
         out:
             [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf]
     run_cnvkit_raw_bgzip:

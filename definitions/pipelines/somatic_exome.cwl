@@ -545,8 +545,14 @@ steps:
         run: ../tools/cnvkit_batch.cwl
         in:
             tumor_bam: tumor_alignment_and_qc/bam
-            normal_bam: normal_alignment_and_qc/bam
-            reference: reference
+            reference:
+                source: [normal_alignment_and_qc/bam, reference]
+                valueFrom: |
+                    ${
+                      var normal = self[0];
+                      var fasta = self[1];
+                      return {'normal_bam': normal, 'fasta_file': fasta};
+                    }
             bait_intervals: bait_intervals
         out:
             [intervals_antitarget, intervals_target, normal_antitarget_coverage, normal_target_coverage, reference_coverage, cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios]

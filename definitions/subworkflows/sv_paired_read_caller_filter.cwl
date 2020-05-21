@@ -16,7 +16,10 @@ inputs:
     output_vcf_name:
         type: string?
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     snps_vcf:
         type: File?
     sv_paired_count:
