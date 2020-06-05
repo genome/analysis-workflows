@@ -915,7 +915,7 @@ steps:
     phase_vcf:
         run: ../subworkflows/phase_vcf.cwl
         in:
-            somatic_vcf: somatic/final_vcf
+            somatic_vcf: somatic/final_filtered_vcf
             germline_vcf: germline/final_vcf
             reference: reference
             reference_dict: reference_dict
