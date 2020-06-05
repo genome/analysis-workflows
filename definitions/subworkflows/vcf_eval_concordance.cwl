@@ -196,10 +196,17 @@ steps:
             query_tumor_indel_bam_readcount_tsv: query_tumor_bam_readcount/indel_bam_readcount_tsv
         out:
             [out_file]
+    plot_output:
+        run: ../tools/somatic_concordance_graph.cwl
+        in:
+            sompy_file: sompy/sompy_out
+            vaf_file: vaf_report/out_file
+        out:
+            [out_pdf]
     gather_to_sub_directory:
         run: ../tools/gather_to_sub_directory.cwl
         in:
             outdir: output_dir
-            files: [sompy/sompy_out,vaf_report/out_file]
+            files: [sompy/sompy_out, vaf_report/out_file, plot_output/out_pdf]
         out:
             [gathered_directory]
