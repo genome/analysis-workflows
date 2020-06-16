@@ -44,13 +44,18 @@ requirements:
                 /usr/local/bin/tabix -p vcf "$i.normal_only.vcf.gz";
             done
                 
-            #create a merged normal vcf that includes all variants from all samples - this isn't strictly necessary,
-            #but gives us a more sane final vcf
+            # #create a merged normal vcf that includes all variants from all samples - this isn't strictly necessary,
+            # #but gives us a more sane final vcf
+            # /usr/local/bin/bcftools concat -a -D *.normal_only.vcf.gz | /usr/local/bin/bgzip -c >merged.normal.prenorm.vcf.gz
+            # /usr/local/bin/tabix -p vcf merged.normal.prenorm.vcf.gz
+            # #also have to normalize to prevent an edge case where multiallelic sites are split across multiple lines
+            # /usr/local/bin/bcftools annotate -x FORMAT/F1R2,FORMAT/F2R1 merged.normal.prenorm.vcf.gz | /usr/local/bin/bcftools norm -m+ | /usr/local/bin/bgzip -c >merged.normal.vcf.gz
+            # /usr/local/bin/tabix -p vcf merged.normal.vcf.gz
             /usr/local/bin/bcftools concat -a -D *.normal_only.vcf.gz | /usr/local/bin/bgzip -c >merged.normal.vcf.gz
             /usr/local/bin/tabix -p vcf merged.normal.vcf.gz
             
             #finally, merge them all into one big VCF, keeping FILTER field as PASS if it is PASS in any sample
-            cmd="/usr/local/bin/bcftools merge -F x merged.normal.vcf.gz"
+            cmd="/usr/local/bin/bcftools merge -F x -m none merged.normal.vcf.gz"
             for i in ${!sample_array[*]};do
                 cmd="$cmd $i.tumor_only.vcf.gz"
             done
