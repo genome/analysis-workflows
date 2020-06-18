@@ -43,9 +43,9 @@ inputs:
                 ${
                     if (inputs.strand) {
                         if (inputs.strand == 'first') {
-                            return ['--fr-stranded'];
-                        } else if (inputs.strand == 'second') {
                             return ['--rf-stranded'];
+                        } else if (inputs.strand == 'second') {
+                            return ['--fr-stranded'];
                         } else {
                             return [];
                         }
