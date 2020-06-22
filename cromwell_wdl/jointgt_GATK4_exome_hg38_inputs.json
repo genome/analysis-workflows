@@ -1,0 +1,40 @@
+{  
+  "##_COMMENT1": "INPUT GVCFs & COHORT -- DATASET-SPECIFC, MUST BE ADAPTED",
+  "JointGenotyping.sample_sheet": "gvcfs_hg38.list",
+  "JointGenotyping.callset_name": "IDT_WES_hg38",
+
+  "##_COMMENT2": "REFERENCE FILES",
+  "JointGenotyping.ref_fasta": "/gscmnt/gc2560/core/model_data/ref_build_aligner_index_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/aligner-index-blade18-1-1.gsc.wustl.edu-tmooney-331-75fff591a14f4f7c910247fc39c4ea7f/bwamem/0_7_15/all_sequences.fa",
+  "JointGenotyping.ref_fasta_index": "/gscmnt/gc2560/core/model_data/ref_build_aligner_index_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/aligner-index-blade18-1-1.gsc.wustl.edu-tmooney-331-75fff591a14f4f7c910247fc39c4ea7f/bwamem/0_7_15/all_sequences.fa.fai",
+  "JointGenotyping.ref_dict": "/gscmnt/gc2560/core/model_data/ref_build_aligner_index_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/aligner-index-blade18-1-1.gsc.wustl.edu-tmooney-331-75fff591a14f4f7c910247fc39c4ea7f/bwamem/0_7_15/all_sequences.dict",
+
+  "##_COMMENT3": "INTERVALS",
+  "JointGenotyping.eval_interval_list": "/gscmnt/gc2698/jin810/references/jin_lab_exome_targets_annotated.interval_list",
+  "JointGenotyping.unpadded_intervals_file": "/gscmnt/gc2698/jin810/references/intervals_hg38.even.handcurated.20k.intervals",
+  
+  "##_COMMENT4": "RESOURCE FILES",
+  "JointGenotyping.dbsnp_vcf": "/gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-19443-e48c595a620a432c93e8dd29e4af64f2/snvs.hq.vcf.gz",
+  "JointGenotyping.dbsnp_vcf_index": "/gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-19443-e48c595a620a432c93e8dd29e4af64f2/snvs.hq.vcf.gz.tbi",
+  "JointGenotyping.one_thousand_genomes_resource_vcf": "/gscmnt/gc2698/jin810/known_sites/1000G_phase1.snps.high_confidence.hg38.vcf.gz",
+  "JointGenotyping.one_thousand_genomes_resource_vcf_index": "/gscmnt/gc2698/jin810/known_sites/1000G_phase1.snps.high_confidence.hg38.vcf.gz.tbi",
+  "JointGenotyping.omni_resource_vcf": "/gscmnt/gc2709/info/production_reference_GRCh38DH/accessory_vcf/omni25-ld-pruned-20000-2000-0.5-annotated.wchr.sites_only.b38.autosomes_only.vcf.gz",
+  "JointGenotyping.omni_resource_vcf_index": "/gscmnt/gc2709/info/production_reference_GRCh38DH/accessory_vcf/omni25-ld-pruned-20000-2000-0.5-annotated.wchr.sites_only.b38.autosomes_only.vcf.gz.tbi",
+  "JointGenotyping.mills_resource_vcf": "/gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-20211-26b393cc7ab04120ac68cc2cbd4a15df/indels.hq.vcf.gz",
+  "JointGenotyping.mills_resource_vcf_index": "/gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-20211-26b393cc7ab04120ac68cc2cbd4a15df/indels.hq.vcf.gz.tbi",
+  "JointGenotyping.axiomPoly_resource_vcf": "/gscmnt/gc2698/jin810/known_sites/Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz",
+  "JointGenotyping.axiomPoly_resource_vcf_index": "/gscmnt/gc2698/jin810/known_sites/Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz.tbi",
+  "JointGenotyping.hapmap_resource_vcf": "/gscmnt/gc2698/jin810/known_sites/hapmap_3.3.hg38.vcf.gz",
+  "JointGenotyping.hapmap_resource_vcf_index": "/gscmnt/gc2698/jin810/known_sites/hapmap_3.3.hg38.vcf.gz.tbi",
+  "JointGenotyping.DynamicallyCombineIntervals_py": "/gscmnt/gc2698/jin810/programs/DynamicallyCombineIntervals.py",
+  "JointGenotyping.statsmerge_v2_washu": "/gscmnt/gc2698/jin810/programs/statsmerge.v2_washu.py",
+
+  "##_COMMENT5": "VQSR PARAMETERS",
+  "JointGenotyping.SNP_VQSR_downsampleFactor": 10,
+  "JointGenotyping.snp_filter_level": 99.7,
+  "JointGenotyping.indel_filter_level": 99.7,
+  "JointGenotyping.indel_recalibration_annotation_values": ["FS", "ReadPosRankSum", "MQRankSum", "QD", "SOR", "DP"],
+  "JointGenotyping.indel_recalibration_tranche_values": ["100.0", "99.95", "99.9", "99.5", "99.0", "97.0", "96.0", "95.0", "94.0", "93.5", "93.0", "92.0", "91.0", "90.0"],
+  "JointGenotyping.snp_recalibration_tranche_values": ["100.0", "99.95", "99.9", "99.8", "99.6", "99.5", "99.4", "99.3", "99.0", "98.0", "97.0", "90.0" ],
+  "JointGenotyping.snp_recalibration_annotation_values": ["QD", "MQRankSum", "ReadPosRankSum", "FS", "MQ", "SOR", "DP"]
+
+}

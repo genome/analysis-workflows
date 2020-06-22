@@ -1,0 +1,5 @@
+disk_group_models: "jin810_gms"
+disk_group_alignments: "jin810_gms"
+lsb_sub_additional: "docker(registry.gsc.wustl.edu/apipe-builder/genome_perl_environment:compute0-24)"
+cwl_runner: cromwell
+workflow_builder_backend: simple
