@@ -1,4 +1,4 @@
-# analysis-workflows for Jin-lab
+# Jin-lab analysis-workflows
 Contains modified cwl workflows and files from [genome_repository](https://github.com/genome/genome) for use in Washington University-St. Louis Genome Modeling System as well as cromwell wdl files for genomics analsyis pipelines
 
 ## Overview
