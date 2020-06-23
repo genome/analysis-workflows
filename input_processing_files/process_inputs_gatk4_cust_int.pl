@@ -35,11 +35,11 @@ my $build = Genome::Model::Build->get($build_id)
         ],
     };
 }
-my $interval_dir = $input_processor->simple_inputs->intervals_dir;
-my @intervals = glob( $intervals_dir );
 my @inputs = $build->inputs;
 my $input_processor = InputProcessor->get($build->id);
 my $inputs = $input_processor->simple_inputs;
+my $interval_dir = $input_processor>simple_inputs->intervals_dir;
+my @intervals = glob( $intervals_dir );
 $inputs->{bqsr_intervals} = $input_processor->simple_inputs->bqsr_interval_list;
 my ($ref, @extra) = grep { $_->name eq 'reference_build' } @inputs;
 if (@extra) {
