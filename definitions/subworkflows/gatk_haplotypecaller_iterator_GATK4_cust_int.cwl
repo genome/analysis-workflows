@@ -50,7 +50,7 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     haplotype_caller:
-        scatter: [intervals]
+        scatter: intervals
         run: ../tools/gatk_haplotype_caller_GATK4_cust_int.cwl
         in:
             reference: reference
