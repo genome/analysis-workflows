@@ -50,14 +50,14 @@ outputs:
         secondaryFiles: [.tbi]
 steps:
     haplotype_caller:
-        scatter: intervals
+    scatter: interval
         run: ../tools/gatk_haplotype_caller_GATK4_cust_int.cwl
         in:
             reference: reference
             bam: bam
             emit_reference_confidence: emit_reference_confidence
             gvcf_gq_bands: gvcf_gq_bands
-            intervals: intervals
+            interval: interval
             dbsnp_vcf: dbsnp_vcf
             contamination_fraction: contamination_fraction
             max_alternate_alleles: max_alternate_alleles
@@ -68,11 +68,15 @@ steps:
                 source: output_prefix
                 valueFrom: '${
                     var prefix = self !== null ? self : "";
-                    if (inputs.intervals.length == 1 && inputs.intervals[0].match(/^[0-9A-Za-z]+$/)) {
-                        return prefix + inputs.intervals[0] + ".g.vcf.gz";
+                    if (inputs.interval.length == 1 && inputs.interval[0].match(/^[0-9A-Za-z]+$/)) {
+                        return prefix + inputs.interval[0] + ".g.vcf.gz";
                     } else {
                         return prefix + "output.g.vcf.gz";
                     }
                 }'
         out:
             [gvcf]
+    in:
+        interval: intervals
+    out:
+        [gvcf]
