@@ -87,7 +87,7 @@ steps:
         out:
             [gvcf]
     merge_gvcfs:
-        run: ../tools/picard_merge_vcfs.cwl
+        run: ../tools/picard_merge_gvcfs.cwl
         in:
             gvcfs: haplotype_caller/gvcf
         out:
