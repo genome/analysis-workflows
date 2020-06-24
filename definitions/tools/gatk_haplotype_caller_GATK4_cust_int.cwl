@@ -39,7 +39,7 @@ inputs:
                 prefix: "-GQB"
         inputBinding:
             position: 4
-    interval:
+    intervals:
         type: string[]
         inputBinding:
             prefix: "-L"

@@ -57,7 +57,7 @@ steps:
             bam: bam
             emit_reference_confidence: emit_reference_confidence
             gvcf_gq_bands: gvcf_gq_bands
-            interval: intervals
+            intervals: intervals
             dbsnp_vcf: dbsnp_vcf
             contamination_fraction: contamination_fraction
             max_alternate_alleles: max_alternate_alleles
