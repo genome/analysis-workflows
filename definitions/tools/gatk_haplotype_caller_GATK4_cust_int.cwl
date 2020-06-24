@@ -40,10 +40,9 @@ inputs:
         inputBinding:
             position: 4
     interval:
-        type: string
+        type: string[]
         inputBinding:
             prefix: "-L"
-        inputBinding:
             position: 5
     dbsnp_vcf:
         type: File?
