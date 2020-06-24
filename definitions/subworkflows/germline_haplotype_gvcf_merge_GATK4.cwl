@@ -78,6 +78,7 @@ outputs:
     merged_gvcf:
         type: File
         outputSource: merge_gvcfs/merged_gvcf
+        secondaryFiles: [.tbi]
 steps:
     haplotype_caller:
         run: gatk_haplotypecaller_iterator_GATK4.cwl
