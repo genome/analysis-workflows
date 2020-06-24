@@ -40,7 +40,7 @@ inputs:
         inputBinding:
             position: 4
     intervals:
-        type: string[]
+        type: string
         inputBinding:
             prefix: "-L"
             position: 5
