@@ -41,7 +41,7 @@ inputs:
             position: 4
     interval:
         type:
-            type: string
+            type: string[]
             inputBinding:
                 prefix: "-L"
         inputBinding:
