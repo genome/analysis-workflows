@@ -51,7 +51,7 @@ outputs:
 steps:
     haplotype_caller:
         scatter: [intervals]
-        run: ../tools/gatk_haplotype_caller_GATK4.cwl
+        run: ../tools/gatk_haplotype_caller_GATK4_cust_int.cwl
         in:
             reference: reference
             bam: bam

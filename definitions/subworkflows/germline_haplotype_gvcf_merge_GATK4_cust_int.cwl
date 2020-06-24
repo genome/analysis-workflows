@@ -76,7 +76,7 @@ outputs:
         outputSource: merge_gvcfs/merged_gvcf
 steps:
     haplotype_caller:
-        run: gatk_haplotypecaller_iterator_GATK4.cwl
+        run: gatk_haplotypecaller_iterator_GATK4_cust_int.cwl
         in:
             reference: reference
             bam: bam
