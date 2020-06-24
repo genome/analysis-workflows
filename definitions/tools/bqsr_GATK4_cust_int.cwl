@@ -38,14 +38,12 @@ inputs:
         secondaryFiles: [.tbi]
     intervals:
         type:
-            type:
-                - string?
-                - File?
-            inputBinding:
-                prefix: "-L"
-            inputBinding:
-                position: 1
-            default: [chr1, chr2, chr3, chr4, chr5,chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22]
+            - string?
+            - File?
+        inputBinding:
+            prefix: "-L"
+            position: 1
+        default: [chr1, chr2, chr3, chr4, chr5,chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22]
 outputs:
     bqsr_table:
         type: File
