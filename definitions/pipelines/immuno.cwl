@@ -281,6 +281,8 @@ inputs:
             items:
                 type: array
                 items: string
+    ploidy:
+        type: int?
     optitype_name:
         type: string?
 
@@ -899,6 +901,7 @@ steps:
             emit_reference_confidence: emit_reference_confidence
             gvcf_gq_bands: gvcf_gq_bands
             intervals: gatk_haplotypecaller_intervals
+            ploidy: ploidy
             vep_cache_dir: vep_cache_dir
             vep_ensembl_assembly: vep_ensembl_assembly
             vep_ensembl_version: vep_ensembl_version

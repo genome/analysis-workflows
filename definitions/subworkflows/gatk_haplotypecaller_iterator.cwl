@@ -36,6 +36,8 @@ inputs:
         type: string?
     max_alternate_alleles:
         type: int?
+    ploidy:
+        type: int?
     variant_index_type:
         type:
             - 'null'
@@ -66,6 +68,7 @@ steps:
             dbsnp_vcf: dbsnp_vcf
             contamination_fraction: contamination_fraction
             max_alternate_alleles: max_alternate_alleles
+            ploidy: ploidy
             variant_index_type: variant_index_type
             variant_index_parameter: variant_index_parameter
             read_filter: read_filter

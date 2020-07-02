@@ -33,6 +33,8 @@ inputs:
                 items: string
     contamination_fraction:
         type: string?
+    ploidy:
+        type: int?
     vep_cache_dir:
         type:
             - string
@@ -102,6 +104,7 @@ steps:
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
             contamination_fraction: contamination_fraction
+            ploidy: ploidy
         out:
             [gvcf]
     genotype_gvcfs:
