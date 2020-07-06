@@ -64,6 +64,12 @@ inputs:
         inputBinding:
             prefix: '--max_alternate_alleles'
             position: 8
+    ploidy:
+        type: int?
+        doc: 'number of chromosomes per sample'
+        inputBinding:
+            prefix: '-ploidy'
+            position: 9
     variant_index_type:
         type:
             - 'null'
@@ -72,25 +78,25 @@ inputs:
         doc: 'type of IndexCreator to use for VCF/BCF indices'
         inputBinding:
             prefix: '--variant_index_type'
-            position: 9
+            position: 10
     variant_index_parameter:
         type: string?
         doc: 'parameter to pass to the index creator'
         inputBinding:
             prefix: '--variant_index_parameter'
-            position: 10
+            position: 11
     read_filter:
         type: string?
         doc: 'filters to apply to reads before analysis'
         inputBinding:
             prefix: '--read_filter'
-            position: 11
+            position: 12
     output_file_name:
         type: string
         default: "output.g.vcf.gz"
         inputBinding:
             prefix: "-o"
-            position: 12
+            position: 13
 outputs:
     gvcf:
         type: File

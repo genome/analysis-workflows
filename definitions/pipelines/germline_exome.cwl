@@ -56,6 +56,8 @@ inputs:
             items:
                 type: array
                 items: string
+    ploidy:
+        type: int?
     vep_cache_dir:
         type:
             - string
@@ -207,6 +209,7 @@ steps:
             emit_reference_confidence: emit_reference_confidence
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
+            ploidy: ploidy
             contamination_fraction: extract_freemix/freemix_score
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
