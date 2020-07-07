@@ -33,7 +33,7 @@ inputs:
             type: array
             items: File
             inputBinding:
-                prefix: "-knownSites"
+                prefix: "--known-sites"
                 position: 4
         secondaryFiles: [.tbi]
     intervals:

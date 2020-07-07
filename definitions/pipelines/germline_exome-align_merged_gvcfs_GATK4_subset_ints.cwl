@@ -1,4 +1,4 @@
-   
+  
 #!/usr/bin/env cwl-runner
 
 cwlVersion: v1.0
@@ -31,9 +31,11 @@ inputs:
     idt_bed:
         type: File
     bqsr_intervals:
+        type: string[]?
+    bqsr_interval_list:
         type:
-            - string?
-            - File?
+            - string
+            - File
     bait_intervals:
         type: File
     target_intervals:
@@ -56,7 +58,11 @@ inputs:
     gvcf_gq_bands:
         type: string[]
     intervals:
-        type: string[]
+        type:
+            type: array
+            items:
+                type: array
+                items: string
     vep_cache_dir:
         type:
             - string
@@ -136,20 +142,20 @@ outputs:
     bam_metrics:
         type: File
         outputSource: bamMetrics/bam_metrics
-    gvcf:
-        type: File[]
-        outputSource: exome_merge_gvcf/gvcf
-    merged_gvcf:
+    #gvcf:
+        #type: File[]
+        #outputSource: exome_merge_gvcf/gvcf
+    subset_merged_gvcf:
         type: File
-        outputSource: exome_merge_gvcf/merged_gvcf
+        outputSource: subset_gvcf/interval_gvcf
         secondaryFiles: [.tbi]
-    #indexed_merged_gvcf:
+    #subset_merged_gvcf:
         #type: File
         #outputSource: index_gvcf/indexed_merged_gvcf
         #secondaryFiles: [.tbi]
 steps:
     alignment_and_qc:
-        run: alignment_exome_GATK4_cust_int.cwl
+        run: alignment_exome_GATK4.cwl
         in:
             reference: reference
             sequence: sequence
@@ -195,7 +201,7 @@ steps:
                             }
                         }
     exome_merge_gvcf:
-        run: ../subworkflows/germline_haplotype_gvcf_merge_GATK4_cust_int.cwl
+        run: ../subworkflows/germline_haplotype_gvcf_merge_GATK4.cwl
         in:
             reference: reference
             bam: alignment_and_qc/bam
@@ -225,12 +231,14 @@ steps:
             cram: bam_to_cram/cram
         out:
             [bam_metrics]
-    #index_gvcf:
-        #run: ../tools/index_merged_gvcf.cwl
-        #in:
-            #merged_gvcf: exome_merge_gvcf/merged_gvcf
-        #out:
-            #[indexed_merged_gvcf]
+    subset_gvcf:
+        run: ../tools/subset_merged_gvcf.cwl
+        in:
+            merged_gvcf: exome_merge_gvcf/merged_gvcf
+            interval_list: bqsr_interval_list
+            reference: reference
+        out:
+            [interval_gvcf]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
