@@ -23,7 +23,7 @@ models:
         vep_ensembl_assembly: 'GRCh38'
         region_of_interest_set_name: 'xGen Lockdown Exome Panel v1 capture set'
         idt_bed: '/gscmnt/gc2698/jin810/references/hg38_idt_target_regions.bed'
-        intervals_dir: '/gscmnt/gc2698/jin810/references/split_regions'
+        intervals_dir: '/gscmnt/gc2698/jin810/references/split_regions/split_regions.txt'
         bqsr_interval_list: '/gscmnt/gc2698/jin810/references/jin_lab_exome_targets.interval_list'
     instrument_data_properties:
         subject: sample
