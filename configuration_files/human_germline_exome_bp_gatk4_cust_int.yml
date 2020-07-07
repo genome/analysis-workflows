@@ -4,7 +4,7 @@ rules:
   'library->is_rna': 0
 models:
   'Genome::Model::CwlPipeline':
-    processing_profile_id: '321464cb97774ea9bdd8b33e232f170e'
+    processing_profile_id: 'e279629803714f9eafc9a81f0601738f'
     input_data:
         reference_build: '21f22873ebe0486c8e6f69c15435aa96'
         dbsnp_vcf: '/gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-19443-e48c595a620a432c93e8dd29e4af64f2/snvs.hq.vcf.gz'
