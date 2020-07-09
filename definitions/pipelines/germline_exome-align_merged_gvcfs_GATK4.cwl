@@ -218,7 +218,7 @@ steps:
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
         out:
-            [gvcf, merged_gvcf]#final_vcf, filtered_vcf, vep_summary, final_tsv, filtered_tsv]
+            [gvcf, merged_gvcf] #final_vcf, filtered_vcf, vep_summary, final_tsv, filtered_tsv]
     bamMetrics:
         run: ../tools/knight_bamMetrics.cwl
         in:
