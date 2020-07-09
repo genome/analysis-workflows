@@ -3,13 +3,12 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Knight lab bamMetrics"
-baseCommand: ["/gscmnt/gc2698/jin810/bamMetrics_docker"]
+baseCommand: ["/gscmnt/gc2698/jin810/programs/bamMetrics_docker"]
 requirements:
-    - class: ResourceRequirement
-      ramMin: 10000
     - class: DockerRequirement
       dockerPull: "mgibio/samtools-cwl:1.0.0"
-      
+    - class: ResourceRequirement
+      ramMin: 10000
 inputs:
     bed:
         type: File
@@ -18,21 +17,22 @@ inputs:
             position: 1
     reference:
         type:
-            - string 
+            - string
             - File
         inputBinding:
             prefix: "-r"
             position: 2
     output_filename:
-       type: string
-       default: "bam_metrics.txt"
-       inputBinding:
-           prefix: "-o"
-           position: 3
+        type: string
+        default: "bam_metrics.txt"
+        inputBinding:
+            prefix: "-o"
+            position: 3
     cram:
         type: File
         inputBinding:
             position: 4
+
 outputs:
     bam_metrics:
         type: File
