@@ -23,10 +23,14 @@ inputs:
         type:
             type: enum
             symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
-    gvcf_gq_bands:
-        type: string[]
+    #gvcf_gq_bands:
+        #type: string[]
     intervals:
-        type: string[]
+        type:
+            type: array
+            items:
+                type: array
+                items: string
     contamination_fraction:
         type: string?
     vep_cache_dir:
@@ -81,7 +85,7 @@ steps:
             reference: reference
             bam: bam
             emit_reference_confidence: emit_reference_confidence
-            gvcf_gq_bands: gvcf_gq_bands
+            #gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
             contamination_fraction: contamination_fraction
         out:

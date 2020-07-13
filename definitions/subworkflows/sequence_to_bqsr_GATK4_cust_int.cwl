@@ -16,8 +16,8 @@ inputs:
         type: ../types/sequence_data.yml#sequence_data[]
     bqsr_intervals:
         type: 
-            - string?
-            - File?
+            - string
+            - File
     reference:
         type:
             - string

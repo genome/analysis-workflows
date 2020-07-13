@@ -20,10 +20,14 @@ inputs:
         type:
             type: enum
             symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
-    gvcf_gq_bands:
-        type: string[]
+    #gvcf_gq_bands:
+        #type: string[]
     intervals:
-        type: string[]
+        type:
+            type: array
+            items:
+                type: array
+                items: string
     dbsnp_vcf:
         type: File?
         secondaryFiles: [.tbi]
@@ -56,7 +60,7 @@ steps:
             reference: reference
             bam: bam
             emit_reference_confidence: emit_reference_confidence
-            gvcf_gq_bands: gvcf_gq_bands
+            #gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
             dbsnp_vcf: dbsnp_vcf
             contamination_fraction: contamination_fraction
@@ -66,13 +70,9 @@ steps:
             read_filter: read_filter
             output_file_name:
                 source: output_prefix
-                valueFrom: '${
-                    var prefix = self !== null ? self : "";
-                    if (inputs.interval.length == 1 && inputs.interval[0].match(/^[0-9A-Za-z]+$/)) {
-                        return prefix + inputs.interval[0] + ".g.vcf.gz";
-                    } else {
-                        return prefix + "output.g.vcf.gz";
-                    }
-                }'
+                valueFrom: '${ var prefix = self !== null ? self : "";
+                           var base = inputs.intervals.toString().split(".")[0];
+                           var chrom = base.toString().split("_");
+                           return prefix + chrom.slice(-1) + ".g.vcf.gz";}'
         out:
             [gvcf]

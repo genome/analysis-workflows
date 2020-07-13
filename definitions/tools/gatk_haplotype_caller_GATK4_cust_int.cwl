@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "GATK HaplotypeCaller"
-baseCommand: ["/gatk/gatk", "--java-options", "-Xmx15000m", "-jar", "HaplotypeCaller"]
+baseCommand: ["/gatk/gatk", "--java-options", "-Xmx15000m", "HaplotypeCaller"]
 requirements:
     - class: ResourceRequirement
       ramMin: 10000
@@ -31,18 +31,21 @@ inputs:
         inputBinding:
             prefix: "-ERC"
             position: 3
-    gvcf_gq_bands:
+    #gvcf_gq_bands:
+        #type:
+            #type: array
+            #items: string
+            #inputBinding:
+                #prefix: "-GQB"
+        #inputBinding:
+            #position: 4
+    intervals:
         type:
             type: array
             items: string
             inputBinding:
-                prefix: "-GQB"
+                prefix: "-L"
         inputBinding:
-            position: 4
-    intervals:
-        type: string
-        inputBinding:
-            prefix: "-L"
             position: 5
     dbsnp_vcf:
         type: File?

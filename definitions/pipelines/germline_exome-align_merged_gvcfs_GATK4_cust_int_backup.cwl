@@ -53,16 +53,12 @@ inputs:
         type:
             type: enum
             symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
-    #gvcf_gq_bands:
+    gvcf_gq_bands:
+        type: string[]
+    #intervals:
         #type: string[]
-    intervals:
-        type:
-            type: array
-            items:
-                type: array
-                items: string 
-    #intervals_dir:
-        #type: File
+    intervals_dir:
+        type: string
     vep_cache_dir:
         type:
             - string
@@ -149,28 +145,17 @@ outputs:
         type: File
         outputSource: exome_merge_gvcf/merged_gvcf
         secondaryFiles: [.tbi]
+    #indexed_merged_gvcf:
+        #type: File
+        #outputSource: index_gvcf/indexed_merged_gvcf
+        #secondaryFiles: [.tbi]
 steps:
-    #get_cust_exome_intervals:
-        #in:
-            #intervals_dir: intervals_dir
-        #out:
-            #[interval_files]
-        #run:
-            #class: ExpressionTool
-            #requirements:
-                #- class: InlineJavascriptRequirement
-            #inputs:
-                #intervals_dir:
-                    #type: File
-                    #inputBinding:
-                        #loadContents: true
-            #outputs:
-                #interval_files:
-                    #type: string[]
-
-            #expression: |
-                #${var my_files = inputs.intervals_dir.contents.trim().split("\n");
-                  #return {interval_files: my_files};}
+    get_cust_exome_intervals:
+        run: ../subworkflows/get_exome_intervals.cwl
+        in:
+            intervals_dir: intervals_dir
+        out:
+            [interval_files]
     alignment_and_qc:
         run: alignment_exome_GATK4_cust_int.cwl
         in:
@@ -223,8 +208,8 @@ steps:
             reference: reference
             bam: alignment_and_qc/bam
             emit_reference_confidence: emit_reference_confidence
-            #gvcf_gq_bands: gvcf_gq_bands
-            intervals: intervals
+            gvcf_gq_bands: gvcf_gq_bands
+            intervals: get_cust_exome_intervals/interval_files
             contamination_fraction: extract_freemix/freemix_score
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
@@ -239,7 +224,7 @@ steps:
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
         out:
-            [gvcf, merged_gvcf] #final_vcf, filtered_vcf, vep_summary, final_tsv, filtered_tsv]
+            [gvcf, merged_gvcf]#final_vcf, filtered_vcf, vep_summary, final_tsv, filtered_tsv]
     bamMetrics:
         run: ../tools/knight_bamMetrics.cwl
         in:
@@ -248,6 +233,12 @@ steps:
             cram: bam_to_cram/cram
         out:
             [bam_metrics]
+    #index_gvcf:
+        #run: ../tools/index_merged_gvcf.cwl
+        #in:
+            #merged_gvcf: exome_merge_gvcf/merged_gvcf
+        #out:
+            #[indexed_merged_gvcf]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
