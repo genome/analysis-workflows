@@ -1,0 +1,10 @@
+type: record
+name: trimming_options
+label: trimming adapter file and parameters
+fields:
+    adapters:
+        type: File
+        doc: 'Fasta file with adapters for removal that may contain N.'
+    min_overlap:
+        type: int
+        doc: 'Minimum overlap for removal without pair overlap.'
