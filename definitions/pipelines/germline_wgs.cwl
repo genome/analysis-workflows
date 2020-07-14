@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
           - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
@@ -19,6 +20,10 @@ inputs:
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
     mills:
         type: File
         secondaryFiles: [.tbi]
@@ -299,6 +304,7 @@ steps:
         in:
             reference: reference
             sequence: sequence
+            trimming: trimming
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf

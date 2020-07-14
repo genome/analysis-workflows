@@ -7,6 +7,7 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
     - class: ScatterFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: MultipleInputFeatureRequirement
@@ -21,6 +22,10 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
     dbsnp_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -49,6 +54,7 @@ steps:
         in:
             unaligned: unaligned
             reference: reference
+            trimming: trimming
         out:
             [aligned_bam]
     merge:
