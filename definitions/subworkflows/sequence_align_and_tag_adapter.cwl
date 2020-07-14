@@ -9,6 +9,7 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
     - class: StepInputExpressionRequirement
     - class: SubworkflowFeatureRequirement
 inputs:
@@ -21,6 +22,10 @@ inputs:
             - File
         secondaryFiles: [.amb, .ann, .bwt, .pac, .sa]
         doc: 'bwa-indexed reference file'
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
 outputs:
     aligned_bam:
         type: File
@@ -42,6 +47,6 @@ steps:
             readgroup:
                 source: unaligned
                 valueFrom: $(self.readgroup)
-
+            trimming: trimming
         out:
             [aligned_bam]

@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
           - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
@@ -23,6 +24,10 @@ inputs:
     normal_name:
         type: string?
         default: 'normal'
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
     mills:
         type: File
         secondaryFiles: [.tbi]
@@ -346,6 +351,7 @@ steps:
         in:
             reference: reference
             sequence: tumor_sequence
+            trimming: trimming
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
@@ -366,6 +372,7 @@ steps:
         in:
             reference: reference
             sequence: normal_sequence
+            trimming: trimming
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
