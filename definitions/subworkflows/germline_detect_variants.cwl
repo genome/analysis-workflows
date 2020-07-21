@@ -77,6 +77,10 @@ outputs:
     gvcf:
         type: File[]
         outputSource: haplotype_caller/gvcf
+    raw_vcf:
+        type: File
+        outputSource: genotype_gvcfs/genotype_vcf
+        secondaryFiles: [.tbi]
     final_vcf:
         type: File
         outputSource: filter_vcf/final_vcf
