@@ -42,6 +42,8 @@
 ## licensing information pertaining to the included programs.
 
 ## Adapted to Yale Ruddle HPC by Sander Pajusalu (sander.pajusalu@yale.edu)
+## Modified for Washington-University compute0 and compute1 by Samuel Peters 6/19/20
+## Modifed to use GATK 4.1.7.0 and Docker
 
 ## DOCKER
 ## Referenced digest ID for exact container instead of tag
@@ -549,9 +551,9 @@ task IndelsVariantRecalibrator {
       -an ${sep=' -an ' recalibration_annotation_values} \
       -mode INDEL \
       --max-gaussians 4 \
-      -resource mills,known=false,training=true,truth=true,prior=12:${mills_resource_vcf} \
-      -resource axiomPoly,known=false,training=true,truth=false,prior=10:${axiomPoly_resource_vcf} \
-      -resource dbsnp,known=true,training=false,truth=false,prior=2:${dbsnp_resource_vcf}
+      --resource:mills,known=false,training=true,truth=true,prior=12 ${mills_resource_vcf} \
+      --resource:axiomPoly,known=false,training=true,truth=false,prior=10 ${axiomPoly_resource_vcf} \
+      --resource:dbsnp,known=true,training=false,truth=false,prior=2 ${dbsnp_resource_vcf}
   }
   runtime {
     docker: "broadinstitute/gatk:4.1.7.0@sha256:192fedf9b9d65809da4a2954030269e3f311d296e6b5e4c6c7deec12c7fe84b2"
@@ -600,10 +602,10 @@ task SNPsVariantRecalibratorCreateModel {
       --sample-every-Nth-variant ${downsampleFactor} \
       --output-model ${model_report_filename} \
       --max-gaussians 6 \
-      -resource hapmap,known=false,training=true,truth=true,prior=15:${hapmap_resource_vcf} \
-      -resource omni,known=false,training=true,truth=true,prior=12:${omni_resource_vcf} \
-      -resource 1000G,known=false,training=true,truth=false,prior=10:${one_thousand_genomes_resource_vcf} \
-      -resource dbsnp,known=true,training=false,truth=false,prior=7:${dbsnp_resource_vcf}
+      --resource:hapmap,known=false,training=true,truth=true,prior=15 ${hapmap_resource_vcf} \
+      --resource:omni,known=false,training=true,truth=true,prior=12 ${omni_resource_vcf} \
+      --resource:1000G,known=false,training=true,truth=false,prior=10 ${one_thousand_genomes_resource_vcf} \
+      --resource:dbsnp,known=true,training=false,truth=false,prior=7 ${dbsnp_resource_vcf}
   }
   runtime {
     docker: "broadinstitute/gatk:4.1.7.0@sha256:192fedf9b9d65809da4a2954030269e3f311d296e6b5e4c6c7deec12c7fe84b2"
@@ -648,10 +650,10 @@ task SNPsVariantRecalibrator {
       -mode SNP \
       ${"--input-model " + model_report + " --output-tranches-for-scatter "} \
       --max-gaussians 6 \
-      -resource hapmap,known=false,training=true,truth=true,prior=15:${hapmap_resource_vcf} \
-      -resource omni,known=false,training=true,truth=true,prior=12:${omni_resource_vcf} \
-      -resource 1000G,known=false,training=true,truth=false,prior=10:${one_thousand_genomes_resource_vcf} \
-      -resource dbsnp,known=true,training=false,truth=false,prior=7:${dbsnp_resource_vcf}
+      --resource:hapmap,known=false,training=true,truth=true,prior=15 ${hapmap_resource_vcf} \
+      --resource:omni,known=false,training=true,truth=true,prior=12 ${omni_resource_vcf} \
+      --resource:1000G,known=false,training=true,truth=false,prior=10 ${one_thousand_genomes_resource_vcf} \
+      --resource:dbsnp,known=true,training=false,truth=false,prior=7 ${dbsnp_resource_vcf}
   }
   runtime {
     docker: "broadinstitute/gatk:4.1.7.0@sha256:192fedf9b9d65809da4a2954030269e3f311d296e6b5e4c6c7deec12c7fe84b2"
