@@ -12,8 +12,11 @@ DIR=/gscmnt/gc2698/jin810/model_data
 logs_dir="$outDIR"/logs
 config_template=/gscmnt/gc2698/jin810/cromwell/cromwell_lsf_config_template.conf
 config_file="$outDIR"/cromwell.conf
-#Main loop that iterates through model ids.
+json=/gscmnt/gc2698/jin810/analysis-workflows/cromwell_wdl/jointgt_GATK4_exome_hg38_inputs.json
+jt_runs="$outDIR"/jt_runs.txt
+callsDIR="$outDIR"/cromwell-executions/JointGenotyping
 
+#Main loop that iterates through model ids.
 
 #Checks if directory already exists. Creates new if it does not.
 if [ -d "$outDIR" ]
@@ -40,6 +43,25 @@ mv "$outDIR/cromwell_lsf_config_template.conf" "$config_file"
 sed -i "s+/gscmnt/gc2764/cad/jgarza/logs/cromwell-%J.err+$logs_dir/cromwell-%J.err+g" "$config_file" #error logs directory
 sed -i "s+/gscmnt/gc2764/cad/jgarza/tmp/cromwell-executions+$outDIR/cromwell-executions+g" "$config_file" #root cromwell working directory
 sed -i "s+/gscmnt/gc2764/cad/jgarza/logs/cromwell-workflow-logs+$logs_dir/cromwell-workflow-logs+g" "$config_file" #workflow logs directory
+
+#List previous joint genotyping runs into a file
+#WORK IN PROGRESS
+#if [-d "$callsDIR"]
+#then
+    #if [-f "$jt_runs"]
+    #then
+        #echo "Previous joint genotyping run txt found!"
+        #rm "$jt_runs"
+    #else
+        #echo "No previous jt_runs.txt found!"
+#ls "$outDIR"/cromwell-executions > "$jt_runs"
+
+# Copy cromwell json file and modify to incorporate output path
+#WORK IN PROGRESS
+#echo Current Joint Genotyping
+#cp "$json" "$outDIR/"
+#sed -i "4 i $outDIR" "$outDIR"/jointgt_GATK4_exome_hg38_inputs.json
+#sed -i "4 i $jt_runs" "$outDIR"/jointgt_GATK4_exome_hg38_inputs.json
 
 for i in $model_ids
 do

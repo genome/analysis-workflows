@@ -109,7 +109,11 @@ workflow JointGenotyping {
       statsmerge_v2_washu = statsmerge_v2_washu,
       metrics_paths = samples.results_paths
   }
-
+  call changePermissions {
+    input:
+      outpath=
+  
+  }
   Int num_gvcfs = length(read_lines(samples.input_gvcfs))
 
   call DynamicallyCombineIntervals {

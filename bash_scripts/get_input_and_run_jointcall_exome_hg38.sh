@@ -9,9 +9,9 @@ json=/gscmnt/gc2698/jin810/cromwell/jointgt_GATK4_exome_hg38_inputs.json
 options=/gscmnt/gc2698/jin810/jointcalling/"$analysis_ID"/cromwell.options
 
 #Main Script
-/gscmnt/gc2698/jin810/bash_scripts/get_jointcall_input.sh "$analysis_ID" && \
+/gscmnt/gc2698/jin810/analysis-workflows/bash_scripts/get_jointcall_input.sh "$analysis_ID" && \
 cd /gscmnt/gc2698/jin810/jointcalling/"$analysis_ID" && \
-bsub -q research-hpc -R "select[mem>5000] span[hosts=1] rusage[mem=3000]" -a "docker(registry.gsc.wustl.edu/apipe-builder/genome_perl_environment:compute0-24)" \
+bsub -q research-hpc -R "select[mem>50000] span[hosts=1] rusage[mem=50000]" -a "docker(registry.gsc.wustl.edu/apipe-builder/genome_perl_environment:compute0-24)" \
 -oo /gscmnt/gc2698/jin810/jointcalling/"$analysis_ID"/bsub_exec.out -eo /gscmnt/gc2698/jin810/jointcalling/"$analysis_ID"/bsub_exec.err \
 -J jc_"$analysis_ID" /usr/bin/java -Dsystem.input-read-limits.lines=18000000 -Dconfig.file="/gscmnt/gc2698/jin810/jointcalling/$analysis_ID/cromwell.conf" \
 -jar /opt/cromwell.jar run "$main" \
