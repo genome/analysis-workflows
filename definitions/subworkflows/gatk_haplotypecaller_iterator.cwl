@@ -38,13 +38,6 @@ inputs:
         type: int?
     ploidy:
         type: int?
-    variant_index_type:
-        type:
-            - 'null'
-            - type: enum
-              symbols: ['DYNAMIC_SEEK', 'DYNAMIC_SIZE', 'LINEAR', 'INTERVAL']
-    variant_index_parameter:
-        type: string?
     read_filter:
         type: string?
     output_prefix:
@@ -69,8 +62,6 @@ steps:
             contamination_fraction: contamination_fraction
             max_alternate_alleles: max_alternate_alleles
             ploidy: ploidy
-            variant_index_type: variant_index_type
-            variant_index_parameter: variant_index_parameter
             read_filter: read_filter
             output_file_name:
                 source: output_prefix
