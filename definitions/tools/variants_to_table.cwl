@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "SelectVariants (GATK 4.1.8.1)"
-baseCommand: ["/gatk/gatk", "--java-options" "-Xmx4g", "VariantsToTable"]
+baseCommand: ["/gatk/gatk", "--java-options", "-Xmx4g", "VariantsToTable"]
 requirements:
     - class: ResourceRequirement
       ramMin: 6000
