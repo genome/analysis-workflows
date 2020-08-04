@@ -6,8 +6,6 @@ label: "expand interval list regions by a given number of basepairs"
 
 baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/usr/picard/picard.jar", "IntervalListTools"]
 
-#/usr/bin/java -Xmx16g -jar /usr/picard/picard.jar IntervalListTools INPUT=94b23d66f667472690a7ee165e2037b6.interval_list OUTPUT=expanded.interval_list PADDING=100 UNIQUE=TRUE
-
 arguments:
     ["OUTPUT=", { valueFrom: $(runtime.outdir)/expanded.interval_list }, "UNIQUE=TRUE"]
 requirements:
