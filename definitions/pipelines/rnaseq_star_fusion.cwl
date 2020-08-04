@@ -84,6 +84,13 @@ outputs:
     fusion_evidence:
         type: File
         outputSource: kallisto/fusion_evidence
+    multiqc_data:
+        type: File
+        outputSource: generate_multiqc/multiqc_zip
+    multiqc_html:
+        type: File
+        outputSource: generate_multiqc/multiqc_html
+
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
@@ -172,3 +179,10 @@ steps:
             bam: mark_dup/sorted_bam
         out:
             [metrics, chart]
+    generate_multiqc:
+        run: ../tools/multiqc.cwl
+        in:
+            inputfiles_array:[generate_qc_metrics/metrics,star_align_fusion/log_final]
+            linkMerge: merge_flattened
+        out:
+            [multiqc_zip, multiqc_html]
