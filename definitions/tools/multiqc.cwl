@@ -7,8 +7,7 @@ baseCommand: ["/usr/local/bin/multiqc"]
 requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
-    - class: InlineJavascriptRequirement
-      ramMin: 4000
+      ramMin: 4000  
     - class: DockerRequirement
       dockerPull: "sridnona/multiqc:1.9"
     - class: StepInputExpressionRequirement
@@ -19,21 +18,11 @@ arguments: [
     
 ]
  
-
 inputs:
   inputfiles_array:
     type: File[]
     inputBinding:
-        seperate: false
         position: 2
-        valueFrom: |
-          ${
-          var r = [];
-          for(var i=0; i < self.length; i++) {
-            r.push(self[i]);
-            }
-          return r;
-          }
   
 
 outputs:
