@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "how_are_we_stranded_here"
+label: "runs how_are_we_stranded_here to determine RNAseq data strandedness"
 baseCommand: ['check_strandedness']
 arguments: [
     "--print_commands"
