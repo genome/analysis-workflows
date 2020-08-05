@@ -16,6 +16,8 @@ inputs:
         type: Directory
     star_fusion_genome_dir:
         type: Directory
+    cdna_file:
+        type: File
     gtf_file:
         type: File
     trimming_adapters:
@@ -84,6 +86,9 @@ outputs:
     fusion_evidence:
         type: File
         outputSource: kallisto/fusion_evidence
+    strand_info:
+        type: File
+        outputSource: check_strand/check_strand
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
@@ -98,6 +103,20 @@ steps:
             min_readlength: trimming_min_readlength
         out:
             [fastqs, fastq1, fastq2]
+    check_strand:
+        run: ../tools/check_strand.cwl
+        in:
+            gtf_file: gtf_file
+            kallisto_index: kallisto_index
+            cdna_fasta: cdna_fasta
+            reads1:
+                source: bam_to_trimmed_fastq/fastq1
+                linkMerge: merge_flattened
+            reads2:
+                source: bam_to_trimmed_fastq/fastq2
+                linkMerge: merge_flattened
+        out:
+            [check_strand]
     star_align_fusion:
         run: ../tools/star_align_fusion.cwl
         in:
