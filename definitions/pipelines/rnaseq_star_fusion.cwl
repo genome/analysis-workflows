@@ -16,7 +16,7 @@ inputs:
         type: Directory
     star_fusion_genome_dir:
         type: Directory
-    cdna_file:
+    cdna_fasta:
         type: File
     gtf_file:
         type: File
