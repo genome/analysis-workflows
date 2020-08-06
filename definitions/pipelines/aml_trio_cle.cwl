@@ -440,7 +440,7 @@ steps:
             reference: reference
             tumor_bam: tumor_alignment_and_qc/bam
             normal_bam: normal_alignment_and_qc/bam
-            interval_list: interval_list
+            roi_intervals: interval_list
             strelka_exome_mode:
                 default: true
             strelka_cpu_reserved: strelka_cpu_reserved

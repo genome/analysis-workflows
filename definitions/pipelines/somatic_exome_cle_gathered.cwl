@@ -45,7 +45,7 @@ inputs:
           Bed files with this information can be converted to interval_lists with Picard BedToIntervalList.
           In general for a WES exome reagent bait_intervals and target_intervals are the same.
     target_interval_padding:
-        type int?
+        type: int
         label: "target_interval_padding"
         doc: |
             The effective coverage of capture products generally extends out beyond the actual regions
