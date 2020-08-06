@@ -40,7 +40,7 @@ inputs:
     picard_metric_accumulation_level:
         type: string
     roi_intervals:
-       type: File        
+       type: File
     vep_cache_dir:
         type:
             - string
