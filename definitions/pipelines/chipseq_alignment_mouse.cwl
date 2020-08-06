@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
@@ -20,6 +21,10 @@ inputs:
         type: string?
     chipseq_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
         default: []
@@ -94,6 +99,7 @@ steps:
         in:
             reference: reference
             unaligned: chipseq_sequence
+            trimming: trimming
             final_name: final_name
         out: [final_bam,mark_duplicates_metrics_file]
 

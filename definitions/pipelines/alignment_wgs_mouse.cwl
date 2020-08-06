@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
@@ -18,6 +19,10 @@ inputs:
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
     final_name:
         type: string?
     per_base_intervals:
@@ -91,6 +96,7 @@ steps:
         in:
             reference: reference
             unaligned: sequence
+            trimming: trimming
             final_name: final_name
         out: [final_bam,mark_duplicates_metrics_file]
     qc:
