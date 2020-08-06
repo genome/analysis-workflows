@@ -25,7 +25,7 @@ inputs:
     roi_intervals:
         type: File
         label: "roi_intervals: regions of interest in which variants will be called"
-        doc: "a list of regions (in interval_list format) within which to call somatic variants"
+        doc: "roi_intervals is a list of regions (in interval_list format) within which to call somatic variants"
     strelka_exome_mode:
         type: boolean
     strelka_cpu_reserved:

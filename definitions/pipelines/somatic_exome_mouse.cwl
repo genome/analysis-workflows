@@ -285,7 +285,6 @@ steps:
                 valueFrom: "$(self).bam"
         out:
             [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats]
-
     pad_target_intervals:
         run: ../tools/interval_list_expand.cwl
         in:
@@ -293,7 +292,6 @@ steps:
             roi_padding: target_interval_padding
         out:
             [expanded_interval_list]
-
     detect_variants:
         run: detect_variants_mouse.cwl
         in:

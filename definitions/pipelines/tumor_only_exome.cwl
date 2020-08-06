@@ -215,7 +215,6 @@ steps:
             qc_minimum_base_quality: qc_minimum_base_quality
         out:
             [bam, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
-
     pad_target_intervals:
         run: ../tools/interval_list_expand.cwl
         in: 
@@ -223,7 +222,6 @@ steps:
             roi_padding: target_interval_padding
         out:
             [expanded_interval_list]
-
     detect_variants:
         run: tumor_only_detect_variants.cwl
         in:

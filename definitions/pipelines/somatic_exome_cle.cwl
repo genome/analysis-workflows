@@ -40,9 +40,8 @@ inputs:
         type: File
         label: "target_intervals: interval_list file of targets used in the sequencing experiment"
         doc: |
-          target_intervals is an interval_list corresponding to the targets for the sequencing reagent.
-          These are essentially coordinates for regions designed probes for in the reagent.
-          Bed files with this information can be converted to interval_lists with Picards BedToIntervalList.
+          target_intervals is an interval_list corresponding to the targets for the capture reagent.
+          BED files with this information can be converted to interval_lists with Picard BedToIntervalList.
           In general for a WES exome reagent bait_intervals and target_intervals are the same.
     target_interval_padding:
         type int?
@@ -351,7 +350,6 @@ steps:
             vcf: somalier_vcf
         out:
             [somalier_pairs, somalier_samples]
-
     pad_target_intervals:
         run: ../tools/interval_list_expand.cwl
         in:
@@ -359,7 +357,6 @@ steps:
             roi_padding: target_interval_padding
         out:
             [expanded_interval_list]
-
     detect_variants:
         run: detect_variants.cwl
         in:
