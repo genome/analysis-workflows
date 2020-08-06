@@ -22,7 +22,7 @@ inputs:
     roi_intervals:
         type: File
         label: "roi_intervals: regions of interest in which variants will be called"
-        doc: "a list of regions (in interval_list format) within which to call somatic variants"
+        doc: "roi_intervals is a list of regions (in interval_list format) within which to call somatic variants"
     varscan_strand_filter:
         type: int?
         default: 0
