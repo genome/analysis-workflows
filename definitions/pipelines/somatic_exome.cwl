@@ -132,11 +132,11 @@ inputs:
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
         label: "per_base_intervals: additional intervals over which to summarize coverage/QC at a per-base resolution"
-        doc: "per_base_intervals is a list of regions (in interval_list format) over which to summarize coverage/QC at a per-base resolution"
+        doc: "per_base_intervals is a list of regions (in interval_list format) over which to summarize coverage/QC at a per-base resolution."
     per_target_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
         label: "per_target_intervals: additional intervals over which to summarize coverage/QC at a per-target resolution"
-        doc: "per_target_intervals list of regions (in interval_list format) over which to summarize coverage/QC at a per-target resolution"
+        doc: "per_target_intervals list of regions (in interval_list format) over which to summarize coverage/QC at a per-target resolution."
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
     omni_vcf:
