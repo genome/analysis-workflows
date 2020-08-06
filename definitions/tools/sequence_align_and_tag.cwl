@@ -60,7 +60,7 @@ requirements:
                 if [[ -z \${TRIMMING_ADAPTERS-} || -z \${TRIMMING_ADAPTER_MIN_OVERLAP-} ]]; then
                     /usr/local/bin/bwa mem -K 100000000 -t "$NTHREADS" -Y -R "$READGROUP" "$REFERENCE" "$FASTQ1" "$FASTQ2" | /usr/local/bin/samblaster -a --addMateTags | /opt/samtools/bin/samtools view -b -S /dev/stdin
                 else
-                    /opt/flexbar/flexbar --adapters "$TRIMMING_ADAPTERS" --reads "FASTQ1" --reads2 "$FASTQ2" --adapter-trim-end LTAIL --adapter-min-overlap "$TRIMMING_ADAPTER_MIN_OVERLAP" --adapter-error-rate 0.1 --max-uncalled 300 --stdout-reads \
+                    /opt/flexbar/flexbar --adapters "$TRIMMING_ADAPTERS" --reads "$FASTQ1" --reads2 "$FASTQ2" --adapter-trim-end LTAIL --adapter-min-overlap "$TRIMMING_ADAPTER_MIN_OVERLAP" --adapter-error-rate 0.1 --max-uncalled 300 --stdout-reads \
                       | /usr/local/bin/bwa mem -K 100000000 -t "$NTHREADS" -Y -p -R "$READGROUP" "$REFERENCE" /dev/stdin | /usr/local/bin/samblaster -a --addMateTags | /opt/samtools/bin/samtools view -b -S /dev/stdin
                 fi
             fi
