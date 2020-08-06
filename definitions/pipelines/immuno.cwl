@@ -146,7 +146,7 @@ inputs:
           bait_intervals is an interval_list corresponding to the baits used in sequencing reagent.
           These are essentially coordinates for regions you were able to design probes for in the reagent.
           Typically the reagent provider has this information available in bed format and it can be
-          converted to an interval_list with Picards BedToIntervalList. AstraZeneca also maintains a repo
+          converted to an interval_list with Picard BedToIntervalList. AstraZeneca also maintains a repo
           of baits for common sequencing reagents available at https://github.com/AstraZeneca-NGS/reference_data
     target_intervals:
         type: File
