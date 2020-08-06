@@ -19,8 +19,10 @@ inputs:
     bam:
         type: File
         secondaryFiles: [^.bai,.bai]
-    interval_list:
+    roi_intervals:
         type: File
+        label: "roi_intervals: regions of interest in which variants will be called"
+        doc: "a list of regions (in interval_list format) within which to call somatic variants"
     varscan_strand_filter:
         type: int?
         default: 0
@@ -120,7 +122,7 @@ steps:
         in:
             reference: reference
             bam: bam
-            interval_list: interval_list
+            interval_list: roi_intervals
             strand_filter: varscan_strand_filter
             min_coverage: varscan_min_coverage
             min_var_freq: varscan_min_var_freq
@@ -134,7 +136,7 @@ steps:
         in:
             reference: reference
             bam: bam
-            interval_list: interval_list
+            interval_list: roi_intervals
             docm_vcf: docm_vcf
         out:
             [unfiltered_vcf, filtered_vcf]
@@ -201,7 +203,7 @@ steps:
         in:
             reference: reference
             vcf: index/indexed_vcf
-            interval_list: interval_list
+            interval_list: roi_intervals
             exclude_filtered:
                 default: true
         out:
