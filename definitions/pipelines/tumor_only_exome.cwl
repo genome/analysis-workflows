@@ -40,12 +40,12 @@ inputs:
         type: File
         label: "target_intervals: interval_list file of targets used in the sequencing experiment"
         doc: |
-          target_intervals is an interval_list corresponding to the targets for the sequencing reagent.
-          These are essentially coordinates for regions designed probes for in the reagent.
-          Bed files with this information can be converted to interval_lists with Picard BedToIntervalList.
-          In general for a WES exome reagent bait_intervals and target_intervals are the same.
+            target_intervals is an interval_list corresponding to the targets for the sequencing reagent.
+            These are essentially coordinates for regions designed probes for in the reagent.
+            Bed files with this information can be converted to interval_lists with Picard BedToIntervalList.
+            In general for a WES exome reagent bait_intervals and target_intervals are the same.
     target_interval_padding:
-        type int?
+        type: int
         label: "target_interval_padding: number of bp flanking each target region in which to allow variant calls"
         doc: |
             The effective coverage of capture products generally extends out beyond the actual regions
