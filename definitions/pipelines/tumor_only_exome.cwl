@@ -38,6 +38,20 @@ inputs:
         type: File
     target_intervals:
         type: File
+        label: "target_intervals: interval_list file of targets used in the sequencing experiment"
+        doc: |
+          target_intervals is an interval_list corresponding to the targets for the sequencing reagent.
+          These are essentially coordinates for regions designed probes for in the reagent.
+          Bed files with this information can be converted to interval_lists with Picards BedToIntervalList.
+          In general for a WES exome reagent bait_intervals and target_intervals are the same.
+    target_interval_padding:
+        type int?
+        label: "target_interval_padding: number of bp flanking each target region in which to allow variant calls"
+        doc: |
+            The effective coverage of capture products generally extends out beyond the actual regions
+            targeted. This parameter allows variants to be called in these wingspan regions, extending
+            this many base pairs from each side of the target regions.
+        default: 100
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
     per_target_intervals:
@@ -207,12 +221,21 @@ steps:
             qc_minimum_base_quality: qc_minimum_base_quality
         out:
             [bam, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+
+    pad_target_intervals:
+        run: ../tools/interval_list_expand.cwl
+        in: 
+            interval_list: target_intervals
+            roi_padding: target_interval_padding
+        out:
+            [expanded_interval_list]
+
     detect_variants:
         run: tumor_only_detect_variants.cwl
         in:
             reference: reference
             bam: alignment_and_qc/bam
-            interval_list: target_intervals
+            roi_intervals: pad_target_intervals/expanded_interval_list
             varscan_strand_filter: varscan_strand_filter
             varscan_min_coverage: varscan_min_coverage
             varscan_min_var_freq: varscan_min_var_freq

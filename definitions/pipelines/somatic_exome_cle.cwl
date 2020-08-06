@@ -38,6 +38,20 @@ inputs:
         type: File
     target_intervals:
         type: File
+        label: "target_intervals: interval_list file of targets used in the sequencing experiment"
+        doc: |
+          target_intervals is an interval_list corresponding to the targets for the sequencing reagent.
+          These are essentially coordinates for regions designed probes for in the reagent.
+          Bed files with this information can be converted to interval_lists with Picards BedToIntervalList.
+          In general for a WES exome reagent bait_intervals and target_intervals are the same.
+    target_interval_padding:
+        type int?
+        label: "target_interval_padding"
+        doc: |
+            The effective coverage of capture products generally extends out beyond the actual regions
+            targeted. This parameter allows variants to be called in these wingspan regions, extending
+            this many base pairs from each side of the target regions.
+        default: 100
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
     per_target_intervals:
@@ -55,8 +69,6 @@ inputs:
     qc_minimum_base_quality:
         type: int?
         default: 0
-    interval_list:
-        type: File
     strelka_cpu_reserved:
         type: int?
         default: 8
@@ -339,13 +351,22 @@ steps:
             vcf: somalier_vcf
         out:
             [somalier_pairs, somalier_samples]
+
+    pad_target_intervals:
+        run: ../tools/interval_list_expand.cwl
+        in:
+            interval_list: target_intervals
+            roi_padding: target_interval_padding
+        out:
+            [expanded_interval_list]
+
     detect_variants:
         run: detect_variants.cwl
         in:
             reference: reference
             tumor_bam: tumor_alignment_and_qc/bam
             normal_bam: normal_alignment_and_qc/bam
-            interval_list: interval_list
+            roi_intervals: pad_target_intervals/expanded_interval_list
             strelka_exome_mode:
                 default: true
             strelka_cpu_reserved: strelka_cpu_reserved

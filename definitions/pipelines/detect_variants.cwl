@@ -22,8 +22,10 @@ inputs:
     normal_bam:
         type: File
         secondaryFiles: [.bai,^.bai]
-    interval_list:
+    roi_intervals:
         type: File
+        label: "roi_intervals: regions of interest in which variants will be called"
+        doc: "a list of regions (in interval_list format) within which to call somatic variants"
     strelka_exome_mode:
         type: boolean
     strelka_cpu_reserved:
@@ -189,7 +191,7 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            interval_list: interval_list
+            interval_list: roi_intervals
             scatter_count: mutect_scatter_count
             tumor_sample_name: tumor_sample_name
         out:
@@ -200,7 +202,7 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            interval_list: interval_list
+            interval_list: roi_intervals
             exome_mode: strelka_exome_mode
             cpu_reserved: strelka_cpu_reserved
             normal_sample_name: normal_sample_name
@@ -213,7 +215,7 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            interval_list: interval_list
+            interval_list: roi_intervals
             strand_filter: varscan_strand_filter
             min_coverage: varscan_min_coverage
             min_var_freq: varscan_min_var_freq
@@ -229,7 +231,7 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            interval_list: interval_list
+            interval_list: roi_intervals
             insert_size: pindel_insert_size
             tumor_sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name
@@ -242,7 +244,7 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             docm_vcf: docm_vcf
-            interval_list: interval_list
+            interval_list: roi_intervals
             filter_docm_variants: filter_docm_variants
         out:
             [docm_variants_vcf]
