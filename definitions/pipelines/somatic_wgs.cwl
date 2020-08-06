@@ -60,8 +60,6 @@ inputs:
     qc_minimum_base_quality:
         type: int?
         default: 0
-    interval_list:
-        type: File
     cosmic_vcf:
         type: File?
         secondaryFiles: [.tbi]

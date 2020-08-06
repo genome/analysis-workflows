@@ -61,8 +61,6 @@ inputs:
     qc_minimum_base_quality:
         type: int?
         default: 0
-    interval_list:
-        type: File
     strelka_cpu_reserved:
         type: int?
         default: 8
