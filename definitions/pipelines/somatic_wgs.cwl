@@ -60,8 +60,6 @@ inputs:
     qc_minimum_base_quality:
         type: int?
         default: 0
-    interval_list:
-        type: File
     cosmic_vcf:
         type: File?
         secondaryFiles: [.tbi]
@@ -403,7 +401,7 @@ steps:
             reference: reference
             tumor_bam: tumor_alignment_and_qc/bam
             normal_bam: normal_alignment_and_qc/bam
-            interval_list: interval_list
+            roi_intervals: target_intervals
             dbsnp_vcf: dbsnp_vcf
             cosmic_vcf: cosmic_vcf
             panel_of_normals_vcf: panel_of_normals_vcf

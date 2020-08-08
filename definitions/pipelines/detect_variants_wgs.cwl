@@ -19,7 +19,7 @@ inputs:
     normal_bam:
         type: File
         secondaryFiles: [.bai,^.bai]
-    interval_list:
+    roi_intervals:
         type: File
     strelka_exome_mode:
         type: boolean
@@ -177,7 +177,7 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            interval_list: interval_list
+            interval_list: roi_intervals
             scatter_count: mutect_scatter_count
             tumor_sample_name: tumor_sample_name
         out:
@@ -188,7 +188,7 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            interval_list: interval_list
+            interval_list: roi_intervals
             exome_mode: strelka_exome_mode
             cpu_reserved: strelka_cpu_reserved
             tumor_sample_name: tumor_sample_name
@@ -201,7 +201,7 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            interval_list: interval_list
+            interval_list: roi_intervals
             strand_filter: varscan_strand_filter
             min_coverage: varscan_min_coverage
             min_var_freq: varscan_min_var_freq
@@ -218,7 +218,7 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             docm_vcf: docm_vcf
-            interval_list: interval_list
+            interval_list: roi_intervals
             filter_docm_variants: filter_docm_variants
         out:
             [docm_variants_vcf]
