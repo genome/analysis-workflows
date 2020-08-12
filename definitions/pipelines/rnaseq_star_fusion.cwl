@@ -103,8 +103,8 @@ steps:
             min_readlength: trimming_min_readlength
         out:
             [fastqs, fastq1, fastq2]
-    check_strand:
-        run: ../tools/check_strand.cwl
+    strandedness_check:
+        run: ../tools/strandedness_check.cwl
         in:
             gtf_file: gtf_file
             kallisto_index: kallisto_index
