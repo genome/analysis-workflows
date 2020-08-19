@@ -5,8 +5,7 @@ class: CommandLineTool
 label: 'create BQSR table'
 baseCommand: ["/gatk/gatk","--java-options", "-Xms14000m", "BaseRecalibrator"]
 arguments:
-    ["-O", { valueFrom: $(runtime.outdir)/bqsr.table },
-    "--use-original-qualities"
+    ["-O", { valueFrom: $(runtime.outdir)/bqsr.table }
     ]
 requirements:
     - class: ResourceRequirement

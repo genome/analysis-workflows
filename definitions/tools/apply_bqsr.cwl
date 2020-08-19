@@ -8,8 +8,8 @@ arguments:
     ["-O", { valueFrom: $(runtime.outdir)/$(inputs.output_name).bam },
     "--static-quantized-quals", "10",
     "--static-quantized-quals", "20",
-    "--static-quantized-quals", "30",
-    "--use-original-qualities"]
+    "--static-quantized-quals", "30"
+    ]
 requirements:
     - class: ResourceRequirement
       ramMin: 18000

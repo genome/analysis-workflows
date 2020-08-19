@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "GATK GenotypeGVCFs"
-baseCommand: ["/gatk/gatk", "--java-options", "-Xmx14g", "-Xms5g"]
+baseCommand: ["/gatk/gatk", "--java-options", "-Xmx14g -Xms5g", "GenotypeGVCFs"]
 requirements:
     - class: ResourceRequirement
       ramMin: 9000
@@ -11,7 +11,7 @@ requirements:
     - class: DockerRequirement
       dockerPull: "broadinstitute/gatk:4.1.8.1" 
 arguments:
-    ["--use-new-qual-calculator", "--only-output-calls-starting-in-intervals" ,"-G", "StandardAnnotation", "-O", 'genotype.vcf.gz']
+    ["-G", "StandardAnnotation", "-O", 'genotype.vcf.gz']
 inputs:
     reference:
         type:

@@ -134,9 +134,6 @@ outputs:
     verify_bam_id_depth:
         type: File
         outputSource: alignment_and_qc/verify_bam_id_depth
-    gvcf:
-        type: File[]
-        outputSource: detect_variants/gvcf
     raw_vcf:
         type: File
         outputSource: detect_variants/raw_vcf
@@ -228,7 +225,7 @@ steps:
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
         out:
-            [gvcf, raw_vcf, final_vcf, filtered_vcf, vep_summary, final_tsv, filtered_tsv]
+            [raw_vcf, final_vcf, filtered_vcf, vep_summary, final_tsv, filtered_tsv]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
