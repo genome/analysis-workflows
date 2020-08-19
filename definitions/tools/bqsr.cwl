@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: 'create BQSR table'
-baseCommand: ["/gatk/gatk","--java-options", "-Xms14000m", "BaseRecalibrator"]
+baseCommand: ["/gatk/gatk","--java-options", "-Xmx16g", "BaseRecalibrator"]
 arguments:
     ["-O", { valueFrom: $(runtime.outdir)/bqsr.table }
     ]

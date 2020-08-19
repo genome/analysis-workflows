@@ -3,10 +3,10 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "GATK HaplotypeCaller"
-baseCommand: ["/gatk/gatk", "--java-options", "-Xmx15000m", "HaplotypeCaller"]
+baseCommand: ["/gatk/gatk", "--java-options", "-Xmx16g", "HaplotypeCaller"]
 requirements:
     - class: ResourceRequirement
-      ramMin: 10000
+      ramMin: 18000
     - class: DockerRequirement
       dockerPull: "broadinstitute/gatk:4.1.8.1"
 inputs:

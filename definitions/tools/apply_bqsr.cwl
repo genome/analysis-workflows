@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: 'apply BQSR'
-baseCommand: ["/gatk/gatk", "--java-options", "-Xms14000m", "ApplyBQSR"]
+baseCommand: ["/gatk/gatk", "--java-options", "-Xmx16g", "ApplyBQSR"]
 arguments:
     ["-O", { valueFrom: $(runtime.outdir)/$(inputs.output_name).bam },
     "--static-quantized-quals", "10",
