@@ -48,5 +48,5 @@ inputs:
         inputBinding:
             prefix: "--reads_2"
 outputs:
-    check_strand:
+    strandedness_check:
         type: stdout
