@@ -116,7 +116,7 @@ steps:
                 source: bam_to_trimmed_fastq/fastq2
                 linkMerge: merge_flattened
         out:
-            [check_strand]
+            [strandedness_check]
     star_align_fusion:
         run: ../tools/star_align_fusion.cwl
         in:
