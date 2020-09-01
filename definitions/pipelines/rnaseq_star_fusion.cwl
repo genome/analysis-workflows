@@ -87,7 +87,7 @@ outputs:
         type: File
         outputSource: kallisto/fusion_evidence
     strand_info:
-        type: File
+        type: File[]
         outputSource: strandedness_check/check_strand
 steps:
     bam_to_trimmed_fastq:
@@ -105,16 +105,14 @@ steps:
             [fastqs, fastq1, fastq2]
     strandedness_check:
         run: ../tools/strandedness_check.cwl
+        scatter: [reads1, reads2]
+        scatterMethod: dotproduct
         in:
             gtf_file: gtf_file
             kallisto_index: kallisto_index
             cdna_fasta: cdna_fasta
-            reads1:
-                source: bam_to_trimmed_fastq/fastq1
-                linkMerge: merge_flattened
-            reads2:
-                source: bam_to_trimmed_fastq/fastq2
-                linkMerge: merge_flattened
+            reads1: bam_to_trimmed_fastq/fastq1
+            reads2: bam_to_trimmed_fastq/fastq2
         out:
             [strandedness_check]
     star_align_fusion:
