@@ -21,11 +21,11 @@ stdout: "$(inputs.reads1.nameroot).strandness_check.txt"
 
 requirements:
     - class: ResourceRequirement
-      ramMin: 16000
-      tmpdirMin: 25000
-      coresMin: 4
+      ramMin: 4000
+      tmpdirMin: 5000
+      coresMin: 1
     - class: DockerRequirement
-      dockerPull: "smk5g5/checkstranded:latest"
+      dockerPull: "smk5g5/checkstranded:version1.0"
 inputs:
     gtf_file:
         type: File
