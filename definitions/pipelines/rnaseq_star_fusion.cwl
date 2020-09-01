@@ -91,7 +91,7 @@ outputs:
         outputSource: kallisto/fusion_evidence
     strand_info:
         type: File[]
-        outputSource: strandedness_check/check_strand
+        outputSource: strandedness_check/strandedness_check
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
