@@ -35,7 +35,7 @@ inputs:
     gene_transcript_lookup_table:
        type: File
     strand:
-       type: string?
+       type: File[]
     refFlat:
         type: File
     ribosomal_intervals:
@@ -88,7 +88,7 @@ outputs:
         outputSource: kallisto/fusion_evidence
     strand_info:
         type: File
-        outputSource: check_strand/check_strand
+        outputSource: strandedness_check/check_strand
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
