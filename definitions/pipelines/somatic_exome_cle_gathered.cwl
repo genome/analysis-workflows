@@ -110,7 +110,7 @@ inputs:
     filter_somatic_llr_normal_contamination_rate:
         type: float
         default: 0
-        doc: "Sets the fraction of tumor present in the normal sample (range 0 to 1), used in the somatic llr filter. Useful for heavily contaminated adjacent normals. Range is 0 to 1"[6~
+        doc: "Sets the fraction of tumor present in the normal sample (range 0 to 1), used in the somatic llr filter. Useful for heavily contaminated adjacent normals. Range is 0 to 1"
     vep_cache_dir:
         type:
             - string
