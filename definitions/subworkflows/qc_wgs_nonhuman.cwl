@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "WGS QC workflow mouse"
+label: "WGS QC workflow nonhuman"
 requirements:
     - class: SchemaDefRequirement
       types:
