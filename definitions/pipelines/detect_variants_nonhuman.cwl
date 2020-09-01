@@ -299,7 +299,7 @@ steps:
         out:
             [indexed_vcf]
     filter_vcf:
-        run: ../subworkflows/filter_vcf_mouse.cwl
+        run: ../subworkflows/filter_vcf_nonhuman.cwl
         in: 
             vcf: index/indexed_vcf
             filter_mapq0_threshold: filter_mapq0_threshold

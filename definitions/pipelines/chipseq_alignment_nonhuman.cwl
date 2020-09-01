@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "alignment for mouse with qc"
+label: "Chipseq alignment for nonhuman with qc and creating homer tag directory"
 requirements:
     - class: SchemaDefRequirement
       types:
@@ -17,14 +17,14 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
-    sequence:
+    final_name:
+        type: string?
+    chipseq_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     trimming:
         type:
             - ../types/trimming_options.yml#trimming_options
             - "null"
-    final_name:
-        type: string?
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
         default: []
@@ -47,6 +47,9 @@ outputs:
     mark_duplicates_metrics:
         type: File
         outputSource: alignment/mark_duplicates_metrics_file
+    tag_directory:
+        type: Directory
+        outputSource: homer_tag_directory/tag_directory
     insert_size_metrics:
         type: File
         outputSource: qc/insert_size_metrics
@@ -92,15 +95,28 @@ outputs:
 
 steps:
     alignment:
-        run: ../subworkflows/sequence_to_bqsr_mouse.cwl
+        run: ../subworkflows/sequence_to_bqsr_nonhuman.cwl
         in:
             reference: reference
-            unaligned: sequence
+            unaligned: chipseq_sequence
             trimming: trimming
             final_name: final_name
         out: [final_bam,mark_duplicates_metrics_file]
+
+    bam_to_sam:
+        run: ../tools/bam_to_sam.cwl
+        in:
+            bam: alignment/final_bam
+        out: [final_sam]
+
+    homer_tag_directory:
+        run: ../tools/homer_tag_directory.cwl
+        in:
+            sam: bam_to_sam/final_sam
+        out: [tag_directory]
+
     qc:
-        run: ../subworkflows/qc_wgs_mouse.cwl
+        run: ../subworkflows/qc_wgs_nonhuman.cwl
         in:
             bam: alignment/final_bam
             reference: reference
