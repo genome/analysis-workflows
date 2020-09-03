@@ -72,12 +72,6 @@ inputs:
     qc_minimum_base_quality:
         type: int?
         default: 0
-    cosmic_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    panel_of_normals_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
     strelka_cpu_reserved:
         type: int?
         default: 8
@@ -190,8 +184,6 @@ steps:
             picard_metric_accumulation_level: picard_metric_accumulation_level   
             qc_minimum_mapping_quality: qc_minimum_mapping_quality
             qc_minimum_base_quality: qc_minimum_base_quality
-            cosmic_vcf: cosmic_vcf
-            panel_of_normals_vcf: panel_of_normals_vcf
             strelka_cpu_reserved: strelka_cpu_reserved
             mutect_scatter_count: mutect_scatter_count
             mutect_artifact_detection_mode: mutect_artifact_detection_mode
