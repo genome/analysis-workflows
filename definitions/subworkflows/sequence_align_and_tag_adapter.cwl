@@ -22,9 +22,9 @@ inputs:
         secondaryFiles: [.amb, .ann, .bwt, .pac, .sa]
         doc: 'bwa-indexed reference file'
 outputs:
-    aligned_bam:
+    aligned_cram:
         type: File
-        outputSource: align_and_tag/aligned_bam
+        outputSource: align_and_tag/aligned_cram
 steps:
     align_and_tag:
         run: ../tools/sequence_align_and_tag.cwl
@@ -44,4 +44,4 @@ steps:
                 valueFrom: $(self.readgroup)
 
         out:
-            [aligned_bam]
+            [aligned_cram]

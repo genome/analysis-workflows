@@ -50,20 +50,21 @@ steps:
             unaligned: unaligned
             reference: reference
         out:
-            [aligned_bam]
+            [aligned_cram]
     merge:
-        run: ../tools/merge_bams_samtools.cwl
+        run: ../tools/merge_crams.cwl
         in:
-            bams: align/aligned_bam
+            crams: align/aligned_cram
             name: final_name
+            reference: reference
         out:
-            [merged_bam]
+            [merged_cram]
     name_sort:
-        run: ../tools/name_sort.cwl
+        run: ../tools/name_sort_samtools.cwl
         in:
-            bam: merge/merged_bam
+            cram: merge/merged_cram
         out:
-            [name_sorted_bam]
+            [name_sorted_cram]
     mark_duplicates_and_sort:
         run: ../tools/mark_duplicates_and_sort.cwl
         in:
