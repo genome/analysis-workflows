@@ -38,6 +38,19 @@ inputs:
         type: File
     target_intervals:
         type: File
+        label: "target_intervals: interval_list file of targets used in the sequencing experiment"
+        doc: |
+          target_intervals is an interval_list corresponding to the targets for the capture reagent.
+          Bed files with this information can be converted to interval_lists with Picard BedToIntervalList.
+          In general for a WES exome reagent bait_intervals and target_intervals are the same.
+    target_interval_padding:
+        type: int
+        label: "target_interval_padding"
+        doc: |
+            The effective coverage of capture products generally extends out beyond the actual regions
+            targeted. This parameter allows variants to be called in these wingspan regions, extending
+            this many base pairs from each side of the target regions.
+        default: 100
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
     per_target_intervals:
@@ -55,8 +68,6 @@ inputs:
     qc_minimum_base_quality:
         type: int?
         default: 0
-    interval_list:
-        type: File
     strelka_cpu_reserved:
         type: int?
         default: 8
@@ -158,6 +169,7 @@ steps:
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
+            target_interval_padding: target_interval_padding
             per_base_intervals: per_base_intervals
             per_target_intervals: per_target_intervals
             summary_intervals: summary_intervals
@@ -165,7 +177,6 @@ steps:
             picard_metric_accumulation_level: picard_metric_accumulation_level   
             qc_minimum_mapping_quality: qc_minimum_mapping_quality
             qc_minimum_base_quality: qc_minimum_base_quality
-            interval_list: interval_list
             strelka_cpu_reserved: strelka_cpu_reserved
             mutect_scatter_count: mutect_scatter_count
             varscan_strand_filter: varscan_strand_filter

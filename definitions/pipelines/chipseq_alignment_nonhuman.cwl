@@ -2,12 +2,13 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "Chipseq alignment for mouse with qc and creating homer tag directory"
+label: "Chipseq alignment for nonhuman with qc and creating homer tag directory"
 requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
@@ -20,6 +21,10 @@ inputs:
         type: string?
     chipseq_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
         default: []
@@ -90,10 +95,11 @@ outputs:
 
 steps:
     alignment:
-        run: ../subworkflows/sequence_to_bqsr_mouse.cwl
+        run: ../subworkflows/sequence_to_bqsr_nonhuman.cwl
         in:
             reference: reference
             unaligned: chipseq_sequence
+            trimming: trimming
             final_name: final_name
         out: [final_bam,mark_duplicates_metrics_file]
 
@@ -110,7 +116,7 @@ steps:
         out: [tag_directory]
 
     qc:
-        run: ../subworkflows/qc_wgs_mouse.cwl
+        run: ../subworkflows/qc_wgs_nonhuman.cwl
         in:
             bam: alignment/final_bam
             reference: reference

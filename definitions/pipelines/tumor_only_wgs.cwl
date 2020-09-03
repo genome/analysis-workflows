@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
           - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
 inputs:
@@ -18,6 +19,10 @@ inputs:
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
     mills:
         type: File
         secondaryFiles: [.tbi]
@@ -34,8 +39,8 @@ inputs:
         type: File
     picard_metric_accumulation_level:
         type: string
-    variant_detection_intervals:
-        type: File
+    roi_intervals:
+       type: File
     vep_cache_dir:
         type:
             - string
@@ -158,6 +163,7 @@ steps:
         in:
             reference: reference
             sequence: sequence
+            trimming: trimming
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
@@ -176,7 +182,7 @@ steps:
         in:
             reference: reference
             bam: alignment_and_qc/bam
-            interval_list: variant_detection_intervals
+            roi_intervals: roi_intervals
             #varscan_strand_filter:
             #varscan_min_coverage:
             #varscan_min_var_freq:

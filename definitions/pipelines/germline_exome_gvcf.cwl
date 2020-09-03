@@ -9,7 +9,6 @@ requirements:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
           - $import: ../types/trimming_options.yml
-          - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
 inputs:
     reference:
@@ -63,39 +62,12 @@ inputs:
                 items: string
     ploidy:
         type: int?
-    vep_cache_dir:
-        type:
-            - string
-            - Directory
-    vep_ensembl_assembly:
-        type: string
-        doc: "genome assembly to use in vep. Examples: GRCh38 or GRCm38"
-    vep_ensembl_version:
-        type: string
-        doc: "ensembl version - Must be present in the cache directory. Example: 95"
-    vep_ensembl_species:
-        type: string
-        doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
-    vep_plugins:
-        type: string[]?
-        doc: "array of plugins to use when running vep"
     synonyms_file:
         type: File?
-    annotate_coding_only:
-        type: boolean?
     qc_minimum_mapping_quality:
         type: int?
     qc_minimum_base_quality:
         type: int?
-    vep_custom_annotations:
-        type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
-        doc: "custom type, check types directory for input format"
-    variants_to_table_fields:
-         type: string[]?
-    variants_to_table_genotype_fields:
-         type: string[]?
-    vep_to_table_fields:
-         type: string[]?
 outputs:
     cram:
         type: File
@@ -141,28 +113,7 @@ outputs:
         outputSource: alignment_and_qc/verify_bam_id_depth
     gvcf:
         type: File[]
-        outputSource: detect_variants/gvcf
-    raw_vcf:
-        type: File
-        outputSource: detect_variants/raw_vcf
-        secondaryFiles: [.tbi]
-    final_vcf:
-        type: File
-        outputSource: detect_variants/final_vcf
-        secondaryFiles: [.tbi]
-    filtered_vcf:
-        type: File
-        outputSource: detect_variants/filtered_vcf
-        secondaryFiles: [.tbi]
-    vep_summary:
-        type: File
-        outputSource: detect_variants/vep_summary
-    final_tsv:
-       type: File
-       outputSource: detect_variants/final_tsv
-    filtered_tsv:
-       type: File
-       outputSource: detect_variants/filtered_tsv
+        outputSource: generate_gvcfs/gvcf
 steps:
     alignment_and_qc:
         run: alignment_exome.cwl
@@ -211,30 +162,18 @@ steps:
                                 return {'freemix_score:': null };
                             }
                         }
-    detect_variants:
-        run: ../subworkflows/germline_detect_variants.cwl
+    generate_gvcfs:
+        run: ../subworkflows/gatk_haplotypecaller_iterator.cwl
         in:
-            reference: reference
             bam: alignment_and_qc/bam
+            reference: reference
             emit_reference_confidence: emit_reference_confidence
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
-            ploidy: ploidy
             contamination_fraction: extract_freemix/freemix_score
-            vep_cache_dir: vep_cache_dir
-            synonyms_file: synonyms_file
-            annotate_coding_only: annotate_coding_only
-            limit_variant_intervals: target_intervals
-            vep_ensembl_assembly: vep_ensembl_assembly
-            vep_ensembl_version: vep_ensembl_version
-            vep_ensembl_species: vep_ensembl_species
-            vep_plugins: vep_plugins
-            vep_to_table_fields: vep_to_table_fields
-            vep_custom_annotations: vep_custom_annotations
-            variants_to_table_fields: variants_to_table_fields
-            variants_to_table_genotype_fields: variants_to_table_genotype_fields
+            ploidy: ploidy
         out:
-            [gvcf, raw_vcf, final_vcf, filtered_vcf, vep_summary, final_tsv, filtered_tsv]
+            [gvcf]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:

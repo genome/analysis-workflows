@@ -7,6 +7,7 @@ baseCommand: "varscan_helper.sh"
 requirements:
     - class: ResourceRequirement
       ramMin: 12000
+      coresMin: 2
     - class: DockerRequirement
       dockerPull: "mgibio/cle:v1.3.1"
     - class: InitialWorkDirRequirement
