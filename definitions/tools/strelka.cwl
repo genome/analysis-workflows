@@ -14,20 +14,20 @@ arguments:
     [ { valueFrom: $(inputs.cpu_reserved), position: 1 },
       { valueFrom: $(runtime.outdir), position: 2 }]
 inputs:
-    tumor_bam:
+    tumor_cram:
         type: File
         inputBinding:
             prefix: '--tumorBam='
             separate: false
             position: 3
-        secondaryFiles: [.bai,^.bai]
-    normal_bam:
+        secondaryFiles: [.crai,^.crai]
+    normal_cram:
         type: File
         inputBinding:
             prefix: '--normalBam='
             separate: false
             position: 4
-        secondaryFiles: [.bai,^.bai]
+        secondaryFiles: [.crai,^.crai]
     reference:
         type:
             - string

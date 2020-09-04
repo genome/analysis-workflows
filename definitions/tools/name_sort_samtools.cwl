@@ -17,10 +17,18 @@ arguments:
     valueFrom: $(runtime.cores)
 
 inputs:
+  reference:
+    type:
+        - string
+        - File
+    secondaryFiles: [.fai]
+    inputBinding:
+        position: 1
+        prefix: '--reference'
   cram:
     type: File
     inputBinding:
-        position: 1
+        position: 2
 
 outputs:
   sorted_cram:

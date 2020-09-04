@@ -11,9 +11,9 @@ requirements:
     - class: StepInputExpressionRequirement
     - class: SubworkflowFeatureRequirement
 inputs:
-    bam:
+    cram:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     minimum_mapping_quality:
         type: int?
     minimum_base_quality:
@@ -51,7 +51,7 @@ steps:
         scatter: [bait_intervals, target_intervals, output_prefix]
         scatterMethod: dotproduct
         in:
-            bam: bam
+            cram: cram
             reference: reference
             metric_accumulation_level:
                 valueFrom: "ALL_READS"
@@ -77,7 +77,7 @@ steps:
         scatter: [bait_intervals, target_intervals, output_prefix]
         scatterMethod: dotproduct
         in:
-            bam: bam
+            cram: cram
             reference: reference
             metric_accumulation_level:
                 valueFrom: "ALL_READS"
@@ -103,7 +103,7 @@ steps:
         scatter: [bait_intervals, target_intervals, output_prefix]
         scatterMethod: dotproduct
         in:
-            bam: bam
+            cram: cram
             reference: reference
             metric_accumulation_level:
                 valueFrom: "ALL_READS"

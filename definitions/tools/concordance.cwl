@@ -26,21 +26,21 @@ inputs:
         inputBinding:
             prefix: "-f"
             position: 2
-    bam_1:
+    cram_1:
         type: File
         inputBinding:
             position: 3
-        secondaryFiles: [.bai]
-    bam_2:
+        secondaryFiles: [.crai]
+    cram_2:
         type: File
         inputBinding:
             position: 4
-        secondaryFiles: [.bai]
-    bam_3:
+        secondaryFiles: [.crai]
+    cram_3:
         type: File?
         inputBinding:
             position: 5
-        secondaryFiles: [.bai]
+        secondaryFiles: [.crai]
 outputs:
     somalier_pairs:
         type: File

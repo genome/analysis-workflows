@@ -7,9 +7,9 @@ requirements:
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
-    bam:
+    cram:
         type: File
-        secondaryFiles: [.bai,^.bai]
+        secondaryFiles: [.crai,^.crai]
     reference:
         type:
             - string
@@ -59,11 +59,18 @@ steps:
             vcf: decompose_variants/decomposed_vcf
         out:
             [indexed_vcf]
+    cram_to_bam:
+        run: cram_to_bam_and_index
+        in:
+            cram: cram
+            reference: reference
+        out:
+            [bam]
     fp_filter:
         run: ../tools/fp_filter.cwl
         in:
             reference: reference
-            bam: bam
+            bam: cram_to_bam/bam
             vcf: index/indexed_vcf
             sample_name: sample_name
             min_var_freq: min_var_freq

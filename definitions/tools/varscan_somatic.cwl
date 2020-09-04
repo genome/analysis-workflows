@@ -21,12 +21,12 @@ requirements:
 
             if [ $# -lt 7 ]
             then
-                echo "Usage: $0 [TUMOR_BAM] [NORMAL_BAM] [REFERENCE] [STRAND_FILTER] [MIN_COVERAGE] [MIN_VAR_FREQ] [P_VALUE] [roi_bed?]"
+                echo "Usage: $0 [TUMOR_CRAM] [NORMAL_CRAM] [REFERENCE] [STRAND_FILTER] [MIN_COVERAGE] [MIN_VAR_FREQ] [P_VALUE] [roi_bed?]"
                 exit 1
             fi
 
-            TUMOR_BAM="$1"
-            NORMAL_BAM="$2"
+            TUMOR_CRAM="$1"
+            NORMAL_CRAM="$2"
             REFERENCE="$3"
             STRAND_FILTER="$4"
             MIN_COVERAGE="$5"
@@ -38,7 +38,7 @@ requirements:
             then
                 #run without ROI
                 java -jar /opt/varscan/VarScan.jar somatic \
-                    <(/opt/samtools/bin/samtools mpileup --no-baq -f "$REFERENCE" "$NORMAL_BAM" "$TUMOR_BAM") \
+                    <(/opt/samtools/bin/samtools mpileup --no-baq -f "$REFERENCE" "$NORMAL_CRAM" "$TUMOR_CRAM") \
                     $OUTPUT \
                     --strand-filter $STRAND_FILTER \
                     --min-coverage $MIN_COVERAGE \
@@ -49,7 +49,7 @@ requirements:
             else
                 ROI_BED="$8"
                 java -jar /opt/varscan/VarScan.jar somatic \
-                    <(/opt/samtools/bin/samtools mpileup --no-baq -l "$ROI_BED" -f "$REFERENCE" "$NORMAL_BAM" "$TUMOR_BAM") \
+                    <(/opt/samtools/bin/samtools mpileup --no-baq -l "$ROI_BED" -f "$REFERENCE" "$NORMAL_CRAM" "$TUMOR_CRAM") \
                     $OUTPUT \
                     --strand-filter $STRAND_FILTER \
                     --min-coverage $MIN_COVERAGE \
@@ -60,16 +60,16 @@ requirements:
             fi
 
 inputs:
-    tumor_bam:
+    tumor_cram:
         type: File
         inputBinding:
             position: 1
-        secondaryFiles: [^.bai]
-    normal_bam:
+        secondaryFiles: [^.crai]
+    normal_cram:
         type: File
         inputBinding:
             position: 2
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     reference:
         type:
             - string

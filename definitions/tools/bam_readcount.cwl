@@ -143,11 +143,11 @@ inputs:
         secondaryFiles: [.fai, ^.dict]
         inputBinding:
             position: -6
-    bam:
+    cram:
         type: File
         inputBinding:
             position: -5
-        secondaryFiles: [.bai]
+        secondaryFiles: [.crai]
     prefix:
         type: string?
         default: 'NOPREFIX'

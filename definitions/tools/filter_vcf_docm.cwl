@@ -107,11 +107,11 @@ inputs:
         type: File
         inputBinding:
             position: -4
-    normal_bam:
+    normal_cram:
         type: File
         inputBinding:
             position: -3
-    tumor_bam:
+    tumor_cram:
         type: File
         inputBinding:
             position: -2

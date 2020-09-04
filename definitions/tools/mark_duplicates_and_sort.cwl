@@ -10,7 +10,7 @@ requirements:
       coresMin: 8
       ramMin: 40000
     - class: DockerRequirement
-      dockerPull: "mgibio/mark_duplicates-cwl:1.0.1"
+      dockerPull: "mgibio/mark_duplicates-cwl:2.0.0"
     - class: InitialWorkDirRequirement
       listing:
       - entryname: 'markduplicates_helper.sh'
@@ -18,20 +18,15 @@ requirements:
             set -o pipefail
             set -o errexit
 
-            declare MD_BARCODE_TAG
-            if [ ! -z "$6" ]; then
-              MD_BARCODE_TAG="BARCODE_TAG=$6"
-            /usr/bin/java -Xmx16g -jar /opt/picard/picard.jar MarkDuplicates I=$1 O=/dev/stdout ASSUME_SORT_ORDER=$5 METRICS_FILE=$4 QUIET=true COMPRESSION_LEVEL=0 VALIDATION_STRINGENCY=LENIENT "$MD_BARCODE_TAG" | /usr/bin/sambamba sort -t $2 -m 18G -o $3 /dev/stdin
-            else
-              /usr/bin/java -Xmx16g -jar /opt/picard/picard.jar MarkDuplicates I=$1 O=/dev/stdout ASSUME_SORT_ORDER=$5 METRICS_FILE=$4 QUIET=true COMPRESSION_LEVEL=0 VALIDATION_STRINGENCY=LENIENT | /usr/bin/sambamba sort -t $2 -m 18G -o $3 /dev/stdin
-            fi
+            /usr/bin/java -Xmx16g -jar /opt/picard/picard.jar MarkDuplicates I=$1 O=/dev/stdout ASSUME_SORT_ORDER=$5 METRICS_FILE=$4 QUIET=true COMPRESSION_LEVEL=0 VALIDATION_STRINGENCY=LENIENT REFERENCE_SEQUENCE=$6 | /opt/samtools/bin/samtools sort -@ $2 -m 4G --reference "$6" -o "$3" -O cram /dev/stdin
+
 arguments:
     - position: 2
       valueFrom: "$(runtime.cores)"
     - position: 4
-      valueFrom: "$(inputs.bam.nameroot).mark_dups_metrics.txt"
+      valueFrom: "$(inputs.cram.nameroot).mark_dups_metrics.txt"
 inputs:
-    bam:
+    cram:
         type: File
         inputBinding:
             position: 1
@@ -42,17 +37,24 @@ inputs:
             position: 5
     output_name:
         type: string?
-        default: 'MarkedSorted.bam'
+        default: 'MarkedSorted'
         inputBinding:
             position: 3
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai]
+        inputBinding:
+            position: 6
 
 outputs:
-    sorted_bam:
+    sorted_cram:
         type: File
         outputBinding:
-            glob: $(inputs.output_name)
-        secondaryFiles: [.bai]
+            glob: $(inputs.output_name).cram
+        secondaryFiles: [.crai]
     metrics_file:
         type: File
         outputBinding:
-            glob: "$(inputs.bam.nameroot).mark_dups_metrics.txt"
+            glob: "$(inputs.cram.nameroot).mark_dups_metrics.txt"

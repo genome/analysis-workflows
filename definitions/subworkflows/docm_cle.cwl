@@ -11,12 +11,12 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict]
-    tumor_bam:
+    tumor_cram:
         type: File
-        secondaryFiles: [^.bai]
-    normal_bam:
+        secondaryFiles: [^.crai]
+    normal_cram:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -34,8 +34,8 @@ steps:
         run: ../tools/docm_gatk_haplotype_caller.cwl
         in:
             reference: reference
-            bam: tumor_bam
-            normal_bam: normal_bam
+            cram: tumor_cram
+            normal_cram: normal_cram
             docm_vcf: docm_vcf
             interval_list: interval_list
         out:
@@ -62,8 +62,8 @@ steps:
         run: ../tools/filter_vcf_docm.cwl
         in:
             docm_raw_variants: decompose/decomposed_vcf
-            normal_bam: normal_bam
-            tumor_bam: tumor_bam
+            normal_cram: normal_cram
+            tumor_cram: tumor_cram
             filter_docm_variants: filter_docm_variants
         out:
             [docm_filtered_variants]

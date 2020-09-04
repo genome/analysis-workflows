@@ -17,11 +17,11 @@ inputs:
         type: File
         inputBinding:
             position: 1
-    tumor_bam:
+    tumor_cram:
         type: File
         inputBinding:
             position: 2
-        secondaryFiles: [.bai]
+        secondaryFiles: [.crai]
     reference: 
         type:
             - string

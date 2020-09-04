@@ -39,9 +39,9 @@ inputs:
         type: File
         secondaryFiles: [.tbi]
 outputs:
-    final_bam:
+    final_cram:
         type: File
-        outputSource: index_bam/indexed_bam
+        outputSource: index_cram/indexed_cram
         secondaryFiles: [.bai, ^.bai]
     mark_duplicates_metrics_file:
         type: File
@@ -69,19 +69,21 @@ steps:
         run: ../tools/name_sort_samtools.cwl
         in:
             cram: merge/merged_cram
+            reference: reference
         out:
             [name_sorted_cram]
     mark_duplicates_and_sort:
         run: ../tools/mark_duplicates_and_sort.cwl
         in:
-            bam: name_sort/name_sorted_bam
+            cram: name_sort/name_sorted_cram
+            reference: reference
         out:
-            [sorted_bam, metrics_file]
+            [sorted_cram, metrics_file]
     bqsr:
         run: ../tools/bqsr.cwl
         in:
             reference: reference
-            bam: mark_duplicates_and_sort/sorted_bam
+            cram: mark_duplicates_and_sort/sorted_cram
             intervals: bqsr_intervals
             known_sites: [dbsnp_vcf, mills, known_indels]
         out:
@@ -90,14 +92,14 @@ steps:
         run: ../tools/apply_bqsr.cwl
         in:
             reference: reference
-            bam: mark_duplicates_and_sort/sorted_bam
+            cram: mark_duplicates_and_sort/sorted_cram
             bqsr_table: bqsr/bqsr_table
             output_name: final_name
         out:
-            [bqsr_bam]
-    index_bam:
-        run: ../tools/index_bam.cwl
+            [bqsr_cram]
+    index_cram:
+        run: ../tools/index_cram.cwl
         in:
-            bam: apply_bqsr/bqsr_bam
+            cram: apply_bqsr/bqsr_cram
         out:
-            [indexed_bam]
+            [indexed_cram]

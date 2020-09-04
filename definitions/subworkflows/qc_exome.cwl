@@ -10,9 +10,9 @@ requirements:
     - class: StepInputExpressionRequirement
     - class: SubworkflowFeatureRequirement
 inputs:
-    bam:
+    cram:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     reference:
         type:
             - string
@@ -79,7 +79,7 @@ steps:
     collect_insert_size_metrics:
         run: ../tools/collect_insert_size_metrics.cwl
         in:
-            bam: bam
+            cram: cram
             reference: reference
             metric_accumulation_level: picard_metric_accumulation_level
         out:
@@ -87,7 +87,7 @@ steps:
     collect_alignment_summary_metrics:
         run: ../tools/collect_alignment_summary_metrics.cwl
         in:
-            bam: bam
+            cram: cram
             reference: reference
             metric_accumulation_level: picard_metric_accumulation_level
         out:
@@ -95,7 +95,7 @@ steps:
     collect_roi_hs_metrics:
         run: ../tools/collect_hs_metrics.cwl
         in:
-            bam: bam
+            cram: cram
             reference: reference
             metric_accumulation_level:
                 valueFrom: "ALL_READS"
@@ -114,7 +114,7 @@ steps:
     collect_detailed_hs_metrics:
         run: hs_metrics.cwl
         in:
-            bam: bam
+            cram: cram
             minimum_mapping_quality: minimum_mapping_quality
             minimum_base_quality: minimum_base_quality
             per_base_intervals: per_base_intervals
@@ -126,7 +126,8 @@ steps:
     samtools_flagstat:
         run: ../tools/samtools_flagstat.cwl
         in:
-            bam: bam
+            cram: cram
+            reference: reference
         out: [flagstats]
     select_variants:
         run: ../tools/select_variants.cwl
@@ -136,10 +137,17 @@ steps:
             interval_list: target_intervals
         out:
             [filtered_vcf]
+    cram_to_bam:
+        run: cram_to_bam_and_index.cwl
+        in:
+            cram: cram
+            reference: reference
+        out:
+            [bam]
     verify_bam_id:
         run: ../tools/verify_bam_id.cwl
         in:
-            bam: bam
+            bam: cram_to_bam/bam
             vcf: select_variants/filtered_vcf
         out:
             [verify_bam_id_metrics, verify_bam_id_depth]
