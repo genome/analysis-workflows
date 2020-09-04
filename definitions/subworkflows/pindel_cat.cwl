@@ -6,6 +6,7 @@ class: Workflow
 label: "Per-region pindel"
 requirements:
     - class: MultipleInputFeatureRequirement
+    - class: SubworkflowFeatureRequirement
 inputs:
     reference:
         type:

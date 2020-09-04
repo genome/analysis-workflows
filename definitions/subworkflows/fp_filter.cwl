@@ -60,7 +60,7 @@ steps:
         out:
             [indexed_vcf]
     cram_to_bam:
-        run: cram_to_bam_and_index
+        run: cram_to_bam_and_index.cwl
         in:
             cram: cram
             reference: reference

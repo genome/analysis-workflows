@@ -31,7 +31,7 @@ inputs:
         position: 2
 
 outputs:
-  sorted_cram:
+  name_sorted_cram:
     type: File
     outputBinding:
       glob: $(inputs.cram.nameroot).NameSorted.cram
