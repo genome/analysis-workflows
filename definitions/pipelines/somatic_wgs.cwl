@@ -60,12 +60,6 @@ inputs:
     qc_minimum_base_quality:
         type: int?
         default: 0
-    cosmic_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    panel_of_normals_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
     strelka_cpu_reserved:
         type: int?
         default: 8
@@ -415,8 +409,6 @@ steps:
             normal_bam: normal_alignment_and_qc/bam
             roi_intervals: target_intervals
             dbsnp_vcf: dbsnp_vcf
-            cosmic_vcf: cosmic_vcf
-            panel_of_normals_vcf: panel_of_normals_vcf
             strelka_exome_mode:
                 default: false
             strelka_cpu_reserved: strelka_cpu_reserved

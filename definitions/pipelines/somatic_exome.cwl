@@ -155,12 +155,6 @@ inputs:
     qc_minimum_base_quality:
         type: int?
         default: 0
-    cosmic_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    panel_of_normals_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
     strelka_cpu_reserved:
         type: int?
         default: 8

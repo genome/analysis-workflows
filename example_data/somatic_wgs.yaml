@@ -72,12 +72,6 @@ somalier_vcf: "/gscmnt/gc2560/core/annotation_data/concordance_snps/GRC-human-bu
 vep_ensembl_assembly: GRCh38
 vep_ensembl_version: 95
 vep_ensembl_species: homo_sapiens
-cosmic_vcf:
-  class: File
-  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-774-52fa2dadc4ba4b6490abe0701907d394/snvs.hq.vcf.gz
-panel_of_normals_vcf:
-  class: File
-  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-2237-db881b860992443da9d6aac8b36a7ea6/snvs.hq.vcf.gz
 bqsr_intervals:
 - chr1
 - chr2
