@@ -11,20 +11,24 @@ inputs:
     vcf:
         type: File
         secondaryFiles: [.tbi]
-    filter_mapq0_threshold: 
+    filter_mapq0_threshold:
         type: float
     filter_gnomADe_maximum_population_allele_frequency:
         type: float
     gnomad_field_name:
         type: string
-    tumor_bam: 
+    tumor_bam:
         type: File
         secondaryFiles: [.bai]
-    do_cle_vcf_filter: 
+    do_cle_vcf_filter:
         type: boolean
     filter_somatic_llr_threshold:
         type: float
-    reference: 
+    filter_somatic_llr_tumor_purity:
+        type: float
+    filter_somatic_llr_normal_contamination_rate:
+        type: float
+    reference:
         type:
             - string
             - File
@@ -39,7 +43,7 @@ inputs:
         type: File?
         secondaryFiles: [.tbi]
         doc: "Previously discovered variants to be flagged in this workflow's output vcf"
-outputs: 
+outputs:
     filtered_vcf:
         type: File
         outputSource: set_final_vcf_name/replacement
@@ -61,7 +65,7 @@ steps:
             [filtered_vcf]
     filter_vcf_mapq0:
         run: ../tools/filter_vcf_mapq0.cwl
-        in: 
+        in:
             vcf: filter_vcf_gnomADe_allele_freq/filtered_vcf
             tumor_bam: tumor_bam
             threshold: filter_mapq0_threshold
@@ -90,6 +94,8 @@ steps:
         in:
             vcf: filter_vcf_depth/depth_filtered_vcf
             threshold: filter_somatic_llr_threshold
+            tumor_purity: filter_somatic_llr_tumor_purity
+            normal_contamination_rate: filter_somatic_llr_normal_contamination_rate
             tumor_sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name
         out:

@@ -19,6 +19,10 @@ inputs:
         type: boolean
     filter_somatic_llr_threshold:
         type: float
+    filter_somatic_llr_tumor_purity:
+        type: float
+    filter_somatic_llr_normal_contamination_rate:
+        type: float
     reference: 
         type:
             - string
@@ -66,6 +70,8 @@ steps:
         in:
             vcf: filter_vcf_depth/depth_filtered_vcf
             threshold: filter_somatic_llr_threshold
+            tumor_purity: filter_somatic_llr_tumor_purity
+            normal_contamination_rate: filter_somatic_llr_normal_contamination_rate
             tumor_sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name
         out:
