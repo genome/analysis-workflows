@@ -3,20 +3,18 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: 'apply BQSR'
-baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "PrintReads"]
+baseCommand: ["/gatk/gatk", "--java-options", "-Xmx16g", "ApplyBQSR"]
 arguments:
-    ["-o", { valueFrom: $(runtime.outdir)/$(inputs.output_name).bam },
-    "-preserveQ", "6",
-    "-SQQ", "10",
-    "-SQQ", "20",
-    "-SQQ", "30",
-    "-nct", "8",
-    "--disable_indel_quals"]
+    ["-O", { valueFrom: $(runtime.outdir)/$(inputs.output_name).bam },
+    "--static-quantized-quals", "10",
+    "--static-quantized-quals", "20",
+    "--static-quantized-quals", "30"
+    ]
 requirements:
     - class: ResourceRequirement
       ramMin: 18000
     - class: DockerRequirement
-      dockerPull: "mgibio/gatk-cwl:3.6.0"
+      dockerPull: "broadinstitute/gatk:4.1.8.1"
 inputs:
     reference:
         type:
@@ -35,7 +33,7 @@ inputs:
     bqsr_table:
         type: File
         inputBinding:
-            prefix: "-BQSR"
+            prefix: "-bqsr"
             position: 3
     output_name:
         type: string?
