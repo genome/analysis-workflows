@@ -58,9 +58,11 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+        doc: "Common mutations in cancer that will be genotyped and passed through into the merged VCF if they have even low-level evidence of a mutation (by default, marked with filter DOCM_ONLY)"
     filter_docm_variants:
         type: boolean
         default: true
+        doc: "Determines whether variants found only via genotyping of DOCM sites will be filtered (as DOCM_ONLY) or passed through as variant calls"
     vep_cache_dir:
         type:
             - string
