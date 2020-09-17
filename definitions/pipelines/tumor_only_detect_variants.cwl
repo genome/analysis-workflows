@@ -81,6 +81,7 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+        doc: "Common mutations in cancer that will be genotyped and passed through into the merged VCF if they have even low-level evidence of a mutation (by default, marked with filter DOCM_ONLY)"
     vep_custom_annotations:
         type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
         doc: "custom type, check types directory for input format"
