@@ -16,6 +16,8 @@ inputs:
         type: Directory
     star_fusion_genome_dir:
         type: Directory
+    cdna_fasta:
+        type: File
     gtf_file:
         type: File
     trimming_adapters:
@@ -33,7 +35,10 @@ inputs:
     gene_transcript_lookup_table:
        type: File
     strand:
-       type: string?
+        type:
+          - "null"
+          - type: enum
+            symbols: ["first", "second", "unstranded"]
     refFlat:
         type: File
     ribosomal_intervals:
@@ -84,6 +89,9 @@ outputs:
     fusion_evidence:
         type: File
         outputSource: kallisto/fusion_evidence
+    strand_info:
+        type: File[]
+        outputSource: strandedness_check/strandedness_check
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
@@ -98,6 +106,18 @@ steps:
             min_readlength: trimming_min_readlength
         out:
             [fastqs, fastq1, fastq2]
+    strandedness_check:
+        run: ../tools/strandedness_check.cwl
+        scatter: [reads1, reads2]
+        scatterMethod: dotproduct
+        in:
+            gtf_file: gtf_file
+            kallisto_index: kallisto_index
+            cdna_fasta: cdna_fasta
+            reads1: bam_to_trimmed_fastq/fastq1
+            reads2: bam_to_trimmed_fastq/fastq2
+        out:
+            [strandedness_check]
     star_align_fusion:
         run: ../tools/star_align_fusion.cwl
         in:
