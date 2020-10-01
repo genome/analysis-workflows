@@ -349,10 +349,10 @@ outputs:
         outputSource: concordance/somalier_samples
     alignment_stat_report:
         type: File
-        outputSource: alignment_stat_report/alignment_stat
+        outputSource: alignment_report/alignment_stat
     coverage_stat_report:
         type: File
-        outputSource: coverage_stat_report/coverage_stat
+        outputSource: coverage_report/coverage_stat
     full_variant_report:
         type: File
         outputSource: add_disclaimer_version_to_full_variant_report/output_file
@@ -373,8 +373,8 @@ steps:
             summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
             final_name:
                 source: normal_name
                 valueFrom: "$(self).bam"
@@ -396,8 +396,8 @@ steps:
             summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
             final_name:
                 source: tumor_name
                 valueFrom: "$(self).bam"
@@ -419,8 +419,8 @@ steps:
             summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
             final_name:
                 source: followup_name
                 valueFrom: "$(self).bam"
@@ -634,7 +634,7 @@ steps:
                 valueFrom: "$(self.basename)" 
         out:
             [output_file]
-    alignment_stat_report:
+    alignment_report:
         run: ../tools/cle_aml_trio_report_alignment_stat.cwl
         in:
             normal_alignment_summary_metrics: normal_alignment_and_qc/alignment_summary_metrics
@@ -642,7 +642,7 @@ steps:
             followup_alignment_summary_metrics: followup_alignment_and_qc/alignment_summary_metrics
         out:
             [alignment_stat]
-    coverage_stat_report:
+    coverage_report:
         run: ../tools/cle_aml_trio_report_coverage_stat.cwl
         in:
             normal_roi_hs_metrics: normal_alignment_and_qc/hs_metrics
@@ -653,7 +653,7 @@ steps:
             followup_summary_hs_metrics: [followup_alignment_and_qc/summary_hs_metrics]
         out:
             [coverage_stat]
-    full_variant_report:
+    full_report:
         run: ../tools/cle_aml_trio_report_full_variants.cwl
         in: 
             variant_tsv: tumor_detect_variants/final_tsv
@@ -665,14 +665,14 @@ steps:
     add_disclaimer_to_full_variant_report:
         run: ../tools/add_string_at_line.cwl
         in:
-            input_file: full_variant_report/full_variant_report
+            input_file: full_report/full_variant_report
             line_number:
                 default: 1
             some_text:
                 source: disclaimer_text
                 valueFrom: "#$(self)"
             output_name:
-                source: full_variant_report/full_variant_report
+                source: full_report/full_variant_report
                 valueFrom: "$(self.basename)"
         out:
             [output_file]
