@@ -94,7 +94,7 @@ bqsr_intervals:
 interval_list:
   class: File
   path: exome_workflow/chr17_test_genes.interval_list
-mutect_scatter_count: 2
+scatter_count: 2
 mutect_artifact_detection_mode: false
 somalier_vcf:
   class: File 

@@ -95,7 +95,7 @@ known_indels:
 mills:
   class: File
   path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-20211-26b393cc7ab04120ac68cc2cbd4a15df/indels.hq.vcf.gz
-mutect_scatter_count: 80
+scatter_count: 80
 mutect_artifact_detection_mode: false
 mutect_max_alt_allele_in_normal_fraction: 0.1
 mutect_max_alt_alleles_in_normal_count: 5

@@ -18,7 +18,7 @@ known_indels:
   class: File
   path: ../exome_workflow/chr17_test_known_indels.vcf.gz
 strelka_exome_mode: true
-mutect_scatter_count: 50
+scatter_count: 50
 mutect_artifact_detection_mode: false
 mutect_max_alt_allele_in_normal_fraction: 0.1
 mutect_max_alt_alleles_in_normal_count: 5

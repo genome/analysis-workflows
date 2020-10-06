@@ -63,7 +63,7 @@ inputs:
     strelka_cpu_reserved:
         type: int?
         default: 8
-    mutect_scatter_count:
+    scatter_count:
         type: int
     mutect_artifact_detection_mode:
         type: boolean
@@ -412,7 +412,7 @@ steps:
             strelka_exome_mode:
                 default: false
             strelka_cpu_reserved: strelka_cpu_reserved
-            mutect_scatter_count: mutect_scatter_count
+            scatter_count: scatter_count
             mutect_artifact_detection_mode: mutect_artifact_detection_mode
             mutect_max_alt_allele_in_normal_fraction: mutect_max_alt_allele_in_normal_fraction
             mutect_max_alt_alleles_in_normal_count: mutect_max_alt_alleles_in_normal_count
