@@ -9,7 +9,7 @@ requirements:
       ramMin: 4000
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
-      dockerPull: "mgibio/picard-cwl:2.18.1"
+      dockerPull: "broadinstitute/picard:2.23.6"
 arguments:
     ["O=$(inputs.merged_vcf_basename).vcf.gz"]
 inputs:

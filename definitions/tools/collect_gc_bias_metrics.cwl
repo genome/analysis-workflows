@@ -12,7 +12,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 18000
     - class: DockerRequirement
-      dockerPull: mgibio/picard-cwl:2.18.1
+      dockerPull: broadinstitute/picard:2.23.6
 inputs:
     sample_name:
         type: string?
