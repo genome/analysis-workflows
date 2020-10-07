@@ -3,10 +3,10 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Picard MergeVcfs"
-baseCommand: ["/usr/bin/java", "-jar", "/opt/picard/picard.jar", "MergeVcfs"]
+baseCommand: ["/usr/bin/java", "-jar", "-Xmx38g", "/opt/picard/picard.jar", "MergeVcfs"]
 requirements:
     - class: ResourceRequirement
-      ramMin: 4000
+      ramMin: 40000
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
       dockerPull: "mgibio/picard-cwl:2.18.1"
