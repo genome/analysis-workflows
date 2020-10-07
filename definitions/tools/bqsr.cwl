@@ -3,19 +3,15 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: 'create BQSR table'
-baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "BaseRecalibrator"]
+baseCommand: ["/gatk/gatk","--java-options", "-Xmx16g", "BaseRecalibrator"]
 arguments:
-    ["-o", { valueFrom: $(runtime.outdir)/bqsr.table },
-    "--preserve_qscores_less_than", "6",
-    "--disable_auto_index_creation_and_locking_when_reading_rods",
-    "--disable_bam_indexing",
-    "-dfrac", ".1",
-    "-nct", "4"]
+    ["-O", { valueFrom: $(runtime.outdir)/bqsr.table }
+    ]
 requirements:
     - class: ResourceRequirement
       ramMin: 18000
     - class: DockerRequirement
-      dockerPull: "mgibio/gatk-cwl:3.6.0"
+      dockerPull: "broadinstitute/gatk:4.1.8.1"
 inputs:
     reference:
         type:
@@ -36,7 +32,7 @@ inputs:
             type: array
             items: File
             inputBinding:
-                prefix: "-knownSites"
+                prefix: "--known-sites"
                 position: 4
         secondaryFiles: [.tbi]
     intervals:

@@ -43,13 +43,6 @@ inputs:
         type: int?
     ploidy:
         type: int?
-    variant_index_type:
-        type:
-            - 'null'
-            - type: enum
-              symbols: ['DYNAMIC_SEEK', 'DYNAMIC_SIZE', 'LINEAR', 'INTERVAL']
-    variant_index_parameter:
-        type: string?
     read_filter:
         type: string?
     intervals:
@@ -106,8 +99,6 @@ steps:
                 valueFrom: $(self.contamination)
             max_alternate_alleles: max_alternate_alleles
             ploidy: ploidy
-            variant_index_type: variant_index_type
-            variant_index_parameter: variant_index_parameter
             read_filter: read_filter
             output_prefix:
                 source: downsample/downsampled_sam

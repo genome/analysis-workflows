@@ -25,9 +25,6 @@ bqsr_intervals:
 - chr20
 - chr21
 - chr22
-cosmic_vcf:
-  class: File
-  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-774-52fa2dadc4ba4b6490abe0701907d394/snvs.hq.vcf.gz
 custom_gnomad_vcf:
   class: File
   path: /gscmnt/gc2560/core/model_data/genome-db-ensembl-gnomad/2dd4b53431674786b760adad60a29273/fixed_b38_exome.vcf.gz
@@ -63,9 +60,6 @@ normal_sequence:
 omni_vcf:
   class: File
   path: /gscmnt/gc2709/info/production_reference_GRCh38DH/accessory_vcf/omni25-ld-pruned-20000-2000-0.5-annotated.wchr.sites_only.b38.autosomes_only.vcf.gz
-panel_of_normals_vcf:
-  class: File
-  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-2237-db881b860992443da9d6aac8b36a7ea6/snvs.hq.vcf.gz
 per_base_intervals: []
 per_target_intervals: []
 picard_metric_accumulation_level: LIBRARY
