@@ -23,15 +23,10 @@ inputs:
         type:
             - ../types/trimming_options.yml#trimming_options
             - "null"
-    mills:
-        type: File
+    bqsr_known_sites:
+        type: File[]
         secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -165,9 +160,7 @@ steps:
             reference: reference
             sequence: sequence
             trimming: trimming
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            bqsr_known_sites: bqsr_known_sites
             omni_vcf: omni_vcf
             intervals: qc_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level
