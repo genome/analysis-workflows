@@ -161,6 +161,7 @@ inputs:
         default: 8
     scatter_count:
         type: int
+        doc: "scatters each supported variant detector (varscan, pindel, mutect) into this many parallel jobs"
     mutect_artifact_detection_mode:
         type: boolean
         default: false

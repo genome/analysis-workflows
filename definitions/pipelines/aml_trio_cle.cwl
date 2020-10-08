@@ -81,6 +81,7 @@ inputs:
         default: 8
     scatter_count:
         type: int
+        doc: "scatters each supported variant detector (varscan, pindel, mutect) into this many parallel jobs"
     varscan_strand_filter:
         type: int?
         default: 0
