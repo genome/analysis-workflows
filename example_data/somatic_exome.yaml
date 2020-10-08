@@ -87,7 +87,7 @@ vep_custom_annotations:
     gnomad_filter: true
     check_existing: true
 vep_ensembl_assembly: GRCh38
-vep_ensembl_version: 95
+vep_ensembl_version: '95'
 vep_ensembl_species: homo_sapiens
 bqsr_intervals:
 - chr17
