@@ -9,6 +9,7 @@ requirements:
           - $import: ../types/sequence_data.yml
           - $import: ../types/trimming_options.yml
           - $import: ../types/vep_custom_annotation.yml
+    - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 label: "somatic_exome: exome alignment and somatic variant detection"
