@@ -65,7 +65,28 @@ inputs:
     filter_gnomAD_maximum_population_allele_frequency:
         type: float
         default: 0.05
-outputs: []
+outputs:
+    raw_vcf:
+        type: File
+        outputSource: merge_vcfs/merged_vcf
+        secondaryFiles: [.tbi]
+    final_vcf:
+        type: File
+        outputSource: filter_vcf/final_vcf
+        secondaryFiles: [.tbi]
+    filtered_vcf:
+        type: File
+        outputSource: filter_vcf/filtered_vcf
+        secondaryFiles: [.tbi]
+    vep_summary:
+        type: File
+        outputSource: annotate_variants/vep_summary
+    final_tsv:
+        type: File
+        outputSource: set_final_tsv_name/replacement
+    filtered_tsv:
+        type: File
+        outputSource: set_filtered_tsv_name/replacement
 steps:
     combine_gvcfs:
         run: ../tools/combine_gvcfs.cwl
