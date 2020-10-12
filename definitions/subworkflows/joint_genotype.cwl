@@ -27,6 +27,7 @@ inputs:
             items:
                 type: array
                 items: string
+        doc: "intervals used to parallelize genotyping. Example: [[chr1],[chr2],[chr3],[chr4,chr5]]"
     vep_cache_dir:
         type:
             - string
@@ -50,8 +51,9 @@ inputs:
     vep_custom_annotations:
         type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
         doc: "custom type, check types directory for input format"
-    limit_variant_intervals:
+    roi_intervals:
         type: File
+        doc: "region of interest interval list file, used to limit called variants in final filtered output files"
     variants_to_table_fields:
         type: string[]?
         default: ['CHROM','POS','ID','REF','ALT']
@@ -152,7 +154,7 @@ steps:
                      }
                      return('gnomAD_AF');
                  }
-            limit_variant_intervals: limit_variant_intervals
+            limit_variant_intervals: roi_intervals
             reference: reference
         out:
             [filtered_vcf, final_vcf]
