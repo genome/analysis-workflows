@@ -30,8 +30,9 @@ inputs:
         type: int?
     readcount_minimum_mapping_quality:
         type: int?
-    mutect_scatter_count:
+    scatter_count:
         type: int
+        doc: "scatters each supported variant detector (varscan, pindel, mutect) into this many parallel jobs"
     varscan_strand_filter:
         type: int?
         default: 0
@@ -175,7 +176,7 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             interval_list: roi_intervals
-            scatter_count: mutect_scatter_count
+            scatter_count: scatter_count
             tumor_sample_name: tumor_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
@@ -199,6 +200,7 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             interval_list: roi_intervals
+            scatter_count: scatter_count
             strand_filter: varscan_strand_filter
             min_coverage: varscan_min_coverage
             min_var_freq: varscan_min_var_freq
@@ -215,6 +217,7 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             interval_list: roi_intervals
+            scatter_count: scatter_count
             insert_size: pindel_insert_size
             tumor_sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name

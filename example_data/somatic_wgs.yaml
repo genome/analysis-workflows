@@ -37,7 +37,7 @@ omni_vcf:
   class: File
   path: /gscmnt/gc2709/info/production_reference_GRCh38DH/accessory_vcf/omni25-ld-pruned-20000-2000-0.5-annotated.wchr.sites_only.b38.autosomes_only.vcf.gz
 picard_metric_accumulation_level: LIBRARY
-mutect_scatter_count: 5
+scatter_count: 5
 vep_cache_dir: /gscmnt/gc2560/core/cwl/inputs/VEP_cache/
 synonyms_file:
   class: File
