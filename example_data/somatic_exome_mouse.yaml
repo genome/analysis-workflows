@@ -49,4 +49,4 @@ vep_cache_dir: "/gscmnt/gc2560/core/cwl/inputs/VEP_cache/"
 vep_ensembl_assembly: "GRCm38"
 vep_ensembl_version: "96"
 vep_ensembl_species: "mus_musculus"
-mutect_scatter_count: 2
+scatter_count: 2

@@ -18,7 +18,7 @@ panel_of_normals_vcf:
   class: File
   path: /gscmnt/gc2709/info/production_reference_GRCh38DH/CLE/IDTExome/panel_of_normals.vcf.gz
 strelka_exome_mode: true
-mutect_scatter_count: 50
+scatter_count: 50
 mutect_artifact_detection_mode: false
 mutect_max_alt_allele_in_normal_fraction: 0.1
 mutect_max_alt_alleles_in_normal_count: 5

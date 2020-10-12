@@ -111,7 +111,7 @@ steps:
     merge_vcfs:
         run: ../tools/picard_merge_vcfs.cwl
         in:
-            gvcfs: haplotype_caller/gvcf
+            vcfs: haplotype_caller/gvcf
         out:
             [merged_vcf]
     annotate_variants:
