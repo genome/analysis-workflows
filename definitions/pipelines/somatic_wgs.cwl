@@ -28,15 +28,10 @@ inputs:
         type:
             - ../types/trimming_options.yml#trimming_options
             - "null"
-    mills:
-        type: File
+    bqsr_known_sites:
+        type: File[]
         secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     bqsr_intervals:
         type: string[]
     target_intervals:
@@ -357,12 +352,10 @@ steps:
             reference: reference
             sequence: tumor_sequence
             trimming: trimming
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
             omni_vcf: omni_vcf
             intervals: qc_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             minimum_mapping_quality: qc_minimum_mapping_quality
             minimum_base_quality: qc_minimum_base_quality
@@ -378,12 +371,10 @@ steps:
             reference: reference
             sequence: normal_sequence
             trimming: trimming
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
             omni_vcf: omni_vcf
             intervals: qc_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             minimum_mapping_quality: qc_minimum_mapping_quality
             minimum_base_quality: qc_minimum_base_quality
@@ -409,7 +400,6 @@ steps:
             tumor_bam: tumor_alignment_and_qc/bam
             normal_bam: normal_alignment_and_qc/bam
             roi_intervals: target_intervals
-            dbsnp_vcf: dbsnp_vcf
             strelka_exome_mode:
                 default: false
             strelka_cpu_reserved: strelka_cpu_reserved

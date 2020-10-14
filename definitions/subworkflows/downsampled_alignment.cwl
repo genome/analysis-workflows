@@ -15,15 +15,10 @@ inputs:
         type: string[]
     reference:
         type: string
-    dbsnp_vcf:
-        type: File
+    bqsr_known_sites:
+        type: File[]
         secondaryFiles: [.tbi]
-    mills:
-        type: File
-        secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     downsample_probability:
         type: float
 outputs:
@@ -51,8 +46,6 @@ steps:
             bams: downsample/downsampled_sam
             readgroups: readgroups
             reference: reference
-            dbsnp_vcf: dbsnp_vcf
-            mills: mills
-            known_indels: known_indels
+            bqsr_known_sites: bqsr_known_sites
         out:
             [final_bam,mark_duplicates_metrics_file]

@@ -13,22 +13,17 @@ inputs:
         type: File[]
     readgroups:
         type: string[]
+    bqsr_known_sites:
+        type: File[]
+        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     bqsr_intervals:
         type: string[]?
     reference:
         type: string
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
     final_name:
         type: string
         default: 'final.bam'
-    mills:
-        type: File
-        secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
 outputs:
     final_bam:
         type: File
@@ -73,7 +68,7 @@ steps:
             reference: reference
             bam: mark_duplicates_and_sort/sorted_bam
             intervals: bqsr_intervals
-            known_sites: [dbsnp_vcf, mills, known_indels]
+            known_sites: bqsr_known_sites
         out:
             [bqsr_table]
     apply_bqsr:

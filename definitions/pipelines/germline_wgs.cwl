@@ -24,15 +24,6 @@ inputs:
         type:
             - ../types/trimming_options.yml#trimming_options
             - "null"
-    mills:
-        type: File
-        secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -76,6 +67,10 @@ inputs:
         type: File?
     annotate_coding_only:
         type: boolean?
+    bqsr_known_sites:
+        type: File[]
+        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     bqsr_intervals:
         type: string[]?
     minimum_mapping_quality:
@@ -306,12 +301,10 @@ steps:
             reference: reference
             sequence: sequence
             trimming: trimming
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
             omni_vcf: omni_vcf
             intervals: qc_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             minimum_mapping_quality: minimum_mapping_quality
             minimum_base_quality: minimum_base_quality
