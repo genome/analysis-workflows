@@ -57,7 +57,6 @@ inputs:
         type: boolean
     merge_min_sv_size:
         type: int
-
     smoove_exclude_regions:
         type: File?
     snps_vcf:
@@ -76,7 +75,8 @@ inputs:
         type: double?
     cnv_filter_min_size:
         type: int?
-
+    blocklist_bedpe:
+        type: string
 outputs:
     cn_diagram:
         type: File?
@@ -187,7 +187,6 @@ steps:
         in:
             deletion_depth: cnv_deletion_depth
             duplication_depth: cnv_duplication_depth
-            reference: reference
             min_sv_size: cnv_filter_min_size
             output_vcf_name:
                 default: "filtered_cnvkit.vcf"
@@ -222,7 +221,6 @@ steps:
         in:
             deletion_depth: cnv_deletion_depth
             duplication_depth: cnv_duplication_depth
-            reference: reference
             min_sv_size: cnv_filter_min_size
             output_vcf_name:
                 default: "filtered_cnvnator.vcf"
@@ -298,6 +296,7 @@ steps:
             same_strand: merge_same_strand
             same_type: merge_same_type
             snps_vcf: snps_vcf
+            blocklist_bedpe: blocklist_bedpe
             sv_vcfs:
                 source: [run_cnvkit_filter/filtered_vcf, run_cnvnator_filter/filtered_vcf, run_manta_filter/filtered_vcf, run_smoove_filter/filtered_vcf]
                 linkMerge: merge_flattened

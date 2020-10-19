@@ -30,10 +30,12 @@ inputs:
         type: File?
     sv_vcfs:
         type: File[]
+    blocklist_bedpe:
+        type: string
 outputs:
     bcftools_merged_sv_vcf:
         type: File
-        outputSource: bcftools_bgzip_merged_sv_vcf/bgzipped_file
+        outputSource: filter_blocklist_bcftools/filtered_sv_vcf
     bcftools_merged_annotated_tsv:
         type: File
         outputSource: bcftools_annotate_variants/sv_variants_tsv
@@ -42,7 +44,7 @@ outputs:
        outputSource: bcftools_annotsv_filter/filtered_tsv
     survivor_merged_sv_vcf:
         type: File
-        outputSource: survivor_bgzip_merged_sv_vcf/bgzipped_file
+        outputSource: filter_blocklist_survivor/filtered_sv_vcf
     survivor_merged_annotated_tsv:
         type: File
         outputSource: survivor_annotate_variants/sv_variants_tsv
@@ -61,11 +63,20 @@ steps:
                 default: "SURVIVOR-sv-merged.vcf"
         out:
             [merged_vcf]
+    filter_blocklist_survivor:
+        run: ../tools/filter_sv_vcf_blocklist_bedpe.cwl
+        in:
+            input_vcf: survivor_merge_sv_vcfs/merged_vcf
+            blocklist_bedpe: blocklist_bedpe
+            output_vcf_basename:
+                default: "SURVIVOR-sv-merged"
+        out:
+            [filtered_sv_vcf]
     survivor_annotate_variants:
         run: ../tools/annotsv.cwl
         in:
             genome_build: genome_build
-            input_vcf: survivor_merge_sv_vcfs/merged_vcf
+            input_vcf: filter_blocklist_survivor/filtered_sv_vcf
             output_tsv_name:
                 default: "SURVIVOR-merged-AnnotSV.tsv"
             snps_vcf:
@@ -73,12 +84,6 @@ steps:
                 valueFrom: ${ return [ self ]; }
         out:
             [sv_variants_tsv]
-    survivor_bgzip_merged_sv_vcf:
-        run: ../tools/bgzip.cwl
-        in:
-            file: survivor_merge_sv_vcfs/merged_vcf
-        out:
-            [bgzipped_file]
     bcftools_merge_sv_vcfs:
         run: ../tools/bcftools_merge.cwl
         in:
@@ -91,11 +96,20 @@ steps:
             vcfs: sv_vcfs
         out:
             [merged_sv_vcf]
+    filter_blocklist_bcftools:
+        run: ../tools/filter_sv_vcf_blocklist_bedpe.cwl
+        in:
+            input_vcf: bcftools_merge_sv_vcfs/merged_sv_vcf
+            blocklist_bedpe: blocklist_bedpe
+            output_vcf_basename:
+                default: "bcftools-sv-merged"
+        out:
+            [filtered_sv_vcf]
     bcftools_annotate_variants:
         run: ../tools/annotsv.cwl
         in:
             genome_build: genome_build
-            input_vcf: bcftools_merge_sv_vcfs/merged_sv_vcf
+            input_vcf: filter_blocklist_bcftools/filtered_sv_vcf
             output_tsv_name:
                 default: "bcftools-merged-AnnotSV.tsv"
             snps_vcf:
@@ -111,9 +125,3 @@ steps:
                 default: "0.05"
         out:
             [filtered_tsv]
-    bcftools_bgzip_merged_sv_vcf:
-        run: ../tools/bgzip.cwl
-        in:
-            file: bcftools_merge_sv_vcfs/merged_sv_vcf
-        out:
-            [bgzipped_file]
