@@ -76,7 +76,7 @@ inputs:
     cnv_filter_min_size:
         type: int?
     blocklist_bedpe:
-        type: string
+        type: File?
 outputs:
     cn_diagram:
         type: File?

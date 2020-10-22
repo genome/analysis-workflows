@@ -31,7 +31,7 @@ inputs:
     sv_vcfs:
         type: File[]
     blocklist_bedpe:
-        type: string
+        type: File?
 outputs:
     bcftools_merged_sv_vcf:
         type: File

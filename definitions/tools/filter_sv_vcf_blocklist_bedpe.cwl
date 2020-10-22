@@ -17,19 +17,12 @@ requirements:
           set -eou pipefail
           set -o errexit
           
-          INPUT_VCF="$1"
-          BL_BEDPE="$2"
-          SLOPE="$3"
-          OUT_BASE="$4"
-          
-          #BASE=`basename $1`
-          #NAMEROOT=`echo $BASE | perl -pe 's/.vcf(.gz)?$//g'`
-          
-          if [[ "$BL_BEDPE" == 'NONE' ]]; then
-              /usr/local/bin/bedtools sort -header -i "$INPUT_VCF" > $OUT_BASE.vcf 
-              /opt/htslib/bin/bgzip $OUT_BASE.vcf
-              /usr/bin/tabix -p vcf $OUT_BASE.vcf.gz
-          else
+          if [[ "$#" == 4 ]];then # blocklist_bedpe is passed.
+              INPUT_VCF="$1"
+              BL_BEDPE="$2"
+              SLOPE="$3"
+              OUT_BASE="$4"
+
               #CNVkit outputs invalid format like CIPOS=.,894;CIEND=.,894, which can cause svtools vcftobedpe fail
               if [[ "$INPUT_VCF" =~ \.vcf\.gz$ ]]; then
                   /bin/zcat "$INPUT_VCF" | /bin/sed -E 's/CIPOS=\.,[0-9]+;CIEND=\.,[0-9]+/CIPOS=0,0;CIEND=0,0/g' > fixed_input.vcf
@@ -43,6 +36,14 @@ requirements:
           
               /opt/htslib/bin/bgzip $OUT_BASE.vcf
               /usr/bin/tabix -p vcf $OUT_BASE.vcf.gz
+          else # blocklist_bedpe is not passed.
+              INPUT_VCF="$1"
+              SLOPE="$2"
+              OUT_BASE="$3"
+
+              /usr/local/bin/bedtools sort -header -i "$INPUT_VCF" > $OUT_BASE.vcf
+              /opt/htslib/bin/bgzip $OUT_BASE.vcf
+              /usr/bin/tabix -p vcf $OUT_BASE.vcf.gz
           fi
 
 inputs:
@@ -52,7 +53,7 @@ inputs:
             position: 1
         doc: "vcf file to filter"
     blocklist_bedpe:
-        type: string
+        type: File?
         inputBinding:
             position: 2
         doc: "blocklist bedpe file"
