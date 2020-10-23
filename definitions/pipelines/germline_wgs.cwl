@@ -143,6 +143,8 @@ inputs:
          type: string[]?
     cnv_filter_min_size:
          type: int?
+    blocklist_bedpe:
+        type: File?
     disclaimer_text:
         type: string?
         default: 'Workflow source can be found at https://github.com/genome/analysis-workflows'
@@ -461,6 +463,7 @@ steps:
             sv_paired_count: sv_filter_paired_count
             sv_split_count: sv_filter_split_count
             genome_build: vep_ensembl_assembly
+            blocklist_bedpe: blocklist_bedpe
         out: 
            [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf, cnvnator_cn_file, cnvnator_root, cnvnator_vcf, manta_diploid_variants, manta_somatic_variants, manta_all_candidates, manta_small_candidates, manta_tumor_only_variants, smoove_output_variants, cnvkit_filtered_vcf, cnvnator_filtered_vcf, manta_filtered_vcf, smoove_filtered_vcf, survivor_merged_vcf, survivor_merged_annotated_tsv, bcftools_merged_vcf, bcftools_merged_annotated_tsv, bcftools_merged_filtered_annotated_tsv]
     add_disclaimer_survivor_sv_vcf:
