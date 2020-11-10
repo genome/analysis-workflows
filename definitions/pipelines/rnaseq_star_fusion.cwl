@@ -89,7 +89,6 @@ outputs:
     fusion_evidence:
         type: File
         outputSource: kallisto/fusion_evidence
-<<<<<<< HEAD
     multiqc_data:
         type: File
         outputSource: generate_multiqc/multiqc_zip
@@ -97,11 +96,9 @@ outputs:
         type: File
         outputSource: generate_multiqc/multiqc_html
 
-=======
     strand_info:
         type: File[]
         outputSource: strandedness_check/strandedness_check
->>>>>>> master
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
