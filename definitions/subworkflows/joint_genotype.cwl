@@ -111,7 +111,7 @@ steps:
     merge_vcfs:
         run: ../tools/picard_merge_vcfs.cwl
         in:
-            gvcfs: genotype_gvcf/genotype_vcf
+            vcfs: genotype_gvcf/genotype_vcf
         out:
             [merged_vcf]
 
