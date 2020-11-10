@@ -3,20 +3,20 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: 'cgpBigWig Converting BAM to BigWig'
-baseCommand: ["bam2bw", "-F", "1024", "-o", "MarkedSorted.bam.bw"]
+baseCommand: ["bam2bw", "-F", "1024"]
+arguments: ["-o", { valueFrom: $(inputs.bam.nameroot).bw}]
 requirements:
     - class: DockerRequirement
       dockerPull: "quay.io/biocontainers/cgpbigwig:1.4.0--h93d22ca_0"
     - class: ResourceRequirement
       ramMin: 32000
-
 inputs:
     bam:
         type: File
         inputBinding:
             position: 1
             prefix: '-i'
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.bai, .bai]
     reference:
         type:
             - string
@@ -30,4 +30,4 @@ outputs:
     outfile:
         type: File
         outputBinding:
-            glob: "MarkedSorted.bam.bw"
+            glob: $(inputs.bam.nameroot).bw
