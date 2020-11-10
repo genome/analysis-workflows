@@ -212,9 +212,11 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+        doc: "Common mutations in cancer that will be genotyped and passed through into the merged VCF if they have even low-level evidence of a mutation (by default, marked with filter DOCM_ONLY)"
     filter_docm_variants:
         type: boolean?
         default: true
+        doc: "Determines whether variants found only via genotyping of DOCM sites will be filtered (as DOCM_ONLY) or passed through as variant calls"
     vep_cache_dir:
         type:
             - string
@@ -754,9 +756,6 @@ outputs:
     verify_bam_id_depth:
         type: File
         outputSource: germline/verify_bam_id_depth
-    gvcf:
-        type: File[]
-        outputSource: germline/gvcf
     germline_raw_vcf:
         type: File
         outputSource: germline/raw_vcf
@@ -914,7 +913,7 @@ steps:
             qc_minimum_base_quality: qc_minimum_base_quality
             optitype_name: optitype_name
         out:
-            [cram,mark_duplicates_metrics,insert_size_metrics,insert_size_histogram,alignment_summary_metrics,hs_metrics,per_target_coverage_metrics,per_target_hs_metrics,per_base_coverage_metrics,per_base_hs_metrics,summary_hs_metrics,flagstats,verify_bam_id_metrics,verify_bam_id_depth,gvcf,raw_vcf,final_vcf,filtered_vcf,vep_summary,optitype_tsv,optitype_plot]
+            [cram,mark_duplicates_metrics,insert_size_metrics,insert_size_histogram,alignment_summary_metrics,hs_metrics,per_target_coverage_metrics,per_target_hs_metrics,per_base_coverage_metrics,per_base_hs_metrics,summary_hs_metrics,flagstats,verify_bam_id_metrics,verify_bam_id_depth,raw_vcf,final_vcf,filtered_vcf,vep_summary,optitype_tsv,optitype_plot]
 
     phase_vcf:
         run: ../subworkflows/phase_vcf.cwl

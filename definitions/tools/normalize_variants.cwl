@@ -3,14 +3,14 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Normalize variants"
-baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "LeftAlignAndTrimVariants"]
+baseCommand: ["/gatk/gatk", "--java-options", "-Xmx8g", "LeftAlignAndTrimVariants"]
 requirements:
     - class: ResourceRequirement
       ramMin: 9000
     - class: DockerRequirement
-      dockerPull: "mgibio/gatk-cwl:3.6.0"
+      dockerPull: "broadinstitute/gatk:4.1.8.1"
 arguments:
-    ["-o", { valueFrom: $(runtime.outdir)/normalized.vcf.gz }]
+    ["-O", { valueFrom: $(runtime.outdir)/normalized.vcf.gz }]
 inputs:
     reference:
         type:
@@ -23,7 +23,7 @@ inputs:
     vcf:
         type: File
         inputBinding:
-            prefix: "--variant"
+            prefix: "-V"
             position: 2
         secondaryFiles: [".tbi"]
 outputs:

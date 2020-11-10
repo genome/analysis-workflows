@@ -15,12 +15,12 @@ inputs:
     reference: string
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-    tumor_cram_name:
+    tumor_name:
         type: string?
         default: 'tumor.cram'
     normal_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-    normal_cram_name:
+    normal_name:
         type: string?
         default: 'normal.cram'
     mills:
@@ -93,9 +93,11 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+        doc: "Common mutations in cancer that will be genotyped and passed through into the merged VCF if they have even low-level evidence of a mutation (by default, marked with filter DOCM_ONLY)"
     filter_docm_variants:
         type: boolean?
         default: true
+        doc: "Determines whether variants found only via genotyping of DOCM sites will be filtered (as DOCM_ONLY) or passed through as variant calls"
     filter_minimum_depth:
         type: int?
         default: 20
@@ -127,8 +129,6 @@ inputs:
     synonyms_file:
         type: File?
     annotate_coding_only:
-        type: boolean?
-    hgvs_annotation:
         type: boolean?
     vep_pick:
         type:
@@ -172,9 +172,9 @@ steps:
         in:
             reference: reference
             tumor_sequence: tumor_sequence
-            tumor_cram_name: tumor_cram_name
+            tumor_name: tumor_name
             normal_sequence: normal_sequence
-            normal_cram_name: normal_cram_name
+            normal_name: normal_name
             mills: mills
             known_indels: known_indels
             dbsnp_vcf: dbsnp_vcf
@@ -204,7 +204,6 @@ steps:
             vep_ensembl_species: vep_ensembl_species
             synonyms_file: synonyms_file
             annotate_coding_only: annotate_coding_only
-            hgvs_annotation: hgvs_annotation
             vep_pick: vep_pick
             cle_vcf_filter: cle_vcf_filter
             filter_docm_variants: filter_docm_variants

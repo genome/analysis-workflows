@@ -74,12 +74,9 @@ inputs:
         type: float
         default: 0.05
 outputs:
-    gvcf:
-        type: File[]
-        outputSource: haplotype_caller/gvcf
     raw_vcf:
         type: File
-        outputSource: genotype_gvcfs/genotype_vcf
+        outputSource: merge_vcfs/merged_vcf
         secondaryFiles: [.tbi]
     final_vcf:
         type: File
@@ -111,17 +108,16 @@ steps:
             ploidy: ploidy
         out:
             [gvcf]
-    genotype_gvcfs:
-        run: ../tools/gatk_genotypegvcfs.cwl
+    merge_vcfs:
+        run: ../tools/picard_merge_vcfs.cwl
         in:
-            reference: reference
             gvcfs: haplotype_caller/gvcf
         out:
-            [genotype_vcf]
+            [merged_vcf]
     annotate_variants:
         run: ../tools/vep.cwl
         in:
-            vcf: genotype_gvcfs/genotype_vcf
+            vcf: merge_vcfs/merged_vcf
             cache_dir: vep_cache_dir
             ensembl_assembly: vep_ensembl_assembly
             ensembl_version: vep_ensembl_version
