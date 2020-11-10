@@ -9,7 +9,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 4000  
     - class: DockerRequirement
-      dockerPull: "sridnona/multiqc:1.9"
+      dockerPull: "mgibio/multiqc:1.9"
     - class: StepInputExpressionRequirement
 
 arguments: [
