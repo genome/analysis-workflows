@@ -11,7 +11,7 @@ requirements:
 inputs:
     bam:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.bai, .bai]
     reference:
         type:
             - string
