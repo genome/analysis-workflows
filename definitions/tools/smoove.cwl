@@ -9,7 +9,7 @@ arguments: ["call", "--processes", $(runtime.cores), "-F"]
 
 requirements:
     - class: DockerRequirement
-      dockerPull: "brentp/smoove:v0.2.6"
+      dockerPull: "quay.io/biocontainers/smoove:0.2.6--0"
     - class: ResourceRequirement
       ramMin: 20000
       coresMin: 4
