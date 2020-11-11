@@ -11,6 +11,10 @@ trimming_adapter_min_overlap: 7
 trimming_max_uncalled: 300
 trimming_min_readlength: 25
 sample_name: H_NJ-HCC1395-HCC1395_RNA
+cdna_fasta:
+    class: File
+    path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.cdna.all.fa.gz
+
 kallisto_index:
     class: File
     path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.cdna.all.fa.kallisto.idx
