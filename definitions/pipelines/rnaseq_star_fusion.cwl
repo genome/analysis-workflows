@@ -203,6 +203,5 @@ steps:
         run: ../tools/multiqc.cwl
         in:
             inputfiles_array: [generate_qc_metrics/metrics,star_align_fusion/log_final]
-            linkMerge: merge_flattened
         out:
             [multiqc_zip, multiqc_html]
