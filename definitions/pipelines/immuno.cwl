@@ -12,7 +12,7 @@ requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
     #rnaseq inputs
-    reference:
+    reference_rnaseq:
         type:
             - string
             - File
@@ -790,7 +790,7 @@ steps:
     rnaseq:
         run: rnaseq.cwl
         in:
-            reference: reference
+            reference: reference_rnaseq
             reference_index: reference_index
             reference_annotation: reference_annotation
             instrument_data_bams: rna_bams
