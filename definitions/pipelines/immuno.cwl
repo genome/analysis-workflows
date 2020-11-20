@@ -12,6 +12,11 @@ requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
     #rnaseq inputs
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     reference_index:
         type: File #this requires an extra file with the basename
         secondaryFiles: [".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"]
@@ -785,6 +790,7 @@ steps:
     rnaseq:
         run: rnaseq.cwl
         in:
+            reference: reference
             reference_index: reference_index
             reference_annotation: reference_annotation
             instrument_data_bams: rna_bams
@@ -804,7 +810,7 @@ steps:
             species: vep_ensembl_species
             assembly: vep_ensembl_assembly
         out:
-            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence]
+            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence, bamcoverage_bigwig]
     somatic:
         run: somatic_exome.cwl
         in:
