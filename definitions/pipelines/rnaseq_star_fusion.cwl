@@ -8,6 +8,11 @@ requirements:
     - class: SubworkflowFeatureRequirement
     - class: ScatterFeatureRequirement
 inputs:
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     instrument_data_bams:
         type: File[]
     outsam_attrrg_line:
@@ -92,6 +97,9 @@ outputs:
     strand_info:
         type: File[]
         outputSource: strandedness_check/strandedness_check
+    bamcoverage_bigwig:
+        type: File
+        outputSource: cgpBigWig_bamcoverage/outfile
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
@@ -192,3 +200,10 @@ steps:
             bam: mark_dup/sorted_bam
         out:
             [metrics, chart]
+    cgpBigWig_bamcoverage:
+        run: ../tools/bam_to_bigwig.cwl
+        in:
+            bam: mark_dup/sorted_bam
+            reference: reference
+        out:
+            [outfile]
