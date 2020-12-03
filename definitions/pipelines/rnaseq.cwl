@@ -163,7 +163,7 @@ steps:
             bam: index_bam/indexed_bam
         out:
             [metrics, chart]
-    cgpBigWig_bamcoverage:
+    cgpbigwig_bamcoverage:
         run: ../tools/bam_to_bigwig.cwl
         in:
             bam: index_bam/indexed_bam

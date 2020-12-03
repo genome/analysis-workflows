@@ -200,7 +200,7 @@ steps:
             bam: mark_dup/sorted_bam
         out:
             [metrics, chart]
-    cgpBigWig_bamcoverage:
+    cgpbigwig_bamcoverage:
         run: ../tools/bam_to_bigwig.cwl
         in:
             bam: mark_dup/sorted_bam
