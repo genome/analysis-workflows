@@ -12,11 +12,6 @@ requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
     #rnaseq inputs
-    reference_rnaseq:
-        type:
-            - string
-            - File
-        secondaryFiles: [.fai, ^.dict]
     reference_index:
         type: File #this requires an extra file with the basename
         secondaryFiles: [".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"]
@@ -790,7 +785,7 @@ steps:
     rnaseq:
         run: rnaseq.cwl
         in:
-            reference: reference_rnaseq
+            reference: reference
             reference_index: reference_index
             reference_annotation: reference_annotation
             instrument_data_bams: rna_bams
