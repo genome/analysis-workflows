@@ -9,6 +9,7 @@ requirements:
           - $import: ../types/sequence_data.yml
           - $import: ../types/trimming_options.yml
           - $import: ../types/vep_custom_annotation.yml
+    - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 label: "somatic_exome: exome alignment and somatic variant detection"
@@ -71,37 +72,15 @@ inputs:
         type:
             - ../types/trimming_options.yml#trimming_options
             - "null"
-    mills:
-        type: File
+    bqsr_known_sites:
+        type: File[]
         secondaryFiles: [.tbi]
-        label: "mills: File specifying common polymorphic indels from mills et al."
+        label: "bqsr_known_sites: One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
         doc: |
-          mills provides known polymorphic indels recommended by GATK for a variety of
-          tools including the BaseRecalibrator. This file is part of the GATK resource
+          Known polymorphic indels recommended by GATK for a variety of
+          tools including the BaseRecalibrator. This is part of the GATK resource
           bundle available at http://www.broadinstitute.org/gatk/guide/article?id=1213
-          Essentially it is a list of known indels originally discovered by mill et al.
-          https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1557762/
           File should be in vcf format, and tabix indexed.
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-        label: "known_indels: File specifying common polymorphic indels from 1000G"
-        doc: |
-          known_indels provides known indels reecommended by GATK for a variety of tools
-          including the BaseRecalibrator. This file is part of the GATK resource bundle
-          available at http://www.broadinstitute.org/gatk/guide/article?id=1213
-          Essintially it is a list of known indels from 1000 Genomes Phase I indel calls.
-          File should be in vcf format, and tabix indexed.
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
-        label: "dbsnp_vcf: File specifying common polymorphic indels from dbSNP"
-        doc: |
-          dbsnp_vcf provides known indels reecommended by GATK for a variety of tools
-          including the BaseRecalibrator. This file is part of the GATK resource bundle
-          available at http://www.broadinstitute.org/gatk/guide/article?id=1213
-          Essintially it is a list of known indels from dbSNP. File should be in vcf format,
-          and tabix indexed.
     bqsr_intervals:
         type: string[]
         label: "bqsr_intervals: Array of strings specifying regions for base quality score recalibration"
@@ -158,8 +137,9 @@ inputs:
     strelka_cpu_reserved:
         type: int?
         default: 8
-    mutect_scatter_count:
+    scatter_count:
         type: int
+        doc: "scatters each supported variant detector (varscan, pindel, mutect) into this many parallel jobs"
     mutect_artifact_detection_mode:
         type: boolean
         default: false
@@ -476,9 +456,7 @@ steps:
             reference: reference
             sequence: tumor_sequence
             trimming: trimming
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -498,9 +476,7 @@ steps:
             reference: reference
             sequence: normal_sequence
             trimming: trimming
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -540,7 +516,7 @@ steps:
             strelka_exome_mode:
                 default: true
             strelka_cpu_reserved: strelka_cpu_reserved
-            mutect_scatter_count: mutect_scatter_count
+            scatter_count: scatter_count
             varscan_strand_filter: varscan_strand_filter
             varscan_min_coverage: varscan_min_coverage
             varscan_min_var_freq: varscan_min_var_freq

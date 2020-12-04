@@ -5,12 +5,12 @@ class: CommandLineTool
 label: "Run Cell Ranger Count with feature barcoding"
 
 baseCommand: ["/bin/bash", "create_library_file.sh"]
-arguments: [{ shellQuote: false, valueFrom: "&&" }, "/apps/cellranger-3.1.0/cellranger", "count", "--libraries=libraries.csv", "--id=$(inputs.run_name)", "--localcores=$(runtime.cores)", "--localmem=$(runtime.ram/1000)"]
+arguments: [{ shellQuote: false, valueFrom: "&&" }, "/apps/cellranger-4.0.0/cellranger", "count", "--libraries=libraries.csv", "--id=$(inputs.run_name)", "--localcores=$(runtime.cores)", "--localmem=$(runtime.ram/1000)"]
 
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "registry.gsc.wustl.edu/alex.paul/cellranger:3.1.0"
+      dockerPull: "registry.gsc.wustl.edu/alex.paul/cellranger:4.0.0"
     - class: ResourceRequirement
       ramMin: 56000
       coresMin: 8

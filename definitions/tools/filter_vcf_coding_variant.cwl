@@ -6,7 +6,7 @@ label: "Coding Variant filter"
 baseCommand: ["/usr/bin/perl", "/usr/bin/vcf_check.pl"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/vep_helper-cwl:1.1.0"
+      dockerPull: "mgibio/vep_helper-cwl:vep_101.0_v1"
     - class: ResourceRequirement
       ramMin: 4000
 arguments:

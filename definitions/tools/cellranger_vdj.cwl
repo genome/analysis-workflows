@@ -4,12 +4,12 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Run Cell Ranger V(D)J"
 
-baseCommand: ["/apps/cellranger-3.1.0/cellranger", "vdj"]
+baseCommand: ["/apps/cellranger-4.0.0/cellranger", "vdj"]
 arguments: ["--id=$(inputs.sample_name)", "--localcores=$(runtime.cores)", "--localmem=$(runtime.ram/1000)"]
 
 requirements:
     - class: DockerRequirement
-      dockerPull: "registry.gsc.wustl.edu/alex.paul/cellranger:3.1.0"
+      dockerPull: "registry.gsc.wustl.edu/alex.paul/cellranger:4.0.0"
     - class: ResourceRequirement
       ramMin: 64000
       coresMin: 8

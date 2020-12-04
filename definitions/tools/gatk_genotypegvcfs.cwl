@@ -6,12 +6,12 @@ label: "GATK GenotypeGVCFs"
 baseCommand: ["/gatk/gatk", "--java-options", "-Xmx14g -Xms5g", "GenotypeGVCFs"]
 requirements:
     - class: ResourceRequirement
-      ramMin: 9000
+      ramMin: 16000
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
       dockerPull: "broadinstitute/gatk:4.1.8.1" 
 arguments:
-    ["-G", "StandardAnnotation", "-O", 'genotype.vcf.gz']
+    ["-G", "StandardAnnotation", "-O", "genotype.vcf.gz"]
 inputs:
     reference:
         type:
@@ -35,6 +35,15 @@ inputs:
             prefix: "--dbsnp"
             position: 3
         secondaryFiles: [.tbi]
+    intervals:
+        type:
+            - "null"
+            - type: array
+              items: string
+              inputBinding:
+                  prefix: "-L"
+        inputBinding:
+            position: 4
 outputs:
     genotype_vcf:
         type: File

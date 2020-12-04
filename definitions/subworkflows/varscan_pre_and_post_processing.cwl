@@ -4,9 +4,11 @@ cwlVersion: v1.0
 class: Workflow
 label: "Varscan Workflow"
 requirements:
+    - class: ScatterFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: MultipleInputFeatureRequirement
     - class: StepInputExpressionRequirement
+    - class: InlineJavascriptRequirement
 inputs:
     reference:
         type:
@@ -39,6 +41,9 @@ inputs:
         type: string
     tumor_sample_name:
         type: string
+    scatter_count:
+        type: int
+        default: 50
 outputs:
     unfiltered_vcf:
         type: File
@@ -49,13 +54,21 @@ outputs:
         outputSource: filter/filtered_vcf
         secondaryFiles: [.tbi]
 steps:
-    intervals_to_bed:
-        run: ../tools/intervals_to_bed.cwl
+    split_interval_list:
+        run: ../tools/split_interval_list.cwl
         in:
             interval_list: interval_list
+            scatter_count: scatter_count
+        out: [split_interval_lists]
+    intervals_to_bed:
+        scatter: interval_list
+        run: ../tools/intervals_to_bed.cwl
+        in:
+            interval_list: split_interval_list/split_interval_lists
         out:
             [interval_bed]
     varscan:
+        scatter: roi_bed
         run: varscan.cwl
         in:
             reference: reference
@@ -69,39 +82,59 @@ steps:
             max_normal_freq: max_normal_freq
         out:
             [somatic_snvs, somatic_indels, somatic_hc_snvs, somatic_hc_indels]
-    bgzip_and_index_snvs:
-        run: bgzip_and_index.cwl
+    merge_scattered_somatic_snvs:
+        run: ../tools/picard_merge_vcfs.cwl
         in:
-            vcf: varscan/somatic_snvs
+            vcfs: varscan/somatic_snvs
+            sequence_dictionary:
+                source: reference
+                valueFrom: '$( (self.secondaryFiles !== undefined) ? self.secondaryFiles.find(function(x) { return x.nameext === ".dict" }) : self.replace(/.fa$/,".dict") )'
+            merged_vcf_basename:
+                valueFrom: 'somatic_snvs'
         out:
-            [indexed_vcf]
-    bgzip_and_index_hc_snvs:
-        run: bgzip_and_index.cwl
+            [merged_vcf]
+    merge_scattered_somatic_indels:
+        run: ../tools/picard_merge_vcfs.cwl
         in:
-            vcf: varscan/somatic_hc_snvs
+            vcfs: varscan/somatic_indels
+            sequence_dictionary:
+                source: reference
+                valueFrom: '$((self.secondaryFiles !== undefined) ? self.secondaryFiles.find(function(x) { return x.nameext === ".dict" }) : self.replace(/.fa$/,".dict") )'
+            merged_vcf_basename:
+                valueFrom: 'somatic_indels'
         out:
-            [indexed_vcf]
-    bgzip_and_index_indels:
-        run: bgzip_and_index.cwl
+            [merged_vcf]
+    merge_scattered_somatic_hc_snvs:
+        run: ../tools/picard_merge_vcfs.cwl
         in:
-            vcf: varscan/somatic_indels
+            vcfs: varscan/somatic_hc_snvs
+            sequence_dictionary:
+                source: reference
+                valueFrom: '$((self.secondaryFiles !== undefined) ? self.secondaryFiles.find(function(x) { return x.nameext === ".dict" }) : self.replace(/.fa$/,".dict") )'
+            merged_vcf_basename:
+                valueFrom: 'somatic_hc_snvs'
         out:
-            [indexed_vcf]
-    bgzip_and_index_hc_indels:
-        run: bgzip_and_index.cwl
+            [merged_vcf]
+    merge_scattered_somatic_hc_indels:
+        run: ../tools/picard_merge_vcfs.cwl
         in:
-            vcf: varscan/somatic_hc_indels
+            vcfs: varscan/somatic_hc_indels
+            sequence_dictionary:
+                source: reference
+                valueFrom: '$((self.secondaryFiles !== undefined) ? self.secondaryFiles.find(function(x) { return x.nameext === ".dict" }) : self.replace(/.fa$/,".dict") )'
+            merged_vcf_basename:
+                valueFrom: 'somatic_hc_indels'
         out:
-            [indexed_vcf]
+            [merged_vcf]
     merge_snvs:
         run: ../tools/set_filter_status.cwl
         in:
-            vcf: bgzip_and_index_snvs/indexed_vcf
-            filtered_vcf: bgzip_and_index_hc_snvs/indexed_vcf
+            vcf: merge_scattered_somatic_snvs/merged_vcf
+            filtered_vcf: merge_scattered_somatic_hc_snvs/merged_vcf
             reference: reference
         out:
             [merged_vcf]
-    index_snvs:
+    index_merged_snvs:
         run: ../tools/index_vcf.cwl
         in:
             vcf: merge_snvs/merged_vcf
@@ -110,12 +143,12 @@ steps:
     merge_indels:
         run: ../tools/set_filter_status.cwl
         in:
-            vcf: bgzip_and_index_indels/indexed_vcf
-            filtered_vcf: bgzip_and_index_hc_indels/indexed_vcf
+            vcf: merge_scattered_somatic_indels/merged_vcf
+            filtered_vcf: merge_scattered_somatic_hc_indels/merged_vcf
             reference: reference
         out:
             [merged_vcf]
-    index_indels:
+    index_merged_indels:
         run: ../tools/index_vcf.cwl
         in:
             vcf: merge_indels/merged_vcf
@@ -124,7 +157,7 @@ steps:
     merge:
         run: ../tools/merge_vcf.cwl
         in:
-            vcfs: [index_snvs/indexed_vcf, index_indels/indexed_vcf]
+            vcfs: [index_merged_snvs/indexed_vcf, index_merged_indels/indexed_vcf]
         out:
             [merged_vcf]
     rename_tumor_sample:

@@ -2,8 +2,11 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "exome alignment and germline variant detection"
+label: "joint genotyping for trios or small cohorts"
 requirements:
+    - class: ScatterFeatureRequirement
+    - class: MultipleInputFeatureRequirement
+
     - class: SubworkflowFeatureRequirement
     - class: SchemaDefRequirement
       types:
@@ -16,25 +19,15 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict]
-    bam:
-        type: File
-        secondaryFiles: [^.bai]
-    emit_reference_confidence:
-        type:
-            type: enum
-            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
-    gvcf_gq_bands:
-        type: string[]
+    gvcfs:
+       type: File[]
     intervals:
         type:
             type: array
             items:
                 type: array
                 items: string
-    contamination_fraction:
-        type: string?
-    ploidy:
-        type: int?
+        doc: "intervals used to parallelize genotyping. Example: [[chr1],[chr2],[chr3],[chr4,chr5]]"
     vep_cache_dir:
         type:
             - string
@@ -58,8 +51,9 @@ inputs:
     vep_custom_annotations:
         type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
         doc: "custom type, check types directory for input format"
-    limit_variant_intervals:
+    roi_intervals:
         type: File
+        doc: "region of interest interval list file, used to limit called variants in final filtered output files"
     variants_to_table_fields:
         type: string[]?
         default: ['CHROM','POS','ID','REF','ALT']
@@ -96,24 +90,31 @@ outputs:
         type: File
         outputSource: set_filtered_tsv_name/replacement
 steps:
-    haplotype_caller:
-        run: gatk_haplotypecaller_iterator.cwl
+    combine_gvcfs:
+        run: ../tools/combine_gvcfs.cwl
         in:
             reference: reference
-            bam: bam
-            emit_reference_confidence: emit_reference_confidence
-            gvcf_gq_bands: gvcf_gq_bands
-            intervals: intervals
-            contamination_fraction: contamination_fraction
-            ploidy: ploidy
+            gvcfs: gvcfs
         out:
             [gvcf]
+    genotype_gvcf:
+        scatter: [intervals]
+        run: ../tools/gatk_genotypegvcfs.cwl
+        in:
+            reference: reference
+            gvcfs:
+                source: [combine_gvcfs/gvcf]
+                linkMerge: merge_flattened
+            intervals: intervals
+        out:
+            [genotype_vcf]
     merge_vcfs:
         run: ../tools/picard_merge_vcfs.cwl
         in:
-            vcfs: haplotype_caller/gvcf
+            vcfs: genotype_gvcf/genotype_vcf
         out:
             [merged_vcf]
+
     annotate_variants:
         run: ../tools/vep.cwl
         in:
@@ -129,16 +130,10 @@ steps:
             plugins: vep_plugins
         out:
             [annotated_vcf, vep_summary]
-    bgzip_annotated_vcf:
-        run: ../tools/bgzip.cwl
+    bgzip_index_annotated_vcf:
+        run: bgzip_and_index.cwl
         in:
-            file: annotate_variants/annotated_vcf
-        out:
-            [bgzipped_file]
-    index_annotated_vcf:
-        run: ../tools/index_vcf.cwl
-        in:
-            vcf: bgzip_annotated_vcf/bgzipped_file
+            vcf: annotate_variants/annotated_vcf
         out:
             [indexed_vcf]
     filter_vcf:
@@ -159,7 +154,7 @@ steps:
                      }
                      return('gnomAD_AF');
                  }
-            limit_variant_intervals: limit_variant_intervals
+            limit_variant_intervals: roi_intervals
             reference: reference
         out:
             [filtered_vcf, final_vcf]
