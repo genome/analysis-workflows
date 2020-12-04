@@ -10,9 +10,6 @@ requirements:
       coresMin: 4
     - class: DockerRequirement
       dockerPull: "mgibio/samtools-cwl:1.0.0"
-    - class: SchemaDefRequirement
-      types:
-          - $import: ../types/sequence_data.yml
 arguments: ["$(inputs.name).merged.cram", { prefix: "--threads", valueFrom: $(runtime.cores) }, { prefix: '-O', valueFrom: "CRAM"}]
 inputs:
     crams:

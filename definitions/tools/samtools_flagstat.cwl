@@ -11,16 +11,10 @@ requirements:
       dockerPull: "mgibio/samtools-cwl:1.0.0"
 stdout: "$(inputs.cram.basename).flagstat"
 inputs:
-    reference:
-        type: File
-        secondaryFiles: [.fai]
-        inputBinding:
-            position: 1
-            prefix: '--reference'
     cram:
         type: File
         inputBinding:
-            position: 2
+            position: 1
         secondaryFiles: [^.crai]
 outputs:
     flagstats:

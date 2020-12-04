@@ -18,7 +18,7 @@ requirements:
             set -o pipefail
             set -o errexit
 
-            /usr/bin/java -Xmx16g -jar /opt/picard/picard.jar MarkDuplicates I=$1 O=/dev/stdout ASSUME_SORT_ORDER=$5 METRICS_FILE=$4 QUIET=true COMPRESSION_LEVEL=0 VALIDATION_STRINGENCY=LENIENT REFERENCE_SEQUENCE=$6 | /opt/samtools/bin/samtools sort -@ $2 -m 4G --reference "$6" -o "$3" -O cram /dev/stdin
+            /usr/bin/java -Xmx16g -jar /opt/picard/picard.jar MarkDuplicates I=$1 O=/dev/stdout ASSUME_SORT_ORDER=$5 METRICS_FILE=$4 QUIET=true COMPRESSION_LEVEL=0 VALIDATION_STRINGENCY=LENIENT REFERENCE_SEQUENCE=$6 | /opt/samtools/bin/samtools sort -@ $2 -m 4G --reference "$6" -o "$3" -O cram /dev/stdin && /opt/samtools/bin/samtools index "$3"
 
 arguments:
     - position: 2
@@ -37,7 +37,7 @@ inputs:
             position: 5
     output_name:
         type: string?
-        default: 'MarkedSorted'
+        default: 'MarkedSorted.cram'
         inputBinding:
             position: 3
     reference:
@@ -52,7 +52,7 @@ outputs:
     sorted_cram:
         type: File
         outputBinding:
-            glob: $(inputs.output_name).cram
+            glob: $(inputs.output_name)
         secondaryFiles: [.crai]
     metrics_file:
         type: File

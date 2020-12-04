@@ -43,4 +43,3 @@ outputs:
         type: File
         outputBinding:
             glob: $(inputs.output_name).cram
-        secondaryFiles: [^.crai]
