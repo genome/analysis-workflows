@@ -205,6 +205,7 @@ steps:
             interval_list: roi_intervals
             scatter_count: mutect_scatter_count
             tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     strelka:

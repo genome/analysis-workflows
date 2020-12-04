@@ -19,12 +19,7 @@ requirements:
             set -o pipefail
             set -o errexit
 
-            export tumor_cram="$3"
-            export normal_cram="$4"
-
-            TUMOR=`perl -e 'my $header_str = qx(samtools view -H $ENV{tumor_cram}); my ($sample_name) = $header_str =~ /SM:([ -~]+)/; print $sample_name'` #Extracting the sample name from the TUMOR cram.
-            NORMAL=`perl -e 'my $header_str = qx(samtools view -H $ENV{normal_cram}); my ($sample_name) = $header_str =~ /SM:([ -~]+)/; print $sample_name'` #Extracting the sample name from the NORMAL cram.
-            /gatk/gatk Mutect2 --java-options "-Xmx20g" -O $1 -R $2 -I $3 -tumor "$TUMOR" -I $4 -normal "$NORMAL" -L $5 #Running Mutect2.
+            /gatk/gatk Mutect2 --java-options "-Xmx20g" -O $1 -R $2 -I $3 -tumor "$6" -I $4 -normal "$7" -L $5 #Running Mutect2.
             /gatk/gatk FilterMutectCalls -R $2 -V mutect.vcf.gz -O mutect.filtered.vcf.gz #Running FilterMutectCalls on the output vcf.
 
 arguments:
@@ -53,6 +48,14 @@ inputs:
         type: File
         inputBinding:
             position: 5
+    tumor_sample_name:
+        type: string
+        inputBinding:
+            position: 6
+    normal_sample_name:
+        type: string
+        inputBinding:
+            position: 7
 
 outputs:
     vcf:
