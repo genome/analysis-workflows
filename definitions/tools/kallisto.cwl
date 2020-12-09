@@ -3,13 +3,13 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Kallisto: Quant"
-baseCommand: ["/usr/bin/kallisto"]
+baseCommand: ["kallisto"]
 requirements:
     - class: ResourceRequirement
       ramMin: 32000
       coresMin: 8
     - class: DockerRequirement
-      dockerPull: "mgibio/rnaseq:1.0.0"
+      dockerPull: "quay.io/biocontainers/kallisto:0.46.1--h4f7b962_0"
     - class: StepInputExpressionRequirement
 
 arguments: [
