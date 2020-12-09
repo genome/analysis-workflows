@@ -1,0 +1,102 @@
+---
+reference:
+  class: File
+  path: somatic_inputs/hla_and_brca_genes.fa
+
+sequence:
+  - sequence:
+      bam:
+        class: File
+        path: unaligned_subset_bams/tumor/2895499223.bam
+    readgroup: "@RG\tID:2895499223\tPU:H7HY2CCXX.3\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:ILLUMINA\tCN:WUGSC"
+  - sequence:
+      bam:
+        class: File
+        path: unaligned_subset_bams/tumor/2895499237.bam
+    readgroup: "@RG\tID:2895499237\tPU:H7HY2CCXX.4\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:ILLUMINA\tCN:WUGSC"
+
+
+#trimming
+bqsr_known_sites:
+- somatic_inputs/hla_and_brca_genes_dbsnp.vcf.gz
+- somatic_inputs/hla_and_brca_genes_known_indels.vcf.gz
+- somatic_inputs/hla_and_brca_genes_mills.vcf.gz
+
+docm_vcf:
+  class: File
+  path: somatic_inputs/hla_and_brca_genes_docm.vcf.gz
+
+omni_vcf:
+  class: File
+  path: somatic_inputs/hla_and_brca_genes_omni.vcf.gz
+
+bqsr_intervals:
+- chr6
+- chr17
+
+roi_intervals:
+  class: File
+  path: somatic_inputs/hla_and_brca_genes_target.interval_list
+
+target_intervals:
+  class: File
+  path: somatic_inputs/hla_and_brca_genes_target.interval_list
+
+per_base_intervals:
+- file:
+    class: File
+    path: somatic_inputs/hla_and_brca_genes_target.interval_list
+  label: clinvar
+
+per_target_intervals:
+- file:
+    class: File
+    path: somatic_inputs/hla_and_brca_genes_target.interval_list
+  label: acmg_genes
+
+summary_intervals: []
+
+picard_metric_accumulation_level: LIBRARY
+
+vep_cache_dir:
+  class: Directory
+  path: vep_subset
+vep_ensembl_version: '95'
+vep_ensembl_species: homo_sapiens
+vep_ensembl_assembly: GRCh38
+#vep_pick
+sample_name: 'H_NJ-HCC1395-HCC1395'
+vep_custom_annotations: []
+vep_to_table_fields:
+- Consequence
+- SYMBOL
+- Feature_type
+- Feature
+- HGVSc
+- HGVSp
+- cDNA_position
+- CDS_position
+- Protein_position
+- Amino_acids
+- Codons
+- HGNC_ID
+- Existing_variation
+- gnomADe_AF
+- CLIN_SIG
+- SOMATIC
+- PHENO
+variants_to_table_fields:
+- CHROM
+- POS
+- REF
+- ALT
+- set
+variants_to_table_genotype_fields:
+- GT
+- AD
+- AF
+- DP
+
+
+
+
