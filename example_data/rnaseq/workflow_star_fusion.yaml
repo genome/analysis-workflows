@@ -38,3 +38,6 @@ ribosomal_intervals:
 refFlat: 
     class: File
     path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.95.refFlat.txt
+cdna_fasta:
+    class: File
+    path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/all_sequences.fa    
