@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: 'extract umis from bam'
-baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/fgbio-0.5.0.jar", "ExtractUmisFromBam"]
+baseCommand: ["/usr/local/bin/fgbio", "ExtractUmisFromBam"]
 arguments:
     ["--molecular-index-tags", "ZA", "ZB", "--single-tag", "RX",
     "--output", { valueFrom: "$(runtime.outdir)/umi_extracted.bam"} ]
@@ -12,7 +12,7 @@ requirements:
       ramMin: 6000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: mgibio/dna-alignment:1.0.0
+      dockerPull: quay.io/biocontainers/fgbio:1.3.0--0
 inputs:
     bam:
         type: File
