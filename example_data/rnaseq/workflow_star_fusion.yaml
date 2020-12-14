@@ -27,17 +27,20 @@ gtf_file:
     class: File
     path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.95.gtf
 star_genome_dir:
-    class: Directory 
+    class: Directory
     path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/star_2.7.0f_index/
 star_fusion_genome_dir:
     class: Directory
     path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/star_fusion_1.8.0_index/
-ribosomal_intervals: 
+ribosomal_intervals:
     class: File
     path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.95.ribo_intervals
-refFlat: 
+refFlat:
     class: File
     path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.95.refFlat.txt
 cdna_fasta:
     class: File
-    path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/all_sequences.fa    
+    path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.cdna.all.fa.gz
+reference_fasta:
+    class: gtf_file
+    path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/star_2.7.0f_index/all_sequences.fa

@@ -18,6 +18,8 @@ inputs:
         type: Directory
     cdna_fasta:
         type: File
+    reference_fasa:
+        type: File
     gtf_file:
         type: File
     trimming_adapters:
@@ -195,7 +197,7 @@ steps:
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
-          reference: cdna_fasta
+          reference: reference_fasa
           bam: index_bam/indexed_bam
         out:
             [cram]
