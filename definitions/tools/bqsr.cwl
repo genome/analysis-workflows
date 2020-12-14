@@ -21,12 +21,12 @@ inputs:
         inputBinding:
             prefix: "-R"
             position: 2
-    bam:
+    cram:
         type: File
         inputBinding:
             prefix: "-I"
             position: 3
-        secondaryFiles: [.bai]
+        secondaryFiles: [.crai]
     known_sites:
         type:
             type: array

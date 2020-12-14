@@ -14,12 +14,12 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict]
-    tumor_bam:
+    tumor_cram:
         type: File
-        secondaryFiles: [.bai, ^.bai]
-    normal_bam:
+        secondaryFiles: [.crai, ^.crai]
+    normal_cram:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     interval_list:
         type: File
     insert_size:
@@ -54,8 +54,8 @@ steps:
         run: pindel_cat.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             region_file: split_interval_list_to_bed/split_beds
             insert_size: insert_size
             tumor_sample_name: tumor_sample_name
@@ -103,7 +103,7 @@ steps:
         run: fp_filter.cwl
         in:
             reference: reference
-            bam: tumor_bam
+            cram: tumor_cram
             vcf: reindex/indexed_vcf
             variant_caller: 
                 valueFrom: "pindel"

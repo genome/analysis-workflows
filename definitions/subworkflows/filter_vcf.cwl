@@ -17,9 +17,9 @@ inputs:
         type: float
     gnomad_field_name:
         type: string
-    tumor_bam:
+    tumor_cram:
         type: File
-        secondaryFiles: [.bai]
+        secondaryFiles: [.crai]
     do_cle_vcf_filter:
         type: boolean
     filter_somatic_llr_threshold:
@@ -67,7 +67,7 @@ steps:
         run: ../tools/filter_vcf_mapq0.cwl
         in:
             vcf: filter_vcf_gnomADe_allele_freq/filtered_vcf
-            tumor_bam: tumor_bam
+            tumor_cram: tumor_cram
             threshold: filter_mapq0_threshold
             reference: reference
         out:

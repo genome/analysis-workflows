@@ -5,7 +5,7 @@ class: CommandLineTool
 label: "filter vcf for variants with high percentage of mapq0 reads"
 requirements:
     - class: DockerRequirement
-      dockerPull: mgibio/mapq0-filter:v0.3.1
+      dockerPull: mgibio/mapq0-filter:v0.4.1
     - class: ResourceRequirement
       ramMin: 8000
       tmpdirMin: 10000
@@ -17,11 +17,11 @@ inputs:
         type: File
         inputBinding:
             position: 1
-    tumor_bam:
+    tumor_cram:
         type: File
         inputBinding:
             position: 2
-        secondaryFiles: [.bai]
+        secondaryFiles: [.crai]
     reference: 
         type:
             - string

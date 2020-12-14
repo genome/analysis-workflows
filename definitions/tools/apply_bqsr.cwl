@@ -5,7 +5,7 @@ class: CommandLineTool
 label: 'apply BQSR'
 baseCommand: ["/gatk/gatk", "--java-options", "-Xmx16g", "ApplyBQSR"]
 arguments:
-    ["-O", { valueFrom: $(runtime.outdir)/$(inputs.output_name).bam },
+    ["-O", { valueFrom: $(runtime.outdir)/$(inputs.output_name).cram },
     "--static-quantized-quals", "10",
     "--static-quantized-quals", "20",
     "--static-quantized-quals", "30"
@@ -24,12 +24,12 @@ inputs:
         inputBinding:
             prefix: "-R"
             position: 1
-    bam:
+    cram:
         type: File
         inputBinding:
             prefix: "-I"
             position: 2
-        secondaryFiles: [.bai]
+        secondaryFiles: [.crai]
     bqsr_table:
         type: File
         inputBinding:
@@ -39,8 +39,7 @@ inputs:
         type: string?
         default: 'final'
 outputs:
-    bqsr_bam:
+    bqsr_cram:
         type: File
         outputBinding:
-            glob: $(inputs.output_name).bam
-        secondaryFiles: [^.bai]
+            glob: $(inputs.output_name).cram

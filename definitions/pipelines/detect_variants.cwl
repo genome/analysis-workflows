@@ -16,12 +16,12 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict]
-    tumor_bam:
+    tumor_cram:
         type: File
-        secondaryFiles: [.bai,^.bai]
-    normal_bam:
+        secondaryFiles: [.crai,^.crai]
+    normal_cram:
         type: File
-        secondaryFiles: [.bai,^.bai]
+        secondaryFiles: [.crai,^.crai]
     roi_intervals:
         type: File
         label: "roi_intervals: regions of interest in which variants will be called"
@@ -201,19 +201,20 @@ steps:
         run: ../subworkflows/mutect.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             interval_list: roi_intervals
             scatter_count: scatter_count
             tumor_sample_name: tumor_sample_name
+            normal_sample_name: normal_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
     strelka:
         run: ../subworkflows/strelka_and_post_processing.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             interval_list: roi_intervals
             exome_mode: strelka_exome_mode
             cpu_reserved: strelka_cpu_reserved
@@ -225,8 +226,8 @@ steps:
         run: ../subworkflows/varscan_pre_and_post_processing.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             interval_list: roi_intervals
             scatter_count: scatter_count
             strand_filter: varscan_strand_filter
@@ -242,8 +243,8 @@ steps:
         run: ../subworkflows/pindel.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             interval_list: roi_intervals
             scatter_count: scatter_count
             insert_size: pindel_insert_size
@@ -255,8 +256,8 @@ steps:
         run: ../subworkflows/docm_cle.cwl
         in:
             reference: reference
-            tumor_bam: tumor_bam
-            normal_bam: normal_bam
+            tumor_cram: tumor_cram
+            normal_cram: normal_cram
             docm_vcf: docm_vcf
             interval_list: roi_intervals
             filter_docm_variants: filter_docm_variants
@@ -314,7 +315,7 @@ steps:
             vcf: annotate_variants/annotated_vcf
             sample: tumor_sample_name
             reference_fasta: reference
-            bam: tumor_bam
+            cram: tumor_cram
             min_base_quality: readcount_minimum_base_quality
             min_mapping_quality: readcount_minimum_mapping_quality
         out:
@@ -325,7 +326,7 @@ steps:
             vcf: annotate_variants/annotated_vcf
             sample: normal_sample_name
             reference_fasta: reference
-            bam: normal_bam
+            cram: normal_cram
             min_base_quality: readcount_minimum_base_quality
             min_mapping_quality: readcount_minimum_mapping_quality
         out:
@@ -368,7 +369,7 @@ steps:
             filter_somatic_llr_tumor_purity: filter_somatic_llr_tumor_purity
             filter_somatic_llr_normal_contamination_rate: filter_somatic_llr_normal_contamination_rate
             filter_minimum_depth: filter_minimum_depth
-            tumor_bam: tumor_bam
+            tumor_cram: tumor_cram
             do_cle_vcf_filter: cle_vcf_filter
             reference: reference
             normal_sample_name: normal_sample_name

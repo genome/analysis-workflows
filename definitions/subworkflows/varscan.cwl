@@ -9,12 +9,12 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict]
-    tumor_bam:
+    tumor_cram:
         type: File
-        secondaryFiles: [^.bai]
-    normal_bam:
+        secondaryFiles: [^.crai]
+    normal_cram:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.crai]
     roi_bed:
         type: File?
     strand_filter:
@@ -75,8 +75,8 @@ steps:
         run: ../tools/varscan_somatic.cwl
         in:
             reference: reference
-            normal_bam: normal_bam
-            tumor_bam: tumor_bam
+            normal_cram: normal_cram
+            tumor_cram: tumor_cram
             roi_bed: roi_bed
             strand_filter: strand_filter
             min_coverage: min_coverage

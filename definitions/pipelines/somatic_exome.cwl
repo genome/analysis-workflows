@@ -252,7 +252,7 @@ inputs:
 outputs:
     tumor_cram:
         type: File
-        outputSource: tumor_index_cram/indexed_cram
+        outputSource: tumor_alignment_and_qc/cram
     tumor_mark_duplicates_metrics:
         type: File
         outputSource: tumor_alignment_and_qc/mark_duplicates_metrics
@@ -291,7 +291,7 @@ outputs:
         outputSource: tumor_alignment_and_qc/verify_bam_id_depth
     normal_cram:
         type: File
-        outputSource: normal_index_cram/indexed_cram
+        outputSource: normal_alignment_and_qc/cram
     normal_mark_duplicates_metrics:
         type: File
         outputSource: normal_alignment_and_qc/mark_duplicates_metrics
@@ -467,11 +467,9 @@ steps:
             picard_metric_accumulation_level: picard_metric_accumulation_level
             qc_minimum_mapping_quality: qc_minimum_mapping_quality
             qc_minimum_base_quality: qc_minimum_base_quality
-            final_name:
-                source: tumor_name
-                valueFrom: "$(self).bam"
+            final_name: tumor_name
         out:
-            [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     normal_alignment_and_qc:
         run: alignment_exome.cwl
         in:
@@ -489,17 +487,15 @@ steps:
             picard_metric_accumulation_level: picard_metric_accumulation_level
             qc_minimum_mapping_quality: qc_minimum_mapping_quality
             qc_minimum_base_quality: qc_minimum_base_quality
-            final_name:
-                source: normal_name
-                valueFrom: "$(self).bam"
+            final_name: normal_name
         out:
-            [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
+            [cram, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth]
     concordance:
         run: ../tools/concordance.cwl
         in:
             reference: reference
-            bam_1: tumor_alignment_and_qc/bam
-            bam_2: normal_alignment_and_qc/bam
+            cram_1: tumor_alignment_and_qc/cram
+            cram_2: normal_alignment_and_qc/cram
             vcf: somalier_vcf
         out:
             [somalier_pairs, somalier_samples]
@@ -514,8 +510,8 @@ steps:
         run: detect_variants.cwl
         in:
             reference: reference
-            tumor_bam: tumor_alignment_and_qc/bam
-            normal_bam: normal_alignment_and_qc/bam
+            tumor_cram: tumor_alignment_and_qc/cram
+            normal_cram: normal_alignment_and_qc/cram
             roi_intervals: pad_target_intervals/expanded_interval_list
             strelka_exome_mode:
                 default: true
@@ -552,14 +548,14 @@ steps:
     cnvkit:
         run: ../tools/cnvkit_batch.cwl
         in:
-            tumor_bam: tumor_alignment_and_qc/bam
+            tumor_cram: tumor_alignment_and_qc/cram
             reference:
-                source: [normal_alignment_and_qc/bam, reference]
+                source: [normal_alignment_and_qc/cram, reference]
                 valueFrom: |
                     ${
                       var normal = self[0];
                       var fasta = self[1];
-                      return {'normal_bam': normal, 'fasta_file': fasta};
+                      return {'normal_cram': normal, 'fasta_file': fasta};
                     }
             bait_intervals: bait_intervals
         out:
@@ -567,37 +563,12 @@ steps:
     manta:
         run: ../tools/manta_somatic.cwl
         in:
-            normal_bam: normal_alignment_and_qc/bam
-            tumor_bam: tumor_alignment_and_qc/bam
+            normal_bam: normal_alignment_and_qc/cram
+            tumor_bam: tumor_alignment_and_qc/cram
             reference: reference
             call_regions: manta_call_regions
             non_wgs: manta_non_wgs
             output_contigs: manta_output_contigs
         out:
             [diploid_variants, somatic_variants, all_candidates, small_candidates, tumor_only_variants]
-    tumor_bam_to_cram:
-        run: ../tools/bam_to_cram.cwl
-        in:
-            bam: tumor_alignment_and_qc/bam
-            reference: reference
-        out:
-            [cram]
-    tumor_index_cram:
-         run: ../tools/index_cram.cwl
-         in:
-            cram: tumor_bam_to_cram/cram
-         out:
-            [indexed_cram]
-    normal_bam_to_cram:
-        run: ../tools/bam_to_cram.cwl
-        in:
-            bam: normal_alignment_and_qc/bam
-            reference: reference
-        out:
-            [cram]
-    normal_index_cram:
-         run: ../tools/index_cram.cwl
-         in:
-            cram: normal_bam_to_cram/cram
-         out:
-            [indexed_cram]
+

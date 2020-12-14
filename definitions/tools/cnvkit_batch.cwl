@@ -2,12 +2,12 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: ["/usr/bin/python", "/usr/local/bin/cnvkit.py", "batch"]
+baseCommand: ["/usr/bin/python3", "/git/cnvkit/cnvkit.py", "batch"]
 
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "etal/cnvkit:0.9.5"
+      dockerPull: "johnegarza/cnvkit:0.9.8"
     - class: ResourceRequirement
       coresMin: 1
       ramMin: 4000
@@ -15,7 +15,7 @@ requirements:
     - class: InlineJavascriptRequirement
 arguments: [{ valueFrom: "$((inputs.reference.hasOwnProperty('cnn_file'))? null : '--normal')" }]
 inputs:
-    tumor_bam:
+    tumor_cram:
         type: File
         inputBinding:
             position: -1
@@ -45,11 +45,11 @@ inputs:
               inputBinding:
                 position: 2
                 prefix: "--fasta"
-            normal_bam:
+            normal_cram:
               type: File?
               inputBinding:
                 position: 1
-              doc: "Normal samples (.bam) used to construct the pooled, paired, or flat reference. If this option is used but no filenames are given, a 'flat' reference will be built. Otherwise, all filenames following this option will be used."
+              doc: "Normal samples (.cram) used to construct the pooled, paired, or flat reference. If this option is used but no filenames are given, a 'flat' reference will be built. Otherwise, all filenames following this option will be used."
     access:
         type: File?
         inputBinding:
@@ -125,8 +125,8 @@ outputs:
             glob: |
                     ${
                         var glob_base = ".antitargetcoverage.cnn";
-                        if (inputs.normal_bam) {
-                            glob_base = inputs.normal_bam.nameroot + glob_base;
+                        if (inputs.normal_cram) {
+                            glob_base = inputs.normal_cram.nameroot + glob_base;
                         }
                         return glob_base;
                     }
@@ -136,8 +136,8 @@ outputs:
             glob: |
                     ${
                         var glob_base = ".targetcoverage.cnn";
-                        if (inputs.normal_bam) {
-                            glob_base = inputs.normal_bam.nameroot + glob_base;
+                        if (inputs.normal_cram) {
+                            glob_base = inputs.normal_cram.nameroot + glob_base;
                         }
                         return glob_base;
                     }
@@ -148,24 +148,24 @@ outputs:
     cn_diagram:
         type: File?
         outputBinding:
-            glob: $(inputs.tumor_bam.nameroot)-diagram.pdf
+            glob: $(inputs.tumor_cram.nameroot)-diagram.pdf
     cn_scatter_plot:
         type: File?
         outputBinding:
-            glob: $(inputs.tumor_bam.nameroot)-scatter.pdf
+            glob: $(inputs.tumor_cram.nameroot)-scatter.pdf
     tumor_antitarget_coverage:
         type: File
         outputBinding:
-            glob: $(inputs.tumor_bam.nameroot).antitargetcoverage.cnn
+            glob: $(inputs.tumor_cram.nameroot).antitargetcoverage.cnn
     tumor_target_coverage:
         type: File
         outputBinding:
-            glob: $(inputs.tumor_bam.nameroot).targetcoverage.cnn
+            glob: $(inputs.tumor_cram.nameroot).targetcoverage.cnn
     tumor_bin_level_ratios:
         type: File
         outputBinding:
-            glob: $(inputs.tumor_bam.nameroot).cnr
+            glob: $(inputs.tumor_cram.nameroot).cnr
     tumor_segmented_ratios:
         type: File
         outputBinding:
-            glob: $(inputs.tumor_bam.nameroot).cns
+            glob: $(inputs.tumor_cram.nameroot).cns

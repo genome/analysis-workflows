@@ -50,10 +50,10 @@ inputs:
     qc_minimum_base_quality:
         type: int?
 outputs:
-    bam:
+    cram:
         type: File
-        outputSource: alignment/final_bam
-        secondaryFiles: [.bai, ^.bai]
+        outputSource: alignment/final_cram
+        secondaryFiles: [.crai, ^.crai]
     mark_duplicates_metrics:
         type: File
         outputSource: alignment/mark_duplicates_metrics_file
@@ -103,11 +103,11 @@ steps:
             bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             final_name: final_name
-        out: [final_bam,mark_duplicates_metrics_file]
+        out: [final_cram,mark_duplicates_metrics_file]
     qc:
         run: ../subworkflows/qc_exome.cwl
         in:
-            bam: alignment/final_bam
+            cram: alignment/final_cram
             reference: reference
             bait_intervals: bait_intervals
             target_intervals: target_intervals
