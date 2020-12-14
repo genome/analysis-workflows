@@ -99,7 +99,7 @@ outputs:
         outputSource: strandedness_check/strandedness_check
     bamcoverage_bigwig:
         type: File
-        outputSource: cgpBigWig_bamcoverage/outfile
+        outputSource: cgpbigwig_bamcoverage/outfile
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl

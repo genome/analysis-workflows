@@ -91,7 +91,7 @@ outputs:
         outputSource: kallisto/fusion_evidence
     bamcoverage_bigwig:
         type: File
-        outputSource: cgpBigWig_bamcoverage/outfile
+        outputSource: cgpbigwig_bamcoverage/outfile
 steps:
     bam_to_trimmed_fastq_and_hisat_alignments:
         run: ../subworkflows/bam_to_trimmed_fastq_and_hisat_alignments.cwl
