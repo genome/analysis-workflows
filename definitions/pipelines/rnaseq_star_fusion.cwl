@@ -18,6 +18,8 @@ inputs:
         type: Directory
     cdna_fasta:
         type: File
+    reference_fasta:
+        type: File
     gtf_file:
         type: File
     trimming_adapters:
@@ -46,10 +48,10 @@ inputs:
     sample_name:
         type: string
 outputs:
-    final_bam:
+    cram:
         type: File
-        outputSource: index_bam/indexed_bam
-        secondaryFiles: [.bai]
+        outputSource: index_cram/indexed_cram
+        secondaryFiles: [.crai, ^.crai]
     star_fusion_out:
         type: File
         outputSource: star_align_fusion/chim_junc
@@ -192,3 +194,16 @@ steps:
             bam: mark_dup/sorted_bam
         out:
             [metrics, chart]
+    bam_to_cram:
+        run: ../tools/bam_to_cram.cwl
+        in:
+          reference: reference_fasta
+          bam: index_bam/indexed_bam
+        out:
+            [cram]
+    index_cram:
+        run: ../tools/index_cram.cwl
+        in:
+            cram: bam_to_cram/cram
+        out:
+            [indexed_cram]
