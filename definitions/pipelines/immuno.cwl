@@ -371,6 +371,9 @@ inputs:
           normal_sample_name is the name of the normal sample to use for phasing of germline variants.
 
 outputs:
+    final_bigwig:
+        type: File
+        outputSource: rnaseq/bamcoverage_bigwig
     final_bam:
         type: File
         outputSource: rnaseq/final_bam
@@ -785,6 +788,7 @@ steps:
     rnaseq:
         run: rnaseq.cwl
         in:
+            reference: reference
             reference_index: reference_index
             reference_annotation: reference_annotation
             instrument_data_bams: rna_bams
@@ -804,7 +808,7 @@ steps:
             species: vep_ensembl_species
             assembly: vep_ensembl_assembly
         out:
-            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence]
+            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence, bamcoverage_bigwig]
     somatic:
         run: somatic_exome.cwl
         in:
