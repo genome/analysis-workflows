@@ -20,6 +20,7 @@ inputs:
         type: File
     reference_fasta:
         type: File
+        secondaryFiles: [.fai, ^.dict]
     gtf_file:
         type: File
     trimming_adapters:
@@ -94,6 +95,9 @@ outputs:
     strand_info:
         type: File[]
         outputSource: strandedness_check/strandedness_check
+    bamcoverage_bigwig:
+        type: File
+        outputSource: cgpbigwig_bamcoverage/outfile
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
@@ -207,3 +211,10 @@ steps:
             cram: bam_to_cram/cram
         out:
             [indexed_cram]
+    cgpbigwig_bamcoverage:
+        run: ../tools/bam_to_bigwig.cwl
+        in:
+            bam: mark_dup/sorted_bam
+            reference: reference_fasta
+        out:
+            [outfile]
