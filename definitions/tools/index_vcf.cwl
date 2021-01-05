@@ -6,12 +6,12 @@ label: "vcf index"
 arguments: [
     "cp", $(inputs.vcf.path), "$(runtime.outdir)/$(inputs.vcf.basename)",
     { valueFrom: " && ", shellQuote: false },
-    "/usr/bin/tabix", "-p", "vcf"
+    "/usr/local/bin/tabix", "-p", "vcf"
 ]
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "mgibio/samtools-cwl:1.0.0"
+      dockerPull: "quay.io/biocontainers/samtools:1.11--h6270b1f_0"
     - class: ResourceRequirement
       ramMin: 4000
     - class: StepInputExpressionRequirement
@@ -28,4 +28,3 @@ outputs:
         secondaryFiles: [.tbi]
         outputBinding:
             glob: $(inputs.vcf.basename)
-
