@@ -2,7 +2,7 @@
  
 cwlVersion: v1.0
 class: CommandLineTool
-label: "Adds an INFO tag (CLE_VALIDATED) flagging variants in the pipeline vcf present in a cle vcf file"
+label: "Intersect passing cle variants and passing pipeline variants for use in pvacseq"
 
 requirements:
     - class: DockerRequirement
@@ -11,7 +11,7 @@ requirements:
       ramMin: 8000
     - class: InitialWorkDirRequirement
       listing:
-      - entryname: 'annotate.sh'
+      - entryname: 'intersect.sh'
         entry: |
             set -eou pipefail
 
@@ -21,16 +21,16 @@ requirements:
                 CLE_VCF="$2"
                 /opt/bcftools/bin/bcftools view -f PASS -Oz -o pass_filtered_cle_variants.vcf.gz $CLE_VCF
                 /opt/bcftools/bin/bcftools index -t pass_filtered_cle_variants.vcf.gz
-                /opt/bcftools/bin/bcftools annotate -Oz -o cle_annotated_pipeline_variants.vcf.gz -a pass_filtered_cle_variants.vcf.gz -m 'CLE_VALIDATED' $PIPELINE_VCF
-                /opt/bcftools/bin/bcftools index -t cle_annotated_pipeline_variants.vcf.gz
+                /opt/bcftools/bin/bcftools isec -f PASS -n=2 -w1 -p cle -Oz $PIPELINE_VCF pass_filtered_cle_variants.vcf.gz
             elif [ "$#" -eq 1 ]; then
-                cp $PIPELINE_VCF cle_annotated_pipeline_variants.vcf.gz
-                cp $PIPELINE_VCF.tbi cle_annotated_pipeline_variants.vcf.gz.tbi
+                mkdir cle 
+                cp $PIPELINE_VCF cle/0000.vcf.gz
+                cp $PIPELINE_VCF.tbi cle/0000.vcf.gz.tbi
             else
                 exit 1
             fi
 
-baseCommand: ["/bin/bash", "annotate.sh"]
+baseCommand: ["/bin/bash", "intersect.sh"]
 
 inputs:
     vcf:
@@ -38,17 +38,17 @@ inputs:
         secondaryFiles: [.tbi]
         inputBinding:
             position: 1
-        doc: "Each variant in this file that is also in the cle vcf file (if supplied) will be marked with a CLE_VALIDATED flag in its INFO field"
+        doc: "Pipeline variants to be intersected with cle variants, if the vcf is present"
     cle_variants:
         type: File?
         secondaryFiles: [.tbi]
         inputBinding:
             position: 2
-        doc: "A vcf of previously discovered variants to be marked in the pipeline vcf; if not provided, this tool does nothing but rename the input vcf"
+        doc: "A vcf of previously discovered variants; if not provided, this tool does nothing but rename the input vcf"
 
 outputs:
-    cle_annotated_vcf:
+    cle_and_pipeline_vcf:
         type: File
         outputBinding:
-            glob: "cle_annotated_pipeline_variants.vcf.gz"
+            glob: "cle/0000.vcf.gz"
         secondaryFiles: [.tbi]

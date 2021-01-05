@@ -121,7 +121,7 @@ inputs:
     vep_custom_annotations:
         type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
         doc: "custom type, check types directory for input format"
-    known_variants:
+    cle_variants:
         type: File?
         secondaryFiles: [.tbi]
         doc: "Previously discovered variants to be flagged in this pipelines's output vcf"
@@ -360,7 +360,7 @@ steps:
                     }
                     return('gnomAD_AF');
                 }
-            known_variants: known_variants
+            cle_variants: cle_variants
         out: 
             [filtered_vcf]
     annotated_filter_bgzip:
