@@ -7,17 +7,21 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
-    - class: SubworkflowFeatureRequirement
+          - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
+    - class: SubworkflowFeatureRequirement 
 inputs:
     reference:
         type:
             - string
             - File
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
-    bams:
-        type: File[]
-    readgroups:
-        type: string[]
+    sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
     bait_intervals:
         type: File
     final_name:
@@ -75,11 +79,11 @@ outputs:
         outputSource: qc/flagstats
 steps:
     alignment:
-        run: ../subworkflows/align_sort_markdup.cwl
+        run: ../subworkflows/sequence_to_bqsr_nonhuman.cwl
         in:
             reference: reference
-            bams: bams
-            readgroups: readgroups
+            unaligned: sequence
+            trimming: trimming
             final_name: final_name
         out: [final_bam,mark_duplicates_metrics_file]
     qc:

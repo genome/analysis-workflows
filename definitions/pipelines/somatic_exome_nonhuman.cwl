@@ -7,6 +7,9 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
+          - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
+    - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
@@ -15,20 +18,42 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
-    tumor_bams:
-        type: File[]
-    tumor_readgroups:
-        type: string[]
+    tumor_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
+        label: "tumor_sequence: yml file specifying the location of MT sequencing data"
+        doc: |
+          tumor_sequence is a yml file for which to pass information regarding
+          sequencing data for single sample (i.e. fastq files). If more than one fastq file exist
+          for a sample, as in the case for multiple instrument data, the sequence tag is simply
+          repeated with the additional data (see example input file). Note that in the @RG field
+          ID and SM are required.
     tumor_name:
         type: string?
         default: 'tumor'
-    normal_bams:
-        type: File[]
-    normal_readgroups:
-        type: string[]
+        label: "tumor_name: String specifying the name of the MT sample"
+        doc: |
+          tumor_name provides a string for what the MT sample will be referred to in the various
+          outputs, for exmaple the VCF files.
+    normal_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
+        label: "normal_sequence: yml file specifying the location of WT sequencing data"
+        doc: |
+          normal_sequence is a yml file for which to pass information regarding
+          sequencing data for single sample (i.e. fastq files). If more than one fastq file exist
+          for a sample, as in the case for multiple instrument data, the sequence tag is simply
+          repeated with the additional data (see example input file). Note that in the @RG field
+          ID and SM are required.
     normal_name:
         type: string?
         default: 'normal'
+        label: "normal_name: String specifying the name of the WT sample"
+        doc: |
+          normal_name provides a string for what the WT sample will be referred to in the various
+          outputs, for exmaple the VCF files.
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
     bait_intervals:
         type: File
     target_intervals:
@@ -263,8 +288,8 @@ steps:
         run: alignment_exome_nonhuman.cwl
         in:
             reference: reference
-            bams: tumor_bams
-            readgroups: tumor_readgroups
+            sequence: tumor_sequence
+            trimming: trimming
             bait_intervals: bait_intervals
             target_intervals: target_intervals
             per_base_intervals: per_base_intervals
@@ -282,8 +307,8 @@ steps:
         run: alignment_exome_nonhuman.cwl
         in:
             reference: reference
-            bams: normal_bams
-            readgroups: normal_readgroups
+            sequence: normal_sequence
+            trimming: trimming
             bait_intervals: bait_intervals
             target_intervals: target_intervals
             per_base_intervals: per_base_intervals
