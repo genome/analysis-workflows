@@ -6,7 +6,7 @@ label: "vcf index"
 arguments: [
     "cp", $(inputs.vcf.path), "$(runtime.outdir)/$(inputs.vcf.basename)",
     { valueFrom: " && ", shellQuote: false },
-    "/usr/bin/tabix", "-p", "vcf"
+    "/usr/local/bin/tabix", "-p", "vcf"
 ]
 requirements:
     - class: ShellCommandRequirement
@@ -28,4 +28,3 @@ outputs:
         secondaryFiles: [.tbi]
         outputBinding:
             glob: $(inputs.vcf.basename)
-
