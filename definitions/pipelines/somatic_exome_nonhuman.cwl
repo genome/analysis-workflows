@@ -30,7 +30,7 @@ inputs:
         label: "tumor_name: String specifying the name of the MT sample"
         doc: |
           tumor_name provides a string for what the MT sample will be referred to in the various
-          outputs, for exmaple the VCF files.
+          outputs, for example the VCF files.
     normal_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
         label: "normal_sequence: WT sequencing data and readgroup information"
@@ -43,7 +43,7 @@ inputs:
         label: "normal_name: String specifying the name of the WT sample"
         doc: |
           normal_name provides a string for what the WT sample will be referred to in the various
-          outputs, for exmaple the VCF files.
+          outputs, for example the VCF files.
     trimming:
         type:
             - ../types/trimming_options.yml#trimming_options
