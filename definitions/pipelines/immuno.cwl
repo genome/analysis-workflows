@@ -109,7 +109,7 @@ inputs:
         doc: |
           bqsr_intervals provides an array of genomic intervals for which to apply
           GATK base quality score recalibrations. Typically intervals are given
-          for the entire chromosome (i.e. chr1, chr2, etc.), these names should match
+          for the entire chromosome (chr1, chr2, etc.), these names should match
           the format in the reference file.
     bait_intervals:
         type: File
