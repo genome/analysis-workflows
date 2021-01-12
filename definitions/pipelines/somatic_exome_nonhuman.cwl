@@ -20,13 +20,10 @@ inputs:
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-        label: "tumor_sequence: yml file specifying the location of MT sequencing data"
+        label: "tumor_sequence: MT sequencing data and readgroup information"
         doc: |
-          tumor_sequence is a yml file for which to pass information regarding
-          sequencing data for single sample (i.e. fastq files). If more than one fastq file exist
-          for a sample, as in the case for multiple instrument data, the sequence tag is simply
-          repeated with the additional data (see example input file). Note that in the @RG field
-          ID and SM are required.
+          tumor_sequence represents the sequencing data for the MT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     tumor_name:
         type: string?
         default: 'tumor'
@@ -36,13 +33,10 @@ inputs:
           outputs, for exmaple the VCF files.
     normal_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-        label: "normal_sequence: yml file specifying the location of WT sequencing data"
+        label: "normal_sequence: WT sequencing data and readgroup information"
         doc: |
-          normal_sequence is a yml file for which to pass information regarding
-          sequencing data for single sample (i.e. fastq files). If more than one fastq file exist
-          for a sample, as in the case for multiple instrument data, the sequence tag is simply
-          repeated with the additional data (see example input file). Note that in the @RG field
-          ID and SM are required.
+          normal_sequence represents the sequencing data for the WT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     normal_name:
         type: string?
         default: 'normal'
