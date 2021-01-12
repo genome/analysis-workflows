@@ -4,21 +4,16 @@ cwlVersion: v1.0
 class: Workflow
 label: "umi molecular alignment fastq workflow"
 requirements:
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/sequence_data.yml
     - class: SubworkflowFeatureRequirement
     - class: ScatterFeatureRequirement
 inputs:
-    read1_fastq:
-        type: File[]
-    read2_fastq:
-        type: File[]
+    sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     sample_name:
         type: string
-    library_name:
-        type: string[]
-    platform_unit:
-        type: string[]
-    platform:
-        type: string[]
     read_structure:
         type: string[]
     reference:
@@ -40,23 +35,18 @@ outputs:
         type: File[]
         outputSource: alignment_workflow/duplex_seq_metrics
 steps:
-    fastq_to_bam:
-        scatter: [read1_fastq, read2_fastq, library_name, platform_unit, platform]
+    sequence_to_bam:
+        scatter: [sequence]
         scatterMethod: dotproduct
-        run: ../tools/fastq_to_bam.cwl
+        run: ../tools/sequence_to_bam.cwl
         in:
-            read1_fastq: read1_fastq
-            read2_fastq: read2_fastq
-            sample_name: sample_name
-            library_name: library_name
-            platform_unit: platform_unit
-            platform: platform
+            sequence: sequence
         out:
             [bam]
     alignment_workflow:
         run: ../subworkflows/molecular_alignment.cwl
         in:
-            bam: fastq_to_bam/bam
+            bam: sequence_to_bam/bam
             sample_name: sample_name
             read_structure: read_structure
             reference: reference
