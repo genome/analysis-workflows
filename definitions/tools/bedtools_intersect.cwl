@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-baseCommand: ["/opt/ccdg/bedtools-2.27.1/bin/bedtools", "intersect"]
+baseCommand: ["/usr/local/bin/bedtools", "intersect"]
 
 requirements:
     - class: DockerRequirement
