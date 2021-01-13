@@ -6,7 +6,7 @@ label: "Set up and execute manta"
 
 requirements:
     - class: DockerRequirement
-      dockerPull: mgibio/manta_somatic-cwl:1.5.0
+      dockerPull: mgibio/manta_somatic-cwl:1.6.0
     - class: InlineJavascriptRequirement
     - class: ShellCommandRequirement
     - class: ResourceRequirement
