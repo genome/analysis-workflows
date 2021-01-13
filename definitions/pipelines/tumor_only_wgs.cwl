@@ -19,6 +19,10 @@ inputs:
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+        label: "sequence: sequencing data and readgroup information"
+        doc: |
+          sequence represents the sequencing data as either FASTQs or BAMs with accompanying
+          readgroup information. Note that in the @RG field ID and SM are required.
     trimming:
         type:
             - ../types/trimming_options.yml#trimming_options
@@ -36,7 +40,7 @@ inputs:
         doc: |
           bqsr_intervals provides an array of genomic intervals for which to apply
           GATK base quality score recalibrations. Typically intervals are given
-          for the entire chromosome (i.e. chr1, chr2, etc.), these names should match
+          for the entire chromosome (chr1, chr2, etc.), these names should match
           the format in the reference file.
     target_intervals:
         type: File

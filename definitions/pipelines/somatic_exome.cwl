@@ -38,36 +38,30 @@ inputs:
           samtools index, bwa index, and picard CreateSequenceDictionary.
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-        label: "tumor_sequence: yml file specifying the location of MT sequencing data"
+        label: "tumor_sequence: MT sequencing data and readgroup information"
         doc: |
-          tumor_sequence is a yml file for which to pass information regarding
-          sequencing data for single sample (i.e. fastq files). If more than one fastq file exist
-          for a sample, as in the case for multiple instrument data, the sequence tag is simply
-          repeated with the additional data (see example input file). Note that in the @RG field
-          ID and SM are required.
+          tumor_sequence represents the sequencing data for the MT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     tumor_name:
         type: string?
         default: 'tumor'
         label: "tumor_name: String specifying the name of the MT sample"
         doc: |
           tumor_name provides a string for what the MT sample will be referred to in the various
-          outputs, for exmaple the VCF files.
+          outputs, for example the VCF files.
     normal_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-        label: "normal_sequence: yml file specifying the location of WT sequencing data"
+        label: "normal_sequence: WT sequencing data and readgroup information"
         doc: |
-          normal_sequence is a yml file for which to pass information regarding
-          sequencing data for single sample (i.e. fastq files). If more than one fastq file exist
-          for a sample, as in the case for multiple instrument data, the sequence tag is simply
-          repeated with the additional data (see example input file). Note that in the @RG field
-          ID and SM are required.
+          normal_sequence represents the sequencing data for the WT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     normal_name:
         type: string?
         default: 'normal'
         label: "normal_name: String specifying the name of the WT sample"
         doc: |
           normal_name provides a string for what the WT sample will be referred to in the various
-          outputs, for exmaple the VCF files.
+          outputs, for example the VCF files.
     trimming:
         type:
             - ../types/trimming_options.yml#trimming_options
@@ -87,7 +81,7 @@ inputs:
         doc: |
           bqsr_intervals provides an array of genomic intervals for which to apply
           GATK base quality score recalibrations. Typically intervals are given
-          for the entire chromosome (i.e. chr1, chr2, etc.), these names should match
+          for the entire chromosome (chr1, chr2, etc.), these names should match
           the format in the reference file.
     bait_intervals:
         type: File
