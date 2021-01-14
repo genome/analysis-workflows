@@ -243,10 +243,10 @@ inputs:
         type: boolean?
     somalier_vcf:
         type: File
-    cle_variants:
+    validated_variants:
         type: File?
         secondaryFiles: [.tbi]
-        doc: "Previously discovered variants to be flagged in this pipelines's output vcf"
+        doc: "An optional VCF with variants that will be flagged as 'VALIDATED' if found in this pipeline's main output VCF"
 
     #germline inputs
     emit_reference_confidence:
@@ -924,13 +924,13 @@ steps:
         run: ../tools/intersect_known_variants.cwl
         in:
             vcf: somatic/final_filtered_vcf
-            cle_variants: cle_variants
+            validated_variants: validated_variants
         out:
-            [cle_and_pipeline_vcf]
+            [validated_and_pipeline_vcf]
     pvacseq:
         run: ../subworkflows/pvacseq.cwl
         in:
-            detect_variants_vcf: intersect_passing_variants/cle_and_pipeline_vcf
+            detect_variants_vcf: intersect_passing_variants/validated_and_pipeline_vcf
             sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name
             rnaseq_bam: rnaseq/final_bam

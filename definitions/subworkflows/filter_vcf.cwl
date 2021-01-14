@@ -39,10 +39,10 @@ inputs:
         type: string
     normal_sample_name:
         type: string
-    cle_variants:
+    validated_variants:
         type: File?
         secondaryFiles: [.tbi]
-        doc: "Previously discovered variants to be flagged in this workflow's output vcf"
+        doc: "An optional VCF with variants that will be flagged as 'VALIDATED' if found in this pipeline's main output VCF"
 outputs:
     filtered_vcf:
         type: File
@@ -52,13 +52,13 @@ steps:
         run: ../tools/filter_known_variants.cwl
         in:
             vcf: vcf
-            cle_variants: cle_variants
+            validated_variants: validated_variants
         out:
-            [cle_annotated_vcf]
+            [validated_annotated_vcf]
     filter_vcf_gnomADe_allele_freq:
         run: ../tools/filter_vcf_custom_allele_freq.cwl
         in:
-            vcf: filter_known_variants/cle_annotated_vcf
+            vcf: filter_known_variants/validated_annotated_vcf
             maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
             field_name: gnomad_field_name
         out:

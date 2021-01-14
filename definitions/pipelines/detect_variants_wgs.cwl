@@ -121,10 +121,10 @@ inputs:
     vep_custom_annotations:
         type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
         doc: "custom type, check types directory for input format"
-    cle_variants:
+    validated_variants:
         type: File?
         secondaryFiles: [.tbi]
-        doc: "Previously discovered variants to be flagged in this pipelines's output vcf"
+        doc: "An optional VCF with variants that will be flagged as 'VALIDATED' if found in this pipeline's main output VCF"
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -360,7 +360,7 @@ steps:
                     }
                     return('gnomAD_AF');
                 }
-            cle_variants: cle_variants
+            validated_variants: validated_variants
         out: 
             [filtered_vcf]
     annotated_filter_bgzip:

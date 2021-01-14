@@ -154,10 +154,10 @@ inputs:
         type: string
     normal_sample_name:
         type: string
-    cle_variants:
+    validated_variants:
         type: File?
         secondaryFiles: [.tbi]
-        doc: "Previously discovered variants to be flagged in this pipelines's output vcf"
+        doc: "An optional VCF with variants that will be flagged as 'VALIDATED' if found in this pipeline's main output VCF"
 outputs:
 ##tumor alignment and QC
     tumor_cram:
