@@ -195,7 +195,7 @@ steps:
             refFlat: refFlat
             ribosomal_intervals: ribosomal_intervals
             strand: strand
-            bam: mark_dup/sorted_bam
+            bam: index_bam/indexed_bam
         out:
             [metrics, chart]
     bam_to_cram:
