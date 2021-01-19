@@ -214,7 +214,7 @@ steps:
     cgpbigwig_bamcoverage:
         run: ../tools/bam_to_bigwig.cwl
         in:
-            bam: mark_dup/sorted_bam
+            bam: index_bam/indexed_bam
             reference: reference_fasta
         out:
             [outfile]
