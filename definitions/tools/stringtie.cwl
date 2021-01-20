@@ -54,6 +54,7 @@ inputs:
         type: File
         inputBinding:
             position: 4
+        secondaryFiles: [.bai,^.bai]
 outputs:
     transcript_gtf:
         type: File

@@ -148,7 +148,7 @@ steps:
     stringtie:
         run: ../tools/stringtie.cwl
         in:
-            bam: mark_dup/sorted_bam
+            bam: index_bam/indexed_bam
             reference_annotation: reference_annotation
             sample_name: sample_name
             strand: strand

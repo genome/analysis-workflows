@@ -183,7 +183,7 @@ steps:
     stringtie:
         run: ../tools/stringtie.cwl
         in:
-            bam: mark_dup/sorted_bam
+            bam: index_bam/indexed_bam
             reference_annotation: gtf_file
             sample_name: sample_name
             strand: strand
@@ -195,7 +195,7 @@ steps:
             refFlat: refFlat
             ribosomal_intervals: ribosomal_intervals
             strand: strand
-            bam: mark_dup/sorted_bam
+            bam: index_bam/indexed_bam
         out:
             [metrics, chart]
     bam_to_cram:
@@ -214,7 +214,7 @@ steps:
     cgpbigwig_bamcoverage:
         run: ../tools/bam_to_bigwig.cwl
         in:
-            bam: mark_dup/sorted_bam
+            bam: index_bam/indexed_bam
             reference: reference_fasta
         out:
             [outfile]
