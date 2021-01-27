@@ -9,7 +9,7 @@ requirements:
       ramMin: 32000
       coresMin: 12
     - class: DockerRequirement
-      dockerPull: "chrisamiller/biscuit:latest"
+      dockerPull: "mgibio/biscuit:0.3.16"
     - class: SchemaDefRequirement
       types:
           - $import: ../types/sequence_data.yml
