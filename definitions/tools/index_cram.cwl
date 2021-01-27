@@ -4,14 +4,14 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: 'samtools index cram'
 arguments: [
-    "/opt/samtools/bin/samtools", "index", "$(runtime.outdir)/$(inputs.cram.basename)", "$(runtime.outdir)/$(inputs.cram.basename).crai",
+    "/usr/local/bin/samtools", "index", "$(runtime.outdir)/$(inputs.cram.basename)", "$(runtime.outdir)/$(inputs.cram.basename).crai",
     { valueFrom: " && ", shellQuote: false },
     "cp", "$(inputs.cram.basename).crai", "$(runtime.outdir)/$(inputs.cram.nameroot).crai"
 ]
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "mgibio/samtools-cwl:1.0.0"
+      dockerPull: "quay.io/biocontainers/samtools:1.11--h6270b1f_0"
     - class: ResourceRequirement
       ramMin: 4000
     - class: InitialWorkDirRequirement

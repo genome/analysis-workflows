@@ -3,10 +3,10 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "bgzip VCF"
-baseCommand: ["/opt/htslib/bin/bgzip"]
+baseCommand: ["/usr/local/bin/bgzip"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/samtools-cwl:1.0.0"
+      dockerPull: "quay.io/biocontainers/samtools:1.11--h6270b1f_0"
     - class: ResourceRequirement
       ramMin: 4000
 stdout: $(inputs.file.basename).gz

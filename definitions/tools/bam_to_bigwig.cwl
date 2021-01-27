@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: 'cgpBigWig Converting BAM to BigWig'
-baseCommand: ["bam2bw", "-F", "1024"]
+baseCommand: ["bam2bw", "-a -F", "1024"]
 arguments: ["-o", { valueFrom: $(inputs.bam.nameroot).bw}]
 requirements:
     - class: DockerRequirement

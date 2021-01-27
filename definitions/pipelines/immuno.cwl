@@ -70,36 +70,30 @@ inputs:
 
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-        label: "tumor_sequence: file specifying the location of MT sequencing data"
+        label: "tumor_sequence: MT sequencing data and readgroup information"
         doc: |
-          tumor_sequence is a data structure described in sequence_data.yml used to pass information regarding
-          sequencing data for single sample (i.e. fastq files). If more than one fastq file exist
-          for a sample, as in the case for multiple instrument data, the sequence tag is simply
-          repeated with the additional data (see example input file). Note that in the @RG field
-          ID and SM are required.
+          tumor_sequence represents the sequencing data for the MT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     tumor_name:
         type: string?
         default: 'tumor'
         label: "tumor_name: String specifying the name of the MT sample"
         doc: |
           tumor_name provides a string for what the MT sample will be referred to in the various
-          outputs, for exmaple the VCF files.
+          outputs, for example the VCF files.
     normal_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-        label: "normal_sequence: file specifying the location of WT sequencing data"
+        label: "normal_sequence: WT sequencing data and readgroup information"
         doc: |
-          normal_sequence is a data structure described in sequence_data.yml used to pass information regarding
-          sequencing data for single sample (i.e. fastq files). If more than one fastq file exist
-          for a sample, as in the case for multiple instrument data, the sequence tag is simply
-          repeated with the additional data (see example input file). Note that in the @RG field
-          ID and SM are required.
+          normal_sequence represents the sequencing data for the WT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     normal_name:
         type: string?
         default: 'normal'
         label: "normal_name: String specifying the name of the WT sample"
         doc: |
           normal_name provides a string for what the WT sample will be referred to in the various
-          outputs, for exmaple the VCF files.
+          outputs, for example the VCF files.
     bqsr_known_sites:
         type: File[]
         secondaryFiles: [.tbi]
@@ -115,7 +109,7 @@ inputs:
         doc: |
           bqsr_intervals provides an array of genomic intervals for which to apply
           GATK base quality score recalibrations. Typically intervals are given
-          for the entire chromosome (i.e. chr1, chr2, etc.), these names should match
+          for the entire chromosome (chr1, chr2, etc.), these names should match
           the format in the reference file.
     bait_intervals:
         type: File
@@ -243,10 +237,10 @@ inputs:
         type: boolean?
     somalier_vcf:
         type: File
-    known_variants:
+    validated_variants:
         type: File?
         secondaryFiles: [.tbi]
-        doc: "Previously discovered variants to be flagged in this pipelines's output vcf"
+        doc: "An optional VCF with variants that will be flagged as 'VALIDATED' if found in this pipeline's main output VCF"
 
     #germline inputs
     emit_reference_confidence:
@@ -371,6 +365,9 @@ inputs:
           normal_sample_name is the name of the normal sample to use for phasing of germline variants.
 
 outputs:
+    final_bigwig:
+        type: File
+        outputSource: rnaseq/bamcoverage_bigwig
     final_bam:
         type: File
         outputSource: rnaseq/final_bam
@@ -785,6 +782,7 @@ steps:
     rnaseq:
         run: rnaseq.cwl
         in:
+            reference: reference
             reference_index: reference_index
             reference_annotation: reference_annotation
             instrument_data_bams: rna_bams
@@ -804,7 +802,7 @@ steps:
             species: vep_ensembl_species
             assembly: vep_ensembl_assembly
         out:
-            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence]
+            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence, bamcoverage_bigwig]
     somatic:
         run: somatic_exome.cwl
         in:
@@ -856,7 +854,7 @@ steps:
             somalier_vcf: somalier_vcf
             tumor_sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name
-            known_variants: known_variants
+            validated_variants: validated_variants
         out:
             [tumor_cram,tumor_mark_duplicates_metrics,tumor_insert_size_metrics,tumor_alignment_summary_metrics,tumor_hs_metrics,tumor_per_target_coverage_metrics,tumor_per_target_hs_metrics,tumor_per_base_coverage_metrics,tumor_per_base_hs_metrics,tumor_summary_hs_metrics,tumor_flagstats,tumor_verify_bam_id_metrics,tumor_verify_bam_id_depth,normal_cram,normal_mark_duplicates_metrics,normal_insert_size_metrics,normal_alignment_summary_metrics,normal_hs_metrics,normal_per_target_coverage_metrics,normal_per_target_hs_metrics,normal_per_base_coverage_metrics,normal_per_base_hs_metrics,normal_summary_hs_metrics,normal_flagstats,normal_verify_bam_id_metrics,normal_verify_bam_id_depth,mutect_unfiltered_vcf,mutect_filtered_vcf,strelka_unfiltered_vcf,strelka_filtered_vcf,varscan_unfiltered_vcf,varscan_filtered_vcf,pindel_unfiltered_vcf,pindel_filtered_vcf,docm_filtered_vcf,final_vcf,final_filtered_vcf,final_tsv,vep_summary,tumor_snv_bam_readcount_tsv,tumor_indel_bam_readcount_tsv,normal_snv_bam_readcount_tsv,normal_indel_bam_readcount_tsv,intervals_antitarget,intervals_target,normal_antitarget_coverage,normal_target_coverage,reference_coverage,cn_diagram,cn_scatter_plot,tumor_antitarget_coverage,tumor_target_coverage,tumor_bin_level_ratios,tumor_segmented_ratios,diploid_variants,somatic_variants,all_candidates,small_candidates,tumor_only_variants,somalier_concordance_metrics,somalier_concordance_statistics]
     germline:
@@ -916,10 +914,17 @@ steps:
             clinical_mhc_classII_alleles: clinical_mhc_classII_alleles
         out:
             [consensus_alleles, hla_call_files]
+    intersect_passing_variants:
+        run: ../tools/intersect_known_variants.cwl
+        in:
+            vcf: somatic/final_filtered_vcf
+            validated_variants: validated_variants
+        out:
+            [validated_and_pipeline_vcf]
     pvacseq:
         run: ../subworkflows/pvacseq.cwl
         in:
-            detect_variants_vcf: somatic/final_filtered_vcf
+            detect_variants_vcf: intersect_passing_variants/validated_and_pipeline_vcf
             sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name
             rnaseq_bam: rnaseq/final_bam
