@@ -7,7 +7,7 @@ baseCommand: ["/usr/local/bin/bedtools", "intersect"]
 
 requirements:
     - class: DockerRequirement
-      dockerPull: "ernfrid/bedtools:v2.27.1"
+      dockerPull: "quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0"
     - class: ResourceRequirement
       ramMin: 4000
 
