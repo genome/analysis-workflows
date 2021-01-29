@@ -9,8 +9,8 @@ requirements:
       ramMin: 8000
       coresMin: 4
     - class: DockerRequirement
-      dockerPull: "quay.io/biocontainers/samtools:1.11--h6270b1f_0"
-arguments: ["$(inputs.name).merged.bam", { prefix: "--threads", valueFrom: $(runtime.cores) }]
+      dockerPull: "quay.io/biocontainers/samtools:0.1.19--hfb9b9cc_8"
+arguments: ["$(inputs.name).merged.bam", { prefix: "-@", valueFrom: $(runtime.cores) }]
 inputs:
     bams:
         type: File[]
