@@ -19,6 +19,8 @@ requirements:
             set -o errexit
             set -o nounset
 
+            SORTED=false
+
             while getopts "t:m:n:s:" opt; do
                 case "$opt" in
                     t)
@@ -31,12 +33,13 @@ requirements:
                         OUTFILENAME="$OPTARG"
                         ;;
                     s)
-                        SORTED="$OPTARG"
+                        SORTED=true
                         ;;
                 esac
             done
-            BAMS=${@:$OPTIND}
-            NUM_BAMS=`echo "$# - $OPTIND + 1" | perl -nae 'print eval $_'` #can't use typical dollar/parens bash math
+
+            BAMS=("${@:$OPTIND}")
+            NUM_BAMS=${#BAMS[@]}
 
             #if there is only one bam, just copy it and index it
             if [[ $NUM_BAMS -eq 1 ]]; then
@@ -45,11 +48,10 @@ requirements:
                 if [[ $SORTED == "true" ]];then
                     /usr/bin/sambamba merge -t "$NTHREADS" "$OUTFILENAME" "$BAMS"
                 else #unsorted bams, use picard
-                    MEM=`echo "$MEM/1000" | perl -nae 'print eval $_'`
                     cmd="java -jar -Xmx"
-                    cmd+="$MEM"
-                    cmd+="g /opt/picard/picard.jar MergeSamFiles OUTPUT=$OUTFILENAME ASSUME_SORTED=true USE_THREADING=true SORT_ORDER=unsorted VALIDATION_STRINGENCY=LENIENT"
-                    for i in $BAMS;do #this assumes no spaces in filenames, but a space in a filename is a space in one's soul
+                    cmd+=$MEM
+                    cmd+="m /opt/picard/picard.jar MergeSamFiles OUTPUT=$OUTFILENAME ASSUME_SORTED=true USE_THREADING=true SORT_ORDER=unsorted VALIDATION_STRINGENCY=LENIENT"
+                    for i in "${BAMS[@]}";do 
                       cmd+=" INPUT=$i"
                     done
                     `$cmd`;
@@ -62,20 +64,24 @@ requirements:
 arguments: [
     "-t", "$(runtime.cores)",
     "-m", "$(runtime.ram)",
-    "-n", "$(inputs.name)",
-    "-s", "$(inputs.sorted)"
 ]
 inputs:
     bams:
         type: File[]
         inputBinding:
-            position: 1
+            position: 3
     sorted:
-        type: string?
+        type: boolean?
         default: "false"
+        inputBinding:
+            prefix: "-s"
+            position: 2
     name:
         type: string?
-        default: "output.bam"
+        default: "merged.bam"
+        inputBinding:
+            prefix: "-n"
+            position: 1
 outputs:
     merged_bam:
         type: File
