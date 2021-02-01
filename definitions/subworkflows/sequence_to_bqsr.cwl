@@ -53,7 +53,7 @@ steps:
         out:
             [aligned_bam]
     merge:
-        run: ../tools/merge_bams_samtools.cwl
+        run: ../tools/merge_bams.cwl
         in:
             bams: align/aligned_bam
             name: final_name
