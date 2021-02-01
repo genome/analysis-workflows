@@ -48,13 +48,11 @@ requirements:
                 if [[ $SORTED == "true" ]];then
                     /usr/bin/sambamba merge -t "$NTHREADS" "$OUTFILENAME" "$BAMS"
                 else #unsorted bams, use picard
-                    cmd="java -jar -Xmx"
-                    cmd+=$MEM
-                    cmd+="m /opt/picard/picard.jar MergeSamFiles OUTPUT=$OUTFILENAME ASSUME_SORTED=true USE_THREADING=true SORT_ORDER=unsorted VALIDATION_STRINGENCY=LENIENT"
-                    for i in "${BAMS[@]}";do 
-                      cmd+=" INPUT=$i"
+                    args=(OUTPUT="$OUTFILENAME" ASSUME_SORTED=true USE_THREADING=true SORT_ORDER=unsorted VALIDATION_STRINGENCY=LENIENT)
+                    for i in "${BAMS[@]}";do
+                      args+=("INPUT=$i")
                     done
-                    `$cmd`;
+                    java -jar /opt/picard/picard.jar MergeSamFiles "${args[@]}"
                 fi
             fi
             if [[ $SORTED == "true" ]];then
