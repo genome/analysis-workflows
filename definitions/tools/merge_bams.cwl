@@ -45,9 +45,12 @@ requirements:
                 if [[ $SORTED == "true" ]];then
                     /usr/bin/sambamba merge -t "$NTHREADS" "$OUTFILENAME" "$BAMS"
                 else #unsorted bams, use picard
-                    cmd="java -jar -Xmx8g /opt/picard/picard.jar MergeSamFiles OUTPUT=$OUTFILENAME ASSUME_SORTED=true USE_THREADING=true SORT_ORDER=unsorted VALIDATION_STRINGENCY=LENIENT"
+                    MEM=`echo "$MEM/1000" | perl -nae 'print eval $_'`
+                    cmd="java -jar -Xmx"
+                    cmd+="$MEM"
+                    cmd+="g /opt/picard/picard.jar MergeSamFiles OUTPUT=$OUTFILENAME ASSUME_SORTED=true USE_THREADING=true SORT_ORDER=unsorted VALIDATION_STRINGENCY=LENIENT"
                     for i in $BAMS;do #this assumes no spaces in filenames, but a space in a filename is a space in one's soul
-                      cmd="$cmd INPUT=$i"
+                      cmd+=" INPUT=$i"
                     done
                     `$cmd`;
                 fi
