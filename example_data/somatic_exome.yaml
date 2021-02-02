@@ -1,101 +1,131 @@
 ---
+vep_ensembl_species: homo_sapiens
+
+vep_ensembl_assembly: GRCh38
+
 bait_intervals:
   class: File
-  path: exome_workflow/chr17_test_bait.interval_list
-tumor_sequence:
-  - sequence:
-      bam:
-        class: File
-        path: exome_workflow/2895499223.bam
-    readgroup: "@RG\tID:2895499223\tPU:H7HY2CCXX.3.ATCACGGT\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:Illumina\tCN:WUGSC"
-  - sequence:
-      bam:
-        class: File
-        path: exome_workflow/2895499237.bam
-    readgroup: "@RG\tID:2895499237\tPU:H7HY2CCXX.4.ATCACGGT\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:Illumina\tCN:WUGSC"
-tumor_sample_name: 'H_NJ-HCC1395-HCC1395'
+  path: somatic_inputs/hla_and_brca_genes_bait.interval_list
+
+target_intervals:
+  class: File
+  path: somatic_inputs/hla_and_brca_genes_target.interval_list
+
 normal_sequence:
   - sequence:
       bam:
         class: File
-        path: exome_workflow/2895499331.bam
-    readgroup: "@RG\tID:2895499331\tPU:H7HY2CCXX.3.TGACCACG\tSM:H_NJ-HCC1395-HCC1395_BL\tLB:H_NJ-HCC1395-HCC1395_BL-lg21-lib1\tPL:Illumina\tCN:WUGSC"
+        path: unaligned_subset_bams/normal/2895499331.bam
+    readgroup: "@RG\tID:2895499331\tPU:H7HY2CCXX.3\tSM:H_NJ-HCC1395-HCC1395_BL\tLB:H_NJ-HCC1395-HCC1395_BL-lg21-lib1\tPL:Illumina\tCN:WUGSC"
   - sequence:
       bam:
         class: File
-        path: exome_workflow/2895499399.bam
-    readgroup: "@RG\tID:2895499399\tPU:H7HY2CCXX.4.TGACCACG\tSM:H_NJ-HCC1395-HCC1395_BL\tLB:H_NJ-HCC1395-HCC1395_BL-lg21-lib1\tPL:Illumina\tCN:WUGSC"
-normal_sample_name: 'H_NJ-HCC1395-HCC1395_BL'
-dbsnp_vcf:
-  class: File
-  path: exome_workflow/chr17_test_dbsnp.vcf.gz
+        path: unaligned_subset_bams/normal/2895499399.bam
+    readgroup: "@RG\tID:2895499399\tPU:H7HY2CCXX.4\tSM:H_NJ-HCC1395-HCC1395_BL\tLB:H_NJ-HCC1395-HCC1395_BL-lg21-lib1\tPL:Illumina\tCN:WUGSC"
+
+tumor_sequence:
+  - sequence:
+      bam:
+        class: File
+        path: unaligned_subset_bams/tumor/2895499223.bam
+    readgroup: "@RG\tID:2895499223\tPU:H7HY2CCXX.3\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:ILLUMINA\tCN:WUGSC"
+  - sequence:
+      fastq1:
+        class: File
+        path: unaligned_subset_bams/tumor/2895499237.1.fastq.gz
+      fastq2:
+        class: File
+        path: unaligned_subset_bams/tumor/2895499237.2.fastq.gz
+    readgroup: "@RG\tID:2895499237\tPU:H7HY2CCXX.4\tSM:H_NJ-HCC1395-HCC1395\tLB:H_NJ-HCC1395-HCC1395-lg24-lib1\tPL:ILLUMINA\tCN:WUGSC"
+
 docm_vcf:
   class: File
-  path: exome_workflow/chr17_test_docm.vcf.gz
-known_indels:
-  class: File
-  path: exome_workflow/chr17_test_known_indels.vcf.gz
-mills:
-  class: File
-  path: exome_workflow/chr17_test_mills.vcf.gz
+  path: somatic_inputs/hla_and_brca_genes_docm.vcf.gz
+
 omni_vcf:
   class: File
-  path: exome_workflow/chr17_test_omni.vcf.gz
-per_base_intervals:
-  - label: testing
-    file:
-      class: File
-      path: exome_workflow/chr17_test_target.interval_list
-per_target_intervals:
-  - label: targets
-    file:
-      class: File
-      path: exome_workflow/chr17_test_target.interval_list
-summary_intervals:
-  - label: baits 
-    file:
-      class: File
-      path: exome_workflow/chr17_test_bait.interval_list
-  - label: genes
-    file:
-      class: File
-      path: exome_workflow/chr17_test_genes.interval_list
-picard_metric_accumulation_level: ALL_READS
-reference: "/gscmnt/gc2560/core/reference_sequences/chr17_refseq_cwl_test/chr17_test.fa"
+  path: somatic_inputs/hla_and_brca_genes_omni.vcf.gz
+
+bqsr_known_sites:
+  - somatic_inputs/hla_and_brca_genes_omni.vcf.gz
+  - somatic_inputs/hla_and_brca_genes_dbsnp.vcf.gz
+  - somatic_inputs/hla_and_brca_genes_mills.vcf.gz
+  - somatic_inputs/hla_and_brca_genes_known_indels.vcf.gz
+
+picard_metric_accumulation_level: LIBRARY
+
+reference:
+  class: File
+  path: somatic_inputs/hla_and_brca_genes.fa
+
+somalier_vcf:
+  class: File
+  path: somatic_inputs/subset_somalier.vcf
+
 synonyms_file:
   class: File
-  path: exome_workflow/chromAlias.ensembl.txt
-target_intervals:
-  class: File
-  path: exome_workflow/chr17_test_target.interval_list
-varscan_min_coverage: 8
-varscan_min_var_freq: 0.02
-varscan_p_value: 0.99
-varscan_strand_filter: 0
-vep_cache_dir: "/gscmnt/gc2560/core/cwl/inputs/VEP_cache/"
-vep_custom_annotations:
-- method: 'exact'
-  force_report_coordinates: true
-  annotation:
-    file:
-      class: File
-      path: exome_workflow/chr17_test_gnomADe.vcf.gz
-      secondaryFiles: [{class: File, path: exome_workflow/chr17_test_gnomADe.vcf.gz.tbi}]
-    data_format: 'vcf'
-    name: 'gnomADe'
-    vcf_fields: ['AF','AF_AFR','AF_AMR','AF_ASJ','AF_EAS','AF_FIN','AF_NFE','AF_OTH','AF_SAS']
-    gnomad_filter: true
-    check_existing: true
-vep_ensembl_assembly: GRCh38
+  path: somatic_inputs/subset_synonyms.txt
+
+vep_cache_dir:
+  class: Directory
+  path: vep_subset
+
 vep_ensembl_version: '95'
-vep_ensembl_species: homo_sapiens
-bqsr_intervals:
-- chr17
-interval_list:
-  class: File
-  path: exome_workflow/chr17_test_genes.interval_list
+
 scatter_count: 2
-mutect_artifact_detection_mode: false
-somalier_vcf:
-  class: File 
-  path: exome_workflow/chr17_vcf_file_for_somalier.vcf
+
+vep_to_table_fields:
+- Consequence
+- SYMBOL
+- Feature_type
+- Feature
+- HGVSc
+- HGVSp
+- cDNA_position
+- CDS_position
+- Protein_position
+- Amino_acids
+- Codons
+- HGNC_ID
+- Existing_variation
+- gnomADe_AF
+- CLIN_SIG
+- SOMATIC
+- PHENO
+
+bqsr_intervals:
+- chr6
+- chr17
+
+variants_to_table_fields:
+- CHROM
+- POS
+- REF
+- ALT
+- set
+
+variants_to_table_genotype_fields:
+- GT
+- AD
+- AF
+- DP
+
+per_base_intervals:
+- file:
+    class: File
+    path: somatic_inputs/hla_and_brca_genes_target.interval_list
+  label: clinvar
+
+per_target_intervals:
+- file:
+    class: File
+    path: somatic_inputs/hla_and_brca_genes_target.interval_list
+  label: acmg_genes
+
+summary_intervals: []
+
+vep_custom_annotations: []
+
+tumor_sample_name: 'H_NJ-HCC1395-HCC1395'
+
+normal_sample_name: 'H_NJ-HCC1395-HCC1395_BL'
