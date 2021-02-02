@@ -10,7 +10,7 @@ requirements:
       ramMin: 4000
       coresMin: 1
     - class: DockerRequirement
-      dockerPull: "quay.io/biocontainers/samtools:1.11--h6270b1f_0"
+      dockerPull: "mgibio/samtools-cwl:1.0.0"
     - class: InitialWorkDirRequirement
       listing:
       - entryname: 'sanitize.sh'
@@ -31,8 +31,8 @@ requirements:
                 #non-gzipped input
                 cat "$1" | perl -a -F'\t' -ne 'print $_ if $_ =~ /^#/ || $F[3] !~ /[^ACTGNactgn]/' | sed -e "s/ALT_F1R2/ALTF1R2/g;s/ALT_F2R1/ALTF2R1/g;s/REF_F1R2/REFF1R2/g;s/REF_F2R1/REFF2R1/g" >$outbase.sanitized.vcf
             fi
-            /usr/local/bin/bgzip $outbase.sanitized.vcf
-            /usr/local/bin/tabix -p vcf $outbase.sanitized.vcf.gz
+            /opt/htslib/bin/bgzip $outbase.sanitized.vcf
+            /usr/bin/tabix -p vcf $outbase.sanitized.vcf.gz
 inputs:
     vcf:
         type: File
