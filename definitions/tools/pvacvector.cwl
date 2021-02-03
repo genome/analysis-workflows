@@ -13,7 +13,7 @@ arguments: [
     { valueFrom: " && ", shellQuote: false },
     "export", "TMPDIR=/tmp/pvacseq",
     { valueFrom: " && ", shellQuote: false },
-    "/opt/conda/bin/pvacvector",
+    "/usr/local/bin/pvacvector",
     "run",
     "--iedb-install-directory", "/opt/iedb",
     { position: 5, valueFrom: $(runtime.outdir) },
@@ -21,7 +21,7 @@ arguments: [
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:1.5.13"
+      dockerPull: "griffithlab/pvactools:2.0.0"
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: $(inputs.n_threads)
@@ -45,16 +45,26 @@ inputs:
         type: string[]
         inputBinding:
             position: 4
-    epitope_lengths:
+    epitope_lengths_class_i:
         type: int[]?
         inputBinding:
-            prefix: "-e"
+            prefix: "-e1"
+            itemSeparator: ','
+            separate: false
+    epitope_lengths_class_ii:
+        type: int[]?
+        inputBinding:
+            prefix: "-e2"
             itemSeparator: ','
             separate: false
     binding_threshold:
         type: int?
         inputBinding:
             prefix: "-b"
+    percentile_threshold:
+        type: int?
+        inputBinding:
+            prefix: "--percentile-threshold"
     top_score_metric:
         type:
             - "null"
@@ -99,6 +109,10 @@ outputs:
         type: File
         outputBinding:
             glob: "$(inputs.sample_name)_results.fa"
+    vector_dna_fasta:
+        type: File
+        outputBinding:
+            glob: "$(inputs.sample_name)_results.dna.fa"
     vector_jpg:
         type: File?
         outputBinding:

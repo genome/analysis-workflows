@@ -13,7 +13,7 @@ arguments: [
     { valueFrom: " && ", shellQuote: false },
     "export", "TMPDIR=/tmp/pvacseq",
     { valueFrom: " && ", shellQuote: false },
-    "/opt/conda/bin/pvacfuse",
+    "/usr/local/bin/pvacfuse",
     "run",
     "--iedb-install-directory", "/opt/iedb",
     { position: 5, valueFrom: $(runtime.outdir) },
@@ -21,7 +21,7 @@ arguments: [
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:1.5.13"
+      dockerPull: "griffithlab/pvactools:2.0.0"
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: $(inputs.n_threads)
@@ -47,16 +47,26 @@ inputs:
         type: string[]
         inputBinding:
             position: 4
-    epitope_lengths:
+    epitope_lengths_class_i:
         type: int[]?
         inputBinding:
-            prefix: "-e"
+            prefix: "-e1"
+            itemSeparator: ','
+            separate: false
+    epitope_lengths_class_ii:
+        type: int[]?
+        inputBinding:
+            prefix: "-e1"
             itemSeparator: ','
             separate: false
     binding_threshold:
         type: int?
         inputBinding:
             prefix: "-b"
+    percentile_threshold:
+        type: int?
+        inputBinding:
+            prefix: "--percentile-threshold"
     iedb_retries:
         type: int?
         inputBinding:
@@ -65,11 +75,6 @@ inputs:
         type: boolean?
         inputBinding:
             prefix: "-k"
-    peptide_sequence_length:
-        type: int?
-        inputBinding:
-            prefix: "-l"
-        default: 21
     net_chop_method:
         type:
             - "null"
@@ -92,6 +97,10 @@ inputs:
         type: float?
         inputBinding:
             prefix: "--net-chop-threshold"
+    run_reference_proteome_similarity:
+        type: boolean?
+        inputBinding:
+            prefix: "--run-reference-proteome-similarity"
     additional_report_columns:
         type:
             - "null"
@@ -121,35 +130,35 @@ outputs:
         type: File?
         outputBinding:
             glob: "MHC_Class_I/$(inputs.sample_name).all_epitopes.tsv"
+    mhc_i_aggregated_report:
+        type: File?
+        outputBinding:
+            glob: "MHC_Class_I/$(inputs.sample_name).all_epitopes.aggregated.tsv"
     mhc_i_filtered_epitopes:
         type: File?
         outputBinding:
             glob: "MHC_Class_I/$(inputs.sample_name).filtered.tsv"
-    mhc_i_ranked_epitopes:
-        type: File?
-        outputBinding:
-            glob: "MHC_Class_I/$(inputs.sample_name).filtered.condensed.ranked.tsv"
     mhc_ii_all_epitopes:
         type: File?
         outputBinding:
             glob: "MHC_Class_II/$(inputs.sample_name).all_epitopes.tsv"
+    mhc_ii_aggregated_report:
+        type: File?
+        outputBinding:
+            glob: "MHC_Class_II/$(inputs.sample_name).all_epitopes.aggregated.tsv"
     mhc_ii_filtered_epitopes:
         type: File?
         outputBinding:
             glob: "MHC_Class_II/$(inputs.sample_name).filtered.tsv"
-    mhc_ii_ranked_epitopes:
-        type: File?
-        outputBinding:
-            glob: "MHC_Class_II/$(inputs.sample_name).filtered.condensed.ranked.tsv"
     combined_all_epitopes:
         type: File?
         outputBinding:
             glob: "combined/$(inputs.sample_name).all_epitopes.tsv"
+    combined_aggregated_report:
+        type: File?
+        outputBinding:
+            glob: "combined/$(inputs.sample_name).all_epitopes.aggregated.tsv"
     combined_filtered_epitopes:
         type: File?
         outputBinding:
             glob: "combined/$(inputs.sample_name).filtered.tsv"
-    combined_ranked_epitopes:
-        type: File?
-        outputBinding:
-            glob: "combined/$(inputs.sample_name).filtered.condensed.ranked.tsv"
