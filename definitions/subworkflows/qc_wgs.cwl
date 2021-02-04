@@ -84,6 +84,9 @@ outputs:
     summary_hs_metrics:
         type: File[]
         outputSource: collect_hs_metrics/summary_hs_metrics
+    bamcoverage_bigwig:
+        type: File
+        outputSource: cgpbigwig_bamcoverage/outfile
 steps:
     collect_insert_size_metrics:
         run: ../tools/collect_insert_size_metrics.cwl
@@ -143,3 +146,10 @@ steps:
             summary_intervals: summary_intervals
         out:
             [per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics]
+    cgpbigwig_bamcoverage:
+        run: ../tools/bam_to_bigwig.cwl
+        in:
+            bam: bam
+            reference: reference
+        out:
+            [outfile]

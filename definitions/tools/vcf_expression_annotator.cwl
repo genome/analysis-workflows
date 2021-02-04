@@ -7,7 +7,7 @@ label: "add expression info to vcf"
 baseCommand: ["vcf-expression-annotator"]
 requirements:
     - class: DockerRequirement
-      dockerPull: "griffithlab/vatools:3.1.0"
+      dockerPull: "griffithlab/vatools:4.1.0"
     - class: ResourceRequirement
       ramMin: 4000
 arguments:

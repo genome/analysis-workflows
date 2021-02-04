@@ -18,6 +18,9 @@ inputs:
         type: Directory
     cdna_fasta:
         type: File
+    reference_fasta:
+        type: File
+        secondaryFiles: [.fai, ^.dict]
     gtf_file:
         type: File
     trimming_adapters:
@@ -46,10 +49,10 @@ inputs:
     sample_name:
         type: string
 outputs:
-    final_bam:
+    cram:
         type: File
-        outputSource: index_bam/indexed_bam
-        secondaryFiles: [.bai]
+        outputSource: index_cram/indexed_cram
+        secondaryFiles: [.crai, ^.crai]
     star_fusion_out:
         type: File
         outputSource: star_align_fusion/chim_junc
@@ -99,6 +102,9 @@ outputs:
     strand_info:
         type: File[]
         outputSource: strandedness_check/strandedness_check
+    bamcoverage_bigwig:
+        type: File
+        outputSource: cgpbigwig_bamcoverage/outfile
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
@@ -184,7 +190,7 @@ steps:
     stringtie:
         run: ../tools/stringtie.cwl
         in:
-            bam: mark_dup/sorted_bam
+            bam: index_bam/indexed_bam
             reference_annotation: gtf_file
             sample_name: sample_name
             strand: strand
@@ -196,7 +202,7 @@ steps:
             refFlat: refFlat
             ribosomal_intervals: ribosomal_intervals
             strand: strand
-            bam: mark_dup/sorted_bam
+            bam: index_bam/indexed_bam
         out:
             [metrics, chart]
     generate_multiqc:
@@ -205,3 +211,23 @@ steps:
             inputfiles_array: [generate_qc_metrics/metrics,star_align_fusion/log_final]
         out:
             [multiqc_zip, multiqc_html]
+    bam_to_cram:
+        run: ../tools/bam_to_cram.cwl
+        in:
+          reference: reference_fasta
+          bam: index_bam/indexed_bam
+        out:
+            [cram]
+    index_cram:
+        run: ../tools/index_cram.cwl
+        in:
+            cram: bam_to_cram/cram
+        out:
+            [indexed_cram]
+    cgpbigwig_bamcoverage:
+        run: ../tools/bam_to_bigwig.cwl
+        in:
+            bam: index_bam/indexed_bam
+            reference: reference_fasta
+        out:
+            [outfile]

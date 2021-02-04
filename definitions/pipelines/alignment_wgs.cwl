@@ -18,19 +18,14 @@ inputs:
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+        label: "sequence: sequencing data and readgroup information"
+        doc: |
+          sequence represents the sequencing data as either FASTQs or BAMs with accompanying
+          readgroup information. Note that in the @RG field ID and SM are required.
     trimming:
         type:
             - ../types/trimming_options.yml#trimming_options
             - "null"
-    mills:
-        type: File
-        secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
     omni_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -38,6 +33,10 @@ inputs:
         type: File
     picard_metric_accumulation_level:
         type: string
+    bqsr_known_sites:
+        type: File[]
+        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     bqsr_intervals:
         type: string[]?
     minimum_mapping_quality:
@@ -111,9 +110,7 @@ steps:
             reference: reference
             unaligned: sequence
             trimming: trimming
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             final_name: sample_name
         out: [final_bam,mark_duplicates_metrics_file]

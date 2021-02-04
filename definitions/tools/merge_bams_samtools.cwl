@@ -3,14 +3,14 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "Samtools: merge"
-baseCommand: ["/opt/samtools/bin/samtools", "merge"]
+baseCommand: ["/usr/local/bin/samtools", "merge"]
 requirements:
     - class: ResourceRequirement
       ramMin: 8000
       coresMin: 4
     - class: DockerRequirement
-      dockerPull: "mgibio/samtools-cwl:1.0.0"
-arguments: ["$(inputs.name).merged.bam", { prefix: "--threads", valueFrom: $(runtime.cores) }]
+      dockerPull: "quay.io/biocontainers/samtools:0.1.19--hfb9b9cc_8"
+arguments: ["$(inputs.name).merged.bam", { prefix: "-@", valueFrom: $(runtime.cores) }]
 inputs:
     bams:
         type: File[]

@@ -15,11 +15,19 @@ inputs:
     reference: string
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+        label: "tumor_sequence: MT sequencing data and readgroup information"
+        doc: |
+          tumor_sequence represents the sequencing data for the MT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     tumor_name:
         type: string?
         default: 'tumor'
     normal_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+        label: "normal_sequence: WT sequencing data and readgroup information"
+        doc: |
+          normal_sequence represents the sequencing data for the WT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     normal_name:
         type: string?
         default: 'normal'
@@ -28,15 +36,10 @@ inputs:
     followup_name:
         type: string?
         default: 'followup'
-    mills:
-        type: File
+    bqsr_known_sites:
+        type: File[]
         secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     bqsr_intervals:
         type: string[]
     bait_intervals:
@@ -79,8 +82,9 @@ inputs:
     strelka_cpu_reserved:
         type: int?
         default: 8
-    mutect_scatter_count:
+    scatter_count:
         type: int
+        doc: "scatters each supported variant detector (varscan, pindel, mutect) into this many parallel jobs"
     varscan_strand_filter:
         type: int?
         default: 0
@@ -362,9 +366,7 @@ steps:
         in:
             reference: reference
             sequence: normal_sequence
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -385,9 +387,7 @@ steps:
         in:
             reference: reference
             sequence: tumor_sequence
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -408,9 +408,7 @@ steps:
         in:
             reference: reference
             sequence: followup_sequence
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -446,7 +444,7 @@ steps:
             strelka_exome_mode:
                 default: true
             strelka_cpu_reserved: strelka_cpu_reserved
-            mutect_scatter_count: mutect_scatter_count
+            scatter_count: scatter_count
             varscan_strand_filter: varscan_strand_filter
             varscan_min_coverage: varscan_min_coverage
             varscan_min_var_freq: varscan_min_var_freq

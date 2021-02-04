@@ -7,6 +7,9 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
+          - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
+    - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
@@ -15,20 +18,36 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
-    tumor_bams:
-        type: File[]
-    tumor_readgroups:
-        type: string[]
+    tumor_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
+        label: "tumor_sequence: MT sequencing data and readgroup information"
+        doc: |
+          tumor_sequence represents the sequencing data for the MT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     tumor_name:
         type: string?
         default: 'tumor'
-    normal_bams:
-        type: File[]
-    normal_readgroups:
-        type: string[]
+        label: "tumor_name: String specifying the name of the MT sample"
+        doc: |
+          tumor_name provides a string for what the MT sample will be referred to in the various
+          outputs, for example the VCF files.
+    normal_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
+        label: "normal_sequence: WT sequencing data and readgroup information"
+        doc: |
+          normal_sequence represents the sequencing data for the WT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     normal_name:
         type: string?
         default: 'normal'
+        label: "normal_name: String specifying the name of the WT sample"
+        doc: |
+          normal_name provides a string for what the WT sample will be referred to in the various
+          outputs, for example the VCF files.
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
     bait_intervals:
         type: File
     target_intervals:
@@ -63,8 +82,9 @@ inputs:
     strelka_cpu_reserved:
         type: int?
         default: 8
-    mutect_scatter_count:
+    scatter_count:
         type: int
+        doc: "scatters each supported variant detector (varscan, pindel, mutect) into this many parallel jobs"
     varscan_strand_filter:
         type: int?
         default: 0
@@ -262,8 +282,8 @@ steps:
         run: alignment_exome_nonhuman.cwl
         in:
             reference: reference
-            bams: tumor_bams
-            readgroups: tumor_readgroups
+            sequence: tumor_sequence
+            trimming: trimming
             bait_intervals: bait_intervals
             target_intervals: target_intervals
             per_base_intervals: per_base_intervals
@@ -281,8 +301,8 @@ steps:
         run: alignment_exome_nonhuman.cwl
         in:
             reference: reference
-            bams: normal_bams
-            readgroups: normal_readgroups
+            sequence: normal_sequence
+            trimming: trimming
             bait_intervals: bait_intervals
             target_intervals: target_intervals
             per_base_intervals: per_base_intervals
@@ -313,7 +333,7 @@ steps:
             strelka_exome_mode:
                 default: true
             strelka_cpu_reserved: strelka_cpu_reserved
-            mutect_scatter_count: mutect_scatter_count
+            scatter_count: scatter_count
             varscan_strand_filter: varscan_strand_filter
             varscan_min_coverage: varscan_min_coverage
             varscan_min_var_freq: varscan_min_var_freq

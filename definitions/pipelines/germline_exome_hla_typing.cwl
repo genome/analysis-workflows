@@ -18,15 +18,14 @@ inputs:
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-    mills:
-        type: File
+        label: "sequence: sequencing data and readgroup information"
+        doc: |
+          sequence represents the sequencing data as either FASTQs or BAMs with accompanying
+          readgroup information. Note that in the @RG field ID and SM are required.
+    bqsr_known_sites:
+        type: File[]
         secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     bqsr_intervals:
         type: string[]?
     bait_intervals:
@@ -154,9 +153,7 @@ steps:
         in:
             reference: reference
             sequence: sequence
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals

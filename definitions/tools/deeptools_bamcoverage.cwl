@@ -44,7 +44,7 @@ inputs:
         type: string?
         inputBinding:
             prefix: '-r'
-    blacklist_file:
+    blocklist_file:
         type: File?
         inputBinding:
             prefix: '-bl'

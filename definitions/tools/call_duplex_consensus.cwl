@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: 'call duplex consensus'
-baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/fgbio-0.5.0.jar", "CallDuplexConsensusReads"]
+baseCommand: ["/usr/local/bin/fgbio", "CallDuplexConsensusReads"]
 arguments:
     ["--error-rate-pre-umi", "45", "--error-rate-post-umi", "30", "--min-input-base-quality", "30",
     "--output", { valueFrom: "$(runtime.outdir)/consensus_unaligned.bam"} ]
@@ -12,7 +12,7 @@ requirements:
       ramMin: 6000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: mgibio/dna-alignment:1.0.0
+      dockerPull: quay.io/biocontainers/fgbio:1.3.0--0
 inputs:
     bam:
         type: File

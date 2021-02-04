@@ -19,23 +19,26 @@ inputs:
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+        label: "tumor_sequence: MT sequencing data and readgroup information"
+        doc: |
+          tumor_sequence represents the sequencing data for the MT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     tumor_cram_name:
         type: string?
         default: 'tumor.cram'
     normal_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+        label: "normal_sequence: WT sequencing data and readgroup information"
+        doc: |
+          normal_sequence represents the sequencing data for the WT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     normal_cram_name:
         type: string?
         default: 'normal.cram'
-    mills:
-        type: File
+    bqsr_known_sites:
+        type: File[]
         secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     bqsr_intervals:
         type: string[]
     bait_intervals:
@@ -75,8 +78,9 @@ inputs:
     strelka_cpu_reserved:
         type: int?
         default: 8
-    mutect_scatter_count:
+    scatter_count:
         type: int
+        doc: "scatters each supported variant detector (varscan, pindel, mutect) into this many parallel jobs"
     mutect_artifact_detection_mode:
         type: boolean
     mutect_max_alt_allele_in_normal_fraction:
@@ -167,10 +171,10 @@ inputs:
         type: string
     normal_sample_name:
         type: string
-    known_variants:
+    validated_variants:
         type: File?
         secondaryFiles: [.tbi]
-        doc: "Previously discovered variants to be flagged in this pipelines's output vcf"
+        doc: "An optional VCF with variants that will be flagged as 'VALIDATED' if found in this pipeline's main output VCF"
 outputs:
     final_outputs:
         type: string[]
@@ -184,9 +188,7 @@ steps:
             tumor_cram_name: tumor_cram_name
             normal_sequence: normal_sequence
             normal_cram_name: normal_cram_name
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -199,7 +201,7 @@ steps:
             qc_minimum_mapping_quality: qc_minimum_mapping_quality
             qc_minimum_base_quality: qc_minimum_base_quality
             strelka_cpu_reserved: strelka_cpu_reserved
-            mutect_scatter_count: mutect_scatter_count
+            scatter_count: scatter_count
             mutect_artifact_detection_mode: mutect_artifact_detection_mode
             mutect_max_alt_allele_in_normal_fraction: mutect_max_alt_allele_in_normal_fraction
             mutect_max_alt_alleles_in_normal_count: mutect_max_alt_alleles_in_normal_count
@@ -229,7 +231,7 @@ steps:
             somalier_vcf: somalier_vcf
             tumor_sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name
-            known_variants: known_variants
+            validated_variants: validated_variants
         out:
             [tumor_cram, tumor_mark_duplicates_metrics, tumor_insert_size_metrics, tumor_alignment_summary_metrics, tumor_hs_metrics, tumor_per_target_coverage_metrics, tumor_per_base_coverage_metrics, tumor_per_base_hs_metrics, tumor_summary_hs_metrics, tumor_flagstats, tumor_verify_bam_id_metrics, tumor_verify_bam_id_depth, normal_cram, normal_mark_duplicates_metrics, normal_insert_size_metrics, normal_alignment_summary_metrics, normal_hs_metrics, normal_per_target_coverage_metrics, normal_per_target_hs_metrics, normal_per_base_coverage_metrics, normal_per_base_hs_metrics, normal_summary_hs_metrics, normal_flagstats, normal_verify_bam_id_metrics, normal_verify_bam_id_depth, mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv, somalier_concordance_metrics, somalier_concordance_statistics]
     gatherer:

@@ -30,8 +30,9 @@ inputs:
         type: int?
     readcount_minimum_mapping_quality:
         type: int?
-    mutect_scatter_count:
+    scatter_count:
         type: int?
+        doc: "scatters each supported variant detector (varscan, pindel, mutect) into this many parallel jobs"
     varscan_strand_filter:
         type: int?
         default: 0
@@ -120,10 +121,10 @@ inputs:
     vep_custom_annotations:
         type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
         doc: "custom type, check types directory for input format"
-    known_variants:
+    validated_variants:
         type: File?
         secondaryFiles: [.tbi]
-        doc: "Previously discovered variants to be flagged in this pipelines's output vcf"
+        doc: "An optional VCF with variants that will be flagged as 'VALIDATED' if found in this pipeline's main output VCF"
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -187,7 +188,7 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             interval_list: roi_intervals
-            scatter_count: mutect_scatter_count
+            scatter_count: scatter_count
             tumor_sample_name: tumor_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
@@ -211,6 +212,7 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             interval_list: roi_intervals
+            scatter_count: scatter_count
             strand_filter: varscan_strand_filter
             min_coverage: varscan_min_coverage
             min_var_freq: varscan_min_var_freq
@@ -358,7 +360,7 @@ steps:
                     }
                     return('gnomAD_AF');
                 }
-            known_variants: known_variants
+            validated_variants: validated_variants
         out: 
             [filtered_vcf]
     annotated_filter_bgzip:
