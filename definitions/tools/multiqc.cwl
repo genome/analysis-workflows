@@ -5,12 +5,10 @@ class: CommandLineTool
 label: "multiqc"
 baseCommand: ["/usr/local/bin/multiqc"]
 requirements:
-    - class: ShellCommandRequirement
     - class: ResourceRequirement
       ramMin: 4000  
     - class: DockerRequirement
       dockerPull: "mgibio/multiqc:1.9"
-    - class: StepInputExpressionRequirement
 
 arguments: [
     "--zip-data-dir",
@@ -19,8 +17,9 @@ arguments: [
 ]
  
 inputs:
-  inputfiles_array:
+  qc_source_files:
     type: File[]
+    doc: | "path to file or dir that is supported here https://multiqc.info/#supported-tools"
     inputBinding:
         position: 2
   

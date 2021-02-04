@@ -208,7 +208,7 @@ steps:
     generate_multiqc:
         run: ../tools/multiqc.cwl
         in:
-            inputfiles_array: [generate_qc_metrics/metrics,star_align_fusion/log_final]
+            qc_source_files: [generate_qc_metrics/metrics,star_align_fusion/log_final]
         out:
             [multiqc_zip, multiqc_html]
     bam_to_cram:
