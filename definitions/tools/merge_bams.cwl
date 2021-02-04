@@ -43,7 +43,7 @@ requirements:
                 cp "$BAMS" "$OUTFILENAME";
             else
                 if [[ $SORTED == "true" ]];then
-                    /usr/bin/sambamba merge -t "$NTHREADS" "$OUTFILENAME" "$BAMS"
+                    /usr/bin/sambamba merge -t "$NTHREADS" "$OUTFILENAME" "${BAMS[@]}"
                 else #unsorted bams, use picard
                     args=(OUTPUT="$OUTFILENAME" ASSUME_SORTED=true USE_THREADING=true SORT_ORDER=unsorted VALIDATION_STRINGENCY=LENIENT)
                     for i in "${BAMS[@]}";do
