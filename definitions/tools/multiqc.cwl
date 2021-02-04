@@ -19,7 +19,8 @@ arguments: [
 inputs:
   qc_source_files:
     type: File[]
-    doc: | "path to file or dir that is supported here https://multiqc.info/#supported-tools"
+    doc: | 
+         path to file or dir that is supported here https://multiqc.info/#supported-tools
     inputBinding:
         position: 2
   
