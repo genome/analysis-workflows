@@ -7,21 +7,37 @@ requirements:
     - class: ResourceRequirement
       ramMin: 6000
     - class: DockerRequirement
-      dockerPull: mgibio/cle:v1.3.1
+      dockerPull: broadinstitute/picard:2.24.2
     - class: InitialWorkDirRequirement
       listing:
       - entryname: 'split_interval_list_helper.pl'
         entry: |
             use File::Copy;
 
-            my $retval = system('/usr/bin/java', '-jar', '/usr/picard/picard.jar', 'IntervalListTools', @ARGV);
-            exit $retval if $retval != 0;
-
             my $i = 1;
-            for(glob('*/scattered.interval_list')) {
-                #create unique names and relocate all the scattered intervals to a single directory
-                File::Copy::move($_, qq{$i.interval_list});
-                $i++
+
+            my ($scatter_count_arg) = grep{ /^SCATTER_COUNT=\d+$/ } @ARGV;
+
+            # If only 1 scatter count is defined, only copy the file
+            if ($scatter_count_arg && $scatter_count_arg =~ /^SCATTER_COUNT=(\d+)$/) {
+                my $scatter_count = $1;
+                if ($scatter_count == 1) {
+                    my ($input_arg) = grep{ /^INPUT=.*$/ } @ARGV;
+                    if ($input_arg && $input_arg =~ /^INPUT=(.*)$/) {
+                        my $input = $1;
+                        File::Copy::move($input,qq{$i.interval_list});
+                    }
+                }
+            } else {
+
+                my $retval = system('/usr/bin/java', '-jar', '/usr/picard/picard.jar', 'IntervalListTools', @ARGV);
+                exit $retval if $retval != 0;
+
+                for(glob('*/scattered.interval_list')) {
+                    #create unique names and relocate all the scattered intervals to a single directory
+                    File::Copy::move($_, qq{$i.interval_list});
+                    $i++
+                }
             }
 
 arguments:
