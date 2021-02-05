@@ -19,7 +19,6 @@ requirements:
             
             my $i = 1;
 
-            # If only 1 scatter count is defined, only copy the file
             if ($scatter_count == 1) {
                 File::Copy::move($interval_list,qq{$i.interval_list});
             } else {
