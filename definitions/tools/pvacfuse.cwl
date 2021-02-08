@@ -55,7 +55,7 @@ inputs:
     epitope_lengths_class_ii:
         type: int[]?
         inputBinding:
-            prefix: "-e1"
+            prefix: "-e2"
             itemSeparator: ','
     binding_threshold:
         type: int?
