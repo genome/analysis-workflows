@@ -51,13 +51,11 @@ inputs:
         inputBinding:
             prefix: "-e1"
             itemSeparator: ','
-            separate: false
     epitope_lengths_class_ii:
         type: int[]?
         inputBinding:
             prefix: "-e2"
             itemSeparator: ','
-            separate: false
     binding_threshold:
         type: int?
         inputBinding:
