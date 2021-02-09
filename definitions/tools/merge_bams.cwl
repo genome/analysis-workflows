@@ -21,13 +21,10 @@ requirements:
 
             SORTED=false
 
-            while getopts "t:m:n:s:" opt; do
+            while getopts "t:n:s:" opt; do
                 case "$opt" in
                     t)
                         NTHREADS="$OPTARG"
-                        ;;
-                    m)
-                        MEM="$OPTARG"
                         ;;
                     n)
                         OUTFILENAME="$OPTARG"
@@ -52,7 +49,7 @@ requirements:
                     for i in "${BAMS[@]}";do
                       args+=("INPUT=$i")
                     done
-                    java -jar /opt/picard/picard.jar MergeSamFiles "${args[@]}"
+                    java -jar -Xmx6g /opt/picard/picard.jar MergeSamFiles "${args[@]}"
                 fi
             fi
             if [[ $SORTED == "true" ]];then
@@ -61,7 +58,6 @@ requirements:
 
 arguments: [
     "-t", "$(runtime.cores)",
-    "-m", "$(runtime.ram)",
 ]
 inputs:
     bams:
