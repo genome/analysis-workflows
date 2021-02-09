@@ -16,7 +16,7 @@ requirements:
 
             die "wrong number of inputs" unless scalar(@ARGV) == 3;
             my ($output_dir, $interval_list, $scatter_count) = @ARGV;
-            
+
             my $i = 1;
 
             if ($scatter_count == 1) {
