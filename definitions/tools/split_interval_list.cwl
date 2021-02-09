@@ -20,7 +20,7 @@ requirements:
             my $i = 1;
 
             if ($scatter_count == 1) {
-                File::Copy::move($interval_list,qq{$i.interval_list});
+                File::Copy::copy($interval_list,qq{$i.interval_list});
             } else {
 
                 my $retval = system('/usr/bin/java', '-jar', '/usr/picard/picard.jar', 'IntervalListTools', 'OUTPUT='.$output_dir, 'INPUT='.$interval_list, 'SCATTER_COUNT='. $scatter_count);
