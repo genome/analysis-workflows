@@ -1,4 +1,4 @@
 interval_list:
   class: File
-  path: test.interval_list
+  path: detect_variants/chr22.interval_list
 scatter_count: 10
