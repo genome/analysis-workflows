@@ -1,0 +1,4 @@
+interval_list:
+  class: File
+  path: test.interval_list
+scatter_count: 10
