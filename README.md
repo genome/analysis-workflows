@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/genome/analysis-workflows.svg?branch=master)](https://travis-ci.org/genome/analysis-workflows)
 
+![Warning](https://i.imgur.com/rv5wL3F.jpg)  Several of these workflows are temporarily non-functional as we make breaking changes leading up to our 2.0 release. For stable pipelines, please use the [1.5 release](https://github.com/genome/analysis-workflows/releases/tag/v1.5.0). We expect these issues to be addressed in the the next two weeks.
+
 # analysis-workflows
 
 ## Overview
