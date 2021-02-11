@@ -131,16 +131,22 @@ steps:
             bams: bam_to_trimmed_fastq_and_hisat_alignments/aligned_bam
         out:
             [merged_bam]
+    position_sort:
+        run: ../tools/position_sort.cwl
+        in:
+            bam: merge/merged_bam
+        out:
+            [position_sorted_bam]
     index_bam:
         run: ../tools/index_bam.cwl
         in:
-            bam: merge/merged_bam
+            bam: position_sort/position_sorted_bam
         out:
             [indexed_bam]
     mark_dup:
         run: ../tools/mark_duplicates_and_sort.cwl
         in:
-            bam: merge/merged_bam
+            bam: index_bam/indexed_bam
             input_sort_order: 
                 default: "coordinate"
         out:
