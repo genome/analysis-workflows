@@ -280,16 +280,18 @@ inputs:
         type: int?
     prediction_algorithms:
         type: string[]
-    epitope_lengths:
+    epitope_lengths_class_i:
+        type: int[]?
+    epitope_lengths_class_ii:
         type: int[]?
     binding_threshold:
+        type: int?
+    percentile_threshold:
         type: int?
     allele_specific_binding_thresholds:
         type: boolean?
     minimum_fold_change:
         type: float?
-    peptide_sequence_length:
-        type: int?
     top_score_metric:
         type:
             - "null"
@@ -348,6 +350,11 @@ inputs:
         label: "netmhc_stab: sets an option whether to run  NetMHCStabPan or not"
         doc: |
           netmhc_stab sets an option that decides whether it will run NetMHCStabPan after all filtering and add stability predictions to predicted epitopes.
+    run_reference_proteome_similarity:
+        type: boolean?
+        label: "run_reference_proteome_similarity: sets an option whether to run reference proteome similarity or not"
+        doc: |
+          run_reference_proteome_similarity sets an option that decides whether it will run reference proteome similarity after all filtering and BLAST peptide sequences against the reference proteome to see if they appear elsewhere in the proteome.
     pvacseq_threads:
         type: int?
         label: "pvacseq_threads: Number of threads to use for parallelizing pvacseq prediction"
@@ -935,11 +942,12 @@ steps:
             transcript_expression_file: rnaseq/transcript_abundance_tsv
             alleles: hla_consensus/consensus_alleles
             prediction_algorithms: prediction_algorithms
-            epitope_lengths: epitope_lengths
+            epitope_lengths_class_i: epitope_lengths_class_i
+            epitope_lengths_class_ii: epitope_lengths_class_ii
             binding_threshold: binding_threshold
+            percentile_threshold: percentile_threshold
             allele_specific_binding_thresholds: allele_specific_binding_thresholds
             minimum_fold_change: minimum_fold_change
-            peptide_sequence_length: peptide_sequence_length
             top_score_metric: top_score_metric
             additional_report_columns: additional_report_columns
             fasta_size: fasta_size
@@ -957,6 +965,7 @@ steps:
             net_chop_method: net_chop_method
             net_chop_threshold: net_chop_threshold
             netmhc_stab: netmhc_stab
+            run_reference_proteome_similarity: run_reference_proteome_similarity
             n_threads: pvacseq_threads
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
