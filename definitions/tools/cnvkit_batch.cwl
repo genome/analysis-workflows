@@ -13,6 +13,21 @@ requirements:
       ramMin: 4000
       tmpdirMin: 10000
     - class: InlineJavascriptRequirement
+
+doc: |
+    Note: cnvkit batch is a complex command that is capable of running all or part of the cnvkit internal
+    pipeline, depending on the combination of inputs provided to it. In order to take advantage of this,
+    most inputs to this cwl are optional, so that different workflows can use different forms of the
+    command while still using a single cwl file. For further reading, see the relevant cnvkit docs at
+    https://cnvkit.readthedocs.io/en/stable/quickstart.html#build-a-reference-from-normal-samples-and-infer-tumor-copy-ratios
+    https://cnvkit.readthedocs.io/en/stable/pipeline.html#batch
+    In our pipelines, the command form is mainly determined by the components of the reference input. The
+    somatic_exome cwl pipeline provides a fasta file and a normal bam, which causes the batch pipeline to
+    construct a copy number reference (.cnn file) based on the normal bam. The germline_wgs cwl pipeline
+    does not provide a normal bam; instead it passes a cnn reference file as an optional input. This file
+    is intended to be manually generated from a reference normal sample for use in the pipeline. If it is
+    not provided, cnvkit will automatically generate a flat reference file.
+
 arguments: [{ valueFrom: "$((inputs.reference.hasOwnProperty('cnn_file'))? null : '--normal')" }]
 inputs:
     tumor_bam:
