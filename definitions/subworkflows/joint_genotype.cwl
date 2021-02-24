@@ -43,7 +43,7 @@ inputs:
         doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
     vep_plugins:
         type: string[]
-        default: [Downstream, Wildtype]
+        default: [Frameshift, Wildtype]
     synonyms_file:
         type: File?
     annotate_coding_only:

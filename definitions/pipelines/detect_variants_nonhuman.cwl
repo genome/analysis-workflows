@@ -74,7 +74,7 @@ inputs:
               symbols: ["pick", "flag_pick", "pick_allele", "per_gene", "pick_allele_gene", "flag_pick_allele", "flag_pick_allele_gene"]
     vep_plugins:
         type: string[]
-        default: [Downstream, Wildtype]
+        default: [Frameshift, Wildtype]
     filter_mapq0_threshold:
         type: float
         default: 0.15
