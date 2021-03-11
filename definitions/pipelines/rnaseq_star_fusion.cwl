@@ -18,7 +18,7 @@ inputs:
         type: Directory
     cdna_fasta:
         type: File
-    reference_fasta:
+    reference:
         type: File
         secondaryFiles: [.fai, ^.dict]
     gtf_file:
@@ -183,7 +183,7 @@ steps:
     stringtie:
         run: ../tools/stringtie.cwl
         in:
-            bam: index_bam/indexed_bam
+            bam: mark_dup/sorted_bam
             reference_annotation: gtf_file
             sample_name: sample_name
             strand: strand
@@ -195,13 +195,13 @@ steps:
             refFlat: refFlat
             ribosomal_intervals: ribosomal_intervals
             strand: strand
-            bam: index_bam/indexed_bam
+            bam: mark_dup/sorted_bam
         out:
             [metrics, chart]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
-          reference: reference_fasta
+          reference: reference
           bam: index_bam/indexed_bam
         out:
             [cram]
@@ -214,7 +214,7 @@ steps:
     cgpbigwig_bamcoverage:
         run: ../tools/bam_to_bigwig.cwl
         in:
-            bam: index_bam/indexed_bam
-            reference: reference_fasta
+            bam: mark_dup/sorted_bam
+            reference: reference
         out:
             [outfile]
