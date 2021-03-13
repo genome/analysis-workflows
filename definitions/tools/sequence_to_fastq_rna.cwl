@@ -24,12 +24,15 @@ requirements:
             while getopts "b:?1:?2:n" opt; do
                 case "$opt" in
                     b)
+                        MODE=bam
                         BAM="$OPTARG"
                         ;;
                     1)
+                        MODE=fastq
                         FASTQ1="$OPTARG"
                         ;;
                     2)  
+                        MODE=fastq
                         FASTQ2="$OPTARG"
                         ;;
                     n)
