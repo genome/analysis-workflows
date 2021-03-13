@@ -7,9 +7,16 @@ requirements:
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: InlineJavascriptRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/sequence_data.yml
+
 inputs:
-    bam:
-        type: File
+    sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
+        doc: "the unaligned sequence data with readgroup information"
+    #bam:
+    #     type: File
     adapters:
         type: File
     adapter_trim_end:
@@ -34,9 +41,9 @@ outputs:
 
 steps:
     bam_to_fastq:
-        run: ../tools/bam_to_fastq.cwl
-        in:
-            bam: bam
+        run ../tools/sequence_to_fastq.cwl
+        in: 
+            sequence: sequence
         out:
             [fastq1, fastq2]
     trim_fastq:
