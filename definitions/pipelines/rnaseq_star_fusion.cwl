@@ -7,9 +7,17 @@ requirements:
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: ScatterFeatureRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/sequence_data.yml
 inputs:
-    instrument_data_bams:
-        type: File[]
+    # instrument_data_bams:
+    #    type: File[]
+    sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
+        doc: |
+          sequence represents the sequencing data as either FASTQs or BAMs with accompanying
+          readgroup information. Note that in the @RG field ID and SM are required.
     outsam_attrrg_line:
         type: string[]
     star_genome_dir:
@@ -104,7 +112,9 @@ steps:
         scatter: [bam]
         scatterMethod: dotproduct
         in:
-            bam: instrument_data_bams
+            sequence:
+            type: ../types/sequence_data.yml#sequence_data[]
+            doc: "the unaligned sequence data with readgroup information"
             adapters: trimming_adapters
             adapter_trim_end: trimming_adapter_trim_end
             adapter_min_overlap: trimming_adapter_min_overlap
