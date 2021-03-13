@@ -104,8 +104,8 @@ outputs:
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
-        scatter: [bam]
-        scatterMethod: dotproduct
+        #scatter: [bam]
+        #scatterMethod: dotproduct
         in:
             sequence: sequence
             adapters: trimming_adapters
