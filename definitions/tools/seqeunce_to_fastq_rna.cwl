@@ -49,7 +49,7 @@ requirements:
 arguments: [
     "-b", {valueFrom: "$(self.sequence.hasOwnProperty('bam')? self.sequence.bam : null)"},
     "-1", {valueFrom: "$(self.sequence.hasOwnProperty('fastq1')? self.sequence.fastq1 : null)"},
-    "-2", {valueFrom: "$(self.sequence.hasOwnProperty('fastq2')? self.sequence.fastq2 : null)",
+    "-2", {valueFrom: "$(self.sequence.hasOwnProperty('fastq2')? self.sequence.fastq2 : null)"},
     {valueFrom: $(runtime.outdir), position: -8, prefix: '-d'}
 ]
 inputs:
