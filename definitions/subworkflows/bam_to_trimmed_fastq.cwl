@@ -41,7 +41,9 @@ outputs:
 
 steps:
     bam_to_fastq:
-        run ../tools/sequence_to_fastq.cwl
+        scatter: [sequence]
+        scatterMethod: dotproduct
+        run ../tools/sequence_to_fastq_rna.cwl
         in: 
             sequence: sequence
         out:
