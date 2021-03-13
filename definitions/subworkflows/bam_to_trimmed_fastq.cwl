@@ -7,6 +7,7 @@ requirements:
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: InlineJavascriptRequirement
+    - class: ScatterFeatureRequirement
     - class: SchemaDefRequirement
       types:
           - $import: ../types/sequence_data.yml
