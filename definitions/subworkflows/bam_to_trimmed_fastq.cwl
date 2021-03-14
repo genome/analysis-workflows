@@ -16,7 +16,6 @@ requirements:
 inputs:
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-        doc: "the unaligned sequence data with readgroup information"
     #bam:
     #     type: File
     adapters:
@@ -43,7 +42,7 @@ outputs:
 
 steps:
     bam_to_fastq:
-        scatter: [sequence]
+        scatter: sequence
         scatterMethod: dotproduct
         run: ../tools/sequence_to_fastq_rna.cwl
         in: 
