@@ -103,9 +103,10 @@ outputs:
         outputSource: cgpbigwig_bamcoverage/outfile
 steps:
     bam_to_trimmed_fastq:
+        
+        scatter: [sequence]
+        scatterMethod: dotproduct
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
-        #scatter: [bam]
-        #scatterMethod: dotproduct
         in:
             sequence: sequence
             adapters: trimming_adapters
