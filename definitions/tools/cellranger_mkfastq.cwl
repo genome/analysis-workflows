@@ -4,12 +4,12 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Run Cell Ranger mkfastq"
 
-baseCommand: ["/apps/cellranger-4.0.0/cellranger", "mkfastq", "--id=cellranger_output"]
+baseCommand: ["/apps/cellranger-6.0.0/cellranger", "mkfastq", "--id=cellranger_output"]
 arguments: ["--localcores=$(runtime.cores)", "--localmem=$(runtime.ram/1000)"]
 
 requirements:
     - class: DockerRequirement
-      dockerPull: "registry.gsc.wustl.edu/alex.paul/cellranger:4.0.0"
+      dockerPull: "registry.gsc.wustl.edu/alex.paul/cellranger:6.0.0"
     - class: ResourceRequirement
       ramMin: 64000
       coresMin: 8
