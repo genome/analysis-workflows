@@ -3,24 +3,33 @@ instrument_data_bams:
       path: gerald_H3MYFBBXX_4_GCCAAT_1k.bam
     - class: File
       path: gerald_H3MYFBBXX_5_GCCAAT_1k.bam
+reference: /gscmnt/gc2560/core/model_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/all_sequences.fa
 reference_index:
-    class: File
-    path: /gscmnt/gc2560/core/GRC-human-build38_human_90_38/rna_seq_annotation/hisat2.1.0_index/GRCh38DH
+  class: File
+  path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/hisat2.1.0_index/GRCh38DH
 reference_annotation:
-    class: File
-    path: /gscmnt/gc2560/core/GRC-human-build38_human_90_38/rna_seq_annotation/Homo_sapiens.GRCh38DH.90.gtf
+  class: File
+  path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.95.gtf
 kallisto_index:
   class: File
-  path: /gscmnt/gc2560/core/GRC-human-build38_human_90_38/rna_seq_annotation/Homo_sapiens.GRCh38.cdna.all.fa.kallisto.idx
+  path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.cdna.all.fa.kallisto.idx
 gene_transcript_lookup_table:
   class: File
-  path: /gscmnt/gc2560/core/GRC-human-build38_human_90_38/rna_seq_annotation/ensembl90.transcriptToGene.tsv
+  path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/ensembl95.transcriptToGene.tsv
 read_group_id:
     - '2895626107'
     - '2895626112'
 read_group_fields:
-    - ['PU:H3MYFBBXX5.4.GCCAAT', 'SM:H_NJ-HCC1395-HCC1395_RNA', 'LB:Pooled_RNA_2891007020-cD1-lib1', 'PL:Illumina', 'CN:WUGSC']
-    - ['PU:H3MYFBBXX5.5.GCCAAT', 'SM:H_NJ-HCC1395-HCC1395_RNA', 'LB:Pooled_RNA_2891007020-cD1-lib1', 'PL:Illumina', 'CN:WUGSC']
+- - PU:H3MYFBBXX.4
+  - SM:H_NJ-HCC1395-HCC1395_RNA
+  - LB:Pooled_RNA_2891007020-cD1-lib1
+  - PL:Illumina
+  - CN:WUGSC
+- - PU:H3MYFBBXX.5
+  - SM:H_NJ-HCC1395-HCC1395_RNA
+  - LB:Pooled_RNA_2891007020-cD1-lib1
+  - PL:Illumina
+  - CN:WUGSC
 trimming_adapters:
     class: File
     path: illumina_multiplex.fa
@@ -29,11 +38,12 @@ trimming_adapter_min_overlap: 7
 trimming_max_uncalled: 300
 trimming_min_readlength: 25
 sample_name: H_NJ-HCC1395-HCC1395_RNA
-firststrand: TRUE
+strand: first
 refFlat:
-    class: File
-    path: /gscmnt/gc2560/core/GRC-human-build38_human_90_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.90.refFlat.txt
+  class: File
+  path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.95.refFlat.txt
 ribosomal_intervals:
-    class: File
-    path: /gscmnt/gc2560/core/GRC-human-build38_human_90_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.90.rRNA.interval_list
-strand: "second"
+  class: File
+  path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.95.ribo_intervals
+species: homo_sapiens
+assembly: GRCh38

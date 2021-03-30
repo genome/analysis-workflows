@@ -73,6 +73,9 @@ The following WUSM collaborators have provided significant contributions in term
 * [Institue of Clinical and Translational Sciences](https://icts.wustl.edu/)
 * [McDonnell Genome Institute](https://www.genome.wustl.edu/)
 
+### Partners
+* [Docker](https://www.docker.com/) 
+* [Docker Blog post mentioning Washington University School of Medicine](https://www.docker.com/blog/dockers-next-chapter-our-first-year/)
 
 [![DOI](https://zenodo.org/badge/64162512.svg)](https://zenodo.org/badge/latestdoi/64162512)
 

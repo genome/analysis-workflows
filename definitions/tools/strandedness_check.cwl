@@ -25,7 +25,7 @@ requirements:
       tmpdirMin: 5000
       coresMin: 1
     - class: DockerRequirement
-      dockerPull: "smk5g5/checkstranded:version1.0"
+      dockerPull: "mgibio/checkstrandedness:v1"
 inputs:
     gtf_file:
         type: File

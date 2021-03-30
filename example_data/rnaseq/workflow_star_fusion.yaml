@@ -41,6 +41,6 @@ refFlat:
 cdna_fasta:
     class: File
     path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.cdna.all.fa.gz
-reference_fasta:
-    class: gtf_file
+reference:
+    class: File
     path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/star_2.7.0f_index/all_sequences.fa

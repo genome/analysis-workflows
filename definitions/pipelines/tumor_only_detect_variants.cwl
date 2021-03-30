@@ -75,7 +75,7 @@ inputs:
         default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,gnomADe_AF,CLIN_SIG,SOMATIC,PHENO]
     vep_plugins:
         type: string[]
-        default: [Downstream, Wildtype]
+        default: [Frameshift, Wildtype]
     sample_name:
         type: string
     docm_vcf:
