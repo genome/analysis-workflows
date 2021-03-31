@@ -134,7 +134,8 @@ steps:
     position_sort:
         run: ../tools/samtools_sort.cwl
         in:
-            bam: merge/merged_bam
+            output_filename: position_sorted_bam
+            input_bam: merge/merged_bam
         out:
             [position_sorted_bam]
     index_bam:
