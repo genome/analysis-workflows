@@ -132,7 +132,7 @@ steps:
         out:
             [merged_bam]
     position_sort:
-        run: ../tools/position_sort.cwl
+        run: ../tools/samtools_sort.cwl
         in:
             bam: merge/merged_bam
         out:
