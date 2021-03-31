@@ -3,23 +3,23 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "HISAT2: align"
-baseCommand: ["/usr/bin/hisat2"]
+baseCommand: ["/usr/local/bin/hisat2"]
 requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: 16
     - class: DockerRequirement
-      dockerPull: "mgibio/rnaseq:1.0.0"
+      dockerPull: "mgibio/hisat2-sambamba:0.1"
     - class: StepInputExpressionRequirement
 
 arguments: [
     "-p", $(runtime.cores),
     "--dta",
     { shellQuote: false, valueFrom: "|" },
-    "/usr/bin/sambamba", "view", "-S", "-f", "bam", "-l", "0", "/dev/stdin",
+    "/usr/local/bin/sambamba", "view", "-S", "-f", "bam", "-l", "0", "/dev/stdin",
     { shellQuote: false, valueFrom: "|" },
-    "/usr/bin/sambamba", "sort", "-t", $(runtime.cores), "-m", "8G", "-o", "$(runtime.outdir)/aligned.bam", "/dev/stdin"
+    "/usr/local/bin/sambamba", "sort", "-t", $(runtime.cores), "-m", "8G", "-o", "$(runtime.outdir)/aligned.bam", "/dev/stdin"
 ]
 inputs:
     reference_index:
