@@ -282,8 +282,7 @@ steps:
         run: ../tools/bam_readcount.cwl
         in:
             vcf: annotate_variants/annotated_vcf
-            sample:
-                default: 'TUMOR'
+            sample: tumor_sample_name
             reference_fasta: reference
             bam: tumor_bam
             min_base_quality: readcount_minimum_base_quality
@@ -294,8 +293,7 @@ steps:
         run: ../tools/bam_readcount.cwl
         in:
             vcf: annotate_variants/annotated_vcf
-            sample:
-                default: 'NORMAL'
+            sample: normal_sample_name
             reference_fasta: reference
             bam: normal_bam
             min_base_quality: readcount_minimum_base_quality
@@ -310,8 +308,7 @@ steps:
             indel_bam_readcount_tsv: tumor_bam_readcount/indel_bam_readcount_tsv
             data_type:
                 default: 'DNA'
-            sample_name:
-                default: 'TUMOR'
+            sample_name: tumor_sample_name
         out:
             [annotated_bam_readcount_vcf]
     add_normal_bam_readcount_to_vcf:
@@ -322,8 +319,7 @@ steps:
             indel_bam_readcount_tsv: normal_bam_readcount/indel_bam_readcount_tsv
             data_type:
                 default: 'DNA'
-            sample_name:
-                default: 'NORMAL'
+            sample_name: normal_sample_name
         out:
             [annotated_bam_readcount_vcf]
     index:
