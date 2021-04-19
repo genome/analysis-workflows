@@ -446,7 +446,7 @@ steps:
             validated_variants: validated_variants
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
-cnvkit:
+    cnvkit:
         run: ../tools/cnvkit_batch.cwl
         in:
             tumor_bam: tumor_alignment_and_qc/bam
