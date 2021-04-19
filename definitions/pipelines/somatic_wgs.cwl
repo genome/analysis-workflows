@@ -168,7 +168,7 @@ inputs:
         doc: "An optional VCF with variants that will be flagged as 'VALIDATED' if found in this pipeline's main output VCF"
     cnvkit_target_average_size:
         type: int?
-        doc: "approximate size of split target bins for CNVkit"
+        doc: "approximate size of split target bins for CNVkit; if not set a suitable window size will be set by CNVkit automatically"
 outputs:
 ##tumor alignment and QC
     tumor_cram:
