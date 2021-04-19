@@ -38,9 +38,13 @@ inputs:
         type: string[]
     prediction_algorithms:
         type: string[]
-    epitope_lengths:
+    epitope_lengths_class_i:
+        type: int[]?
+    epitope_lengths_class_ii:
         type: int[]?
     binding_threshold:
+        type: int?
+    percentile_threshold:
         type: int?
     allele_specific_binding_thresholds:
         type: boolean?
@@ -95,6 +99,8 @@ inputs:
         type: float?
     netmhc_stab:
         type: boolean?
+    run_reference_proteome_similarity:
+        type: boolean?
     n_threads:
         type: int?
     variants_to_table_fields:
@@ -113,33 +119,9 @@ outputs:
     annotated_tsv:
         type: File
         outputSource: add_vep_fields_to_table/annotated_variants_tsv
-    mhc_i_all_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_i_all_epitopes
-    mhc_i_filtered_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_i_filtered_epitopes
-    mhc_i_ranked_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_i_ranked_epitopes
-    mhc_ii_all_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_ii_all_epitopes
-    mhc_ii_filtered_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_ii_filtered_epitopes
-    mhc_ii_ranked_epitopes:
-        type: File?
-        outputSource: pvacseq/mhc_ii_ranked_epitopes
-    combined_all_epitopes:
-        type: File?
-        outputSource: pvacseq/combined_all_epitopes
-    combined_filtered_epitopes:
-        type: File?
-        outputSource: pvacseq/combined_filtered_epitopes
-    combined_ranked_epitopes:
-        type: File?
-        outputSource: pvacseq/combined_ranked_epitopes
+    pvacseq_predictions:
+        type: Directory
+        outputSource: pvacseq/pvacseq_predictions
 steps:
     tumor_rna_bam_readcount:
         run: bam_readcount.cwl
@@ -198,10 +180,12 @@ steps:
             sample_name: sample_name
             alleles: alleles
             prediction_algorithms: prediction_algorithms
-            epitope_lengths: epitope_lengths
+            epitope_lengths_class_i: epitope_lengths_class_i
+            epitope_lengths_class_ii: epitope_lengths_class_ii
+            binding_threshold: binding_threshold
+            percentile_threshold: percentile_threshold
             normal_sample_name: normal_sample_name
             minimum_fold_change: minimum_fold_change
-            peptide_sequence_length: peptide_sequence_length
             top_score_metric: top_score_metric
             additional_report_columns: additional_report_columns
             fasta_size: fasta_size
@@ -219,19 +203,10 @@ steps:
             net_chop_method: net_chop_method
             net_chop_threshold: net_chop_threshold
             netmhc_stab: netmhc_stab
+            run_reference_proteome_similarity: run_reference_proteome_similarity
             n_threads: n_threads
         out:
-            [
-                mhc_i_all_epitopes,
-                mhc_i_filtered_epitopes,
-                mhc_i_ranked_epitopes,
-                mhc_ii_all_epitopes,
-                mhc_ii_filtered_epitopes,
-                mhc_ii_ranked_epitopes,
-                combined_all_epitopes,
-                combined_filtered_epitopes,
-                combined_ranked_epitopes,
-            ]
+            [pvacseq_predictions]
     variants_to_table:
         run: ../tools/variants_to_table.cwl
         in:

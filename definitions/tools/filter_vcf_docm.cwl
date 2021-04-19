@@ -9,6 +9,7 @@ requirements:
       dockerPull: "mgibio/cle:v1.4.2"
     - class: ResourceRequirement
       ramMin: 4000
+    - class: StepInputExpressionRequirement
     - class: InitialWorkDirRequirement
       listing:
       - entryname: 'docm_filter.pl'
@@ -27,8 +28,8 @@ requirements:
             my $normal_header_str = `$samtools view -H $normal_cram`;
             my $tumor_header_str  = `$samtools view -H $tumor_cram`;
 
-            my ($normal_name) = $normal_header_str =~ /SM:([ -~]+)/;
-            my ($tumor_name)  = $tumor_header_str =~ /SM:([ -~]+)/;
+            my ($normal_name) = $normal_header_str =~ /^@RG\tSM:([ -~]+)/;
+            my ($tumor_name)  = $tumor_header_str =~ /^@RG\tSM:([ -~]+)/;
 
             unless ($normal_name and $tumor_name) {
                 die "Failed to get normal_name: $normal_name from $normal_cram AND tumor_name: $tumor_name from $tumor_cram";

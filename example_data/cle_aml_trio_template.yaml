@@ -25,9 +25,6 @@ bqsr_intervals:
 - chr20
 - chr21
 - chr22
-cosmic_vcf:
-  class: File
-  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-774-52fa2dadc4ba4b6490abe0701907d394/snvs.hq.vcf.gz
 vep_custom_annotations:
 - method: 'exact'
   force_report_coordinates: true
@@ -98,7 +95,7 @@ known_indels:
 mills:
   class: File
   path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-20211-26b393cc7ab04120ac68cc2cbd4a15df/indels.hq.vcf.gz
-mutect_scatter_count: 80
+scatter_count: 80
 mutect_artifact_detection_mode: false
 mutect_max_alt_allele_in_normal_fraction: 0.1
 mutect_max_alt_alleles_in_normal_count: 5
@@ -115,9 +112,6 @@ normal_sequence:
 omni_vcf:
   class: File
   path: /gscmnt/gc2709/info/production_reference_GRCh38DH/accessory_vcf/omni25-ld-pruned-20000-2000-0.5-annotated.wchr.sites_only.b38.autosomes_only.vcf.gz
-panel_of_normals_vcf:
-  class: File
-  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-2237-db881b860992443da9d6aac8b36a7ea6/snvs.hq.vcf.gz
 pindel_region_file:
   class: File
   path: /gscmnt/gc13016/cle/54f8f7b915cb472aa183c721307369ab_scratch_space/new_AML_trio/new_cwl/bed_file/FLT3_region_build38.bed

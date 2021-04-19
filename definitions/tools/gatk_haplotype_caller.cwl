@@ -3,12 +3,12 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "GATK HaplotypeCaller"
-baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "HaplotypeCaller"]
+baseCommand: ["/gatk/gatk", "--java-options", "-Xmx16g", "HaplotypeCaller"]
 requirements:
     - class: ResourceRequirement
-      ramMin: 10000
+      ramMin: 18000
     - class: DockerRequirement
-      dockerPull: "mgibio/gatk-cwl:3.5.0"
+      dockerPull: "broadinstitute/gatk:4.1.8.1"
 inputs:
     reference:
         type:
@@ -64,33 +64,24 @@ inputs:
         inputBinding:
             prefix: '--max_alternate_alleles'
             position: 8
-    variant_index_type:
-        type:
-            - 'null'
-            - type: enum
-              symbols: ['DYNAMIC_SEEK', 'DYNAMIC_SIZE', 'LINEAR', 'INTERVAL']
-        doc: 'type of IndexCreator to use for VCF/BCF indices'
+    ploidy:
+        type: int?
+        doc: 'number of chromosomes per sample'
         inputBinding:
-            prefix: '--variant_index_type'
+            prefix: '-ploidy'
             position: 9
-    variant_index_parameter:
-        type: string?
-        doc: 'parameter to pass to the index creator'
-        inputBinding:
-            prefix: '--variant_index_parameter'
-            position: 10
     read_filter:
         type: string?
         doc: 'filters to apply to reads before analysis'
         inputBinding:
             prefix: '--read_filter'
-            position: 11
+            position: 10
     output_file_name:
         type: string
         default: "output.g.vcf.gz"
         inputBinding:
-            prefix: "-o"
-            position: 12
+            prefix: "-O"
+            position: 11
 outputs:
     gvcf:
         type: File

@@ -2,12 +2,13 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "Chipseq alignment for mouse with qc and creating homer tag directory"
+label: "alignment for nonhuman with qc"
 requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
@@ -16,10 +17,18 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
+    sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
+        label: "sequence: sequencing data and readgroup information"
+        doc: |
+          sequence represents the sequencing data as either FASTQs or BAMs with accompanying
+          readgroup information. Note that in the @RG field ID and SM are required.
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
     final_name:
         type: string?
-    chipseq_sequence:
-        type: ../types/sequence_data.yml#sequence_data[]
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
         default: []
@@ -42,9 +51,6 @@ outputs:
     mark_duplicates_metrics:
         type: File
         outputSource: alignment/mark_duplicates_metrics_file
-    tag_directory:
-        type: Directory
-        outputSource: homer_tag_directory/tag_directory
     insert_size_metrics:
         type: File
         outputSource: qc/insert_size_metrics
@@ -90,27 +96,15 @@ outputs:
 
 steps:
     alignment:
-        run: ../subworkflows/sequence_to_bqsr_mouse.cwl
+        run: ../subworkflows/sequence_to_bqsr_nonhuman.cwl
         in:
             reference: reference
-            unaligned: chipseq_sequence
+            unaligned: sequence
+            trimming: trimming
             final_name: final_name
         out: [final_bam,mark_duplicates_metrics_file]
-
-    bam_to_sam:
-        run: ../tools/bam_to_sam.cwl
-        in:
-            bam: alignment/final_bam
-        out: [final_sam]
-
-    homer_tag_directory:
-        run: ../tools/homer_tag_directory.cwl
-        in:
-            sam: bam_to_sam/final_sam
-        out: [tag_directory]
-
     qc:
-        run: ../subworkflows/qc_wgs_mouse.cwl
+        run: ../subworkflows/qc_wgs_nonhuman.cwl
         in:
             bam: alignment/final_bam
             reference: reference

@@ -7,6 +7,7 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
     - class: ScatterFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: MultipleInputFeatureRequirement
@@ -19,6 +20,10 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
     final_name:
         type: string
         default: 'final.bam'
@@ -38,10 +43,11 @@ steps:
         in:
             unaligned: unaligned
             reference: reference
+            trimming: trimming
         out:
             [aligned_bam]
     merge:
-        run: ../tools/merge_bams_samtools.cwl
+        run: ../tools/merge_bams.cwl
         in:
             bams: align/aligned_bam
             name: final_name
@@ -57,6 +63,7 @@ steps:
         run: ../tools/mark_duplicates_and_sort.cwl
         in:
             bam: name_sort/name_sorted_bam
+            output_name: final_name
         out:
             [sorted_bam, metrics_file]
     index_bam:

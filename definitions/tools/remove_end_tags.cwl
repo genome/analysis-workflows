@@ -13,7 +13,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 4000
     - class: DockerRequirement
-      dockerPull: "mgibio/cle:v1.3.1"
+      dockerPull: "mgibio/bcftools-cwl:1.3.1"
 inputs:
     vcf:
         type: File

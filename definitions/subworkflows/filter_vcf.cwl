@@ -11,20 +11,24 @@ inputs:
     vcf:
         type: File
         secondaryFiles: [.tbi]
-    filter_mapq0_threshold: 
+    filter_mapq0_threshold:
         type: float
     filter_gnomADe_maximum_population_allele_frequency:
         type: float
     gnomad_field_name:
         type: string
-    tumor_bam: 
+    tumor_bam:
         type: File
         secondaryFiles: [.bai]
-    do_cle_vcf_filter: 
+    do_cle_vcf_filter:
         type: boolean
     filter_somatic_llr_threshold:
         type: float
-    reference: 
+    filter_somatic_llr_tumor_purity:
+        type: float
+    filter_somatic_llr_normal_contamination_rate:
+        type: float
+    reference:
         type:
             - string
             - File
@@ -35,11 +39,11 @@ inputs:
         type: string
     normal_sample_name:
         type: string
-    known_variants:
+    validated_variants:
         type: File?
         secondaryFiles: [.tbi]
-        doc: "Previously discovered variants to be flagged in this workflow's output vcf"
-outputs: 
+        doc: "An optional VCF with variants that will be flagged as 'VALIDATED' if found in this pipeline's main output VCF"
+outputs:
     filtered_vcf:
         type: File
         outputSource: set_final_vcf_name/replacement
@@ -47,21 +51,21 @@ steps:
     filter_known_variants:
         run: ../tools/filter_known_variants.cwl
         in:
-            known_variants: known_variants
             vcf: vcf
+            validated_variants: validated_variants
         out:
-            [known_filtered]
+            [validated_annotated_vcf]
     filter_vcf_gnomADe_allele_freq:
         run: ../tools/filter_vcf_custom_allele_freq.cwl
         in:
-            vcf: filter_known_variants/known_filtered
+            vcf: filter_known_variants/validated_annotated_vcf
             maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
             field_name: gnomad_field_name
         out:
             [filtered_vcf]
     filter_vcf_mapq0:
         run: ../tools/filter_vcf_mapq0.cwl
-        in: 
+        in:
             vcf: filter_vcf_gnomADe_allele_freq/filtered_vcf
             tumor_bam: tumor_bam
             threshold: filter_mapq0_threshold
@@ -90,6 +94,8 @@ steps:
         in:
             vcf: filter_vcf_depth/depth_filtered_vcf
             threshold: filter_somatic_llr_threshold
+            tumor_purity: filter_somatic_llr_tumor_purity
+            normal_contamination_rate: filter_somatic_llr_normal_contamination_rate
             tumor_sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name
         out:

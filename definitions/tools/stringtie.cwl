@@ -3,13 +3,15 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "StringTie"
-baseCommand: ["/usr/bin/stringtie"]
+baseCommand: ["/usr/local/bin/stringtie"]
 requirements:
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: 12
     - class: DockerRequirement
-      dockerPull: "mgibio/rnaseq:1.0.0"
+      dockerPull: "quay.io/biocontainers/stringtie:2.1.4--h7e0af3c_0"
+    - class: StepInputExpressionRequirement
+
 arguments: [
     "-o", "$(runtime.outdir)/stringtie_transcripts.gtf",
     "-A", "$(runtime.outdir)/stringtie_gene_expression.tsv",

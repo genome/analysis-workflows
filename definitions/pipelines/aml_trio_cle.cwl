@@ -15,11 +15,19 @@ inputs:
     reference: string
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+        label: "tumor_sequence: MT sequencing data and readgroup information"
+        doc: |
+          tumor_sequence represents the sequencing data for the MT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     tumor_name:
         type: string?
         default: 'tumor'
     normal_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+        label: "normal_sequence: WT sequencing data and readgroup information"
+        doc: |
+          normal_sequence represents the sequencing data for the WT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     normal_name:
         type: string?
         default: 'normal'
@@ -28,15 +36,10 @@ inputs:
     followup_name:
         type: string?
         default: 'followup'
-    mills:
-        type: File
+    bqsr_known_sites:
+        type: File[]
         secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     bqsr_intervals:
         type: string[]
     bait_intervals:
@@ -79,8 +82,9 @@ inputs:
     strelka_cpu_reserved:
         type: int?
         default: 8
-    mutect_scatter_count:
+    scatter_count:
         type: int
+        doc: "scatters each supported variant detector (varscan, pindel, mutect) into this many parallel jobs"
     varscan_strand_filter:
         type: int?
         default: 0
@@ -103,9 +107,11 @@ inputs:
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+        doc: "Common mutations in cancer that will be genotyped and passed through into the merged VCF if they have even low-level evidence of a mutation (by default, marked with filter DOCM_ONLY)"
     filter_docm_variants:
         type: boolean?
         default: true
+        doc: "Determines whether variants found only via genotyping of DOCM sites will be filtered (as DOCM_ONLY) or passed through as variant calls"
     filter_minimum_depth:
         type: int?
         default: 20
@@ -347,10 +353,10 @@ outputs:
         outputSource: concordance/somalier_samples
     alignment_stat_report:
         type: File
-        outputSource: alignment_stat_report/alignment_stat
+        outputSource: alignment_report/alignment_stat
     coverage_stat_report:
         type: File
-        outputSource: coverage_stat_report/coverage_stat
+        outputSource: coverage_report/coverage_stat
     full_variant_report:
         type: File
         outputSource: add_disclaimer_version_to_full_variant_report/output_file
@@ -360,9 +366,7 @@ steps:
         in:
             reference: reference
             sequence: normal_sequence
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -371,8 +375,8 @@ steps:
             summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
             final_name:
                 source: normal_name
                 valueFrom: "$(self).bam"
@@ -383,9 +387,7 @@ steps:
         in:
             reference: reference
             sequence: tumor_sequence
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -394,8 +396,8 @@ steps:
             summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
             final_name:
                 source: tumor_name
                 valueFrom: "$(self).bam"
@@ -406,9 +408,7 @@ steps:
         in:
             reference: reference
             sequence: followup_sequence
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -417,8 +417,8 @@ steps:
             summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
             final_name:
                 source: followup_name
                 valueFrom: "$(self).bam"
@@ -440,11 +440,11 @@ steps:
             reference: reference
             tumor_bam: tumor_alignment_and_qc/bam
             normal_bam: normal_alignment_and_qc/bam
-            interval_list: interval_list
+            roi_intervals: interval_list
             strelka_exome_mode:
                 default: true
             strelka_cpu_reserved: strelka_cpu_reserved
-            mutect_scatter_count: mutect_scatter_count
+            scatter_count: scatter_count
             varscan_strand_filter: varscan_strand_filter
             varscan_min_coverage: varscan_min_coverage
             varscan_min_var_freq: varscan_min_var_freq
@@ -632,7 +632,7 @@ steps:
                 valueFrom: "$(self.basename)" 
         out:
             [output_file]
-    alignment_stat_report:
+    alignment_report:
         run: ../tools/cle_aml_trio_report_alignment_stat.cwl
         in:
             normal_alignment_summary_metrics: normal_alignment_and_qc/alignment_summary_metrics
@@ -640,7 +640,7 @@ steps:
             followup_alignment_summary_metrics: followup_alignment_and_qc/alignment_summary_metrics
         out:
             [alignment_stat]
-    coverage_stat_report:
+    coverage_report:
         run: ../tools/cle_aml_trio_report_coverage_stat.cwl
         in:
             normal_roi_hs_metrics: normal_alignment_and_qc/hs_metrics
@@ -651,7 +651,7 @@ steps:
             followup_summary_hs_metrics: [followup_alignment_and_qc/summary_hs_metrics]
         out:
             [coverage_stat]
-    full_variant_report:
+    full_report:
         run: ../tools/cle_aml_trio_report_full_variants.cwl
         in: 
             variant_tsv: tumor_detect_variants/final_tsv
@@ -663,14 +663,14 @@ steps:
     add_disclaimer_to_full_variant_report:
         run: ../tools/add_string_at_line.cwl
         in:
-            input_file: full_variant_report/full_variant_report
+            input_file: full_report/full_variant_report
             line_number:
                 default: 1
             some_text:
                 source: disclaimer_text
                 valueFrom: "#$(self)"
             output_name:
-                source: full_variant_report/full_variant_report
+                source: full_report/full_variant_report
                 valueFrom: "$(self.basename)"
         out:
             [output_file]

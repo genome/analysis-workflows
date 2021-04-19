@@ -8,6 +8,8 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/vep_custom_annotation.yml
+    - class: StepInputExpressionRequirement
+    - class: InlineJavascriptRequirement
 inputs:
     reference:
         type: string
@@ -17,7 +19,7 @@ inputs:
     normal_bam:
         type: File
         secondaryFiles: [.bai,^.bai]
-    interval_list:
+    roi_intervals:
         type: File
     strelka_exome_mode:
         type: boolean
@@ -28,8 +30,9 @@ inputs:
         type: int?
     readcount_minimum_mapping_quality:
         type: int?
-    mutect_scatter_count:
+    scatter_count:
         type: int?
+        doc: "scatters each supported variant detector (varscan, pindel, mutect) into this many parallel jobs"
     varscan_strand_filter:
         type: int?
         default: 0
@@ -77,7 +80,7 @@ inputs:
               symbols: ["pick", "flag_pick", "pick_allele", "per_gene", "pick_allele_gene", "flag_pick_allele", "flag_pick_allele_gene"]
     vep_plugins:
         type: string[]?
-        default: [Downstream, Wildtype]
+        default: [Frameshift, Wildtype]
     filter_gnomADe_maximum_population_allele_frequency:
         type: float?
         default: 0.001
@@ -87,12 +90,21 @@ inputs:
     filter_minimum_depth:
         type: int?
         default: 1
+    filter_somatic_llr_threshold:
+        type: float
+        default: 5
+        doc: "Sets the stringency (log-likelihood ratio) used to filter out non-somatic variants.  Typical values are 10=high stringency, 5=normal, 3=low stringency. Low stringency may be desirable when read depths are low (as in WGS) or when tumor samples are impure."
+    filter_somatic_llr_tumor_purity:
+        type: float
+        default: 1
+        doc: "Sets the purity of the tumor used in the somatic llr filter, used to remove non-somatic variants. Probably only needs to be adjusted for low-purity (< 50%).  Range is 0 to 1"
+    filter_somatic_llr_normal_contamination_rate:
+        type: float
+        default: 0
+        doc: "Sets the fraction of tumor present in the normal sample (range 0 to 1), used in the somatic llr filter. Useful for heavily contaminated adjacent normals. Range is 0 to 1"
     cle_vcf_filter:
         type: boolean?
         default: false
-    filter_somatic_llr_threshold:
-        type: float?
-        default: 5
     variants_to_table_fields:
         type: string[]?
         default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
@@ -109,10 +121,10 @@ inputs:
     vep_custom_annotations:
         type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
         doc: "custom type, check types directory for input format"
-    known_variants:
+    validated_variants:
         type: File?
         secondaryFiles: [.tbi]
-        doc: "Previously discovered variants to be flagged in this pipelines's output vcf"
+        doc: "An optional VCF with variants that will be flagged as 'VALIDATED' if found in this pipeline's main output VCF"
 outputs:
     mutect_unfiltered_vcf:
         type: File
@@ -175,8 +187,8 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            interval_list: interval_list
-            scatter_count: mutect_scatter_count
+            interval_list: roi_intervals
+            scatter_count: scatter_count
             tumor_sample_name: tumor_sample_name
         out:
             [unfiltered_vcf, filtered_vcf]
@@ -186,7 +198,7 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            interval_list: interval_list
+            interval_list: roi_intervals
             exome_mode: strelka_exome_mode
             cpu_reserved: strelka_cpu_reserved
             tumor_sample_name: tumor_sample_name
@@ -199,7 +211,8 @@ steps:
             reference: reference
             tumor_bam: tumor_bam
             normal_bam: normal_bam
-            interval_list: interval_list
+            interval_list: roi_intervals
+            scatter_count: scatter_count
             strand_filter: varscan_strand_filter
             min_coverage: varscan_min_coverage
             min_var_freq: varscan_min_var_freq
@@ -216,7 +229,7 @@ steps:
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             docm_vcf: docm_vcf
-            interval_list: interval_list
+            interval_list: roi_intervals
             filter_docm_variants: filter_docm_variants
         out:
             [docm_variants_vcf]
@@ -326,6 +339,8 @@ steps:
             filter_gnomADe_maximum_population_allele_frequency: filter_gnomADe_maximum_population_allele_frequency
             filter_mapq0_threshold: filter_mapq0_threshold
             filter_somatic_llr_threshold: filter_somatic_llr_threshold
+            filter_somatic_llr_tumor_purity: filter_somatic_llr_tumor_purity
+            filter_somatic_llr_normal_contamination_rate: filter_somatic_llr_normal_contamination_rate
             filter_minimum_depth: filter_minimum_depth
             tumor_bam: tumor_bam
             do_cle_vcf_filter: cle_vcf_filter
@@ -345,7 +360,7 @@ steps:
                     }
                     return('gnomAD_AF');
                 }
-            known_variants: known_variants
+            validated_variants: validated_variants
         out: 
             [filtered_vcf]
     annotated_filter_bgzip:

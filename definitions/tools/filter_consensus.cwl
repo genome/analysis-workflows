@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: 'filter consensus reads'
-baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/fgbio-0.5.0.jar", "FilterConsensusReads"]
+baseCommand: ["/usr/local/bin/fgbio", "FilterConsensusReads"]
 arguments:
     [ "--output", { valueFrom: "$(runtime.outdir)/consensus_filtered.bam"} ]
 requirements:
@@ -11,7 +11,7 @@ requirements:
       ramMin: 6000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: mgibio/dna-alignment:1.0.0
+      dockerPull: quay.io/biocontainers/fgbio:1.3.0--0
 inputs:
     bam:
         type: File

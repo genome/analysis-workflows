@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "WGS QC workflow mouse"
+label: "WGS QC workflow nonhuman"
 requirements:
     - class: SchemaDefRequirement
       types:
@@ -11,7 +11,7 @@ requirements:
 inputs:
     bam:
         type: File
-        secondaryFiles: [^.bai]
+        secondaryFiles: [^.bai, .bai]
     reference:
         type:
             - string
@@ -72,7 +72,7 @@ outputs:
         outputSource: collect_hs_metrics/summary_hs_metrics
     bamcoverage_bigwig:
         type: File
-        outputSource: deeptools_bamcoverage/outfile
+        outputSource: cgpbigwig_bamcoverage/outfile
 steps:
     collect_insert_size_metrics:
         run: ../tools/collect_insert_size_metrics.cwl
@@ -122,10 +122,10 @@ steps:
             summary_intervals: summary_intervals
         out:
             [per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics]
-    deeptools_bamcoverage:
-        run: ../tools/deeptools_bamcoverage.cwl
+    cgpbigwig_bamcoverage:
+        run: ../tools/bam_to_bigwig.cwl
         in:
             bam: bam
-            min_mapping_quality: minimum_mapping_quality
+            reference: reference
         out:
             [outfile]

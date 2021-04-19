@@ -7,9 +7,11 @@ baseCommand: ["/usr/bin/perl", "/usr/bin/vcf_check.pl"]
 requirements:
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
-      dockerPull: "mgibio/vep_helper-cwl:1.0.0"
+      dockerPull: "mgibio/vep_helper-cwl:vep_101.0_v1"
     - class: ResourceRequirement
       ramMin: 4000
+    - class: StepInputExpressionRequirement
+
 arguments:
     [{ valueFrom: $(inputs.vcf.path) },
     { valueFrom: $(runtime.outdir)/annotated.af_filtered.vcf },

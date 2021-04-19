@@ -82,6 +82,25 @@ steps:
                 default: true
         out:
             [filtered_vcf]
+    base_vcf_pass_roi:
+        run: ../tools/bedtools_intersect.cwl
+        in:
+            file_a: base_vcf_pass/filtered_vcf
+            file_b: roi_bed
+            output_file_a:
+                default: false
+            unique_result:
+                default: false
+            output_name:
+                default: 'base_pass_roi.vcf'
+        out:
+            [intersect_result]
+    bgzip_and_index_base_pass_roi:
+        run: bgzip_and_index.cwl
+        in:
+            vcf: base_vcf_pass_roi/intersect_result
+        out:
+            [indexed_vcf]
     query_vcf_pass:
         run: ../tools/select_variants.cwl
         in:
@@ -91,12 +110,31 @@ steps:
                 default: true
         out:
             [filtered_vcf]
+    query_vcf_pass_roi:
+        run: ../tools/bedtools_intersect.cwl
+        in:
+            file_a: query_vcf_pass/filtered_vcf
+            file_b: roi_bed
+            output_file_a:
+                default: false
+            unique_result:
+                default: false
+            output_name:
+                default: 'query_pass_roi.vcf'
+        out:
+            [intersect_result]
+    bgzip_and_index_query_pass_roi:
+        run: bgzip_and_index.cwl
+        in:
+            vcf: query_vcf_pass_roi/intersect_result
+        out:
+            [indexed_vcf]
     combine_vcf:
         run: ../tools/combine_variants_concordance.cwl
         in:
             reference: reference
-            base_vcf: base_vcf_pass/filtered_vcf
-            query_vcf:  query_vcf_pass/filtered_vcf
+            base_vcf: bgzip_and_index_base_pass_roi/indexed_vcf
+            query_vcf: bgzip_and_index_query_pass_roi/indexed_vcf
         out:
             [combined_vcf]
     base_normal_bam_readcount:
@@ -158,10 +196,17 @@ steps:
             query_tumor_indel_bam_readcount_tsv: query_tumor_bam_readcount/indel_bam_readcount_tsv
         out:
             [out_file]
+    plot_output:
+        run: ../tools/somatic_concordance_graph.cwl
+        in:
+            sompy_file: sompy/sompy_out
+            vaf_file: vaf_report/out_file
+        out:
+            [out_pdf]
     gather_to_sub_directory:
         run: ../tools/gather_to_sub_directory.cwl
         in:
             outdir: output_dir
-            files: [sompy/sompy_out,vaf_report/out_file]
+            files: [sompy/sompy_out, vaf_report/out_file, plot_output/out_pdf]
         out:
             [gathered_directory]

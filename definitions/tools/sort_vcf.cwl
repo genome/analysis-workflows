@@ -4,14 +4,14 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Sort VCF"
 
-baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/opt/picard/picard.jar", "SortVcf"]
+baseCommand: ["/usr/bin/java", "-Xmx16g", "-jar", "/usr/picard/picard.jar", "SortVcf"]
 arguments:
     ["O=", { valueFrom: $(runtime.outdir)/sorted.vcf }]
 requirements:
     - class: ResourceRequirement
       ramMin: 18000
     - class: DockerRequirement
-      dockerPull: "mgibio/picard-cwl:2.18.1"
+      dockerPull: "broadinstitute/picard:2.23.6"
 inputs:
     vcf:
         type: File

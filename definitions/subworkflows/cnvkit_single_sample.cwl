@@ -7,11 +7,18 @@ requirements:
     - class: StepInputExpressionRequirement
 
 inputs:
+    fasta_reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai]
     tumor_bam:
         type: File
     method:
-        type: string?
-        default: "hybrid"
+        type:
+          - "null"
+          - type: enum
+            symbols: ["hybrid", "amplicon", "wgs"]
     diagram:
         type: boolean?
     scatter_plot:
@@ -21,7 +28,7 @@ inputs:
     male_reference:
         type: boolean?
     reference_cnn:
-        type: File
+        type: File?
     cnvkit_vcf_name:
         type: string
         default: "cnvkit.vcf"
@@ -63,7 +70,14 @@ steps:
             scatter_plot: scatter_plot
             drop_low_coverage: drop_low_coverage
             male_reference: male_reference
-            reference_cnn: reference_cnn
+            reference:
+                source: [reference_cnn, fasta_reference]
+                valueFrom: |
+                    ${
+                      var cnn = self[0];
+                      var fasta = self[1];
+                      return {'cnn_file': cnn, 'fasta_file': fasta};
+                    }
         out:
             [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios]            
             

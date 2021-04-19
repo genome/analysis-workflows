@@ -13,10 +13,10 @@ trimming_min_readlength: 25
 sample_name: H_NJ-HCC1395-HCC1395_RNA
 kallisto_index:
     class: File
-    path: /gscmnt/gc2560/core/GRC-human-build38_human_90_38/rna_seq_annotation/Homo_sapiens.GRCh38.cdna.all.fa.kallisto.idx
+    path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.cdna.all.fa.kallisto.idx
 gene_transcript_lookup_table:
     class: File
-    path: /gscmnt/gc2560/core/GRC-human-build38_human_90_38/rna_seq_annotation/ensembl90.transcriptToGene.tsv
+    path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/ensembl95.transcriptToGene.tsv
 strand: "second"
 
 outsam_attrrg_line:
@@ -25,13 +25,22 @@ outsam_attrrg_line:
 
 gtf_file:
     class: File
-    path: /gscmnt/gc2733/walter/sridnona/refs/stock_refs/star/human_38_90/Homo_sapiens.GRCh38.90.gtf
+    path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.95.gtf
 star_genome_dir:
-    class: Directory 
-    path: /gscmnt/gc2733/walter/sridnona/refs/stock_refs/star/human_38_90/
-ribosomal_intervals: 
+    class: Directory
+    path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/star_2.7.0f_index/
+star_fusion_genome_dir:
+    class: Directory
+    path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/star_fusion_1.8.0_index/
+ribosomal_intervals:
     class: File
-    path: /gscmnt/gc2733/walter/sridnona/refs/stock_refs/star/human_38_90/Homo_sapiens.GRCh38.90.rRNA.interval_list
-refFlat: 
+    path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.95.ribo_intervals
+refFlat:
     class: File
-    path: /gscmnt/gc2733/walter/sridnona/refs/stock_refs/star/human_38_90/Homo_sapiens.GRCh38.90.refFlat.txt
+    path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.95.refFlat.txt
+cdna_fasta:
+    class: File
+    path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/Homo_sapiens.GRCh38.cdna.all.fa.gz
+reference:
+    class: File
+    path: /gscmnt/gc2560/core/GRC-human-build38_human_95_38_U2AF1_fix/rna_seq_annotation/star_2.7.0f_index/all_sequences.fa

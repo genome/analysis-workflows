@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
     - class: SubworkflowFeatureRequirement
+    - class: StepInputExpressionRequirement
 inputs:
     bam:
         type: File

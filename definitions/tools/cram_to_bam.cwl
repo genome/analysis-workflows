@@ -3,12 +3,12 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "samtools view cram to bam"
-baseCommand: ["/opt/samtools/bin/samtools", "view", "-b"]
+baseCommand: ["/usr/local/bin/samtools", "view", "-b"]
 requirements:
     - class: ResourceRequirement
       ramMin: 4000
     - class: DockerRequirement
-      dockerPull: "mgibio/samtools-cwl:1.0.0"
+      dockerPull: "quay.io/biocontainers/samtools:1.11--h6270b1f_0"
 arguments:
         ["-o", { valueFrom: $(runtime.outdir)/$(inputs.cram.nameroot).bam }]
 inputs:

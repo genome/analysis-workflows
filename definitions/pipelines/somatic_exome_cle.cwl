@@ -15,29 +15,45 @@ inputs:
     reference: string
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+        label: "tumor_sequence: MT sequencing data and readgroup information"
+        doc: |
+          tumor_sequence represents the sequencing data for the MT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     tumor_name:
         type: string?
         default: 'tumor'
     normal_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+        label: "normal_sequence: WT sequencing data and readgroup information"
+        doc: |
+          normal_sequence represents the sequencing data for the WT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     normal_name:
         type: string?
         default: 'normal'
-    mills:
-        type: File
+    bqsr_known_sites:
+        type: File[]
         secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     bqsr_intervals:
         type: string[]
     bait_intervals:
         type: File
     target_intervals:
         type: File
+        label: "target_intervals: interval_list file of targets used in the sequencing experiment"
+        doc: |
+            target_intervals is an interval_list corresponding to the targets for the capture reagent.
+            BED files with this information can be converted to interval_lists with Picard BedToIntervalList.
+            In general for a WES exome reagent bait_intervals and target_intervals are the same.
+    target_interval_padding:
+        type: int
+        label: "target_interval_padding"
+        doc: |
+            The effective coverage of capture products generally extends out beyond the actual regions
+            targeted. This parameter allows variants to be called in these wingspan regions, extending
+            this many base pairs from each side of the target regions.
+        default: 100
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
     per_target_intervals:
@@ -55,13 +71,12 @@ inputs:
     qc_minimum_base_quality:
         type: int?
         default: 0
-    interval_list:
-        type: File
     strelka_cpu_reserved:
         type: int?
         default: 8
-    mutect_scatter_count:
+    scatter_count:
         type: int
+        doc: "scatters each supported variant detector (varscan, pindel, mutect) into this many parallel jobs"
     varscan_strand_filter:
         type: int?
         default: 0
@@ -88,6 +103,18 @@ inputs:
     filter_minimum_depth:
         type: int?
         default: 20
+    filter_somatic_llr_threshold:
+        type: float
+        default: 5
+        doc: "Sets the stringency (log-likelihood ratio) used to filter out non-somatic variants.  Typical values are 10=high stringency, 5=normal, 3=low stringency. Low stringency may be desirable when read depths are low (as in WGS) or when tumor samples are impure."
+    filter_somatic_llr_tumor_purity:
+        type: float
+        default: 1
+        doc: "Sets the purity of the tumor used in the somatic llr filter, used to remove non-somatic variants. Probably only needs to be adjusted for low-purity (< 50%).  Range is 0 to 1"
+    filter_somatic_llr_normal_contamination_rate:
+        type: float
+        default: 0
+        doc: "Sets the fraction of tumor present in the normal sample (range 0 to 1), used in the somatic llr filter. Useful for heavily contaminated adjacent normals. Range is 0 to 1"
     vep_cache_dir:
         type:
             - string
@@ -289,9 +316,7 @@ steps:
         in:
             reference: reference
             sequence: tumor_sequence
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -300,8 +325,8 @@ steps:
             summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
             final_name:
                 source: tumor_name
                 valueFrom: "$(self).bam"
@@ -312,9 +337,7 @@ steps:
         in:
             reference: reference
             sequence: normal_sequence
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -323,8 +346,8 @@ steps:
             summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level   
-            minimum_mapping_quality: qc_minimum_mapping_quality
-            minimum_base_quality: qc_minimum_base_quality
+            qc_minimum_mapping_quality: qc_minimum_mapping_quality
+            qc_minimum_base_quality: qc_minimum_base_quality
             final_name:
                 source: normal_name
                 valueFrom: "$(self).bam"
@@ -339,17 +362,24 @@ steps:
             vcf: somalier_vcf
         out:
             [somalier_pairs, somalier_samples]
+    pad_target_intervals:
+        run: ../tools/interval_list_expand.cwl
+        in:
+            interval_list: target_intervals
+            roi_padding: target_interval_padding
+        out:
+            [expanded_interval_list]
     detect_variants:
         run: detect_variants.cwl
         in:
             reference: reference
             tumor_bam: tumor_alignment_and_qc/bam
             normal_bam: normal_alignment_and_qc/bam
-            interval_list: interval_list
+            roi_intervals: pad_target_intervals/expanded_interval_list
             strelka_exome_mode:
                 default: true
             strelka_cpu_reserved: strelka_cpu_reserved
-            mutect_scatter_count: mutect_scatter_count
+            scatter_count: scatter_count
             varscan_strand_filter: varscan_strand_filter
             varscan_min_coverage: varscan_min_coverage
             varscan_min_var_freq: varscan_min_var_freq
@@ -367,6 +397,9 @@ steps:
             annotate_coding_only: annotate_coding_only
             vep_pick: vep_pick
             cle_vcf_filter: cle_vcf_filter
+            filter_somatic_llr_threshold: filter_somatic_llr_threshold
+            filter_somatic_llr_tumor_purity: filter_somatic_llr_tumor_purity
+            filter_somatic_llr_normal_contamination_rate: filter_somatic_llr_normal_contamination_rate
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields

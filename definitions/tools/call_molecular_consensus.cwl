@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: 'call molecular consensus'
-baseCommand: ["/usr/bin/java", "-Xmx4g", "-jar", "/opt/fgbio-0.5.0.jar", "CallMolecularConsensusReads"]
+baseCommand: ["/usr/local/bin/fgbio", "CallMolecularConsensusReads"]
 arguments:
     ["--error-rate-pre-umi", "45", "--error-rate-post-umi", "30", "--min-input-base-quality", "30", "--min-reads", "1",
     "--output", { valueFrom: "$(runtime.outdir)/consensus_unaligned.bam"} ]
@@ -12,7 +12,7 @@ requirements:
       ramMin: 6000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: mgibio/dna-alignment:1.0.0
+      dockerPull: quay.io/biocontainers/fgbio:1.3.0--0
 inputs:
     bam:
         type: File

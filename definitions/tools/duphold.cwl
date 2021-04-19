@@ -27,7 +27,10 @@ inputs:
             prefix: "--output"
         doc: "output vcf file name"
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
         inputBinding:
             position: 3
             prefix: "--fasta"

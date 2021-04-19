@@ -7,6 +7,7 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
     - class: ScatterFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: MultipleInputFeatureRequirement
@@ -14,6 +15,10 @@ requirements:
 inputs:
     unaligned:
         type: ../types/sequence_data.yml#sequence_data[]
+    bqsr_known_sites:
+        type: File[]
+        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     bqsr_intervals:
         type: string[]?
     reference:
@@ -21,18 +26,13 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
     final_name:
         type: string
         default: 'final'
-    mills:
-        type: File
-        secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
 outputs:
     final_bam:
         type: File
@@ -49,10 +49,11 @@ steps:
         in:
             unaligned: unaligned
             reference: reference
+            trimming: trimming
         out:
             [aligned_bam]
     merge:
-        run: ../tools/merge_bams_samtools.cwl
+        run: ../tools/merge_bams.cwl
         in:
             bams: align/aligned_bam
             name: final_name
@@ -76,7 +77,7 @@ steps:
             reference: reference
             bam: mark_duplicates_and_sort/sorted_bam
             intervals: bqsr_intervals
-            known_sites: [dbsnp_vcf, mills, known_indels]
+            known_sites: bqsr_known_sites
         out:
             [bqsr_table]
     apply_bqsr:

@@ -16,6 +16,11 @@ inputs:
         type: Directory
     star_fusion_genome_dir:
         type: Directory
+    cdna_fasta:
+        type: File
+    reference:
+        type: File
+        secondaryFiles: [.fai, ^.dict]
     gtf_file:
         type: File
     trimming_adapters:
@@ -33,7 +38,10 @@ inputs:
     gene_transcript_lookup_table:
        type: File
     strand:
-       type: string?
+        type:
+          - "null"
+          - type: enum
+            symbols: ["first", "second", "unstranded"]
     refFlat:
         type: File
     ribosomal_intervals:
@@ -41,10 +49,10 @@ inputs:
     sample_name:
         type: string
 outputs:
-    final_bam:
+    cram:
         type: File
-        outputSource: index_bam/indexed_bam
-        secondaryFiles: [.bai]
+        outputSource: index_cram/indexed_cram
+        secondaryFiles: [.crai, ^.crai]
     star_fusion_out:
         type: File
         outputSource: star_align_fusion/chim_junc
@@ -84,6 +92,12 @@ outputs:
     fusion_evidence:
         type: File
         outputSource: kallisto/fusion_evidence
+    strand_info:
+        type: File[]
+        outputSource: strandedness_check/strandedness_check
+    bamcoverage_bigwig:
+        type: File
+        outputSource: cgpbigwig_bamcoverage/outfile
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
@@ -98,6 +112,18 @@ steps:
             min_readlength: trimming_min_readlength
         out:
             [fastqs, fastq1, fastq2]
+    strandedness_check:
+        run: ../tools/strandedness_check.cwl
+        scatter: [reads1, reads2]
+        scatterMethod: dotproduct
+        in:
+            gtf_file: gtf_file
+            kallisto_index: kallisto_index
+            cdna_fasta: cdna_fasta
+            reads1: bam_to_trimmed_fastq/fastq1
+            reads2: bam_to_trimmed_fastq/fastq2
+        out:
+            [strandedness_check]
     star_align_fusion:
         run: ../tools/star_align_fusion.cwl
         in:
@@ -172,3 +198,23 @@ steps:
             bam: mark_dup/sorted_bam
         out:
             [metrics, chart]
+    bam_to_cram:
+        run: ../tools/bam_to_cram.cwl
+        in:
+          reference: reference
+          bam: index_bam/indexed_bam
+        out:
+            [cram]
+    index_cram:
+        run: ../tools/index_cram.cwl
+        in:
+            cram: bam_to_cram/cram
+        out:
+            [indexed_cram]
+    cgpbigwig_bamcoverage:
+        run: ../tools/bam_to_bigwig.cwl
+        in:
+            bam: mark_dup/sorted_bam
+            reference: reference
+        out:
+            [outfile]

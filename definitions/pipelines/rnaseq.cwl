@@ -9,6 +9,11 @@ requirements:
     - class: ScatterFeatureRequirement
     - class: InlineJavascriptRequirement
 inputs:
+    reference:
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai, ^.dict]
     reference_index:
         type: File #this requires an extra file with the basename
         secondaryFiles: [".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"]
@@ -84,6 +89,9 @@ outputs:
     fusion_evidence:
         type: File
         outputSource: kallisto/fusion_evidence
+    bamcoverage_bigwig:
+        type: File
+        outputSource: cgpbigwig_bamcoverage/outfile
 steps:
     bam_to_trimmed_fastq_and_hisat_alignments:
         run: ../subworkflows/bam_to_trimmed_fastq_and_hisat_alignments.cwl
@@ -123,16 +131,22 @@ steps:
             bams: bam_to_trimmed_fastq_and_hisat_alignments/aligned_bam
         out:
             [merged_bam]
+    position_sort:
+        run: ../tools/position_sort.cwl
+        in:
+            bam: merge/merged_bam
+        out:
+            [position_sorted_bam]
     index_bam:
         run: ../tools/index_bam.cwl
         in:
-            bam: merge/merged_bam
+            bam: position_sort/position_sorted_bam
         out:
             [indexed_bam]
     mark_dup:
         run: ../tools/mark_duplicates_and_sort.cwl
         in:
-            bam: merge/merged_bam
+            bam: index_bam/indexed_bam
             input_sort_order: 
                 default: "coordinate"
         out:
@@ -140,7 +154,7 @@ steps:
     stringtie:
         run: ../tools/stringtie.cwl
         in:
-            bam: mark_dup/sorted_bam
+            bam: index_bam/indexed_bam
             reference_annotation: reference_annotation
             sample_name: sample_name
             strand: strand
@@ -155,3 +169,10 @@ steps:
             bam: index_bam/indexed_bam
         out:
             [metrics, chart]
+    cgpbigwig_bamcoverage:
+        run: ../tools/bam_to_bigwig.cwl
+        in:
+            bam: mark_dup/sorted_bam
+            reference: reference
+        out:
+            [outfile]

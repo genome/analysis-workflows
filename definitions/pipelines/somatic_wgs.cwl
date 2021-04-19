@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
           - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
@@ -15,23 +16,30 @@ inputs:
     reference: string
     tumor_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+        label: "tumor_sequence: MT sequencing data and readgroup information"
+        doc: |
+          tumor_sequence represents the sequencing data for the MT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     tumor_name:
         type: string?
         default: 'tumor'
     normal_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+        label: "normal_sequence: WT sequencing data and readgroup information"
+        doc: |
+          normal_sequence represents the sequencing data for the WT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     normal_name:
         type: string?
         default: 'normal'
-    mills:
-        type: File
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
+    bqsr_known_sites:
+        type: File[]
         secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     bqsr_intervals:
         type: string[]
     target_intervals:
@@ -55,19 +63,12 @@ inputs:
     qc_minimum_base_quality:
         type: int?
         default: 0
-    interval_list:
-        type: File
-    cosmic_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
-    panel_of_normals_vcf:
-        type: File?
-        secondaryFiles: [.tbi]
     strelka_cpu_reserved:
         type: int?
         default: 8
-    mutect_scatter_count:
+    scatter_count:
         type: int
+        doc: "scatters each supported variant detector (varscan, pindel, mutect) into this many parallel jobs"
     mutect_artifact_detection_mode:
         type: boolean
         default: false
@@ -98,6 +99,18 @@ inputs:
     filter_docm_variants:
         type: boolean?
         default: true
+    filter_somatic_llr_threshold:
+        type: float
+        default: 5
+        doc: "Sets the stringency (log-likelihood ratio) used to filter out non-somatic variants.  Typical values are 10=high stringency, 5=normal, 3=low stringency. Low stringency may be desirable when read depths are low (as in WGS) or when tumor samples are impure."
+    filter_somatic_llr_tumor_purity:
+        type: float
+        default: 1
+        doc: "Sets the purity of the tumor used in the somatic llr filter, used to remove non-somatic variants. Probably only needs to be adjusted for low-purity (< 50%).  Range is 0 to 1"
+    filter_somatic_llr_normal_contamination_rate:
+        type: float
+        default: 0
+        doc: "Sets the fraction of tumor present in the normal sample (range 0 to 1), used in the somatic llr filter. Useful for heavily contaminated adjacent normals. Range is 0 to 1"
     vep_cache_dir:
         type:
             - string
@@ -149,10 +162,10 @@ inputs:
         type: string
     normal_sample_name:
         type: string
-    known_variants:
+    validated_variants:
         type: File?
         secondaryFiles: [.tbi]
-        doc: "Previously discovered variants to be flagged in this pipelines's output vcf"
+        doc: "An optional VCF with variants that will be flagged as 'VALIDATED' if found in this pipeline's main output VCF"
 outputs:
 ##tumor alignment and QC
     tumor_cram:
@@ -346,12 +359,11 @@ steps:
         in:
             reference: reference
             sequence: tumor_sequence
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            trimming: trimming
             omni_vcf: omni_vcf
             intervals: qc_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             minimum_mapping_quality: qc_minimum_mapping_quality
             minimum_base_quality: qc_minimum_base_quality
@@ -366,12 +378,11 @@ steps:
         in:
             reference: reference
             sequence: normal_sequence
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            trimming: trimming
             omni_vcf: omni_vcf
             intervals: qc_intervals
             picard_metric_accumulation_level: picard_metric_accumulation_level
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             minimum_mapping_quality: qc_minimum_mapping_quality
             minimum_base_quality: qc_minimum_base_quality
@@ -396,14 +407,11 @@ steps:
             reference: reference
             tumor_bam: tumor_alignment_and_qc/bam
             normal_bam: normal_alignment_and_qc/bam
-            interval_list: interval_list
-            dbsnp_vcf: dbsnp_vcf
-            cosmic_vcf: cosmic_vcf
-            panel_of_normals_vcf: panel_of_normals_vcf
+            roi_intervals: target_intervals
             strelka_exome_mode:
                 default: false
             strelka_cpu_reserved: strelka_cpu_reserved
-            mutect_scatter_count: mutect_scatter_count
+            scatter_count: scatter_count
             mutect_artifact_detection_mode: mutect_artifact_detection_mode
             mutect_max_alt_allele_in_normal_fraction: mutect_max_alt_allele_in_normal_fraction
             mutect_max_alt_alleles_in_normal_count: mutect_max_alt_alleles_in_normal_count
@@ -415,6 +423,9 @@ steps:
             pindel_insert_size: pindel_insert_size
             docm_vcf: docm_vcf
             filter_docm_variants: filter_docm_variants
+            filter_somatic_llr_threshold: filter_somatic_llr_threshold
+            filter_somatic_llr_tumor_purity: filter_somatic_llr_tumor_purity
+            filter_somatic_llr_normal_contamination_rate: filter_somatic_llr_normal_contamination_rate
             vep_cache_dir: vep_cache_dir
             vep_ensembl_assembly: vep_ensembl_assembly
             vep_ensembl_version: vep_ensembl_version
@@ -429,7 +440,7 @@ steps:
             tumor_sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name
             vep_custom_annotations: vep_custom_annotations
-            known_variants: known_variants
+            validated_variants: validated_variants
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, docm_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
     manta: 

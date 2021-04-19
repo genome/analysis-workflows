@@ -2,16 +2,16 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "GATK HaplotypeCaller"
-baseCommand: ["/usr/bin/java", "-Xmx8g", "-jar", "/opt/GenomeAnalysisTK.jar", "-T", "GenotypeGVCFs"]
+label: "GATK GenotypeGVCFs"
+baseCommand: ["/gatk/gatk", "--java-options", "-Xmx14g -Xms5g", "GenotypeGVCFs"]
 requirements:
     - class: ResourceRequirement
-      ramMin: 9000
+      ramMin: 16000
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
-      dockerPull: "mgibio/gatk-cwl:3.5.0"
+      dockerPull: "broadinstitute/gatk:4.1.8.1" 
 arguments:
-    ["-o", 'genotype.vcf.gz']
+    ["-G", "StandardAnnotation", "-O", "genotype.vcf.gz"]
 inputs:
     reference:
         type:
@@ -29,6 +29,21 @@ inputs:
                 prefix: "--variant"
         inputBinding:
             position: 2
+    dbsnp_vcf:
+        type: File?
+        inputBinding:
+            prefix: "--dbsnp"
+            position: 3
+        secondaryFiles: [.tbi]
+    intervals:
+        type:
+            - "null"
+            - type: array
+              items: string
+              inputBinding:
+                  prefix: "-L"
+        inputBinding:
+            position: 4
 outputs:
     genotype_vcf:
         type: File

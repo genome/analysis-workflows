@@ -18,15 +18,14 @@ inputs:
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-    mills:
-        type: File
+        label: "sequence: sequencing data and readgroup information"
+        doc: |
+          sequence represents the sequencing data as either FASTQs or BAMs with accompanying
+          readgroup information. Note that in the @RG field ID and SM are required.
+    bqsr_known_sites:
+        type: File[]
         secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     bqsr_intervals:
         type: string[]?
     bait_intervals:
@@ -56,6 +55,8 @@ inputs:
             items:
                 type: array
                 items: string
+    ploidy:
+        type: int?
     vep_cache_dir:
         type:
             - string
@@ -125,9 +126,10 @@ outputs:
     verify_bam_id_depth:
         type: File
         outputSource: germline_exome/verify_bam_id_depth
-    gvcf:
-        type: File[]
-        outputSource: germline_exome/gvcf
+    raw_vcf:
+        type: File
+        outputSource: germline_exome/raw_vcf
+        secondaryFiles: [.tbi]
     final_vcf:
         type: File
         outputSource: germline_exome/final_vcf
@@ -151,9 +153,7 @@ steps:
         in:
             reference: reference
             sequence: sequence
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -165,6 +165,7 @@ steps:
             emit_reference_confidence: emit_reference_confidence
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
+            ploidy: ploidy
             vep_cache_dir: vep_cache_dir
             vep_ensembl_assembly: vep_ensembl_assembly
             vep_ensembl_version: vep_ensembl_version
@@ -175,7 +176,7 @@ steps:
             qc_minimum_mapping_quality: qc_minimum_mapping_quality
             qc_minimum_base_quality: qc_minimum_base_quality
         out:
-            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, gvcf, final_vcf, filtered_vcf, vep_summary]
+            [cram, mark_duplicates_metrics, insert_size_metrics, insert_size_histogram, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats, verify_bam_id_metrics, verify_bam_id_depth, raw_vcf, final_vcf, filtered_vcf, vep_summary]
     optitype:
         run: ../tools/optitype_dna.cwl
         in:

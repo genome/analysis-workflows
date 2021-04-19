@@ -13,6 +13,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 2000
       coresMin: 1
+    - class: StepInputExpressionRequirement
 
 inputs:
     vcfs:

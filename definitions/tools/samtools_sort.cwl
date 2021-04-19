@@ -3,13 +3,13 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "samtools sort"
-baseCommand: ["/opt/samtools/bin/samtools", "sort"]
+baseCommand: ["/usr/local/bin/samtools", "sort"]
 requirements:
     - class: ResourceRequirement
       ramMin: 4000
       coresMin: 1
     - class: DockerRequirement
-      dockerPull: "mgibio/samtools-cwl:1.0.0"
+      dockerPull: "quay.io/biocontainers/samtools:1.11--h6270b1f_0"
 
 arguments:
   - prefix: -o

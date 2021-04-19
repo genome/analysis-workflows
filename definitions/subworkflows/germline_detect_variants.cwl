@@ -8,6 +8,8 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/vep_custom_annotation.yml
+    - class: StepInputExpressionRequirement
+    - class: InlineJavascriptRequirement
 inputs:
     reference:
         type:
@@ -31,6 +33,8 @@ inputs:
                 items: string
     contamination_fraction:
         type: string?
+    ploidy:
+        type: int?
     vep_cache_dir:
         type:
             - string
@@ -46,7 +50,7 @@ inputs:
         doc: "ensembl species - Must be present in the cache directory. Examples: homo_sapiens or mus_musculus"
     vep_plugins:
         type: string[]
-        default: [Downstream, Wildtype]
+        default: [Frameshift, Wildtype]
     synonyms_file:
         type: File?
     annotate_coding_only:
@@ -70,9 +74,10 @@ inputs:
         type: float
         default: 0.05
 outputs:
-    gvcf:
-        type: File[]
-        outputSource: haplotype_caller/gvcf
+    raw_vcf:
+        type: File
+        outputSource: merge_vcfs/merged_vcf
+        secondaryFiles: [.tbi]
     final_vcf:
         type: File
         outputSource: filter_vcf/final_vcf
@@ -100,19 +105,19 @@ steps:
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
             contamination_fraction: contamination_fraction
+            ploidy: ploidy
         out:
             [gvcf]
-    genotype_gvcfs:
-        run: ../tools/gatk_genotypegvcfs.cwl
+    merge_vcfs:
+        run: ../tools/picard_merge_vcfs.cwl
         in:
-            reference: reference
-            gvcfs: haplotype_caller/gvcf
+            vcfs: haplotype_caller/gvcf
         out:
-            [genotype_vcf]
+            [merged_vcf]
     annotate_variants:
         run: ../tools/vep.cwl
         in:
-            vcf: genotype_gvcfs/genotype_vcf
+            vcf: merge_vcfs/merged_vcf
             cache_dir: vep_cache_dir
             ensembl_assembly: vep_ensembl_assembly
             ensembl_version: vep_ensembl_version

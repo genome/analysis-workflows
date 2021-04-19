@@ -9,11 +9,13 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
     - class: ResourceRequirement
       coresMin: 8
       ramMin: 20000
+    - class: InlineJavascriptRequirement
     - class: DockerRequirement
-      dockerPull: "mgibio/alignment_helper-cwl:1.0.0"
+      dockerPull: "mgibio/alignment_helper-cwl:1.1.0"
     - class: InitialWorkDirRequirement
       listing:
       - entryname: 'sequence_alignment_helper.sh'
@@ -22,7 +24,9 @@ requirements:
             set -o errexit
             set -o nounset
 
-            while getopts "b:?1:?2:?g:r:n:" opt; do
+            RUN_TRIMMING="false"
+
+            while getopts "b:?1:?2:?g:r:n:t:?o:?" opt; do
                 case "$opt" in
                     b)
                         MODE=bam
@@ -45,14 +49,33 @@ requirements:
                     n)
                         NTHREADS="$OPTARG"
                         ;;
+                    t)
+                        RUN_TRIMMING="true"
+                        TRIMMING_ADAPTERS="$OPTARG"
+                        ;;
+                    o)
+                        RUN_TRIMMING="true"
+                        TRIMMING_ADAPTER_MIN_OVERLAP="$OPTARG"
+                        ;;
                 esac
             done
 
             if [[ "$MODE" == 'fastq' ]]; then
-                /usr/local/bin/bwa mem -K 100000000 -t "$NTHREADS" -Y -R "$READGROUP" "$REFERENCE" "$FASTQ1" "$FASTQ2" | /usr/local/bin/samblaster -a --addMateTags | /opt/samtools/bin/samtools view -b -S /dev/stdin
+                if [[ "$RUN_TRIMMING" == 'false' ]]; then
+                    /usr/local/bin/bwa mem -K 100000000 -t "$NTHREADS" -Y -R "$READGROUP" "$REFERENCE" "$FASTQ1" "$FASTQ2" | /usr/local/bin/samblaster -a --addMateTags | /opt/samtools/bin/samtools view -b -S /dev/stdin
+                else
+                    /opt/flexbar/flexbar --adapters "$TRIMMING_ADAPTERS" --reads "$FASTQ1" --reads2 "$FASTQ2" --adapter-trim-end LTAIL --adapter-min-overlap "$TRIMMING_ADAPTER_MIN_OVERLAP" --adapter-error-rate 0.1 --max-uncalled 300 --stdout-reads \
+                      | /usr/local/bin/bwa mem -K 100000000 -t "$NTHREADS" -Y -p -R "$READGROUP" "$REFERENCE" /dev/stdin | /usr/local/bin/samblaster -a --addMateTags | /opt/samtools/bin/samtools view -b -S /dev/stdin
+                fi
             fi
             if [[ "$MODE" == 'bam' ]]; then
-                /usr/bin/java -Xmx4g -jar /opt/picard/picard.jar SamToFastq I="$BAM" INTERLEAVE=true INCLUDE_NON_PF_READS=true FASTQ=/dev/stdout | /usr/local/bin/bwa mem -K 100000000 -t "$NTHREADS" -Y -p -R "$READGROUP" "$REFERENCE" /dev/stdin | /usr/local/bin/samblaster -a --addMateTags | /opt/samtools/bin/samtools view -b -S /dev/stdin
+                if [[ "$RUN_TRIMMING" == 'false' ]]; then
+                    /usr/bin/java -Xmx4g -jar /opt/picard/picard.jar SamToFastq I="$BAM" INTERLEAVE=true INCLUDE_NON_PF_READS=true FASTQ=/dev/stdout | /usr/local/bin/bwa mem -K 100000000 -t "$NTHREADS" -Y -p -R "$READGROUP" "$REFERENCE" /dev/stdin | /usr/local/bin/samblaster -a --addMateTags | /opt/samtools/bin/samtools view -b -S /dev/stdin
+                else
+                   /usr/bin/java -Xmx4g -jar /opt/picard/picard.jar SamToFastq I="$BAM" INTERLEAVE=true INCLUDE_NON_PF_READS=true FASTQ=/dev/stdout \
+                     | /opt/flexbar/flexbar --adapters "$TRIMMING_ADAPTERS" --reads - --interleaved --adapter-trim-end LTAIL --adapter-min-overlap "$TRIMMING_ADAPTER_MIN_OVERLAP" --adapter-error-rate 0.1 --max-uncalled 300 --stdout-reads \
+                     | /usr/local/bin/bwa mem -K 100000000 -t "$NTHREADS" -Y -p -R "$READGROUP" "$REFERENCE" /dev/stdin | /usr/local/bin/samblaster -a --addMateTags | /opt/samtools/bin/samtools view -b -S /dev/stdin
+                fi
             fi
 stdout: "refAlign.bam"
 arguments:
@@ -85,6 +108,12 @@ inputs:
             position: 4
             prefix: '-r'
         doc: 'bwa-indexed reference file'
+    trimming:
+        type:
+          - ../types/trimming_options.yml#trimming_options
+          - "null"
+        inputBinding:
+            valueFrom: $( ['-t', self.adapters.path, '-o', self.min_overlap] )
 outputs:
     aligned_bam:
         type: stdout

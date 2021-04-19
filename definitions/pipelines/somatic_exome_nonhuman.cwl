@@ -7,6 +7,9 @@ requirements:
     - class: SchemaDefRequirement
       types:
           - $import: ../types/labelled_file.yml
+          - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
+    - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
 inputs:
@@ -15,24 +18,53 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
-    tumor_bams:
-        type: File[]
-    tumor_readgroups:
-        type: string[]
+    tumor_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
+        label: "tumor_sequence: MT sequencing data and readgroup information"
+        doc: |
+          tumor_sequence represents the sequencing data for the MT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     tumor_name:
         type: string?
         default: 'tumor'
-    normal_bams:
-        type: File[]
-    normal_readgroups:
-        type: string[]
+        label: "tumor_name: String specifying the name of the MT sample"
+        doc: |
+          tumor_name provides a string for what the MT sample will be referred to in the various
+          outputs, for example the VCF files.
+    normal_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
+        label: "normal_sequence: WT sequencing data and readgroup information"
+        doc: |
+          normal_sequence represents the sequencing data for the WT sample as either FASTQs or BAMs with
+          accompanying readgroup information. Note that in the @RG field ID and SM are required.
     normal_name:
         type: string?
         default: 'normal'
+        label: "normal_name: String specifying the name of the WT sample"
+        doc: |
+          normal_name provides a string for what the WT sample will be referred to in the various
+          outputs, for example the VCF files.
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
     bait_intervals:
         type: File
     target_intervals:
         type: File
+        label: "target_intervals: interval_list file of targets used in the sequencing experiment"
+        doc: |
+            target_intervals is an interval_list corresponding to the targets for the capture reagent.
+            Bed files with this information can be converted to interval_lists with Picard BedToIntervalList.
+            In general for a WES exome reagent bait_intervals and target_intervals are the same.
+    target_interval_padding:
+        type: int
+        label: "target_interval_padding: number of bp flanking each target region in which to allow variant calls"
+        doc: |
+            The effective coverage of capture products generally extends out beyond the actual regions
+            targeted. This parameter allows variants to be called in these wingspan regions, extending
+            this many base pairs from each side of the target regions.
+        default: 100
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
     per_target_intervals:
@@ -47,13 +79,12 @@ inputs:
     qc_minimum_base_quality:
         type: int?
         default: 0
-    interval_list:
-        type: File
     strelka_cpu_reserved:
         type: int?
         default: 8
-    mutect_scatter_count:
+    scatter_count:
         type: int
+        doc: "scatters each supported variant detector (varscan, pindel, mutect) into this many parallel jobs"
     varscan_strand_filter:
         type: int?
         default: 0
@@ -96,6 +127,18 @@ inputs:
     cle_vcf_filter:
         type: boolean
         default: false
+    filter_somatic_llr_threshold:
+        type: float
+        default: 5
+        doc: "Sets the stringency (log-likelihood ratio) used to filter out non-somatic variants.  Typical values are 10=high stringency, 5=normal, 3=low stringency. Low stringency may be desirable when read depths are low (as in WGS) or when tumor samples are impure."
+    filter_somatic_llr_tumor_purity:
+        type: float
+        default: 1
+        doc: "Sets the purity of the tumor used in the somatic llr filter, used to remove non-somatic variants. Probably only needs to be adjusted for low-purity (< 50%).  Range is 0 to 1"
+    filter_somatic_llr_normal_contamination_rate:
+        type: float
+        default: 0
+        doc: "Sets the fraction of tumor present in the normal sample (range 0 to 1), used in the somatic llr filter. Useful for heavily contaminated adjacent normals. Range is 0 to 1"
     variants_to_table_fields:
         type: string[]
         default: [CHROM,POS,ID,REF,ALT,set,AC,AF]
@@ -236,11 +279,11 @@ outputs:
         outputSource: detect_variants/normal_indel_bam_readcount_tsv
 steps:
     tumor_alignment_and_qc:
-        run: alignment_exome_mouse.cwl
+        run: alignment_exome_nonhuman.cwl
         in:
             reference: reference
-            bams: tumor_bams
-            readgroups: tumor_readgroups
+            sequence: tumor_sequence
+            trimming: trimming
             bait_intervals: bait_intervals
             target_intervals: target_intervals
             per_base_intervals: per_base_intervals
@@ -255,11 +298,11 @@ steps:
         out:
             [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats]
     normal_alignment_and_qc:
-        run: alignment_exome_mouse.cwl
+        run: alignment_exome_nonhuman.cwl
         in:
             reference: reference
-            bams: normal_bams
-            readgroups: normal_readgroups
+            sequence: normal_sequence
+            trimming: trimming
             bait_intervals: bait_intervals
             target_intervals: target_intervals
             per_base_intervals: per_base_intervals
@@ -273,17 +316,24 @@ steps:
                 valueFrom: "$(self).bam"
         out:
             [bam, mark_duplicates_metrics, insert_size_metrics, alignment_summary_metrics, hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, per_base_coverage_metrics, per_base_hs_metrics, summary_hs_metrics, flagstats]
+    pad_target_intervals:
+        run: ../tools/interval_list_expand.cwl
+        in:
+            interval_list: target_intervals
+            roi_padding: target_interval_padding
+        out:
+            [expanded_interval_list]
     detect_variants:
-        run: detect_variants_mouse.cwl
+        run: detect_variants_nonhuman.cwl
         in:
             reference: reference
             tumor_bam: tumor_alignment_and_qc/bam
             normal_bam: normal_alignment_and_qc/bam
-            interval_list: interval_list
+            roi_intervals: pad_target_intervals/expanded_interval_list
             strelka_exome_mode:
                 default: true
             strelka_cpu_reserved: strelka_cpu_reserved
-            mutect_scatter_count: mutect_scatter_count
+            scatter_count: scatter_count
             varscan_strand_filter: varscan_strand_filter
             varscan_min_coverage: varscan_min_coverage
             varscan_min_var_freq: varscan_min_var_freq
@@ -295,6 +345,9 @@ steps:
             annotate_coding_only: annotate_coding_only
             vep_pick: vep_pick
             cle_vcf_filter: cle_vcf_filter
+            filter_somatic_llr_threshold: filter_somatic_llr_threshold
+            filter_somatic_llr_tumor_purity: filter_somatic_llr_tumor_purity
+            filter_somatic_llr_normal_contamination_rate: filter_somatic_llr_normal_contamination_rate
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_ensembl_assembly: vep_ensembl_assembly

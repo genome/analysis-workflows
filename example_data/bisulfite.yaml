@@ -1,20 +1,25 @@
-instrument_data_bams:
-    - class: File
-      path: bisulfite/test1.bam
-    - class: File
-      path: bisulfite/test2.bam
-reference_index: "/gscmnt/gc2708/info/medseq/tmp/toiltest/bsref/GRCh38DH/all_sequences.fa"
+sequence:
+    - sequence:
+        bam:
+            class: File
+            path: bisulfite_inputs/test1.bam
+      readgroup: '@RG\tID:2895626107'
+    - sequence:
+        fastq1:
+            class: File
+            path: bisulfite_inputs/test2.1.fastq.gz
+        fastq2:
+            class: File
+            path: bisulfite_inputs/test2.2.fastq.gz
+      readgroup: '@RG\tID:2895626112'
+QCannotation: bisulfite_inputs/qc_assets
+reference_index: /storage1/fs1/timley/Active/aml_ppg/analysis/tmp/toiltest/bsref/GRCh38DH/all_sequences.fa
 reference_sizes:
     class: File
-    path: /gscmnt/gc2708/info/medseq/tmp/toiltest/bsref/GRCh38DH/all_sequences.genome
-read_group_id: 
-    - '@RG\tID:2895626107'
-    - '@RG\tID:2895626112'
-trimming_adapters:
-    class: File
-    path: /gscmnt/gc2560/core/illumina_adapters/illumina_multiplex.fa
-trimming_adapter_trim_end: 'RIGHT'
-trimming_adapter_min_overlap: 7
-trimming_max_uncalled: 300
-trimming_min_readlength: 25
+    path: /storage1/fs1/timley/Active/aml_ppg/analysis/tmp/toiltest/bsref/GRCh38DH/all_sequences.genome
+trimming_options:
+    adapters:
+        class: File
+        path: /storage1/fs1/bga/Active/gmsroot/gc2560/core/illumina_adapters/illumina_multiplex.fa
+    min_overlap: 7
 sample_name: ASDF

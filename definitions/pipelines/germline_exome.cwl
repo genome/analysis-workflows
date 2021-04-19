@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
           - $import: ../types/vep_custom_annotation.yml
     - class: SubworkflowFeatureRequirement
 inputs:
@@ -18,15 +19,18 @@ inputs:
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-    mills:
-        type: File
+        label: "sequence: sequencing data and readgroup information"
+        doc: |
+          sequence represents the sequencing data as either FASTQs or BAMs with accompanying
+          readgroup information. Note that in the @RG field ID and SM are required.
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
+    bqsr_known_sites:
+        type: File[]
         secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     bqsr_intervals:
         type: string[]?
     bait_intervals:
@@ -56,6 +60,8 @@ inputs:
             items:
                 type: array
                 items: string
+    ploidy:
+        type: int?
     vep_cache_dir:
         type:
             - string
@@ -132,9 +138,10 @@ outputs:
     verify_bam_id_depth:
         type: File
         outputSource: alignment_and_qc/verify_bam_id_depth
-    gvcf:
-        type: File[]
-        outputSource: detect_variants/gvcf
+    raw_vcf:
+        type: File
+        outputSource: detect_variants/raw_vcf
+        secondaryFiles: [.tbi]
     final_vcf:
         type: File
         outputSource: detect_variants/final_vcf
@@ -158,9 +165,8 @@ steps:
         in:
             reference: reference
             sequence: sequence
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            trimming: trimming
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
             target_intervals: target_intervals
@@ -207,6 +213,7 @@ steps:
             emit_reference_confidence: emit_reference_confidence
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
+            ploidy: ploidy
             contamination_fraction: extract_freemix/freemix_score
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
@@ -221,7 +228,7 @@ steps:
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
         out:
-            [gvcf, final_vcf, filtered_vcf, vep_summary, final_tsv, filtered_tsv]
+            [raw_vcf, final_vcf, filtered_vcf, vep_summary, final_tsv, filtered_tsv]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:

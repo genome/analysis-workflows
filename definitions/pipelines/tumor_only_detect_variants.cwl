@@ -19,8 +19,10 @@ inputs:
     bam:
         type: File
         secondaryFiles: [^.bai,.bai]
-    interval_list:
+    roi_intervals:
         type: File
+        label: "roi_intervals: regions of interest in which variants will be called"
+        doc: "roi_intervals is a list of regions (in interval_list format) within which to call somatic variants"
     varscan_strand_filter:
         type: int?
         default: 0
@@ -73,12 +75,13 @@ inputs:
         default: [Consequence,SYMBOL,Feature_type,Feature,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,HGNC_ID,Existing_variation,gnomADe_AF,CLIN_SIG,SOMATIC,PHENO]
     vep_plugins:
         type: string[]
-        default: [Downstream, Wildtype]
+        default: [Frameshift, Wildtype]
     sample_name:
         type: string
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
+        doc: "Common mutations in cancer that will be genotyped and passed through into the merged VCF if they have even low-level evidence of a mutation (by default, marked with filter DOCM_ONLY)"
     vep_custom_annotations:
         type: ../types/vep_custom_annotation.yml#vep_custom_annotation[]
         doc: "custom type, check types directory for input format"
@@ -120,7 +123,7 @@ steps:
         in:
             reference: reference
             bam: bam
-            interval_list: interval_list
+            interval_list: roi_intervals
             strand_filter: varscan_strand_filter
             min_coverage: varscan_min_coverage
             min_var_freq: varscan_min_var_freq
@@ -134,7 +137,7 @@ steps:
         in:
             reference: reference
             bam: bam
-            interval_list: interval_list
+            interval_list: roi_intervals
             docm_vcf: docm_vcf
         out:
             [unfiltered_vcf, filtered_vcf]
@@ -201,7 +204,7 @@ steps:
         in:
             reference: reference
             vcf: index/indexed_vcf
-            interval_list: interval_list
+            interval_list: roi_intervals
             exclude_filtered:
                 default: true
         out:

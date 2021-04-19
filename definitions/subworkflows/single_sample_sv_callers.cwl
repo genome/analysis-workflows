@@ -24,9 +24,12 @@ inputs:
     cnvkit_drop_low_coverage:
         type: boolean?
     cnvkit_method:
-        type: string?
+        type:
+          - "null"
+          - type: enum
+            symbols: ["hybrid", "amplicon", "wgs"]
     cnvkit_reference_cnn:
-        type: File
+        type: File?
     cnvkit_scatter_plot:
         type: boolean?
     cnvkit_male_reference:
@@ -54,7 +57,6 @@ inputs:
         type: boolean
     merge_min_sv_size:
         type: int
-
     smoove_exclude_regions:
         type: File?
     snps_vcf:
@@ -73,7 +75,8 @@ inputs:
         type: double?
     cnv_filter_min_size:
         type: int?
-
+    blocklist_bedpe:
+        type: File?
 outputs:
     cn_diagram:
         type: File?
@@ -164,6 +167,7 @@ steps:
             cnvkit_vcf_name: cnvkit_vcf_name
             segment_filter:
                 default: "cn"
+            fasta_reference: reference
         out:
             [cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios, cnvkit_vcf]
     run_cnvkit_raw_bgzip:
@@ -183,7 +187,6 @@ steps:
         in:
             deletion_depth: cnv_deletion_depth
             duplication_depth: cnv_duplication_depth
-            reference: reference
             min_sv_size: cnv_filter_min_size
             output_vcf_name:
                 default: "filtered_cnvkit.vcf"
@@ -218,7 +221,6 @@ steps:
         in:
             deletion_depth: cnv_deletion_depth
             duplication_depth: cnv_duplication_depth
-            reference: reference
             min_sv_size: cnv_filter_min_size
             output_vcf_name:
                 default: "filtered_cnvnator.vcf"
@@ -294,6 +296,7 @@ steps:
             same_strand: merge_same_strand
             same_type: merge_same_type
             snps_vcf: snps_vcf
+            blocklist_bedpe: blocklist_bedpe
             sv_vcfs:
                 source: [run_cnvkit_filter/filtered_vcf, run_cnvnator_filter/filtered_vcf, run_manta_filter/filtered_vcf, run_smoove_filter/filtered_vcf]
                 linkMerge: merge_flattened

@@ -15,15 +15,10 @@ inputs:
         type: string[]
     reference:
         type: string
-    dbsnp_vcf:
-        type: File
+    bqsr_known_sites:
+        type: File[]
         secondaryFiles: [.tbi]
-    mills:
-        type: File
-        secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
 outputs:
     final_cram:
         type: File
@@ -63,7 +58,7 @@ steps:
         in:
             reference: reference
             bam: index_bam/indexed_bam
-            known_sites: [dbsnp_vcf, mills, known_indels]
+            known_sites: bqsr_known_sites
         out:
             [bqsr_table]
     apply_bqsr:

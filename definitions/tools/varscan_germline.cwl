@@ -7,6 +7,7 @@ baseCommand: "/usr/bin/varscan_germline_helper.sh"
 requirements:
     - class: ResourceRequirement
       ramMin: 12000
+      coresMin: 2
     - class: DockerRequirement
       dockerPull: "mgibio/varscan_helper-cwl:1.0.0"
 arguments:

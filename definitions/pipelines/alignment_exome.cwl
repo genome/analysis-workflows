@@ -8,6 +8,7 @@ requirements:
       types:
           - $import: ../types/labelled_file.yml
           - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
     - class: SubworkflowFeatureRequirement
 inputs:
     reference:
@@ -17,15 +18,18 @@ inputs:
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-    mills:
-        type: File
+        label: "sequence: sequencing data and readgroup information"
+        doc: |
+          sequence represents the sequencing data as either FASTQs or BAMs with accompanying
+          readgroup information. Note that in the @RG field ID and SM are required.
+    trimming:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
+    bqsr_known_sites:
+        type: File[]
         secondaryFiles: [.tbi]
-    known_indels:
-        type: File
-        secondaryFiles: [.tbi]
-    dbsnp_vcf:
-        type: File
-        secondaryFiles: [.tbi]
+        doc: "One or more databases of known polymorphic sites used to exclude regions around known polymorphisms from analysis."
     bqsr_intervals:
         type: string[]?
     bait_intervals:
@@ -99,9 +103,8 @@ steps:
         in:
             reference: reference
             unaligned: sequence
-            mills: mills
-            known_indels: known_indels
-            dbsnp_vcf: dbsnp_vcf
+            trimming: trimming
+            bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             final_name: final_name
         out: [final_bam,mark_duplicates_metrics_file]

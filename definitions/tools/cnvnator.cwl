@@ -70,7 +70,10 @@ inputs:
            itemSeparator: " "
         doc: "List of chromosomes to run CNVnator on"
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai]
         inputBinding:
             position: 4
         doc: "Reference used to generate the alignments"

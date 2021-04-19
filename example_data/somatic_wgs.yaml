@@ -37,7 +37,7 @@ omni_vcf:
   class: File
   path: /gscmnt/gc2709/info/production_reference_GRCh38DH/accessory_vcf/omni25-ld-pruned-20000-2000-0.5-annotated.wchr.sites_only.b38.autosomes_only.vcf.gz
 picard_metric_accumulation_level: LIBRARY
-mutect_scatter_count: 5
+scatter_count: 5
 vep_cache_dir: /gscmnt/gc2560/core/cwl/inputs/VEP_cache/
 synonyms_file:
   class: File
@@ -72,12 +72,6 @@ somalier_vcf: "/gscmnt/gc2560/core/annotation_data/concordance_snps/GRC-human-bu
 vep_ensembl_assembly: GRCh38
 vep_ensembl_version: 95
 vep_ensembl_species: homo_sapiens
-cosmic_vcf:
-  class: File
-  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-774-52fa2dadc4ba4b6490abe0701907d394/snvs.hq.vcf.gz
-panel_of_normals_vcf:
-  class: File
-  path: /gscmnt/gc2560/core/build_merged_alignments/detect-variants--linus2112.gsc.wustl.edu-jwalker-2237-db881b860992443da9d6aac8b36a7ea6/snvs.hq.vcf.gz
 bqsr_intervals:
 - chr1
 - chr2

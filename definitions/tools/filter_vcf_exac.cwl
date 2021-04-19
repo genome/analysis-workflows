@@ -10,6 +10,7 @@ requirements:
       dockerPull: mgibio/cle:v1.3.1
     - class: ResourceRequirement
       ramMin: 4000
+    - class: StepInputExpressionRequirement
 arguments:
     [{ valueFrom: $(inputs.vcf.path) },
     { valueFrom: $(runtime.outdir)/annotated.exac_filtered.vcf },
