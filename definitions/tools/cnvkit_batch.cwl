@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: ["/usr/bin/python", "/usr/local/bin/cnvkit.py", "batch"]
+baseCommand: ["/usr/bin/python3", "/usr/local/bin/cnvkit.py", "batch"]
 
 requirements:
     - class: ShellCommandRequirement
