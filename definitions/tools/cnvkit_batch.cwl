@@ -7,7 +7,7 @@ baseCommand: ["/usr/bin/python", "/usr/local/bin/cnvkit.py", "batch"]
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "etal/cnvkit:0.9.5"
+      dockerPull: "etal/cnvkit:0.9.8"
     - class: ResourceRequirement
       coresMin: 1
       ramMin: 4000
