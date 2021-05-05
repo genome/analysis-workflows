@@ -6,7 +6,7 @@ label: "Intersect passing validated variants and passing pipeline variants for u
 
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/bcftools-cwl:1.9"
+      dockerPull: "mgibio/bcftools-cwl:1.12"
     - class: ResourceRequirement
       ramMin: 8000
     - class: InitialWorkDirRequirement

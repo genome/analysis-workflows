@@ -6,7 +6,7 @@ label: "vcf merge"
 baseCommand: ["/opt/bcftools/bin/bcftools", "concat"]
 requirements:
     - class: DockerRequirement
-      dockerPull: mgibio/bcftools-cwl:1.3.1
+      dockerPull: mgibio/bcftools-cwl:1.12
     - class: ResourceRequirement
       ramMin: 4000
 arguments:
