@@ -25,11 +25,11 @@ requirements:
             my ($docm_vcf, $normal_cram, $tumor_cram, $output_vcf_file, $set_filter_flag) = @ARGV;
 
             my $samtools = '/opt/samtools/bin/samtools';
-            my $normal_header_str = `$samtools view -H $normal_cram`;
-            my $tumor_header_str  = `$samtools view -H $tumor_cram`;
+            my $normal_header_str = `$samtools view -H $normal_cram | grep "^\@RG" | head -n 1`;
+            my $tumor_header_str  = `$samtools view -H $tumor_cram | grep "^\@RG" | head -n 1`;
 
-            my ($normal_name) = $normal_header_str =~ /^@RG\tSM:([ -~]+)/;
-            my ($tumor_name)  = $tumor_header_str =~ /^@RG\tSM:([ -~]+)/;
+            my ($normal_name) = $normal_header_str =~ /\@RG.+\tSM:([ -~]+)/;
+            my ($tumor_name)  = $tumor_header_str =~ /\@RG.+\tSM:([ -~]+)/;
 
             unless ($normal_name and $tumor_name) {
                 die "Failed to get normal_name: $normal_name from $normal_cram AND tumor_name: $tumor_name from $tumor_cram";
