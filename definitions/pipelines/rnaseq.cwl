@@ -132,15 +132,15 @@ steps:
         out:
             [merged_bam]
     position_sort:
-        run: ../tools/position_sort.cwl
+        run: ../tools/samtools_sort.cwl
         in:
-            bam: merge/merged_bam
+            input_bam: merge/merged_bam
         out:
-            [position_sorted_bam]
+            [sorted_bam]
     index_bam:
         run: ../tools/index_bam.cwl
         in:
-            bam: position_sort/position_sorted_bam
+            bam: position_sort/sorted_bam
         out:
             [indexed_bam]
     mark_dup:
