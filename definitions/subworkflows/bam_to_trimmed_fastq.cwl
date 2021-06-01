@@ -33,32 +33,38 @@ outputs:
     fastqs:
         type: File[]
         outputSource: trim_fastq/fastqs
-    fastq1:
+    fastq_1:
          type: File
-         outputSource: trim_fastq/fastq1
-    fastq2:
+         outputSource: trim_fastq/fastq_1
+    fastq_2:
          type: File
-         outputSource: trim_fastq/fastq2
+         outputSource: trim_fastq/fastq_2
 
 steps:
     bam_to_fastq:
-        # scatter: [sequence]
-        # scatterMethod: dotproduct
         run: ../tools/sequence_to_fastq_rna.cwl
         in: 
-            sequence: sequence
+            bam:
+                source: sequence
+                valueFrom: "$(self.sequence.hasOwnProperty('bam')? self.sequence.bam : null)"
+            fastq1:
+                source: sequence
+                valueFrom: "$(self.sequence.hasOwnProperty('fastq1')? self.sequence.fastq1 : null)"
+            fastq2:
+                source: sequence
+                valueFrom: "$(self.sequence.hasOwnProperty('fastq2')? self.sequence.fastq2 : null)"
         out:
-            [fastq1, fastq2]
+            [fastqW1, fastqW2]
     trim_fastq:
         run: ../tools/trim_fastq.cwl
         in:
-            reads1: bam_to_fastq/fastq1
-            reads2: bam_to_fastq/fastq2
+            reads1: bam_to_fastq/fastqW1
+            reads2: bam_to_fastq/fastqW2
             adapters: adapters
             adapter_trim_end: adapter_trim_end
             adapter_min_overlap: adapter_min_overlap
             max_uncalled: max_uncalled
             min_readlength: min_readlength
         out:
-            [fastqs, fastq1, fastq2]
+            [fastqs, fastq_1, fastq_2]
     
