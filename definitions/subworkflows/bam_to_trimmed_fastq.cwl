@@ -14,10 +14,8 @@ requirements:
           - $import: ../types/sequence_data.yml
 
 inputs:
-    sequence:
-        type: ../types/sequence_data.yml#sequence_data[]
-    #bam:
-    #     type: File
+    unaligned:
+        type: ../types/sequence_data.yml#sequence_data
     adapters:
         type: File
     adapter_trim_end:
@@ -45,13 +43,13 @@ steps:
         run: ../tools/sequence_to_fastq_rna.cwl
         in: 
             bam:
-                source: sequence
+                source: unaligned
                 valueFrom: "$(self.sequence.hasOwnProperty('bam')? self.sequence.bam : null)"
             fastq1:
-                source: sequence
+                source: unaligned
                 valueFrom: "$(self.sequence.hasOwnProperty('fastq1')? self.sequence.fastq1 : null)"
             fastq2:
-                source: sequence
+                source: unaligned
                 valueFrom: "$(self.sequence.hasOwnProperty('fastq2')? self.sequence.fastq2 : null)"
         out:
             [fastqW1, fastqW2]

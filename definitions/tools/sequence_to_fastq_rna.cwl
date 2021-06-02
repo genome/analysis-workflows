@@ -21,7 +21,7 @@ requirements:
             set -o pipefail
             set -o errexit
             set -o nounset
-            while getopts "b:?1:?2:d" opt; do
+            while getopts ":b:?1:?2:d:?" opt; do
                 case "$opt" in
                     b)
                         MODE=bam
@@ -41,28 +41,23 @@ requirements:
                 esac
             done
 
-            if [[ "$BAM" == 'null' ]]; then #must be fastq input
-                cp $FASTQ1 $OUTDIR/read.1.fastq
-                cp $FASTQ2 $OUTDIR/read.2.fastq
+            if [[ "$MODE" == 'fastq' ]]; then #must be fastq input
+                # cp $FASTQ1 $OUTDIR/read.1.fastq
+                # cp $FASTQ2 $OUTDIR/read.2.fastq
+                gunzip -c $FASTQ1 > $OUTDIR/read1.fastq
+                gunzip -c $FASTQ2 > $OUTDIR/read2.fastq
             else # then
                 ##run samtofastq here, dumping to the same filenames
                 ## input file is $BAM
-                /usr/bin/java -Xmx4g -jar /opt/picard/picard.jar SamToFastq I="$BAM" INCLUDE_NON_PF_READS=true F=$OUTDIR/read.1.fastq F2=$OUTDIR/read.2.fastq VALIDATION_STRINGENCY=SILENT
+                /usr/bin/java -Xmx4g -jar /opt/picard/picard.jar SamToFastq I="$BAM" INCLUDE_NON_PF_READS=true F=$OUTDIR/read1.fastq F2=$OUTDIR/read2.fastq VALIDATION_STRINGENCY=SILENT
             fi
 arguments: [
-    # "-b", {valueFrom: "$(self.sequence.hasOwnProperty('bam')? self.sequence.bam : null)"},
-    #"-1", {valueFrom: "$(self.sequence.hasOwnProperty('fastq1')? self.sequence.fastq1 : null)"},
-    #"-2", {valueFrom: "$(self.sequence.hasOwnProperty('fastq2')? self.sequence.fastq2 : null)"},
     {valueFrom: $(runtime.outdir), position: -6, prefix: '-d'}
 ]
 inputs:
-    #sequence:
-    #    type: ../types/sequence_data.yml#sequence_data[]
-    #    doc: "the unaligned sequence data with readgroup information"
     bam:
         type: File?
         inputBinding:
-            position: -5
             prefix: '-b'
     fastq1:
         type: File?
@@ -76,8 +71,8 @@ outputs:
     fastqW1:
         type: File?
         outputBinding:
-            glob: "read.1.fastq"
+            glob: "read1.fastq"
     fastqW2:
         type: File?
         outputBinding:
-            glob: "read.2.fastq"
+            glob: "read2.fastq"
