@@ -152,6 +152,9 @@ inputs:
         type: string
     normal_sample_name:
         type: string
+    cnvkit_target_average_size:
+        type: int?
+        doc: "approximate size of split target bins for CNVkit; if not set a suitable window size will be set by CNVkit automatically"
 outputs:
     tumor_cram:
         type: File
@@ -358,6 +361,22 @@ steps:
             normal_sample_name: normal_sample_name
         out:
             [mutect_unfiltered_vcf, mutect_filtered_vcf, strelka_unfiltered_vcf, strelka_filtered_vcf, varscan_unfiltered_vcf, varscan_filtered_vcf, pindel_unfiltered_vcf, pindel_filtered_vcf, final_vcf, final_filtered_vcf, final_tsv, vep_summary, tumor_snv_bam_readcount_tsv, tumor_indel_bam_readcount_tsv, normal_snv_bam_readcount_tsv, normal_indel_bam_readcount_tsv]
+    cnvkit:
+        run: ../tools/cnvkit_batch.cwl
+        in:
+            tumor_bam: tumor_alignment_and_qc/bam
+            reference:
+                source: [normal_alignment_and_qc/bam, reference]
+                valueFrom: |
+                    ${
+                      var normal = self[0];
+                      var fasta = self[1];
+                      return {'normal_bam': normal, 'fasta_file': fasta};
+                    }
+            bait_intervals: bait_intervals
+            cnvkit_target_average_size: cnvkit_target_average_size
+        out:
+            [intervals_antitarget, intervals_target, normal_antitarget_coverage, normal_target_coverage, reference_coverage, cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios]
     tumor_bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:

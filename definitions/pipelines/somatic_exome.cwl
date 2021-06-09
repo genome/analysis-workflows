@@ -243,6 +243,9 @@ inputs:
         type: File?
         secondaryFiles: [.tbi]
         doc: "An optional VCF with variants that will be flagged as 'VALIDATED' if found in this pipeline's main output VCF"
+    cnvkit_target_average_size:
+        type: int?
+        doc: "approximate size of split target bins for CNVkit; if not set a suitable window size will be set by CNVkit automatically"
 outputs:
     tumor_cram:
         type: File
@@ -556,6 +559,7 @@ steps:
                       return {'normal_bam': normal, 'fasta_file': fasta};
                     }
             bait_intervals: bait_intervals
+            cnvkit_target_average_size: cnvkit_target_average_size
         out:
             [intervals_antitarget, intervals_target, normal_antitarget_coverage, normal_target_coverage, reference_coverage, cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios]
     manta:
