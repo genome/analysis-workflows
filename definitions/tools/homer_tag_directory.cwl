@@ -12,6 +12,7 @@ doc: |
     docker_volumes: "/gscmnt/gc2560/core/annotation_data/homer:/opt/homerdata"
   or outside the pipelines:
     LSF_DOCKER_VOLUMES="$LSF_DOCKER_VOLUMES /gscmnt/gc2560/core/annotation_data/homer:/opt/homerdata"
+  for compute1, instead use the path `/storage1/fs1/bga/Active/gmsroot/gc2560/core/annotation_data/homer`
 baseCommand: ["/bin/bash", "homer_tag_directory.sh"]
 requirements:
     - class: DockerRequirement
