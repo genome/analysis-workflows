@@ -4,7 +4,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 label: "Run Smoove v0.1.6"
 
-baseCommand: "/usr/bin/smoove"
+baseCommand: "/usr/local/bin/smoove"
 arguments: ["call", "--processes", $(runtime.cores), "-F"]
 
 requirements:
