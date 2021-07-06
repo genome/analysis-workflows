@@ -35,7 +35,7 @@ requirements:
               /usr/local/bin/bedtools pairtopair -is -slop "$SLOPE" -type notboth -a tmp.bedpe -b "$BL_BEDPE" | /bin/cat tmp.header /dev/stdin | /opt/conda/envs/python2/bin/svtools bedpetovcf -i /dev/stdin | /opt/conda/envs/python2/bin/svtools vcfsort /dev/stdin > "$OUT_BASE.vcf"
 
               /opt/htslib/bin/bgzip $OUT_BASE.vcf
-             /usr/local/bin/tabix -p vcf $OUT_BASE.vcf.gz
+              /usr/bin/tabix -p vcf $OUT_BASE.vcf.gz
           else # blocklist_bedpe is not passed.
               INPUT_VCF="$1"
               SLOPE="$2"
@@ -43,7 +43,7 @@ requirements:
 
               /usr/local/bin/bedtools sort -header -i "$INPUT_VCF" > $OUT_BASE.vcf
               /opt/htslib/bin/bgzip $OUT_BASE.vcf
-              /usr/local/bin/tabix -p vcf $OUT_BASE.vcf.gz
+              /usr/bin/tabix -p vcf $OUT_BASE.vcf.gz
           fi
 
 inputs:
