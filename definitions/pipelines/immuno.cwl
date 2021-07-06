@@ -243,10 +243,6 @@ inputs:
         doc: "An optional VCF with variants that will be flagged as 'VALIDATED' if found in this pipeline's main output VCF"
 
     #germline inputs
-    emit_reference_confidence:
-        type:
-            type: enum
-            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
     gvcf_gq_bands:
         type: string[]
     gatk_haplotypecaller_intervals:
@@ -879,7 +875,6 @@ steps:
             summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level
-            emit_reference_confidence: emit_reference_confidence
             gvcf_gq_bands: gvcf_gq_bands
             intervals: gatk_haplotypecaller_intervals
             ploidy: ploidy

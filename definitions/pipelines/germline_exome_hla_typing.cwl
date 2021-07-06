@@ -63,10 +63,6 @@ inputs:
         secondaryFiles: [.tbi]
     picard_metric_accumulation_level:
         type: string
-    emit_reference_confidence:
-        type:
-            type: enum
-            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
     gvcf_gq_bands:
         type: string[]
     intervals:
@@ -183,7 +179,6 @@ steps:
             summary_intervals: summary_intervals
             omni_vcf: omni_vcf
             picard_metric_accumulation_level: picard_metric_accumulation_level
-            emit_reference_confidence: emit_reference_confidence
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
             ploidy: ploidy

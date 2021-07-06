@@ -19,10 +19,6 @@ inputs:
     bam:
         type: File
         secondaryFiles: [^.bai]
-    emit_reference_confidence:
-        type:
-            type: enum
-            symbols: ['NONE', 'BP_RESOLUTION', 'GVCF']
     gvcf_gq_bands:
         type: string[]
     intervals:
@@ -101,7 +97,8 @@ steps:
         in:
             reference: reference
             bam: bam
-            emit_reference_confidence: emit_reference_confidence
+            emit_reference_confidence:
+                default: "NONE"
             gvcf_gq_bands: gvcf_gq_bands
             intervals: intervals
             contamination_fraction: contamination_fraction
