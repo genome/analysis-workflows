@@ -35,8 +35,28 @@ inputs:
         type: string[]?
     bait_intervals:
         type: File
+        label: "bait_intervals: interval_list file of baits used in the sequencing experiment"
+        doc: |
+          bait_intervals is an interval_list corresponding to the baits used in sequencing reagent.
+          These are essentially coordinates for regions you were able to design probes for in the reagent.
+          Typically the reagent provider has this information available in bed format and it can be
+          converted to an interval_list with Picard BedToIntervalList. Astrazeneca also maintains a repo
+          of baits for common sequencing reagents available at https://github.com/AstraZeneca-NGS/reference_data
     target_intervals:
         type: File
+        label: "target_intervals: interval_list file of targets used in the sequencing experiment"
+        doc: |
+          target_intervals is an interval_list corresponding to the targets for the capture reagent.
+          Bed files with this information can be converted to interval_lists with Picard BedToIntervalList.
+          In general for a WES exome reagent bait_intervals and target_intervals are the same.
+    target_interval_padding:
+        type: int
+        label: "target_interval_padding: number of bp flanking each target region in which to allow variant calls"
+        doc: |
+            The effective coverage of capture products generally extends out beyond the actual regions
+            targeted. This parameter allows variants to be called in these wingspan regions, extending
+            this many base pairs from each side of the target regions.
+        default: 100
     per_base_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
     per_target_intervals:
@@ -205,6 +225,13 @@ steps:
                                 return {'freemix_score:': null };
                             }
                         }
+    pad_target_intervals:
+        run: ../tools/interval_list_expand.cwl
+        in:
+            interval_list: target_intervals
+            roi_padding: target_interval_padding
+        out:
+            [expanded_interval_list]
     detect_variants:
         run: ../subworkflows/germline_detect_variants.cwl
         in:
@@ -218,7 +245,7 @@ steps:
             vep_cache_dir: vep_cache_dir
             synonyms_file: synonyms_file
             annotate_coding_only: annotate_coding_only
-            limit_variant_intervals: target_intervals
+            limit_variant_intervals: pad_target_intervals/expanded_interval_list
             vep_ensembl_assembly: vep_ensembl_assembly
             vep_ensembl_version: vep_ensembl_version
             vep_ensembl_species: vep_ensembl_species

@@ -9,7 +9,7 @@ requirements:
     - class: ResourceRequirement
       ramMin: 8000
     - class: DockerRequirement
-      dockerPull: "mgibio/bcftools-cwl:1.9"
+      dockerPull: "mgibio/bcftools-cwl:1.12"
     - class: InitialWorkDirRequirement
       listing:
       - entryname: "rename_sample.sh"

@@ -6,7 +6,7 @@ label: "Adds an INFO tag (VALIDATED) flagging variants in the pipeline vcf prese
 
 requirements:
     - class: DockerRequirement
-      dockerPull: "mgibio/bcftools-cwl:1.9"
+      dockerPull: "mgibio/bcftools-cwl:1.12"
     - class: ResourceRequirement
       ramMin: 8000
     - class: InitialWorkDirRequirement
