@@ -2,14 +2,14 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-label: "Run Smoove v0.1.6"
+label: "Run Smoove v0.2.7"
 
 baseCommand: "/usr/bin/smoove"
 arguments: ["call", "--processes", $(runtime.cores), "-F"]
 
 requirements:
     - class: DockerRequirement
-      dockerPull: "quay.io/biocontainers/smoove:0.2.6--0"
+      dockerPull: "brentp/smoove:v0.2.7"
     - class: ResourceRequirement
       ramMin: 20000
       coresMin: 4
