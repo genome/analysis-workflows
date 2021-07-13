@@ -1,0 +1,35 @@
+name: CWL Syntax Check
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  check_syntax:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install 'setuptools>=18.5'
+          python -m pip install 'cwltool==1.0.20181217162649'
+          python -m pip install 'ruamel.yaml==0.15.77'
+          python -m pip install 'mdutils==1.0.0'
+          python -m pip install 'PyYAML==5.1.2'
+      - name: Run cwltool validate
+        run: |
+          cd $GITHUB_WORKSPACE/definitions
+          find . -name '*.cwl' | xargs -n 1 cwltool --validate
