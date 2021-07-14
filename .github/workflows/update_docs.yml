@@ -29,6 +29,8 @@ jobs:
         run: |
           git clone "https://${WIKI_ACCESS_TOKEN}@github.com/genome/analysis-workflows.wiki.git"
           cd analysis-workflows.wiki/
+          git config user.email "apipe-tester@genome.wustl.edu"
+          git config user.name "APipe Tester"
           python scripts/create_cwl_documentation.py
           git add .
           git diff-index --quiet HEAD || git commit -m "Automated Documentation Update\n\nWorkflow run ${GITHUB_RUN_ID} on ${GITHUB_SHA}."
