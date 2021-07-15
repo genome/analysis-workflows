@@ -16,8 +16,6 @@ requirements:
         entry: |
           #!/bin/bash
           set -eou pipefail
-          basen=`basename "$3"`
-          basen="renamed.$basen"
 
           #escape spaces, otherwise bcftools will try to use them as a delimiter
           #triple backslash to escape within backticks and then again within sed
@@ -25,7 +23,7 @@ requirements:
           new_name=`echo "$2" | sed 's/ /\\\ /g'`
 
           echo "$old_name $new_name" > sample_update.txt
-          /opt/bcftools/bin/bcftools reheader -s sample_update.txt -o "$basen" "$3"
+          /opt/bcftools/bin/bcftools reheader -s sample_update.txt -o "$4" "$3"
 
 inputs:
     input_vcf:
@@ -43,9 +41,14 @@ inputs:
         inputBinding:
             position: 2
         doc: "Sample name to replace the other"
-
+    output_name:
+       type: string?
+       inputBinding:
+           position: 4
+       default: "renamed.$(inputs.input_vcf.basename)"
+       doc: "output filename for vcf"
 outputs:
     renamed_vcf:
         type: File
         outputBinding:
-            glob: $("renamed." + inputs.input_vcf.basename)
+            glob: "$(inputs.output_name)"
