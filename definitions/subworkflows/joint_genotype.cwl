@@ -72,7 +72,7 @@ inputs:
 outputs:
     raw_vcf:
         type: File
-        outputSource: merge_vcfs/merged_vcf
+        outputSource: normalize_index/indexed_vcf
         secondaryFiles: [.tbi]
     annotated_vcf:
         type: File
@@ -121,11 +121,35 @@ steps:
             vcfs: genotype_gvcf/genotype_vcf
         out:
             [merged_vcf]
-
+    decompose:
+        run: ../tools/vt_decompose.cwl
+        in:
+            vcf: merge_vcfs/merged_vcf
+        out:
+            [decomposed_vcf]
+    decompose_index:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: decompose/decomposed_vcf
+        out:
+            [indexed_vcf]
+    normalize:
+        run: ../tools/vt_normalize.cwl
+        in:
+            vcf: decompose_index/indexed_vcf
+            reference: reference
+        out:
+            [normalized_vcf]
+    normalize_index:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: normalize/normalized_vcf
+        out:
+            [indexed_vcf]
     annotate_variants:
         run: ../tools/vep.cwl
         in:
-            vcf: merge_vcfs/merged_vcf
+            vcf: normalize_index/indexed_vcf
             cache_dir: vep_cache_dir
             ensembl_assembly: vep_ensembl_assembly
             ensembl_version: vep_ensembl_version
