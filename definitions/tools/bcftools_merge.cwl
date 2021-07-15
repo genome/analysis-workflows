@@ -58,7 +58,7 @@ inputs:
         doc: "input bgzipped tabix indexed vcfs to merge"
 
 outputs:
-    merged_sv_vcf:
+    merged_vcf:
         type: File
         outputBinding:
             glob: $(inputs.output_vcf_name)

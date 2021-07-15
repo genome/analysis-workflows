@@ -127,11 +127,11 @@ steps:
                 default: "bcftools-sv-merged.vcf"
             vcfs: sv_vcfs
         out:
-            [merged_sv_vcf]
+            [merged_vcf]
     filter_blocklist_bcftools:
         run: ../tools/filter_sv_vcf_blocklist_bedpe.cwl
         in:
-            input_vcf: bcftools_merge_sv_vcfs/merged_sv_vcf
+            input_vcf: bcftools_merge_sv_vcfs/merged_vcf
             blocklist_bedpe: blocklist_bedpe
             output_vcf_basename:
                 default: "bcftools-sv-merged"
