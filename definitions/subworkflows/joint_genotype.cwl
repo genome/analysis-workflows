@@ -74,6 +74,10 @@ outputs:
         type: File
         outputSource: merge_vcfs/merged_vcf
         secondaryFiles: [.tbi]
+    annotated_vcf:
+        type: File
+        outputSource: bgzip_index_annotated_vcf/indexed_vcf
+        secondaryFiles: [.tbi]
     final_vcf:
         type: File
         outputSource: filter_vcf/final_vcf
