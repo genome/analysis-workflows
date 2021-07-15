@@ -44,6 +44,12 @@ inputs:
                   prefix: "-L"
         inputBinding:
             position: 4
+    min_conf_call:
+        type: float?
+        inputBinding:
+            prefix: "-stand-call-conf"
+            position: 5
+        doc: "The minimum phred-scaled confidence threshold at which variants should be called"
 outputs:
     genotype_vcf:
         type: File
