@@ -32,6 +32,9 @@ inputs:
         type: File[]
     blocklist_bedpe:
         type: File?
+    filter_pop_af:
+        type: double?
+        default: "0.05"
     filter_no_CDS:
         type: boolean?
 outputs:
@@ -50,6 +53,9 @@ outputs:
     survivor_merged_annotated_tsv:
         type: File
         outputSource: survivor_annotate_variants/sv_variants_tsv
+    survivor_merged_filtered_annotated_tsv:
+        type: File
+        outputSource: survivor_annotsv_filter/filtered_tsv
 steps:
     survivor_merge_sv_vcfs:
         run: ../tools/survivor.cwl
@@ -86,6 +92,18 @@ steps:
                 valueFrom: ${ return [ self ]; }
         out:
             [sv_variants_tsv]
+    survivor_annotsv_filter:
+        run: ../tools/annotsv_filter.cwl
+        in:
+            annotsv_tsv: survivor_annotate_variants/annotated_tsv
+            filtering_frequency: filter_pop_af
+            no_CDS: filter_no_CDS
+            survivor_merged:
+                default: true
+            output_tsv_name:
+                default: "survivor-merged-AnnotSV-filtered.tsv"
+        out:
+            [filtered_tsv]
     bcftools_merge_sv_vcfs:
         run: ../tools/bcftools_merge.cwl
         in:
@@ -122,9 +140,13 @@ steps:
     bcftools_annotsv_filter:
         run: ../tools/annotsv_filter.cwl
         in:
-            annotsv_tsv: bcftools_annotate_variants/sv_variants_tsv
-            filtering_frequency:
-                default: "0.05"
+            annotsv_tsv: bcftools_annotate_variants/annotated_tsv
+            filtering_frequency: filter_pop_af
             no_CDS: filter_no_CDS
+            survivor_merged:
+                default: false
+            output_tsv_name:
+                default: "bcftools-merged-AnnotSV-filtered.tsv"
+
         out:
             [filtered_tsv]
