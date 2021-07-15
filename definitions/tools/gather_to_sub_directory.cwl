@@ -19,7 +19,7 @@ requirements:
             files="${@:2}"
             mkdir $outdir
             chmod -R 777 $outdir
-            cp -t $outdir $files
+            cp --recursive --preserve --no-clobber --target-directory $outdir $files
 
             exit 0
 
@@ -32,6 +32,23 @@ inputs:
         type: File[]
         inputBinding:
             position: 2
+            valueFrom: |
+              ${
+                var results = []
+                for(var i=0; i<self.length; i++){
+                  results.push(self[i])
+                  if(self[i].hasOwnProperty('secondaryFiles')){
+                    for(var j=0; j<self[i].secondaryFiles.length; j++){
+                      results.push(self[i].secondaryFiles[j])
+                    }
+                  }
+                }
+                return results
+              }
+    directory:
+         type: Directory?
+         inputBinding:
+            position: 3
 outputs:
     gathered_directory:
         type: Directory
