@@ -37,13 +37,21 @@ inputs:
         default: "0.05"
     filter_no_CDS:
         type: boolean?
+    annotsv_annotations:
+        type:
+            - string
+            - Directory
+        doc: "directory/path of the annotsv annotations directory"
 outputs:
     bcftools_merged_sv_vcf:
         type: File
         outputSource: filter_blocklist_bcftools/filtered_sv_vcf
     bcftools_merged_annotated_tsv:
         type: File
-        outputSource: bcftools_annotate_variants/sv_variants_tsv
+        outputSource: bcftools_annotate_variants/annotated_tsv
+    bcftools_merged_unannotated_tsv:
+        type: File
+        outputSource: bcftools_annotate_variants/unannotated_tsv
     bcftools_merged_filtered_annotated_tsv:
        type: File
        outputSource: bcftools_annotsv_filter/filtered_tsv
@@ -52,7 +60,10 @@ outputs:
         outputSource: filter_blocklist_survivor/filtered_sv_vcf
     survivor_merged_annotated_tsv:
         type: File
-        outputSource: survivor_annotate_variants/sv_variants_tsv
+        outputSource: survivor_annotate_variants/annotated_tsv
+    survivor_merged_unannotated_tsv:
+        type: File
+        outputSource: survivor_annotate_variants/unannotated_tsv
     survivor_merged_filtered_annotated_tsv:
         type: File
         outputSource: survivor_annotsv_filter/filtered_tsv
@@ -90,8 +101,9 @@ steps:
             snps_vcf:
                 source: [snps_vcf]
                 valueFrom: ${ return [ self ]; }
+            annotations: annotsv_annotations
         out:
-            [sv_variants_tsv]
+            [annotated_tsv, unannotated_tsv]
     survivor_annotsv_filter:
         run: ../tools/annotsv_filter.cwl
         in:
@@ -130,13 +142,14 @@ steps:
         in:
             genome_build: genome_build
             input_vcf: filter_blocklist_bcftools/filtered_sv_vcf
-            output_tsv_name:
-                default: "bcftools-merged-AnnotSV.tsv"
+            output_base:
+                default: "bcftools-merged-AnnotSV"
             snps_vcf:
                 source: [snps_vcf]
                 valueFrom: ${ return [ self ]; }
+            annotations: annotsv_annotations
         out:
-            [sv_variants_tsv]
+            [annotated_tsv, unannotated_tsv]
     bcftools_annotsv_filter:
         run: ../tools/annotsv_filter.cwl
         in:

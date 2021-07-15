@@ -152,6 +152,11 @@ inputs:
     disclaimer_text:
         type: string?
         default: 'Workflow source can be found at https://github.com/genome/analysis-workflows'
+    annotsv_annotations:
+        type:
+            - string
+            - Directory
+        doc: "directory/path of the annotsv annotations directory"
 outputs:
     cram:
         type: File
