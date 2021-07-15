@@ -79,7 +79,7 @@ steps:
             estimate_sv_distance: estimate_sv_distance
             minimum_sv_size: minimum_sv_size
             cohort_name:
-                default: "SURVIVOR-sv-merged.vcf"
+                default: "survivor-sv-merged.vcf"
         out:
             [merged_vcf]
     filter_blocklist_survivor:
@@ -88,7 +88,7 @@ steps:
             input_vcf: survivor_merge_sv_vcfs/merged_vcf
             blocklist_bedpe: blocklist_bedpe
             output_vcf_basename:
-                default: "SURVIVOR-sv-merged"
+                default: "survivor-sv-merged"
         out:
             [filtered_sv_vcf]
     survivor_annotate_variants:
@@ -96,8 +96,8 @@ steps:
         in:
             genome_build: genome_build
             input_vcf: filter_blocklist_survivor/filtered_sv_vcf
-            output_tsv_name:
-                default: "SURVIVOR-merged-AnnotSV.tsv"
+            output_base:
+                default: "survivor-merged-AnnotSV"
             snps_vcf:
                 source: [snps_vcf]
                 valueFrom: ${ return [ self ]; }
