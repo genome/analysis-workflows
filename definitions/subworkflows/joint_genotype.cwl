@@ -64,9 +64,11 @@ inputs:
     final_tsv_prefix:
         type: string?
         default: 'variants'
-    filter_gnomAD_maximum_population_allele_frequency:
+    gnomad_max_pop_af:
         type: float
         default: 0.05
+    min_conf_call:
+        type: float?
 outputs:
     raw_vcf:
         type: File
@@ -106,6 +108,7 @@ steps:
                 source: [combine_gvcfs/gvcf]
                 linkMerge: merge_flattened
             intervals: intervals
+            min_conf_call: min_conf_call
         out:
             [genotype_vcf]
     merge_vcfs:
@@ -140,7 +143,7 @@ steps:
         run: germline_filter_vcf.cwl
         in:
             annotated_vcf: annotate_variants/annotated_vcf
-            filter_gnomAD_maximum_population_allele_frequency: filter_gnomAD_maximum_population_allele_frequency
+            filter_gnomAD_maximum_population_allele_frequency: gnomad_max_pop_af
             gnomad_field_name:
                source: vep_custom_annotations
                valueFrom: |
