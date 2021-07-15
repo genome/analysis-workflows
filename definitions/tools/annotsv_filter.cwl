@@ -23,14 +23,14 @@ requirements:
             parser.add_argument('--input', '-i', dest="input", help='input AnnotSV tsv file', required=True, action="store")
             parser.add_argument('--output', '-o', dest="output", help='output tsv file name', required=True, action="store")
             parser.add_argument('--filtering_frequency', dest="filtering_frequency", help="frequency to filter with", action="store", type=float, default="0.05")
-            parser.add_argument('--all-CDS', dest="CDS", help="Do not require a positive CoDing Sequence overlap", action="store_true")
+            parser.add_argument('--no-CDS', dest="CDS", help="Do not require a positive CoDing Sequence overlap", action="store_true")
             parser.add_argument('--ignore-pass-filter', dest="filter", help="Do not require calls to have a PASS filter", action="store_true")
 
             args = parser.parse_args()
             input_file_name  = args.input
             output_file_name = args.output
             filtering_frequency = args.filtering_frequency
-            all_cds = args.CDS
+            no_cds = args.CDS
             ignore_pass_filter = args.filter
 
             with open(input_file_name, 'r') as file_in, open(output_file_name, 'w') as file_out:
@@ -43,7 +43,7 @@ requirements:
                     total_sv_count += 1
                     if(row['AnnotSV type'] == 'split' \
                         and (row['FILTER'] == 'PASS' or ignore_pass_filter) \
-                        and (int(row['CDS length']) > 0 or all_cds) \
+                        and (int(row['CDS length']) > 0 or no_cds) \
                         and float(row['IMH_AF']) < filtering_frequency
                         and float(row['1000g_max_AF']) < filtering_frequency
                         and not(float(row['DGV_LOSS_Frequency']) > filtering_frequency and 'DEL' in row['SV type']) 
@@ -55,11 +55,11 @@ requirements:
                 print("total sv passed count:",pass_sv_count)
 
 inputs:
-    all_CDS:
+    no_CDS:
         type: boolean?
         inputBinding:
             position: 1
-            prefix: "--all-CDS"
+            prefix: "--no-CDS"
     annotsv_tsv:
         type: File
         inputBinding:

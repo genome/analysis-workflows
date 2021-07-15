@@ -32,6 +32,8 @@ inputs:
         type: File[]
     blocklist_bedpe:
         type: File?
+    filter_no_CDS:
+        type: boolean?
 outputs:
     bcftools_merged_sv_vcf:
         type: File
@@ -123,5 +125,6 @@ steps:
             annotsv_tsv: bcftools_annotate_variants/sv_variants_tsv
             filtering_frequency:
                 default: "0.05"
+            no_CDS: filter_no_CDS
         out:
             [filtered_tsv]
