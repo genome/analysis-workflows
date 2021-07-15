@@ -167,10 +167,17 @@ steps:
             vcf: annotate_variants/annotated_vcf
         out:
             [indexed_vcf]
+    soft_filter:
+        run: gatk_soft_filter.cwl
+        in:
+            reference: reference
+            vcf: bgzip_index_annotated_vcf/indexed_vcf
+        out:
+            [filtered_vcf]
     filter_vcf:
         run: germline_filter_vcf.cwl
         in:
-            annotated_vcf: annotate_variants/annotated_vcf
+            annotated_vcf: soft_filter/filtered_vcf
             filter_gnomAD_maximum_population_allele_frequency: gnomad_max_pop_af
             gnomad_field_name:
                source: vep_custom_annotations
