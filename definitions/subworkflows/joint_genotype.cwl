@@ -76,7 +76,7 @@ outputs:
         secondaryFiles: [.tbi]
     annotated_vcf:
         type: File
-        outputSource: bgzip_index_annotated_vcf/indexed_vcf
+        outputSource: soft_filter/filtered_vcf
         secondaryFiles: [.tbi]
     final_vcf:
         type: File
