@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "exome alignment and somatic variant detection"
+label: "wgs alignment and somatic variant detection"
 requirements:
     - class: SchemaDefRequirement
       types:
@@ -137,6 +137,11 @@ inputs:
     cnvkit_target_average_size:
         type: int?
         doc: "approximate size of split target bins for CNVkit; if not set a suitable window size will be set by CNVkit automatically"
+    manta_non_wgs:
+        type: boolean?
+        default: false
+    manta_output_contigs:
+        type: boolean?
 outputs:
     tumor_cram:
         type: File
@@ -248,6 +253,59 @@ outputs:
     normal_indel_bam_readcount_tsv:
         type: File
         outputSource: detect_variants/normal_indel_bam_readcount_tsv
+    cnvkit_intervals_antitarget:
+        type: File
+        outputSource: cnvkit/intervals_antitarget
+    cnvkit_intervals_target:
+        type: File
+        outputSource: cnvkit/intervals_target
+    cnvkit_normal_antitarget_coverage:
+        type: File
+        outputSource: cnvkit/normal_antitarget_coverage
+    cnvkit_normal_target_coverage:
+        type: File
+        outputSource: cnvkit/normal_target_coverage
+    cnvkit_reference_coverage:
+        type: File
+        outputSource: cnvkit/reference_coverage
+    cnvkit_cn_diagram:
+        type: File
+        outputSource: cnvkit/cn_diagram
+    cnvkit_cn_scatter_plot:
+        type: File
+        outputSource: cnvkit/cn_scatter_plot
+    cnvkit_tumor_antitarget_coverage:
+        type: File
+        outputSource: cnvkit/tumor_antitarget_coverage
+    cnvkit_tumor_target_coverage:
+        type: File
+        outputSource: cnvkit/tumor_target_coverage
+    cnvkit_tumor_bin_level_ratios:
+        type: File
+        outputSource: cnvkit/tumor_bin_level_ratios
+    cnvkit_tumor_segmented_ratios:
+        type: File
+        outputSource: cnvkit/tumor_segmented_ratios
+    diploid_variants:
+        type: File?
+        outputSource: manta/diploid_variants
+        secondaryFiles: [.tbi]
+    somatic_variants:
+        type: File?
+        outputSource: manta/somatic_variants
+        secondaryFiles: [.tbi]
+    all_candidates:
+        type: File
+        outputSource: manta/all_candidates
+        secondaryFiles: [.tbi]
+    small_candidates:
+        type: File
+        outputSource: manta/small_candidates
+        secondaryFiles: [.tbi]
+    tumor_only_variants:
+        type: File?
+        outputSource: manta/tumor_only_variants
+        secondaryFiles: [.tbi]
 steps:
     tumor_alignment_and_qc:
         run: alignment_wgs_nonhuman.cwl
@@ -334,6 +392,16 @@ steps:
             target_average_size: cnvkit_target_average_size
         out:
             [intervals_antitarget, intervals_target, normal_antitarget_coverage, normal_target_coverage, reference_coverage, cn_diagram, cn_scatter_plot, tumor_antitarget_coverage, tumor_target_coverage, tumor_bin_level_ratios, tumor_segmented_ratios]
+    manta: 
+        run: ../tools/manta_somatic.cwl
+        in:
+            normal_bam: normal_alignment_and_qc/bam
+            tumor_bam: tumor_alignment_and_qc/bam
+            reference: reference
+            non_wgs: manta_non_wgs
+            output_contigs: manta_output_contigs
+        out:
+            [diploid_variants, somatic_variants, all_candidates, small_candidates, tumor_only_variants]
     tumor_bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:

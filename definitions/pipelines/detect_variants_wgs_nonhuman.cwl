@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "Detect Variants workflow for WGS pipeline"
+label: "Detect Variants workflow for nonhuman WGS pipeline"
 requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
