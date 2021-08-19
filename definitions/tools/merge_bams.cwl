@@ -66,7 +66,7 @@ inputs:
             position: 3
     sorted:
         type: boolean?
-        default: "false"
+        default: false
         inputBinding:
             prefix: "-s"
             position: 2
