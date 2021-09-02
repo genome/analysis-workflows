@@ -92,6 +92,13 @@ outputs:
     fusion_evidence:
         type: File
         outputSource: kallisto/fusion_evidence
+    multiqc_data:
+        type: File
+        outputSource: generate_multiqc/multiqc_zip
+    multiqc_html:
+        type: File
+        outputSource: generate_multiqc/multiqc_html
+
     strand_info:
         type: File[]
         outputSource: strandedness_check/strandedness_check
@@ -198,6 +205,12 @@ steps:
             bam: mark_dup/sorted_bam
         out:
             [metrics, chart]
+    generate_multiqc:
+        run: ../tools/multiqc.cwl
+        in:
+            qc_source_files: [generate_qc_metrics/metrics,star_align_fusion/log_final]
+        out:
+            [multiqc_zip, multiqc_html]
     bam_to_cram:
         run: ../tools/bam_to_cram.cwl
         in:
