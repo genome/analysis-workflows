@@ -8,6 +8,9 @@ requirements:
     - class: SubworkflowFeatureRequirement
     - class: ScatterFeatureRequirement
     - class: InlineJavascriptRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/sequence_data.yml
 inputs:
     reference:
         type:
@@ -19,8 +22,8 @@ inputs:
         secondaryFiles: [".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"]
     reference_annotation:
         type: File
-    instrument_data_bams:
-        type: File[]
+    rna_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     read_group_id:
         type: string[]
     read_group_fields:
@@ -95,10 +98,10 @@ outputs:
 steps:
     bam_to_trimmed_fastq_and_hisat_alignments:
         run: ../subworkflows/bam_to_trimmed_fastq_and_hisat_alignments.cwl
-        scatter: [bam, read_group_id, read_group_fields]
+        scatter: [unaligned, read_group_id, read_group_fields]
         scatterMethod: dotproduct
         in:
-            bam: instrument_data_bams
+            unaligned: rna_sequence
             read_group_id: read_group_id
             read_group_fields: read_group_fields
             adapters: trimming_adapters

@@ -8,9 +8,13 @@ requirements:
     - class: SubworkflowFeatureRequirement
     - class: InlineJavascriptRequirement
     - class: StepInputExpressionRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/sequence_data.yml
+
 inputs:
-    bam:
-        type: File
+    unaligned:
+        type: ../types/sequence_data.yml#sequence_data
     adapters:
         type: File
     adapter_trim_end:
@@ -44,9 +48,17 @@ outputs:
         outputSource: hisat2_align/aligned_bam
 steps:
     bam_to_fastq:
-        run: ../tools/bam_to_fastq.cwl
-        in:
-            bam: bam
+        run: ../tools/sequence_to_fastq_rna.cwl
+        in: 
+            bam:
+                source: unaligned
+                valueFrom: "$(self.sequence.hasOwnProperty('bam')? self.sequence.bam : null)"
+            fastq1:
+                source: unaligned
+                valueFrom: "$(self.sequence.hasOwnProperty('fastq1')? self.sequence.fastq1 : null)"
+            fastq2:
+                source: unaligned
+                valueFrom: "$(self.sequence.hasOwnProperty('fastq2')? self.sequence.fastq2 : null)"
         out:
             [fastq1, fastq2]
     trim_fastq:
