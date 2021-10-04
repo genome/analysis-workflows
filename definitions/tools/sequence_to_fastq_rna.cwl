@@ -68,16 +68,6 @@ inputs:
         inputBinding:
             prefix: '-2'
 outputs:
-<<<<<<< HEAD
-    fastqW1:
-        type: File?
-        outputBinding:
-            glob: "read1.fastq"
-    fastqW2:
-        type: File?
-        outputBinding:
-            glob: "read2.fastq"
-=======
     fastq1:
         type: File?
         outputBinding:
@@ -86,5 +76,3 @@ outputs:
         type: File?
         outputBinding:
             glob: "read2.fastq"
-
->>>>>>> immuno_fastq_updates
