@@ -18,7 +18,7 @@ inputs:
     reference_annotation:
         type: File
     rna_bams:
-        type: File[]
+        type: ../types/sequence_data.yml#sequence_data[]
     rna_readgroups:
         type: string[]
     read_group_fields:
@@ -788,7 +788,7 @@ steps:
             reference: reference
             reference_index: reference_index
             reference_annotation: reference_annotation
-            instrument_data_bams: rna_bams
+            rna_sequence: rna_sequence
             read_group_id: rna_readgroups
             read_group_fields: read_group_fields
             sample_name: sample_name
