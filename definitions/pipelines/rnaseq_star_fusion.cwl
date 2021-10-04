@@ -7,9 +7,12 @@ requirements:
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: ScatterFeatureRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/sequence_data.yml
 inputs:
-    instrument_data_bams:
-        type: File[]
+    unaligned:
+        type: ../types/sequence_data.yml#sequence_data[]
     outsam_attrrg_line:
         type: string[]
     star_genome_dir:
@@ -100,18 +103,19 @@ outputs:
         outputSource: cgpbigwig_bamcoverage/outfile
 steps:
     bam_to_trimmed_fastq:
-        run: ../subworkflows/bam_to_trimmed_fastq.cwl
-        scatter: [bam]
+        
+        scatter: [unaligned]
         scatterMethod: dotproduct
+        run: ../subworkflows/bam_to_trimmed_fastq.cwl
         in:
-            bam: instrument_data_bams
+            unaligned: unaligned
             adapters: trimming_adapters
             adapter_trim_end: trimming_adapter_trim_end
             adapter_min_overlap: trimming_adapter_min_overlap
             max_uncalled: trimming_max_uncalled
             min_readlength: trimming_min_readlength
         out:
-            [fastqs, fastq1, fastq2]
+            [fastqs, fastq_1, fastq_2]
     strandedness_check:
         run: ../tools/strandedness_check.cwl
         scatter: [reads1, reads2]
@@ -120,8 +124,8 @@ steps:
             gtf_file: gtf_file
             kallisto_index: kallisto_index
             cdna_fasta: cdna_fasta
-            reads1: bam_to_trimmed_fastq/fastq1
-            reads2: bam_to_trimmed_fastq/fastq2
+            reads1: bam_to_trimmed_fastq/fastq_1
+            reads2: bam_to_trimmed_fastq/fastq_2
         out:
             [strandedness_check]
     star_align_fusion:
@@ -131,10 +135,10 @@ steps:
             star_genome_dir: star_genome_dir
             gtf_file: gtf_file
             fastq:
-                source: bam_to_trimmed_fastq/fastq1
+                source: bam_to_trimmed_fastq/fastq_1
                 linkMerge: merge_flattened
             fastq2:
-                source: bam_to_trimmed_fastq/fastq2
+                source: bam_to_trimmed_fastq/fastq_2
                 linkMerge: merge_flattened
         out:
             [aligned_bam, chim_junc, splice_junction_out,log_final]
