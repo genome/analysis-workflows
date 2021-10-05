@@ -115,7 +115,7 @@ steps:
             max_uncalled: trimming_max_uncalled
             min_readlength: trimming_min_readlength
         out:
-            [fastqs, fastq_1, fastq_2]
+            [fastqs, fastq1, fastq2]
     strandedness_check:
         run: ../tools/strandedness_check.cwl
         scatter: [reads1, reads2]
@@ -124,8 +124,8 @@ steps:
             gtf_file: gtf_file
             kallisto_index: kallisto_index
             cdna_fasta: cdna_fasta
-            reads1: bam_to_trimmed_fastq/fastq_1
-            reads2: bam_to_trimmed_fastq/fastq_2
+            reads1: bam_to_trimmed_fastq/fastq1
+            reads2: bam_to_trimmed_fastq/fastq2
         out:
             [strandedness_check]
     star_align_fusion:
@@ -135,10 +135,10 @@ steps:
             star_genome_dir: star_genome_dir
             gtf_file: gtf_file
             fastq:
-                source: bam_to_trimmed_fastq/fastq_1
+                source: bam_to_trimmed_fastq/fastq1
                 linkMerge: merge_flattened
             fastq2:
-                source: bam_to_trimmed_fastq/fastq_2
+                source: bam_to_trimmed_fastq/fastq2
                 linkMerge: merge_flattened
         out:
             [aligned_bam, chim_junc, splice_junction_out,log_final]
