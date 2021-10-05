@@ -102,11 +102,11 @@ outputs:
         type: File
         outputSource: cgpbigwig_bamcoverage/outfile
 steps:
-    bam_to_trimmed_fastq:
+    sequence_to_trimmed_fastq:
         
         scatter: [unaligned]
         scatterMethod: dotproduct
-        run: ../subworkflows/bam_to_trimmed_fastq.cwl
+        run: ../subworkflows/sequence_to_trimmed_fastq.cwl
         in:
             unaligned: unaligned
             adapters: trimming_adapters
@@ -124,8 +124,8 @@ steps:
             gtf_file: gtf_file
             kallisto_index: kallisto_index
             cdna_fasta: cdna_fasta
-            reads1: bam_to_trimmed_fastq/fastq1
-            reads2: bam_to_trimmed_fastq/fastq2
+            reads1: sequence_to_trimmed_fastq/fastq1
+            reads2: sequence_to_trimmed_fastq/fastq2
         out:
             [strandedness_check]
     star_align_fusion:
@@ -135,10 +135,10 @@ steps:
             star_genome_dir: star_genome_dir
             gtf_file: gtf_file
             fastq:
-                source: bam_to_trimmed_fastq/fastq1
+                source: sequence_to_trimmed_fastq/fastq1
                 linkMerge: merge_flattened
             fastq2:
-                source: bam_to_trimmed_fastq/fastq2
+                source: sequence_to_trimmed_fastq/fastq2
                 linkMerge: merge_flattened
         out:
             [aligned_bam, chim_junc, splice_junction_out,log_final]
@@ -154,7 +154,7 @@ steps:
         in:
             kallisto_index: kallisto_index
             strand: strand
-            fastqs: bam_to_trimmed_fastq/fastqs
+            fastqs: sequence_to_trimmed_fastq/fastqs
         out:
             [expression_transcript_table,expression_transcript_h5,fusion_evidence]
     transcript_to_gene:

@@ -117,8 +117,8 @@ outputs:
         type: File
         outputSource: cgpbigwig_bamcoverage/outfile
 steps:
-    bam_to_trimmed_fastq:
-        run: ../subworkflows/bam_to_trimmed_fastq.cwl
+    sequence_to_trimmed_fastq:
+        run: ../subworkflows/sequence_to_trimmed_fastq.cwl
         scatter: [unaligned]
         scatterMethod: dotproduct
         in:
@@ -138,10 +138,10 @@ steps:
             outfile_name_prefix: graft_outfile_name_prefix
             gtf_file: graft_gtf_file
             fastq:
-                source: bam_to_trimmed_fastq/fastq1
+                source: sequence_to_trimmed_fastq/fastq1
                 linkMerge: merge_flattened
             fastq2:
-                source: bam_to_trimmed_fastq/fastq2
+                source: sequence_to_trimmed_fastq/fastq2
                 linkMerge: merge_flattened
         out:
             [aligned_bam, chim_junc, splice_junction_out,log_final]
@@ -153,10 +153,10 @@ steps:
             outfile_name_prefix: host_outfile_name_prefix
             gtf_file: host_gtf_file
             fastq:
-                source: bam_to_trimmed_fastq/fastq1
+                source: sequence_to_trimmed_fastq/fastq1
                 linkMerge: merge_flattened
             fastq2:
-                source: bam_to_trimmed_fastq/fastq2
+                source: sequence_to_trimmed_fastq/fastq2
                 linkMerge: merge_flattened
         out:
             [aligned_bam, chim_junc, splice_junction_out,log_final]   
@@ -168,7 +168,7 @@ steps:
         out:
             [graft_bam, xenosplit_statistics]
     graftbam_to_fastq:
-        run: ../subworkflows/bam_to_trimmed_fastq.cwl
+        run: ../subworkflows/sequence_to_trimmed_fastq.cwl
         in:
             unaligned:
                 source: xenosplit/graft_bam

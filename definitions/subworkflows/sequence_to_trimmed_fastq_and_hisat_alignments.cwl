@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "bam to trimmed fastqs and HISAT alignments"
+label: "sequence (bam or fastqs) to trimmed fastqs and HISAT alignments"
 requirements:
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
@@ -47,7 +47,7 @@ outputs:
         type: File
         outputSource: hisat2_align/aligned_bam
 steps:
-    bam_to_fastq:
+    sequence_to_fastq:
         run: ../tools/sequence_to_fastq_rna.cwl
         in: 
             bam:
@@ -64,8 +64,8 @@ steps:
     trim_fastq:
         run: ../tools/trim_fastq.cwl
         in:
-            reads1: bam_to_fastq/fastq1
-            reads2: bam_to_fastq/fastq2
+            reads1: sequence_to_fastq/fastq1
+            reads2: sequence_to_fastq/fastq2
             adapters: adapters
             adapter_trim_end: adapter_trim_end
             adapter_min_overlap: adapter_min_overlap
