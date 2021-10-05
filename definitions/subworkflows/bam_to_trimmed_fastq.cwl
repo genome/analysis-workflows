@@ -31,10 +31,10 @@ outputs:
     fastqs:
         type: File[]
         outputSource: trim_fastq/fastqs
-    fastq_1:
+    fastq1:
          type: File
          outputSource: trim_fastq/fastq1
-    fastq_2:
+    fastq2:
          type: File
          outputSource: trim_fastq/fastq2
 
