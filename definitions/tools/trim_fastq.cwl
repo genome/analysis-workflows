@@ -52,11 +52,11 @@ inputs:
             prefix: "--reads2"
             position: 8
 outputs:
-    fastq_1:
+    fastq1:
         type: File
         outputBinding:
             glob: "trimmed_read_1.fastq"
-    fastq_2:
+    fastq2:
         type: File
         outputBinding:
             glob: "trimmed_read_2.fastq"
