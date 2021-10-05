@@ -8,6 +8,9 @@ requirements:
     - class: SubworkflowFeatureRequirement
     - class: ScatterFeatureRequirement
     - class: StepInputExpressionRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/sequence_data.yml
 inputs:
     reference:
         type:
@@ -15,7 +18,7 @@ inputs:
             - File
         secondaryFiles: [.fai, ^.dict]
     instrument_data_bams:
-        type: File[]
+        type: ../types/sequence_data.yml#sequence_data[]
     outsam_attrrg_line:
         type: string[]
     graft_star_genome_dir:
@@ -116,10 +119,10 @@ outputs:
 steps:
     bam_to_trimmed_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
-        scatter: [bam]
+        scatter: [unaligned]
         scatterMethod: dotproduct
         in:
-            bam: instrument_data_bams
+            unaligned: instrument_data_bams
             adapters: trimming_adapters
             adapter_trim_end: trimming_adapter_trim_end
             adapter_min_overlap: trimming_adapter_min_overlap
@@ -167,7 +170,12 @@ steps:
     graftbam_to_fastq:
         run: ../subworkflows/bam_to_trimmed_fastq.cwl
         in:
-            bam: xenosplit/graft_bam
+            unaligned:
+                source: xenosplit/graft_bam
+                valueFrom: |
+                    ${
+                        return {'sequence': {'bam': self} };
+                    }
             adapters: trimming_adapters
             adapter_trim_end: trimming_adapter_trim_end
             adapter_min_overlap: trimming_adapter_min_overlap
