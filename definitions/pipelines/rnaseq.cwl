@@ -63,6 +63,9 @@ inputs:
     assembly:
         type: string
         doc: 'the assembly used, such as GRCh37/38, GRCm37/38'
+    unzip_fastqs:
+        type: boolean?
+        doc: "If true, and the input sequence contains gzipped fastqs, they will be unzipped before alignment"
 outputs:
     final_bam:
         type: File
@@ -111,6 +114,7 @@ steps:
             min_readlength: trimming_min_readlength
             reference_index: reference_index
             strand: strand
+            unzip_fastqs: unzip_fastqs
         out:
             [fastqs,aligned_bam]
     kallisto:

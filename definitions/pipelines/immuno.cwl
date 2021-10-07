@@ -52,6 +52,9 @@ inputs:
         type: File
     ribosomal_intervals:
         type: File?
+    unzip_fastqs:
+        type: boolean?
+        doc: "If true, and the input sequence contains gzipped fastqs, they will be unzipped before alignment"
 
     #somatic inputs
     reference:
@@ -804,6 +807,7 @@ steps:
             ribosomal_intervals: ribosomal_intervals
             species: vep_ensembl_species
             assembly: vep_ensembl_assembly
+            unzip_fastqs: unzip_fastqs
         out:
             [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence, bamcoverage_bigwig]
     somatic:

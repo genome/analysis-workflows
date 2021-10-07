@@ -39,6 +39,8 @@ inputs:
           - "null"
           - type: enum
             symbols: ["first", "second", "unstranded"]
+    unzip_fastqs:
+        type: boolean?
 outputs:
     fastqs:
         type: File[]
@@ -59,6 +61,7 @@ steps:
             fastq2:
                 source: unaligned
                 valueFrom: "$(self.sequence.hasOwnProperty('fastq2')? self.sequence.fastq2 : null)"
+            unzip_fastqs: unzip_fastqs
         out:
             [fastq1, fastq2]
     trim_fastq:

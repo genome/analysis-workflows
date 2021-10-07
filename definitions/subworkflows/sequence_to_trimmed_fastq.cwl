@@ -26,6 +26,8 @@ inputs:
         type: int
     min_readlength:
         type: int
+    unzip_fastqs:
+        type: boolean?
     
 outputs:
     fastqs:
@@ -51,6 +53,7 @@ steps:
             fastq2:
                 source: unaligned
                 valueFrom: "$(self.sequence.hasOwnProperty('fastq2')? self.sequence.fastq2 : null)"
+            unzip_fastqs: unzip_fastqs
         out:
             [fastq1, fastq2]
     trim_fastq:

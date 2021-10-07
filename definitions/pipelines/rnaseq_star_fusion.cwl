@@ -51,6 +51,9 @@ inputs:
         type: File
     sample_name:
         type: string
+    unzip_fastqs:
+        type: boolean?
+        default: true
 outputs:
     cram:
         type: File
@@ -114,6 +117,7 @@ steps:
             adapter_min_overlap: trimming_adapter_min_overlap
             max_uncalled: trimming_max_uncalled
             min_readlength: trimming_min_readlength
+            unzip_fastqs: unzip_fastqs
         out:
             [fastqs, fastq1, fastq2]
     strandedness_check:
