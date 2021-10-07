@@ -16,5 +16,5 @@ fields:
                       type: File
                   fastq2:
                       type: File
-    # readgroup:
-    #    type: string
+    readgroup:
+       type: string?
