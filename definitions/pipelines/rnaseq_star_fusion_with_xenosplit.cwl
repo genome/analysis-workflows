@@ -17,7 +17,7 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict]
-    instrument_data_bams:
+    unaligned:
         type: ../types/sequence_data.yml#sequence_data[]
     outsam_attrrg_line:
         type: string[]
@@ -125,7 +125,7 @@ steps:
         scatter: [unaligned]
         scatterMethod: dotproduct
         in:
-            unaligned: instrument_data_bams
+            unaligned: unaligned
             adapters: trimming_adapters
             adapter_trim_end: trimming_adapter_trim_end
             adapter_min_overlap: trimming_adapter_min_overlap
