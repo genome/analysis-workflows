@@ -21,7 +21,10 @@ requirements:
             set -o pipefail
             set -o errexit
             set -o nounset
-            while getopts ":b:?1:?2:d:?" opt; do
+
+            UNZIP=false
+
+            while getopts ":b:1:2:d:u" opt; do
                 case "$opt" in
                     b)
                         MODE=bam
@@ -38,14 +41,40 @@ requirements:
                     d)
                         OUTDIR="$OPTARG"
                         ;;
+                    u)
+                        UNZIP=true
+                        ;;
                 esac
             done
 
             if [[ "$MODE" == 'fastq' ]]; then #must be fastq input
-                cp $FASTQ1 $OUTDIR/read1.fastq
-                cp $FASTQ2 $OUTDIR/read2.fastq
-                #gunzip -c $FASTQ1 > $OUTDIR/read1.fastq
-                #gunzip -c $FASTQ2 > $OUTDIR/read2.fastq
+
+                if $UNZIP; then
+                    if gzip -t $FASTQ1 2> /dev/null; then
+                        gunzip -c $FASTQ1 > $OUTDIR/read1.fastq
+                    else
+                        cp $FASTQ1 $OUTDIR/read1.fastq
+                    fi
+
+                    if gzip -t $FASTQ2 2> /dev/null; then
+                        gunzip -c $FASTQ2 > $OUTDIR/read2.fastq
+                    else
+                        cp $FASTQ2 $OUTDIR/read2.fastq
+                    fi
+                else
+                    if gzip -t $FASTQ1 2> /dev/null; then
+                        cp $FASTQ1 $OUTDIR/read1.fastq.gz
+                    else
+                        cp $FASTQ1 $OUTDIR/read1.fastq
+                    fi
+
+                    if gzip -t $FASTQ2 2> /dev/null; then
+                        cp $FASTQ2 $OUTDIR/read2.fastq.gz
+                    else
+                        cp $FASTQ2 $OUTDIR/read2.fastq
+                    fi
+                fi
+
             else # then
                 ##run samtofastq here, dumping to the same filenames
                 ## input file is $BAM
@@ -67,12 +96,19 @@ inputs:
         type: File?
         inputBinding:
             prefix: '-2'
+    unzip_fastqs:
+        type: boolean?
+        inputBinding:
+            prefix: "-u"
+        doc: "If true, and the input sequence contains gzipped fastqs, they will be unzipped"
 outputs:
     fastq1:
-        type: File?
+        type: File
         outputBinding:
-            glob: "read1.fastq"
+            glob: "read1.fastq*"
+            outputEval: $(self[0])
     fastq2:
-        type: File?
+        type: File
         outputBinding:
-            glob: "read2.fastq"
+            glob: "read2.fastq*"
+            outputEval: $(self[0])
