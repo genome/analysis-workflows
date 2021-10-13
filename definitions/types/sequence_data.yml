@@ -17,4 +17,4 @@ fields:
                   fastq2:
                       type: File
     readgroup:
-       type: string?
+        type: string?
