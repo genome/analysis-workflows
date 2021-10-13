@@ -52,9 +52,6 @@ inputs:
         type: File
     ribosomal_intervals:
         type: File?
-    unzip_fastqs:
-        type: boolean?
-        doc: "If true, and the input sequence contains gzipped fastqs, they will be unzipped before alignment"
 
     #somatic inputs
     reference:
