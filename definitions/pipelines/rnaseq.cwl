@@ -111,7 +111,6 @@ steps:
             min_readlength: trimming_min_readlength
             reference_index: reference_index
             strand: strand
-            unzip_fastqs: unzip_fastqs
         out:
             [fastqs,aligned_bam]
     kallisto:
