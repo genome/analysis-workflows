@@ -27,10 +27,10 @@ requirements:
                 set -o errexit
 
                 name="homer_tag_directory"
-                bam=$1
+                sam=$1
                 mkdir -p $name
                 echo "creating tagDir"
-                /opt/homer/bin/makeTagDirectory $name $bam
+                /opt/homer/bin/makeTagDirectory $name $sam
 
 inputs:
     sam:
