@@ -26,7 +26,6 @@ inputs:
         inputBinding:
             position: 4
             prefix: "--output-type"
-        doc: "output file format"
     output_vcf_name:
         type: string?
         default: "bcftools_split.vcf.gz"
