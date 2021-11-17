@@ -19,10 +19,10 @@ requirements:
           INPUT="$1"
           OUTPUT="$2"
           DISTANCE="$3"
-          /usr/local/bin/python3 /opt/git/merge-sv-records/merge.py -i $INPUT -o $OUTPUT -w $DISTANCE
+          /usr/local/bin/python3 /opt/git/merge-sv-records/merge.py -i "$INPUT" -o "$OUTPUT" -w "$DISTANCE"
 
-          /usr/local/bin/bgzip $OUTPUT
-          /usr/local/bin/tabix -p vcf $OUTPUT.gz
+          /usr/local/bin/bgzip "$OUTPUT"
+          /usr/local/bin/tabix -p vcf "$OUTPUT".gz
 
 
 inputs:
