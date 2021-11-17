@@ -6,7 +6,7 @@ baseCommand: ["/bin/bash","directory_gatherer.sh"]
 
 requirements:
     - class: DockerRequirement
-      dockerPull: "ubuntu:xenial"
+      dockerPull: "ubuntu:focal"
     - class: ResourceRequirement
       ramMin: 1000
     - class: InitialWorkDirRequirement
