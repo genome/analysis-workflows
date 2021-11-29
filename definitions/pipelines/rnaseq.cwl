@@ -8,6 +8,9 @@ requirements:
     - class: SubworkflowFeatureRequirement
     - class: ScatterFeatureRequirement
     - class: InlineJavascriptRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/sequence_data.yml
 inputs:
     reference:
         type:
@@ -19,8 +22,8 @@ inputs:
         secondaryFiles: [".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"]
     reference_annotation:
         type: File
-    instrument_data_bams:
-        type: File[]
+    rna_sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
     read_group_id:
         type: string[]
     read_group_fields:
@@ -93,12 +96,12 @@ outputs:
         type: File
         outputSource: cgpbigwig_bamcoverage/outfile
 steps:
-    bam_to_trimmed_fastq_and_hisat_alignments:
-        run: ../subworkflows/bam_to_trimmed_fastq_and_hisat_alignments.cwl
-        scatter: [bam, read_group_id, read_group_fields]
+    sequence_to_trimmed_fastq_and_hisat_alignments:
+        run: ../subworkflows/sequence_to_trimmed_fastq_and_hisat_alignments.cwl
+        scatter: [unaligned, read_group_id, read_group_fields]
         scatterMethod: dotproduct
         in:
-            bam: instrument_data_bams
+            unaligned: rna_sequence
             read_group_id: read_group_id
             read_group_fields: read_group_fields
             adapters: trimming_adapters
@@ -115,7 +118,7 @@ steps:
         in:
             kallisto_index: kallisto_index
             strand: strand
-            fastqs: bam_to_trimmed_fastq_and_hisat_alignments/fastqs
+            fastqs: sequence_to_trimmed_fastq_and_hisat_alignments/fastqs
         out:
             [expression_transcript_table,expression_transcript_h5,fusion_evidence]
     transcript_to_gene:
@@ -128,7 +131,7 @@ steps:
     merge:
         run: ../tools/merge_bams.cwl
         in:
-            bams: bam_to_trimmed_fastq_and_hisat_alignments/aligned_bam
+            bams: sequence_to_trimmed_fastq_and_hisat_alignments/aligned_bam
         out:
             [merged_bam]
     position_sort:

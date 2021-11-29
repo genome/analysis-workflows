@@ -2,15 +2,19 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "bam to trimmed fastqs and HISAT alignments"
+label: "sequence (bam or fastqs) to trimmed fastqs and HISAT alignments"
 requirements:
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: InlineJavascriptRequirement
     - class: StepInputExpressionRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/sequence_data.yml
+
 inputs:
-    bam:
-        type: File
+    unaligned:
+        type: ../types/sequence_data.yml#sequence_data
     adapters:
         type: File
     adapter_trim_end:
@@ -35,6 +39,8 @@ inputs:
           - "null"
           - type: enum
             symbols: ["first", "second", "unstranded"]
+    unzip_fastqs:
+        type: boolean?
 outputs:
     fastqs:
         type: File[]
@@ -43,17 +49,26 @@ outputs:
         type: File
         outputSource: hisat2_align/aligned_bam
 steps:
-    bam_to_fastq:
-        run: ../tools/bam_to_fastq.cwl
-        in:
-            bam: bam
+    sequence_to_fastq:
+        run: ../tools/sequence_to_fastq.cwl
+        in: 
+            bam:
+                source: unaligned
+                valueFrom: "$(self.sequence.hasOwnProperty('bam')? self.sequence.bam : null)"
+            fastq1:
+                source: unaligned
+                valueFrom: "$(self.sequence.hasOwnProperty('fastq1')? self.sequence.fastq1 : null)"
+            fastq2:
+                source: unaligned
+                valueFrom: "$(self.sequence.hasOwnProperty('fastq2')? self.sequence.fastq2 : null)"
+            unzip_fastqs: unzip_fastqs
         out:
             [fastq1, fastq2]
     trim_fastq:
         run: ../tools/trim_fastq.cwl
         in:
-            reads1: bam_to_fastq/fastq1
-            reads2: bam_to_fastq/fastq2
+            reads1: sequence_to_fastq/fastq1
+            reads2: sequence_to_fastq/fastq2
             adapters: adapters
             adapter_trim_end: adapter_trim_end
             adapter_min_overlap: adapter_min_overlap

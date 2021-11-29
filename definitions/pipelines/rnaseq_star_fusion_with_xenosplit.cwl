@@ -8,14 +8,17 @@ requirements:
     - class: SubworkflowFeatureRequirement
     - class: ScatterFeatureRequirement
     - class: StepInputExpressionRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/sequence_data.yml
 inputs:
     reference:
         type:
             - string
             - File
         secondaryFiles: [.fai, ^.dict]
-    instrument_data_bams:
-        type: File[]
+    unaligned:
+        type: ../types/sequence_data.yml#sequence_data[]
     outsam_attrrg_line:
         type: string[]
     graft_star_genome_dir:
@@ -63,6 +66,9 @@ inputs:
         type: File
     sample_name:
         type: string
+    unzip_fastqs:
+        type: boolean?
+        default: true
 outputs:
     final_bam:
         type: File
@@ -114,17 +120,18 @@ outputs:
         type: File
         outputSource: cgpbigwig_bamcoverage/outfile
 steps:
-    bam_to_trimmed_fastq:
-        run: ../subworkflows/bam_to_trimmed_fastq.cwl
-        scatter: [bam]
+    sequence_to_trimmed_fastq:
+        run: ../subworkflows/sequence_to_trimmed_fastq.cwl
+        scatter: [unaligned]
         scatterMethod: dotproduct
         in:
-            bam: instrument_data_bams
+            unaligned: unaligned
             adapters: trimming_adapters
             adapter_trim_end: trimming_adapter_trim_end
             adapter_min_overlap: trimming_adapter_min_overlap
             max_uncalled: trimming_max_uncalled
             min_readlength: trimming_min_readlength
+            unzip_fastqs: unzip_fastqs
         out:
             [fastqs, fastq1, fastq2]
     graft_star_align_fusion:
@@ -135,10 +142,10 @@ steps:
             outfile_name_prefix: graft_outfile_name_prefix
             gtf_file: graft_gtf_file
             fastq:
-                source: bam_to_trimmed_fastq/fastq1
+                source: sequence_to_trimmed_fastq/fastq1
                 linkMerge: merge_flattened
             fastq2:
-                source: bam_to_trimmed_fastq/fastq2
+                source: sequence_to_trimmed_fastq/fastq2
                 linkMerge: merge_flattened
         out:
             [aligned_bam, chim_junc, splice_junction_out,log_final]
@@ -150,10 +157,10 @@ steps:
             outfile_name_prefix: host_outfile_name_prefix
             gtf_file: host_gtf_file
             fastq:
-                source: bam_to_trimmed_fastq/fastq1
+                source: sequence_to_trimmed_fastq/fastq1
                 linkMerge: merge_flattened
             fastq2:
-                source: bam_to_trimmed_fastq/fastq2
+                source: sequence_to_trimmed_fastq/fastq2
                 linkMerge: merge_flattened
         out:
             [aligned_bam, chim_junc, splice_junction_out,log_final]   
@@ -165,9 +172,14 @@ steps:
         out:
             [graft_bam, xenosplit_statistics]
     graftbam_to_fastq:
-        run: ../subworkflows/bam_to_trimmed_fastq.cwl
+        run: ../subworkflows/sequence_to_trimmed_fastq.cwl
         in:
-            bam: xenosplit/graft_bam
+            unaligned:
+                source: xenosplit/graft_bam
+                valueFrom: |
+                    ${
+                        return {'sequence': {'bam': self} };
+                    }
             adapters: trimming_adapters
             adapter_trim_end: trimming_adapter_trim_end
             adapter_min_overlap: trimming_adapter_min_overlap
