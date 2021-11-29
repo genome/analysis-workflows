@@ -9,7 +9,7 @@ requirements:
       ramMin: 16000
       tmpdirMin: 25000
     - class: DockerRequirement
-      dockerPull: "mgibio/rnaseq:1.0.0"
+      dockerPull: "broadinstitute/picard:2.23.6"
 
     - class: SchemaDefRequirement
       types:
@@ -78,7 +78,7 @@ requirements:
             else # then
                 ##run samtofastq here, dumping to the same filenames
                 ## input file is $BAM
-                /usr/bin/java -Xmx4g -jar /opt/picard/picard.jar SamToFastq I="$BAM" INCLUDE_NON_PF_READS=true F=$OUTDIR/read1.fastq F2=$OUTDIR/read2.fastq VALIDATION_STRINGENCY=SILENT
+                /usr/bin/java -Xmx4g -jar /usr/picard/picard.jar SamToFastq I="$BAM" INCLUDE_NON_PF_READS=true F=$OUTDIR/read1.fastq F2=$OUTDIR/read2.fastq VALIDATION_STRINGENCY=SILENT
             fi
 arguments: [
     {valueFrom: $(runtime.outdir), position: -6, prefix: '-d'}

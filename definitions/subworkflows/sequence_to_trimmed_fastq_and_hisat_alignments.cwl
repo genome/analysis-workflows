@@ -50,7 +50,7 @@ outputs:
         outputSource: hisat2_align/aligned_bam
 steps:
     sequence_to_fastq:
-        run: ../tools/sequence_to_fastq_rna.cwl
+        run: ../tools/sequence_to_fastq.cwl
         in: 
             bam:
                 source: unaligned
