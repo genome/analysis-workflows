@@ -16,6 +16,9 @@ inputs:
     vcf:
         type: File
         secondaryFiles: [.tbi]
+    output_basename:
+        type: string?
+        default: "soft_filtered"
 outputs:
     filtered_vcf:
         type: File
@@ -69,8 +72,7 @@ steps:
     merge:
         run: ../tools/merge_vcf.cwl
         in:
-            merged_vcf_basename:
-                default: "soft_filtered"
+            merged_vcf_basename: output_basename
             vcfs:
                 source: [filter_snps/filtered_vcf, filter_indels/filtered_vcf]
                 linkMerge: merge_flattened

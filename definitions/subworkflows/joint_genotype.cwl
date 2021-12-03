@@ -172,6 +172,8 @@ steps:
         in:
             reference: reference
             vcf: bgzip_index_annotated_vcf/indexed_vcf
+            output_basename:
+                default: "annotated"
         out:
             [filtered_vcf]
     filter_vcf:
