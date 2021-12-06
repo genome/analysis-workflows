@@ -17,7 +17,7 @@ inputs:
         inputBinding:
             position: 1
             prefix: "--samples"
-        doc: "comma separated list of samples to include (or exclude with '^' prefix)"
+        doc: "comma-separated list of samples to include (or exclude with '^' prefix)"
     output_type:
         type:
             type: enum
