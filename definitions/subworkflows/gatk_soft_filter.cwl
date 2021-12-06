@@ -2,7 +2,7 @@
 
 cwlVersion: v1.0
 class: Workflow
-label: "apply soft filtering to a gatk called vcf using hard filter paramaters"
+label: "apply soft filtering to a gatk called vcf using hard filter parameters"
 requirements:
     - class: SubworkflowFeatureRequirement
     - class: StepInputExpressionRequirement
