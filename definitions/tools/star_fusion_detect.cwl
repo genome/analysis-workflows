@@ -49,6 +49,18 @@ inputs:
         prefix: '--STAR_PATH'
         position: 5
 
+  examine_coding_effect:
+    type: boolean?
+    inputBinding:
+        prefix: '--examine_coding_effect'
+        position: 6
+
+  inspect_fusions:
+    type: string?
+    inputBinding:
+        prefix: '--FusionInspector'
+        position: 7
+
 outputs:
     fusion_predictions:
       type: File
