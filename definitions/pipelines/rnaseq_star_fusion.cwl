@@ -54,6 +54,10 @@ inputs:
     unzip_fastqs:
         type: boolean?
         default: true
+    examine_coding_effect:
+        type: boolean?
+    inspect_fusions:
+        type: string?
 outputs:
     cram:
         type: File
@@ -151,6 +155,8 @@ steps:
         in:
             star_fusion_genome_dir: star_fusion_genome_dir
             junction_file: star_align_fusion/chim_junc
+            examine_coding_effect: examine_coding_effect
+            inspect_fusions: inspect_fusions
         out:
             [fusion_predictions,fusion_abridged]
     kallisto:
