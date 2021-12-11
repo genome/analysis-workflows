@@ -12,21 +12,10 @@ requirements:
     - class: SubworkflowFeatureRequirement
 inputs:
     #rnaseq inputs
-    reference_index:
-        type: File #this requires an extra file with the basename
-        secondaryFiles: [".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"]
     reference_annotation:
         type: File
     rna_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
-    rna_readgroups:
-        type: string[]
-    read_group_fields:
-        type:
-            type: array
-            items:
-                type: array
-                items: string 
     sample_name:
         type: string
     trimming_adapters:
@@ -51,7 +40,22 @@ inputs:
     refFlat:
         type: File
     ribosomal_intervals:
-        type: File?
+        type: File
+    star_genome_dir:
+        type: Directory
+    star_fusion_genome_dir:
+        type: Directory
+    unzip_fastqs:
+        type: boolean?
+        default: true
+    examine_coding_effect:
+        type: boolean?
+    inspect_fusions:
+        type: string?
+    outsam_attrrg_line:
+        type: string[]
+    cdna_fasta:
+        type: File
 
     #somatic inputs
     reference:
@@ -420,6 +424,28 @@ outputs:
         label: "Plot for RNA-seq diagnosis/quality metrics"
         doc: |
           PDF file for the plot of RNA sequencing coverage at the normalized position across transcript as RNA-seq diagnosis/quality metrics, created by picard CollectRnaSeqMetrics tool
+    rnaseq_cram:
+        type: File
+        outputSource: rnaseq/cram
+        secondaryFiles: [.crai, ^.crai]
+    star_fusion_out:
+        type: File
+        outputSource: rnaseq/star_fusion_out
+    star_junction_out:
+        type: File
+        outputSource: rnaseq/star_junction_out
+    star_fusion_log:
+        type: File
+        outputSource: rnaseq/star_fusion_log
+    star_fusion_predict:
+        type: File
+        outputSource: rnaseq/star_fusion_predict
+    star_fusion_abridge:
+        type: File
+        outputSource: rnaseq/star_fusion_abridge
+    strand_info:
+        type: File[]
+        outputSource: rnaseq/strand_info
 
     tumor_cram:
         type: File
@@ -783,14 +809,11 @@ outputs:
         outputSource: pvacseq/pvacseq_predictions
 steps:
     rnaseq:
-        run: rnaseq.cwl
+        run: rnaseq_star_fusion.cwl
         in:
             reference: reference
-            reference_index: reference_index
-            reference_annotation: reference_annotation
+            gtf_file: reference_annotation
             rna_sequence: rna_sequence
-            read_group_id: rna_readgroups
-            read_group_fields: read_group_fields
             sample_name: sample_name
             trimming_adapters: trimming_adapters
             trimming_adapter_trim_end: trimming_adapter_trim_end
@@ -802,10 +825,17 @@ steps:
             strand: strand
             refFlat: refFlat
             ribosomal_intervals: ribosomal_intervals
-            species: vep_ensembl_species
-            assembly: vep_ensembl_assembly
+            star_genome_dir: star_genome_dir
+            star_fusion_genome_dir: star_fusion_genome_dir
+            examine_coding_effect: examine_coding_effect
+            inspect_fusions: inspect_fusions
+            outsam_attrrg_line: outsam_attrrg_line
+            cdna_fasta: cdna_fasta
+
         out:
-            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence, bamcoverage_bigwig]
+            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence, bamcoverage_bigwig, cram, star_fusion_out, star_junction_out, star_fusion_log, star_fusion_predict, star_fusion_abridge, strand_info]
+ 
+
     somatic:
         run: somatic_exome.cwl
         in:

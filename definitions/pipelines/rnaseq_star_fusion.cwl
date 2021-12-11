@@ -22,7 +22,9 @@ inputs:
     cdna_fasta:
         type: File
     reference:
-        type: File
+        type:
+            - string
+            - File
         secondaryFiles: [.fai, ^.dict]
     gtf_file:
         type: File
@@ -108,6 +110,10 @@ outputs:
     bamcoverage_bigwig:
         type: File
         outputSource: cgpbigwig_bamcoverage/outfile
+    final_bam:
+        type: File
+        outputSource: index_bam/indexed_bam
+        secondaryFiles: [.bai]
 steps:
     sequence_to_trimmed_fastq:
         
