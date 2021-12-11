@@ -24,23 +24,22 @@ inputs:
         position: 1
 
   agfusion_database:
-    type: File
+    type: File?
     default: "/opt/agfusiondb/agfusion.homo_sapiens.87.db"
     inputBinding:
         prefix: '-db'
         position: 2
 
-  coding_effect:
-    type: boolean
-    default: false
+  annotate_noncanonical:
+    type: boolean?
     doc: "Annotate all gene transcripts, not just canonical isoforms"
     inputBinding:
         prefix: '--noncanonical'
         position: 3
 
   output_dir:
-    type: string
-    default: "agfusion"
+    type: string?
+    default: "agfusion_results"
     inputBinding:
         prefix: '-o'
         position: 4
