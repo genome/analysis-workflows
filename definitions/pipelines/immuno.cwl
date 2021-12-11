@@ -50,8 +50,13 @@ inputs:
         default: true
     examine_coding_effect:
         type: boolean?
-    inspect_fusions:
-        type: string?
+        default: true
+    fusioninspector_mode:
+        type:
+            - "null"
+            - type: enum
+                symbols: ["inspect", "validate"]
+        default: "validate"
     outsam_attrrg_line:
         type: string[]
     cdna_fasta:
@@ -453,6 +458,12 @@ outputs:
     annotated_fusion_predictions:
         type: Directory
         outputSource: rnaseq/annotated_fusion_predictions
+    coding_region_effects:
+        type: File?
+        outputSource: rnaseq/coding_region_effects
+    fusioninspector_evidence:
+        type: File[]?
+        outputSource: rnaseq/fusioninspector_evidence
 
     tumor_cram:
         type: File
@@ -835,14 +846,14 @@ steps:
             star_genome_dir: star_genome_dir
             star_fusion_genome_dir: star_fusion_genome_dir
             examine_coding_effect: examine_coding_effect
-            inspect_fusions: inspect_fusions
+            fusioninspector_mode: fusioninspector_mode
             outsam_attrrg_line: outsam_attrrg_line
             cdna_fasta: cdna_fasta
             agfusion_database: agfusion_database
             agfusion_annotate_noncanonical: agfusion_annotate_noncanonical
 
         out:
-            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence, bamcoverage_bigwig, cram, star_fusion_out, star_junction_out, star_fusion_log, star_fusion_predict, star_fusion_abridge, strand_info, annotated_fusion_predictions]
+            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence, bamcoverage_bigwig, cram, star_fusion_out, star_junction_out, star_fusion_log, star_fusion_predict, star_fusion_abridge, strand_info, annotated_fusion_predictions, coding_region_effects, fusioninspector_evidence]
  
 
     somatic:

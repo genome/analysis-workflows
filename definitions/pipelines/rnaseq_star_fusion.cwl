@@ -58,8 +58,11 @@ inputs:
         default: true
     examine_coding_effect:
         type: boolean?
-    inspect_fusions:
-        type: string?
+    fusioninspector_mode:
+        type:
+            - "null"
+            - type: enum
+                symbols: ["inspect", "validate"]
     agfusion_database:
         type: File?
     agfusion_annotate_noncanonical:
@@ -122,6 +125,12 @@ outputs:
     annotated_fusion_predictions:
         type: Directory
         outputSource: agfusion/annotated_fusion_predictions
+    coding_region_effects:
+        type: File?
+        outputSource: star_fusion_detect/coding_region_effects
+    fusioninspector_evidence:
+        type: File[]?
+        outputSource: star_fusion_detect/fusioninspector_evidence
 steps:
     sequence_to_trimmed_fastq:
         
@@ -170,9 +179,9 @@ steps:
             star_fusion_genome_dir: star_fusion_genome_dir
             junction_file: star_align_fusion/chim_junc
             examine_coding_effect: examine_coding_effect
-            inspect_fusions: inspect_fusions
+            fusioninspector_mode: fusioninspector_mode
         out:
-            [fusion_predictions,fusion_abridged]
+            [fusion_predictions,fusion_abridged, coding_region_effects, fusioninspector_evidence]
     kallisto:
         run: ../tools/kallisto.cwl
         in:

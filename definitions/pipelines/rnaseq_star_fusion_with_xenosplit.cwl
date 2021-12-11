@@ -71,8 +71,11 @@ inputs:
         default: true
     examine_coding_effect:
         type: boolean?
-    inspect_fusions:
-        type: string?
+    fusioninspector_mode:
+        type:
+            - "null"
+            - type: enum
+                symbols: ["inspect", "validate"]
 outputs:
     final_bam:
         type: File
@@ -123,6 +126,12 @@ outputs:
     bamcoverage_bigwig:
         type: File
         outputSource: cgpbigwig_bamcoverage/outfile
+    coding_region_effects:
+        type: File?
+        outputSource: star_fusion_detect/coding_region_effects
+    fusioninspector_evidence:
+        type: File[]?
+        outputSource: star_fusion_detect/fusioninspector_evidence
 steps:
     sequence_to_trimmed_fastq:
         run: ../subworkflows/sequence_to_trimmed_fastq.cwl
@@ -212,9 +221,9 @@ steps:
             star_fusion_genome_dir: star_fusion_genome_dir
             junction_file: graftbam_star_align_fusion/chim_junc
             examine_coding_effect: examine_coding_effect
-            inspect_fusions: inspect_fusions
+            fusioninspector_mode: fusioninspector_mode
         out:
-            [fusion_predictions,fusion_abridged]
+            [fusion_predictions,fusion_abridged, coding_region_effects, fusioninspector_evidence]
     kallisto:
         run: ../tools/kallisto.cwl
         in:

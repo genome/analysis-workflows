@@ -55,8 +55,11 @@ inputs:
         prefix: '--examine_coding_effect'
         position: 6
 
-  inspect_fusions:
-    type: string?
+  fusioninspector_mode:
+    type:
+        - "null"
+        - type: enum
+            symbols: ["inspect", "validate"]
     inputBinding:
         prefix: '--FusionInspector'
         position: 7
@@ -70,3 +73,11 @@ outputs:
       type: File
       outputBinding:
         glob: $(inputs.fusion_output_dir +"/star-fusion.fusion_predictions.abridged.tsv")
+    coding_region_effects:
+      type: File?
+      outputBinding:
+        glob: $(inputs.fusion_output_dir + "/star-fusion.fusion_predictions.abridged.coding_effect.tsv")
+    fusioninspector_evidence:
+      type: File[]?
+      outputBinding:
+        glob: $(inputs.fusion_output_dir + "/FusionInspector-" + inputs.fusioninspector_mode + "/finspector.*")
