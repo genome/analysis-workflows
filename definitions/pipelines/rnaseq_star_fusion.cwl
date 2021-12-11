@@ -60,6 +60,11 @@ inputs:
         type: boolean?
     inspect_fusions:
         type: string?
+    agfusion_database:
+        type: File?
+    agfusion_annotate_noncanonical:
+        type: boolean?
+
 outputs:
     cram:
         type: File
@@ -114,6 +119,9 @@ outputs:
         type: File
         outputSource: index_bam/indexed_bam
         secondaryFiles: [.bai]
+    annotated_fusion_predictions:
+        type: Directory
+        outputSource: agfusion/annotated_fusion_predictions
 steps:
     sequence_to_trimmed_fastq:
         
@@ -238,3 +246,11 @@ steps:
             reference: reference
         out:
             [outfile]
+    agfusion:
+        run: ../tools/agfusion.cwl
+        in:
+            fusion_predictions: star_fusion_detect/fusion_predictions
+            agfusion_database: agfusion_database
+            annotate_noncanonical: agfusion_annotate_noncanonical
+        out:
+            [annotated_fusion_predictions]

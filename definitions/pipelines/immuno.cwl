@@ -56,6 +56,10 @@ inputs:
         type: string[]
     cdna_fasta:
         type: File
+    agfusion_database:
+        type: File?
+    agfusion_annotate_noncanonical:
+        type: boolean?
 
     #somatic inputs
     reference:
@@ -446,6 +450,9 @@ outputs:
     strand_info:
         type: File[]
         outputSource: rnaseq/strand_info
+    annotated_fusion_predictions:
+        type: Directory
+        outputSource: rnaseq/annotated_fusion_predictions
 
     tumor_cram:
         type: File
@@ -831,9 +838,11 @@ steps:
             inspect_fusions: inspect_fusions
             outsam_attrrg_line: outsam_attrrg_line
             cdna_fasta: cdna_fasta
+            agfusion_database: agfusion_database
+            agfusion_annotate_noncanonical: agfusion_annotate_noncanonical
 
         out:
-            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence, bamcoverage_bigwig, cram, star_fusion_out, star_junction_out, star_fusion_log, star_fusion_predict, star_fusion_abridge, strand_info]
+            [final_bam, stringtie_transcript_gtf, stringtie_gene_expression_tsv, transcript_abundance_tsv, transcript_abundance_h5, gene_abundance, metrics, chart, fusion_evidence, bamcoverage_bigwig, cram, star_fusion_out, star_junction_out, star_fusion_log, star_fusion_predict, star_fusion_abridge, strand_info, annotated_fusion_predictions]
  
 
     somatic:
