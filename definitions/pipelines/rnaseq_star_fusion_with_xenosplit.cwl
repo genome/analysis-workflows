@@ -75,7 +75,7 @@ inputs:
         type:
             - "null"
             - type: enum
-                symbols: ["inspect", "validate"]
+              symbols: ["inspect", "validate"]
 outputs:
     final_bam:
         type: File

@@ -53,9 +53,9 @@ inputs:
         default: true
     fusioninspector_mode:
         type:
-            - "null"
-            - type: enum
-                symbols: ["inspect", "validate"]
+          - "null"
+          - type: enum
+            symbols: ["inspect", "validate"]
         default: "validate"
     outsam_attrrg_line:
         type: string[]

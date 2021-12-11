@@ -59,7 +59,7 @@ inputs:
     type:
         - "null"
         - type: enum
-            symbols: ["inspect", "validate"]
+          symbols: ["inspect", "validate"]
     inputBinding:
         prefix: '--FusionInspector'
         position: 7

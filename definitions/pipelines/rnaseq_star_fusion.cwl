@@ -60,9 +60,9 @@ inputs:
         type: boolean?
     fusioninspector_mode:
         type:
-            - "null"
-            - type: enum
-                symbols: ["inspect", "validate"]
+          - "null"
+          - type: enum
+            symbols: ["inspect", "validate"]
     agfusion_database:
         type: File?
     agfusion_annotate_noncanonical:
