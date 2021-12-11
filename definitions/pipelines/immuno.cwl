@@ -380,6 +380,12 @@ inputs:
         doc: |
           normal_sample_name is the name of the normal sample to use for phasing of germline variants.
 
+    #pvacfuse inputs
+    iedb_retries:
+        type: int?
+    pvacfuse_keep_tmp_files:
+        type: boolean?
+
 outputs:
     final_bigwig:
         type: File
@@ -825,6 +831,9 @@ outputs:
     pvacseq_predictions:
         type: Directory
         outputSource: pvacseq/pvacseq_predictions
+    pvacfuse_predictions:
+        type: Directory
+        outputSource: pvacfuse/pvacfuse_predictions
 steps:
     rnaseq:
         run: rnaseq_star_fusion.cwl
@@ -1018,3 +1027,29 @@ steps:
             vep_to_table_fields: vep_to_table_fields
         out:
             [annotated_vcf, annotated_tsv, pvacseq_predictions]
+
+    pvacfuse:
+        run: ../tools/pvacfuse.cwl
+        in:
+            input_fusions: rnaseq/annotated_fusion_predictions
+            sample_name: tumor_sample_name
+            alleles: hla_consensus/consensus_alleles
+            prediction_algorithms: prediction_algorithms
+            epitope_lengths_class_i: epitope_lengths_class_i
+            epitope_lengths_class_ii: epitope_lengths_class_ii
+            binding_threshold: binding_threshold
+            percentile_threshold: percentile_threshold
+            iedb_retries: iedb_retries
+            keep_tmp_files: pvacfuse_keep_tmp_files
+            net_chop_method: net_chop_method
+            netmhc_stab: netmhc_stab
+            top_score_metric: top_score_metric
+            net_chop_threshold: net_chop_threshold
+            run_reference_proteome_similarity: run_reference_proteome_similarity
+            additional_report_columns: additional_report_columns
+            fasta_size: fasta_size
+            downstream_sequence_length: downstream_sequence_length
+            exclude_nas: exclude_nas
+            n_threads: pvacseq_threads
+        out:
+            [pvacfuse_predictions]

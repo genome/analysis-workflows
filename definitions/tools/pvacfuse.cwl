@@ -16,7 +16,7 @@ arguments: [
     "/usr/local/bin/pvacfuse",
     "run",
     "--iedb-install-directory", "/opt/iedb",
-    { position: 5, valueFrom: $(runtime.outdir) },
+    { position: 5, valueFrom: "pvacfuse_predictions" },
 ]
 requirements:
     - class: ShellCommandRequirement
@@ -26,7 +26,7 @@ requirements:
       ramMin: 16000
       coresMin: $(inputs.n_threads)
 inputs:
-    input_file:
+    input_fusions:
         type:
             - File
             - Directory
@@ -127,36 +127,40 @@ outputs:
     mhc_i_all_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_I/$(inputs.sample_name).all_epitopes.tsv"
+            glob: "pvacfuse_predictions/MHC_Class_I/$(inputs.sample_name).all_epitopes.tsv"
     mhc_i_aggregated_report:
         type: File?
         outputBinding:
-            glob: "MHC_Class_I/$(inputs.sample_name).all_epitopes.aggregated.tsv"
+            glob: "pvacfuse_predictions/MHC_Class_I/$(inputs.sample_name).all_epitopes.aggregated.tsv"
     mhc_i_filtered_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_I/$(inputs.sample_name).filtered.tsv"
+            glob: "pvacfuse_predictions/MHC_Class_I/$(inputs.sample_name).filtered.tsv"
     mhc_ii_all_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_II/$(inputs.sample_name).all_epitopes.tsv"
+            glob: "pvacfuse_predictions/MHC_Class_II/$(inputs.sample_name).all_epitopes.tsv"
     mhc_ii_aggregated_report:
         type: File?
         outputBinding:
-            glob: "MHC_Class_II/$(inputs.sample_name).all_epitopes.aggregated.tsv"
+            glob: "pvacfuse_predictions/MHC_Class_II/$(inputs.sample_name).all_epitopes.aggregated.tsv"
     mhc_ii_filtered_epitopes:
         type: File?
         outputBinding:
-            glob: "MHC_Class_II/$(inputs.sample_name).filtered.tsv"
+            glob: "pvacfuse_predictions/MHC_Class_II/$(inputs.sample_name).filtered.tsv"
     combined_all_epitopes:
         type: File?
         outputBinding:
-            glob: "combined/$(inputs.sample_name).all_epitopes.tsv"
+            glob: "pvacfuse_predictions/combined/$(inputs.sample_name).all_epitopes.tsv"
     combined_aggregated_report:
         type: File?
         outputBinding:
-            glob: "combined/$(inputs.sample_name).all_epitopes.aggregated.tsv"
+            glob: "pvacfuse_predictions/combined/$(inputs.sample_name).all_epitopes.aggregated.tsv"
     combined_filtered_epitopes:
         type: File?
         outputBinding:
-            glob: "combined/$(inputs.sample_name).filtered.tsv"
+            glob: "pvacfuse_predictions/combined/$(inputs.sample_name).filtered.tsv"
+    pvacfuse_predictions:
+        type: Directory
+        outputBinding:
+            glob: "pvacfuse_predictions"
