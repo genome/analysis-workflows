@@ -831,7 +831,7 @@ steps:
         in:
             reference: reference
             gtf_file: reference_annotation
-            rna_sequence: rna_sequence
+            unaligned: rna_sequence
             sample_name: sample_name
             trimming_adapters: trimming_adapters
             trimming_adapter_trim_end: trimming_adapter_trim_end
