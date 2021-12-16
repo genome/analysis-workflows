@@ -162,11 +162,12 @@ inputs:
         inputBinding:
             position: 23
             prefix: '--twopassMode'
-    gtf_file:
+    reference_annotation:
         type: File?
         inputBinding:
             position: 24
             prefix: '--sjdbGTFfile'
+        doc: 'Annotated transcripts in GTF format; used as a source of splice junctions'
     outfile_name_prefix:
         type: string
         default: "STAR_"

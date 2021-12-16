@@ -14,6 +14,7 @@ inputs:
     #rnaseq inputs
     reference_annotation:
         type: File
+        doc: 'Annotated transcripts in GTF format'
     rna_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
     sample_name:
@@ -839,7 +840,7 @@ steps:
         run: rnaseq_star_fusion.cwl
         in:
             reference: reference
-            gtf_file: reference_annotation
+            reference_annotation: reference_annotation
             unaligned: rna_sequence
             sample_name: sample_name
             trimming_adapters: trimming_adapters

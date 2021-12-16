@@ -26,7 +26,7 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict]
-    gtf_file:
+    reference_annotation:
         type: File
     trimming_adapters:
         type: File
@@ -152,7 +152,7 @@ steps:
         scatter: [reads1, reads2]
         scatterMethod: dotproduct
         in:
-            gtf_file: gtf_file
+            reference_annotation: reference_annotation
             kallisto_index: kallisto_index
             cdna_fasta: cdna_fasta
             reads1: sequence_to_trimmed_fastq/fastq1
@@ -164,7 +164,7 @@ steps:
         in:
             outsam_attrrg_line: outsam_attrrg_line
             star_genome_dir: star_genome_dir
-            gtf_file: gtf_file
+            reference_annotation: reference_annotation
             fastq:
                 source: sequence_to_trimmed_fastq/fastq1
                 linkMerge: merge_flattened
@@ -221,7 +221,7 @@ steps:
         run: ../tools/stringtie.cwl
         in:
             bam: mark_dup/sorted_bam
-            reference_annotation: gtf_file
+            reference_annotation: reference_annotation
             sample_name: sample_name
             strand: strand
         out:

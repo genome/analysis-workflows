@@ -153,7 +153,7 @@ steps:
             outsam_attrrg_line: outsam_attrrg_line
             star_genome_dir: graft_star_genome_dir
             outfile_name_prefix: graft_outfile_name_prefix
-            gtf_file: graft_gtf_file
+            reference_annotation: graft_gtf_file
             fastq:
                 source: sequence_to_trimmed_fastq/fastq1
                 linkMerge: merge_flattened
@@ -168,7 +168,7 @@ steps:
             outsam_attrrg_line: outsam_attrrg_line
             star_genome_dir: host_star_genome_dir
             outfile_name_prefix: host_outfile_name_prefix
-            gtf_file: host_gtf_file
+            reference_annotation: host_gtf_file
             fastq:
                 source: sequence_to_trimmed_fastq/fastq1
                 linkMerge: merge_flattened
@@ -206,7 +206,7 @@ steps:
             outsam_attrrg_line: outsam_attrrg_line
             star_genome_dir: graft_star_genome_dir
             outfile_name_prefix: graft_outfile_name_prefix
-            gtf_file: graft_gtf_file
+            reference_annotation: graft_gtf_file
             fastq:
                 source: graftbam_to_fastq/fastq1
                 valueFrom: ${ return [self]; }
