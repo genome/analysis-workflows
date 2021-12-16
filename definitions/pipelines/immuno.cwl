@@ -396,7 +396,7 @@ outputs:
         secondaryFiles: [.bai]
         label: "Sorted BAM from tumor RNA"
         doc: |
-          Sorted BAM file of sequencing read alignments by HISAT2 with duplicate reads tagged
+          Sorted BAM file of sequencing read alignments by STAR with duplicate reads tagged
     stringtie_transcript_gtf:
         type: File
         outputSource: rnaseq/stringtie_transcript_gtf
