@@ -17,6 +17,27 @@ inputs:
         doc: 'Annotated transcripts in GTF format'
     rna_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
+        doc: |
+            Raw data from rna sequencing; this custom type holds both the data
+            file(s) and readgroup information. Data file(s) may be either a bam
+            file, or paired fastqs. Readgroup information should be given as a
+            series of key:value pairs, each separated by a space. This means
+            that spaces within a value must be double quoted. The first key
+            must be ID; consult the read group description in the header
+            section of the SAM file specification for other, optional keys.
+            Below is an example of an element of the input array:
+            readgroup: "ID:xxx PU:xxx SM:xxx LB:xxx PL:ILLUMINA CN:WUGSC"
+            sequence:
+                fastq1:
+                    class: File
+                    path: /path/to/reads1.fastq
+                fastq2:
+                    class: File
+                    path: /path/to/reads2.fastq
+                OR
+                bam:
+                    class: File
+                    path: /path/to/reads.bam
     sample_name:
         type: string
     trimming_adapters:
@@ -58,8 +79,6 @@ inputs:
           - type: enum
             symbols: ["inspect", "validate"]
         default: "validate"
-    outsam_attrrg_line:
-        type: string[]
     cdna_fasta:
         type: File
     agfusion_database:
@@ -857,7 +876,6 @@ steps:
             star_fusion_genome_dir: star_fusion_genome_dir
             examine_coding_effect: examine_coding_effect
             fusioninspector_mode: fusioninspector_mode
-            outsam_attrrg_line: outsam_attrrg_line
             cdna_fasta: cdna_fasta
             agfusion_database: agfusion_database
             agfusion_annotate_noncanonical: agfusion_annotate_noncanonical

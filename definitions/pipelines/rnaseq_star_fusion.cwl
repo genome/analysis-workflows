@@ -13,8 +13,27 @@ requirements:
 inputs:
     unaligned:
         type: ../types/sequence_data.yml#sequence_data[]
-    outsam_attrrg_line:
-        type: string[]
+        doc: |
+            Raw data from rna sequencing; this custom type holds both the data
+            file(s) and readgroup information. Data file(s) may be either a bam
+            file, or paired fastqs. Readgroup information should be given as a
+            series of key:value pairs, each separated by a space. This means
+            that spaces within a value must be double quoted. The first key
+            must be ID; consult the read group description in the header
+            section of the SAM file specification for other, optional keys.
+            Below is an example of an element of the input array:
+            readgroup: "ID:xxx PU:xxx SM:xxx LB:xxx PL:ILLUMINA CN:WUGSC"
+            sequence:
+                fastq1:
+                    class: File
+                    path: /path/to/reads1.fastq
+                fastq2:
+                    class: File
+                    path: /path/to/reads2.fastq
+                OR
+                bam:
+                    class: File
+                    path: /path/to/reads.bam
     star_genome_dir:
         type: Directory
     star_fusion_genome_dir:
@@ -162,7 +181,9 @@ steps:
     star_align_fusion:
         run: ../tools/star_align_fusion.cwl
         in:
-            outsam_attrrg_line: outsam_attrrg_line
+            outsam_attrrg_line:
+                source: unaligned
+                valueFrom: $(self.map(seqtype => seqtype.readgroup))
             star_genome_dir: star_genome_dir
             reference_annotation: reference_annotation
             fastq:
