@@ -106,7 +106,22 @@ inputs:
         label: "tumor_sequence: MT sequencing data and readgroup information"
         doc: |
           tumor_sequence represents the sequencing data for the MT sample as either FASTQs or BAMs with
-          accompanying readgroup information. Note that in the @RG field ID and SM are required.
+          accompanying readgroup information. The readgroup field should contain an entire read group header
+          line, as described in the SAM file specification. This is a list of strings, beginning with @RG and
+          followed by key:value pairs; each element of the list should be separated by a tab (\t). Keys ID and
+          SM are required; see below for a formatting example:
+          readgroup: "@RG\tID:xxx\tSM:xx"
+          sequence:
+            fastq1:
+                class: File
+                path: /path/to/reads1.fastq
+            fastq2:
+                class: File
+                path: /path/to/reads2.fastq
+            OR
+            bam:
+                class: File
+                path: /path/to/reads.bam
     tumor_name:
         type: string?
         default: 'tumor'
@@ -119,7 +134,22 @@ inputs:
         label: "normal_sequence: WT sequencing data and readgroup information"
         doc: |
           normal_sequence represents the sequencing data for the WT sample as either FASTQs or BAMs with
-          accompanying readgroup information. Note that in the @RG field ID and SM are required.
+          accompanying readgroup information. The readgroup field should contain an entire read group header
+          line, as described in the SAM file specification. This is a list of strings, beginning with @RG and
+          followed by key:value pairs; each element of the list should be separated by a tab (\t). Keys ID and
+          SM are required; see below for a formatting example:
+          readgroup: "@RG\tID:xxx\tSM:xx"
+          sequence:
+            fastq1:
+                class: File
+                path: /path/to/reads1.fastq
+            fastq2:
+                class: File
+                path: /path/to/reads2.fastq
+            OR
+            bam:
+                class: File
+                path: /path/to/reads.bam
     normal_name:
         type: string?
         default: 'normal'
