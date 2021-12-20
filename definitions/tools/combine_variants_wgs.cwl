@@ -16,7 +16,10 @@ arguments:
      "-o", { valueFrom: $(runtime.outdir)/combined.vcf.gz }]
 inputs:
     reference:
-        type: string
+        type:
+            - string
+            - File
+        secondaryFiles: [.fai]
         inputBinding:
             prefix: "-R"
             position: 1
