@@ -15,13 +15,14 @@ arguments: [
     { valueFrom: " && ", shellQuote: false },
     "/usr/local/bin/pvacseq", "run",
     "--iedb-install-directory", "/opt/iedb",
+    "--blastp-path", "/opt/ncbi-blast-2.12.0+/bin/blastp",
     "--pass-only",
     { position: 5, valueFrom: "pvacseq_predictions" },
 ]
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:2.0.5"
+      dockerPull: "griffithlab/pvactools:3.0.0"
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: $(inputs.n_threads)
@@ -95,6 +96,11 @@ inputs:
         type: boolean?
         inputBinding:
             prefix: "--run-reference-proteome-similarity"
+    blastp_db:
+        type:
+            - "null"
+            - type: enum
+              symbols: ["refseq_select_prot", "refseq_protein"]
     top_score_metric:
         type:
             - "null"
@@ -169,6 +175,10 @@ inputs:
               symbols: ["1", "2", "3", "4", "5"]
         inputBinding:
             prefix: "--maximum-transcript-support-level"
+    tumor_purity:
+        type: float?
+        inputBinding:
+            prefix: "--tumor-purity"
     n_threads:
         type: int?
         inputBinding:
@@ -183,6 +193,10 @@ outputs:
         type: File?
         outputBinding:
             glob: "pvacseq_predictions/MHC_Class_I/$(inputs.sample_name).all_epitopes.aggregated.tsv"
+    mhc_i_aggregated_metrics_file:
+        type: File?
+        outputBinding:
+            glob: "pvacseq_predictions/MHC_Class_I/$(inputs.sample_name).all_epitopes.aggregated.metrics.json"
     mhc_i_filtered_epitopes:
         type: File?
         outputBinding:
@@ -195,6 +209,10 @@ outputs:
         type: File?
         outputBinding:
             glob: "pvacseq_predictions/MHC_Class_II/$(inputs.sample_name).all_epitopes.aggregated.tsv"
+    mhc_ii_aggregated_metrics_file:
+        type: File?
+        outputBinding:
+            glob: "pvacseq_predictions/MHC_Class_II/$(inputs.sample_name).all_epitopes.aggregated.metrics.json"
     mhc_ii_filtered_epitopes:
         type: File?
         outputBinding:
@@ -207,6 +225,10 @@ outputs:
         type: File?
         outputBinding:
             glob: "pvacseq_predictions/combined/$(inputs.sample_name).all_epitopes.aggregated.tsv"
+    combined_aggregated_metrics_file:
+        type: File?
+        outputBinding:
+            glob: "pvacseq_predictions/combined/$(inputs.sample_name).all_epitopes.aggregated.metrics.json"
     combined_filtered_epitopes:
         type: File?
         outputBinding:

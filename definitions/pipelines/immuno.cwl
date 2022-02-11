@@ -425,6 +425,14 @@ inputs:
         label: "run_reference_proteome_similarity: sets an option whether to run reference proteome similarity or not"
         doc: |
           run_reference_proteome_similarity sets an option that decides whether it will run reference proteome similarity after all filtering and BLAST peptide sequences against the reference proteome to see if they appear elsewhere in the proteome.
+    blastp_db:
+        type:
+            - "null"
+            - type: enum
+              symbols: ["refseq_select_prot", "refseq_protein"]
+        label: "blastp_db: sets the reference proteome database to use with BLASTp"
+        doc: |
+          blastp_db sets the reference proteome database to use with BLASTp when enabling run_reference_proteome_similarity
     pvacseq_threads:
         type: int?
         label: "pvacseq_threads: Number of threads to use for parallelizing pvacseq prediction"
@@ -440,6 +448,8 @@ inputs:
         label: "tumor_sample_name: Name of the normal sample"
         doc: |
           normal_sample_name is the name of the normal sample to use for phasing of germline variants.
+    tumor_purity:
+        type: float?
 
     #pvacfuse inputs
     iedb_retries:
@@ -1081,10 +1091,12 @@ steps:
             net_chop_threshold: net_chop_threshold
             netmhc_stab: netmhc_stab
             run_reference_proteome_similarity: run_reference_proteome_similarity
+            blastp_db: blastp_db
             n_threads: pvacseq_threads
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
+            tumor_purity: tumor_purity
         out:
             [annotated_vcf, annotated_tsv, pvacseq_predictions]
 
@@ -1106,6 +1118,7 @@ steps:
             top_score_metric: top_score_metric
             net_chop_threshold: net_chop_threshold
             run_reference_proteome_similarity: run_reference_proteome_similarity
+            blastp_db: blastp_db
             additional_report_columns: additional_report_columns
             fasta_size: fasta_size
             downstream_sequence_length: downstream_sequence_length
