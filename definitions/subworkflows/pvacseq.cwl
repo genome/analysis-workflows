@@ -38,6 +38,11 @@ inputs:
         type: string[]
     prediction_algorithms:
         type: string[]
+    blastp_db:
+        type:
+            - "null"
+            - type: enum
+              symbols: ["refseq_select_prot", "refseq_protein"]
     epitope_lengths_class_i:
         type: int[]?
     epitope_lengths_class_ii:
@@ -112,6 +117,8 @@ inputs:
     vep_to_table_fields:
         type: string[]?
         default: [HGVSc,HGVSp]
+    tumor_purity:
+        type: float?
 outputs:
     annotated_vcf:
         type: File
@@ -204,7 +211,9 @@ steps:
             net_chop_threshold: net_chop_threshold
             netmhc_stab: netmhc_stab
             run_reference_proteome_similarity: run_reference_proteome_similarity
+            blastp_db: blastp_db
             n_threads: n_threads
+            tumor_purity: tumor_purity
         out:
             [pvacseq_predictions]
     variants_to_table:

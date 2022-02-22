@@ -16,12 +16,13 @@ arguments: [
     "/usr/local/bin/pvacfuse",
     "run",
     "--iedb-install-directory", "/opt/iedb",
+    "--blastp-path", "/opt/ncbi-blast-2.12.0+/bin/blastp",
     { position: 5, valueFrom: "pvacfuse_predictions" },
 ]
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:2.0.5"
+      dockerPull: "griffithlab/pvactools:3.0.0"
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: $(inputs.n_threads)
@@ -99,6 +100,11 @@ inputs:
         type: boolean?
         inputBinding:
             prefix: "--run-reference-proteome-similarity"
+    blastp_db:
+        type:
+            - "null"
+            - type: enum
+              symbols: ["refseq_select_prot", "refseq_protein"]
     additional_report_columns:
         type:
             - "null"
