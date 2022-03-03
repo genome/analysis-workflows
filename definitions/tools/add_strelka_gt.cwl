@@ -106,8 +106,7 @@ requirements:
             sub parse_gt {
                 my ($gt_str, $ids) = @_;
                 my @gt_ids = map{$ids->{$_}}(split //, $gt_str);
-                my $i;
-                foreach $i (@gt_ids) {
+                foreach my $i (@gt_ids) {
                     unless (defined $i) {
                         return undef;
                     }
