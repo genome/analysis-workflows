@@ -19,8 +19,7 @@ inputs:
         prefix: '-f'
         position: 1
   agfusion_database:
-    type: File?
-    default: "/opt/agfusiondb/agfusion.homo_sapiens.87.db"
+    type: File
     inputBinding:
         prefix: '-db'
         position: 2

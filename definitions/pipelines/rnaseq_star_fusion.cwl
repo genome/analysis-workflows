@@ -83,7 +83,7 @@ inputs:
           - type: enum
             symbols: ["inspect", "validate"]
     agfusion_database:
-        type: File?
+        type: File
     agfusion_annotate_noncanonical:
         type: boolean?
 

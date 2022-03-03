@@ -90,7 +90,7 @@ inputs:
         type: File
         doc: 'Fasta with transcripts, used to verify strand'
     agfusion_database:
-        type: File?
+        type: File
         doc: 'agfusion reference database'
     agfusion_annotate_noncanonical:
         type: boolean?
