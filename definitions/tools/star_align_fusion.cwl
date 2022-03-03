@@ -9,7 +9,7 @@ requirements:
       ramMin: 64000
       coresMin: 12
     - class: DockerRequirement
-      dockerPull: "mgibio/star:2.7.0f"
+      dockerPull: "trinityctat/starfusion:1.10.1"
 arguments: [
     "--runThreadN", $(runtime.cores)
 
