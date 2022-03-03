@@ -10,7 +10,7 @@ requirements:
     - class: ShellCommandRequirement 
     - class: ResourceRequirement
       ramMin: 64000
-      coresMin: 10 
+      coresMin: 12
     - class: DockerRequirement
       dockerPull: trinityctat/starfusion:1.8.0
 
