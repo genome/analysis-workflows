@@ -83,7 +83,7 @@ inputs:
           - type: enum
             symbols: ["inspect", "validate"]
     agfusion_database:
-        type: File?
+        type: File
     agfusion_annotate_noncanonical:
         type: boolean?
 
@@ -201,6 +201,12 @@ steps:
             junction_file: star_align_fusion/chim_junc
             examine_coding_effect: examine_coding_effect
             fusioninspector_mode: fusioninspector_mode
+            fastq:
+                source: sequence_to_trimmed_fastq/fastq1
+                linkMerge: merge_flattened
+            fastq2:
+                source: sequence_to_trimmed_fastq/fastq2
+                linkMerge: merge_flattened
         out:
             [fusion_predictions,fusion_abridged, coding_region_effects, fusioninspector_evidence]
     kallisto:

@@ -8,7 +8,7 @@ requirements:
       ramMin: 32000
       coresMin: 4 
     - class: DockerRequirement
-      dockerPull: rachelbj/agfusion:1.1
+      dockerPull: mgibio/agfusion:1.25-patch
 
 baseCommand: ["/usr/local/bin/agfusion", "batch"]
 arguments: ["-a", "starfusion", "--middlestar"]
@@ -19,8 +19,7 @@ inputs:
         prefix: '-f'
         position: 1
   agfusion_database:
-    type: File?
-    default: "/opt/agfusiondb/agfusion.homo_sapiens.87.db"
+    type: File
     inputBinding:
         prefix: '-db'
         position: 2

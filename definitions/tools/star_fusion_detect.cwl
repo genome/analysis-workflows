@@ -10,9 +10,9 @@ requirements:
     - class: ShellCommandRequirement 
     - class: ResourceRequirement
       ramMin: 64000
-      coresMin: 10 
+      coresMin: 12
     - class: DockerRequirement
-      dockerPull: trinityctat/starfusion:1.8.0
+      dockerPull: "trinityctat/starfusion:1.10.1"
 
 arguments: [
     "--CPU", $(runtime.cores)
@@ -63,6 +63,19 @@ inputs:
     inputBinding:
         prefix: '--FusionInspector'
         position: 7
+
+  fastq:
+    type: File[]
+    inputBinding:
+        position: 8
+        prefix: '--left_fq'
+        itemSeparator: ","
+  fastq2:
+    type: File[]
+    inputBinding:
+        position: 9
+        prefix: '--right_fq'
+        itemSeparator: ","
 
 outputs:
     fusion_predictions:
