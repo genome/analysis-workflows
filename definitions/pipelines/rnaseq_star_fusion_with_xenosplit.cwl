@@ -222,6 +222,12 @@ steps:
             junction_file: graftbam_star_align_fusion/chim_junc
             examine_coding_effect: examine_coding_effect
             fusioninspector_mode: fusioninspector_mode
+            fastq:
+                source: sequence_to_trimmed_fastq/fastq1
+                linkMerge: merge_flattened
+            fastq2:
+                source: sequence_to_trimmed_fastq/fastq2
+                linkMerge: merge_flattened
         out:
             [fusion_predictions,fusion_abridged, coding_region_effects, fusioninspector_evidence]
     kallisto:
