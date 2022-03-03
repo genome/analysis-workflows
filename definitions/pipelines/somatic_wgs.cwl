@@ -68,7 +68,7 @@ inputs:
         default: 8
     scatter_count:
         type: int
-        doc: "scatters each supported variant detector (varscan, pindel, mutect) into this many parallel jobs"
+        doc: "scatters each supported variant detector (varscan, mutect) into this many parallel jobs"
     mutect_artifact_detection_mode:
         type: boolean
         default: false
@@ -90,9 +90,6 @@ inputs:
         default: 0.99
     varscan_max_normal_freq:
         type: float?
-    pindel_insert_size:
-        type: int
-        default: 400
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -423,7 +420,6 @@ steps:
             varscan_min_var_freq: varscan_min_var_freq
             varscan_p_value: varscan_p_value
             varscan_max_normal_freq: varscan_max_normal_freq
-            pindel_insert_size: pindel_insert_size
             docm_vcf: docm_vcf
             filter_docm_variants: filter_docm_variants
             filter_somatic_llr_threshold: filter_somatic_llr_threshold

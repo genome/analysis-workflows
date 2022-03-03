@@ -32,7 +32,7 @@ inputs:
         type: int?
     scatter_count:
         type: int?
-        doc: "scatters each supported variant detector (varscan, pindel, mutect) into this many parallel jobs"
+        doc: "scatters each supported variant detector (varscan, mutect) into this many parallel jobs"
     varscan_strand_filter:
         type: int?
         default: 0
@@ -47,9 +47,6 @@ inputs:
         default: 0.99
     varscan_max_normal_freq:
         type: float?
-    pindel_insert_size:
-        type: int
-        default: 400
     docm_vcf:
         type: File
         secondaryFiles: [.tbi]
