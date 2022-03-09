@@ -55,11 +55,9 @@ requirements:
                             $id++;
                         }
 
-                        # parse GT, handling unparseable case with stderr
-                        my $parsed_n_gt = parse_gt($n_gt_str, \%ids);
                         if ($n_gt_info eq "ref") {
                             $n_gt = "0/0";
-                        } elsif (defined($parsed_n_gt)) {
+                        } elsif (defined(my $parsed_n_gt = parse_gt($n_gt_str, \%ids))) {
                             $n_gt = $parsed_n_gt;
                         } else {
                             my $id_keys = join(" ", sort keys(%ids));
@@ -67,8 +65,7 @@ requirements:
                             next;
                         }
 
-                        my $parsed_t_gt = parse_gt($t_gt_str, \%ids);
-                        if (defined($parsed_t_gt)) {
+                        if (defined(my $parsed_t_gt = parse_gt($t_gt_str, \%ids))) {
                             $t_gt = $parsed_t_gt;
                         } else {
                             my $id_keys = join(" ", sort keys(%ids));
