@@ -55,8 +55,23 @@ requirements:
                             $id++;
                         }
 
-                        $n_gt = $n_gt_info eq 'ref' ? '0/0' : parse_gt($n_gt_str, \%ids);
-                        $t_gt = parse_gt($t_gt_str, \%ids);
+                        if ($n_gt_info eq "ref") {
+                            $n_gt = "0/0";
+                        } elsif (defined(my $parsed_n_gt = parse_gt($n_gt_str, \%ids))) {
+                            $n_gt = $parsed_n_gt;
+                        } else {
+                            my $id_keys = join(" ", sort keys(%ids));
+                            say STDERR "parse_gt for n_gt=\"$n_gt_str\" and ids=\"$id_keys\" resulted in undefined";
+                            next;
+                        }
+
+                        if (defined(my $parsed_t_gt = parse_gt($t_gt_str, \%ids))) {
+                            $t_gt = $parsed_t_gt;
+                        } else {
+                            my $id_keys = join(" ", sort keys(%ids));
+                            say STDERR "parse_gt for t_gt=\"$t_gt_str\" and ids=\"$id_keys\" resulted in undefined";
+                            next;
+                        }
                     }
                     else {#INDEL
                         my ($n_gt_info, $t_gt_info) = $info =~ /;NT=(\S+?);.*SGT.*\->(\S+?);/;
@@ -88,6 +103,11 @@ requirements:
             sub parse_gt {
                 my ($gt_str, $ids) = @_;
                 my @gt_ids = map{$ids->{$_}}(split //, $gt_str);
+                foreach my $i (@gt_ids) {
+                    unless (defined $i) {
+                        return undef;
+                    }
+                }
                 return join '/', sort @gt_ids;
             }
 
