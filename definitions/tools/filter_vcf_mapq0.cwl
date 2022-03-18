@@ -5,7 +5,7 @@ class: CommandLineTool
 label: "filter vcf for variants with high percentage of mapq0 reads"
 requirements:
     - class: DockerRequirement
-      dockerPull: mgibio/mapq0-filter:v0.3.1
+      dockerPull: mgibio/mapq0-filter:v0.5.2
     - class: ResourceRequirement
       ramMin: 8000
       tmpdirMin: 10000
