@@ -11,7 +11,7 @@ requirements:
       tmpdirMin: 10000
 arguments: 
     ["/bin/bash", "/usr/bin/mapq0_vcf_filter.sh",
-    {valueFrom: "$(runtime.outdir)/mapq_filtered.vcf.gz"}]
+    {valueFrom: "$(runtime.outdir)/"}]
 inputs:
     vcf:
         type: File
@@ -22,15 +22,14 @@ inputs:
         inputBinding:
             position: 2
         secondaryFiles: [.bai]
-    reference: 
-        type:
-            - string
-            - File
-        secondaryFiles: [.fai, ^.dict]
-        inputBinding:
-            position: 3
     threshold: 
         type: float
+        inputBinding:
+            position: 3
+    sample_name: 
+        type:
+            - string
+        default: "TUMOR"
         inputBinding:
             position: 4
 outputs:
