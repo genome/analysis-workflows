@@ -38,7 +38,7 @@ inputs:
                 bam:
                     class: File
                     path: /path/to/reads.bam
-    sample_name:
+    rna_sample_name:
         type: string
     trimming_adapters:
         type: File
@@ -133,13 +133,13 @@ inputs:
             bam:
                 class: File
                 path: /path/to/reads.bam
-    tumor_name:
+    tumor_filename:
         type: string?
         default: 'tumor'
-        label: "tumor_name: String specifying the name of the MT sample"
+        label: "tumor/MT aligned bam filename"
         doc: |
-          tumor_name provides a string for what the MT sample will be referred to in the various
-          outputs, for example the VCF files.
+          the filename to be used for bam files produced by the pipeline containing aligned
+          tumor/mutant reads
     normal_sequence:
         type: ../types/sequence_data.yml#sequence_data[]
         label: "normal_sequence: WT sequencing data and readgroup information"
@@ -161,13 +161,13 @@ inputs:
             bam:
                 class: File
                 path: /path/to/reads.bam
-    normal_name:
+    normal_filename:
         type: string?
         default: 'normal'
-        label: "normal_name: String specifying the name of the WT sample"
+        label: "normal/WT aligned bam filename"
         doc: |
-          normal_name provides a string for what the WT sample will be referred to in the various
-          outputs, for example the VCF files.
+          the filename to be used for bam files produced by the pipeline containing aligned
+          normal/wild-type reads
     bqsr_known_sites:
         type: File[]
         secondaryFiles: [.tbi]
@@ -445,7 +445,7 @@ inputs:
           tumor_sample_name is the name of the tumor sample being processed. When processing a multi-sample VCF the sample name must be a sample ID in the input VCF #CHROM header line.
     normal_sample_name:
         type: string
-        label: "tumor_sample_name: Name of the normal sample"
+        label: "normal_sample_name: Name of the normal sample"
         doc: |
           normal_sample_name is the name of the normal sample to use for phasing of germline variants.
     tumor_purity:
@@ -912,7 +912,7 @@ steps:
             reference: reference
             reference_annotation: reference_annotation
             unaligned: rna_sequence
-            sample_name: sample_name
+            sample_name: rna_sample_name
             trimming_adapters: trimming_adapters
             trimming_adapter_trim_end: trimming_adapter_trim_end
             trimming_adapter_min_overlap: trimming_adapter_min_overlap
@@ -940,9 +940,9 @@ steps:
         in:
             reference: reference
             tumor_sequence: tumor_sequence
-            tumor_name: tumor_name
+            tumor_name: tumor_filename
             normal_sequence: normal_sequence
-            normal_name: normal_name
+            normal_name: normal_filename
             bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             bait_intervals: bait_intervals
