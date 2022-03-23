@@ -372,6 +372,9 @@ inputs:
             - "null"
             - type: enum
               symbols: ["sample_name"]
+    expression_tool:
+        type: string?
+        default: 'kallisto'
     fasta_size:
         type: int?
     downstream_sequence_length:
@@ -1075,6 +1078,7 @@ steps:
             minimum_fold_change: minimum_fold_change
             top_score_metric: top_score_metric
             additional_report_columns: additional_report_columns
+            expression_tool: expression_tool
             fasta_size: fasta_size
             downstream_sequence_length: downstream_sequence_length
             exclude_nas: exclude_nas
