@@ -23,11 +23,6 @@ inputs:
         type: float
     filter_somatic_llr_normal_contamination_rate:
         type: float
-    reference: 
-        type:
-            - string
-            - File
-        secondaryFiles: [.fai, ^.dict]
     filter_minimum_depth:
         type: int
     tumor_sample_name:
