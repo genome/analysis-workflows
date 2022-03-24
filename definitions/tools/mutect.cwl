@@ -11,7 +11,7 @@ requirements:
       ramMin: 32000
       tmpdirMin: 100000
     - class: DockerRequirement
-      dockerPull: "broadinstitute/gatk:4.1.8.1"
+      dockerPull: "broadinstitute/gatk:4.2.3.0"
     - class: InitialWorkDirRequirement
       listing:
       - entryname: 'Mutect2.sh'
