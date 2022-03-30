@@ -149,7 +149,9 @@ inputs:
             position: 21
             prefix: '--chimOutJunctionFormat'
     star_genome_dir:
-        type: Directory
+        type:
+            - string
+            - Directory
         inputBinding:
             position: 22
             prefix: '--genomeDir'

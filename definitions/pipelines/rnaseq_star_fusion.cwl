@@ -35,9 +35,13 @@ inputs:
                     class: File
                     path: /path/to/reads.bam
     star_genome_dir:
-        type: Directory
+        type:
+            - string
+            - Directory
     star_fusion_genome_dir:
-        type: Directory
+        type:
+            - string
+            - Directory
     cdna_fasta:
         type: File
     reference:

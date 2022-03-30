@@ -64,12 +64,16 @@ inputs:
     ribosomal_intervals:
         type: File
     star_aligner_genome_dir:
-        type: Directory
+        type:
+            - string
+            - Directory
         doc: |
             Path to the directory where STAR aligner genome indices are stored.
             Consult the STAR manual to generate new indices.
     star_fusion_genome_dir:
-        type: Directory
+        type:
+            - string
+            - Directory
         doc: |
             Path to the directory where STAR fusion resources are stored. This
             includes a reference genome and corresponding protein coding gene

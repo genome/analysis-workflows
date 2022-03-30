@@ -21,7 +21,9 @@ arguments: [
 
 inputs:
   star_fusion_genome_dir:
-    type: Directory
+    type:
+        - string
+        - Directory
     inputBinding:
         position: 2
         prefix: '--genome_lib_dir'
