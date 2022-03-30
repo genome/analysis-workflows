@@ -342,6 +342,16 @@ inputs:
         type: string[]?
         label: "Clinical HLA typing results, limited to MHC Class II alleles"
         doc: "used to provide clinical HLA typing results; separated from class I due to nomenclature inconsistencies"
+    hla_source_mode:
+        type:
+            type: enum
+            symbols: ["consensus", "clinical_only"]
+        label: "Source for HLA types used for epitope prediction: in silico and clinical, or just clinical"
+        doc: |
+            Control whether HLA types passed to pvacseq should be a consensus of optitype predictions and clinical calls,
+            if provided, or if only clinical calls should be used. In this case, optitype predictions and mismatches
+            between optitype and clinical calls will still be reported. Selecting clinical_only without providing
+            clinical calls will result in an error.
 
     #pvacseq inputs
     readcount_minimum_base_quality:
@@ -1044,6 +1054,7 @@ steps:
     hla_consensus:
         run: ../tools/hla_consensus.cwl
         in:
+            hla_source_mode: hla_source_mode
             optitype_hla_alleles: extract_alleles/allele_string
             clinical_mhc_classI_alleles: clinical_mhc_classI_alleles
             clinical_mhc_classII_alleles: clinical_mhc_classII_alleles

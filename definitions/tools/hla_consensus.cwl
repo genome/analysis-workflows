@@ -83,13 +83,16 @@ requirements:
                         ### parse args from the command line ###
                         ########################################
 
-                        clinical_exists = len(sys.argv) > 2 
+                        hla_source_mode = sys.argv[1]
+                        clinical_exists = len(sys.argv) > 3
+                        if (hla_source_mode == 'clinical_only') and not clinical_exists:
+                            sys.exit("HLA consensus error: No clinical calls found, but hla_source_mode is set to clinical_only")
 
-                        optitype_calls = sys.argv[1].split(",")
+                        optitype_calls = sys.argv[2].split(",")
 
                         if clinical_exists:
-                            raw_clinical_i_calls = sys.argv[2].split(",") #MHC Class I clinical typing results
-                            raw_clinical_ii_calls = sys.argv[3].split(",") #MHC Class II clinical typing results
+                            raw_clinical_i_calls = sys.argv[3].split(",") #MHC Class I clinical typing results
+                            raw_clinical_ii_calls = sys.argv[4].split(",") #MHC Class II clinical typing results
                             #Each clinical call may be a single high confidence call,
                             #or a list of uncertain calls separated by slashes
                             hc_clinical_calls = []
@@ -149,6 +152,7 @@ requirements:
                                     #when resolving uncertain clinical calls?
                                     #Example: clinical calls 01:02 and 01:02/01:03/01:04
                                     if hla_calls[gene][allele_group][spec_allele]:
+                                        #NOTE: the above call has an effect- visiting creates a leaf node w/empty set
                                         #add as a tuple to avoid re-splitting later
                                         multi_consensus.add( (gene, allele_group, spec_allele) )
 
@@ -188,7 +192,9 @@ requirements:
                         #########################################################
 
                         #A consensus file is always generated to be passed on to pvacseq. If there are
-                        #no clinical calls, this file is the same as optitype_calls.txt. If there are, walk
+                        #no clinical calls, this file is the same as optitype_calls.txt. If clinical calls exist
+                        #and $hla_source_mode is set to clinical_only, this file is the same as clinical_calls.txt.
+                        #Otherwise, if clinical calls exist and $hla_source_mode is set to consensus, walk
                         #through the tree and emit everything present as the consensus. If there is a true
                         #consensus, each class I gene (corresponding to the top level keys of the tree) will have
                         #at most 2 leaves (1 in the case of a homozygote, or in the rare case that both optitype
@@ -227,28 +233,40 @@ requirements:
                                                 mismatches[callers.pop()].append( build_hla_str(gene, allele_group, spec_allele) )
 
                                 mismatch_written = write_mismatch(mismatch_written, mismatches)
-
-                            with open("hla_calls/consensus_calls.txt", "w") as c_c:
-                                c_c.write( ",".join(consensus_calls) )
+                            if hla_source_mode == 'consensus':
+                                with open("hla_calls/consensus_calls.txt", "w") as c_c:
+                                    c_c.write( ",".join(consensus_calls) )
+                            elif hla_source_mode == 'clinical_only':
+                                with open("hla_calls/consensus_calls.txt", "w") as c_c:
+                                    #since raw type I clinical calls may contain uncertain calls, and downstream tools
+                                    #expect each list element to be an individual allele, filter with list comprehension
+                                    flat_i = [allele for multicall in raw_clinical_i_calls for allele in multicall.split('/')]
+                                    c_c.write( ",".join(flat_i + raw_clinical_ii_calls) )
 
 baseCommand: ['python', 'hla_consensus.py']
 inputs:
+    hla_source_mode:
+        type:
+            type: enum
+            symbols: ["consensus", "clinical_only"]
+        inputBinding:
+            position: 1
     optitype_hla_alleles:
         type: string[]
         inputBinding:
-            position: 1
+            position: 2
             itemSeparator: ','
             separate: false
     clinical_mhc_classI_alleles:
         type: string[]?
         inputBinding:
-            position: 2
+            position: 3
             itemSeparator: ','
             separate: false
     clinical_mhc_classII_alleles:
         type: string[]?
         inputBinding:
-            position: 3
+            position: 4
             itemSeparator: ','
             separate: false
 outputs:
