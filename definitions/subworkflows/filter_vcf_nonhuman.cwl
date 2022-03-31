@@ -40,6 +40,7 @@ steps:
             vcf: vcf
             tumor_bam: tumor_bam
             threshold: filter_mapq0_threshold
+            sample_name: tumor_sample_name
         out:
             [mapq0_filtered_vcf]
     filter_vcf_cle:
