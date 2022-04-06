@@ -7,9 +7,9 @@ requirements:
     - class: ShellCommandRequirement
     - class: ResourceRequirement
       ramMin: 64000
-      coresMin: 10
+      coresMin: 12
     - class: DockerRequirement
-      dockerPull: "mgibio/star:2.7.0f"
+      dockerPull: "trinityctat/starfusion:1.10.1"
 arguments: [
     "--runThreadN", $(runtime.cores)
 
@@ -111,12 +111,12 @@ inputs:
             prefix: '--outSAMattrRGline'
         doc: '
             string(s): SAM/BAM read group line. The first word contains the read group
-            identifier and must start with ID:, e.g. –outSAMattrRGline ID:xxx CN:yy
+            identifier and must start with ID:, e.g. --outSAMattrRGline ID:xxx CN:yy
             DS:z z z.
             xxx will be added as RG tag to each output alignment. Any spaces in the tag
             values have to be double quoted.
             Comma separated RG lines correspons to different (comma separated) input
-            files in –readFilesIn
+            files in --readFilesIn
             '
     chim_multimap_nmax:
         type: int
@@ -149,7 +149,9 @@ inputs:
             position: 21
             prefix: '--chimOutJunctionFormat'
     star_genome_dir:
-        type: Directory
+        type:
+            - string
+            - Directory
         inputBinding:
             position: 22
             prefix: '--genomeDir'
@@ -162,11 +164,12 @@ inputs:
         inputBinding:
             position: 23
             prefix: '--twopassMode'
-    gtf_file:
+    reference_annotation:
         type: File?
         inputBinding:
             position: 24
             prefix: '--sjdbGTFfile'
+        doc: 'Annotated transcripts in GTF format; used as a source of splice junctions'
     outfile_name_prefix:
         type: string
         default: "STAR_"

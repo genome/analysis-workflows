@@ -10,9 +10,9 @@ requirements:
     - class: ShellCommandRequirement 
     - class: ResourceRequirement
       ramMin: 64000
-      coresMin: 10 
+      coresMin: 12
     - class: DockerRequirement
-      dockerPull: trinityctat/starfusion:1.8.0
+      dockerPull: "trinityctat/starfusion:1.10.1"
 
 arguments: [
     "--CPU", $(runtime.cores)
@@ -21,7 +21,9 @@ arguments: [
 
 inputs:
   star_fusion_genome_dir:
-    type: Directory
+    type:
+        - string
+        - Directory
     inputBinding:
         position: 2
         prefix: '--genome_lib_dir'
@@ -49,6 +51,34 @@ inputs:
         prefix: '--STAR_PATH'
         position: 5
 
+  examine_coding_effect:
+    type: boolean?
+    inputBinding:
+        prefix: '--examine_coding_effect'
+        position: 6
+
+  fusioninspector_mode:
+    type:
+        - "null"
+        - type: enum
+          symbols: ["inspect", "validate"]
+    inputBinding:
+        prefix: '--FusionInspector'
+        position: 7
+
+  fastq:
+    type: File[]
+    inputBinding:
+        position: 8
+        prefix: '--left_fq'
+        itemSeparator: ","
+  fastq2:
+    type: File[]
+    inputBinding:
+        position: 9
+        prefix: '--right_fq'
+        itemSeparator: ","
+
 outputs:
     fusion_predictions:
       type: File
@@ -58,3 +88,11 @@ outputs:
       type: File
       outputBinding:
         glob: $(inputs.fusion_output_dir +"/star-fusion.fusion_predictions.abridged.tsv")
+    coding_region_effects:
+      type: File?
+      outputBinding:
+        glob: $(inputs.fusion_output_dir + "/star-fusion.fusion_predictions.abridged.coding_effect.tsv")
+    fusioninspector_evidence:
+      type: File[]?
+      outputBinding:
+        glob: $(inputs.fusion_output_dir + "/FusionInspector-" + inputs.fusioninspector_mode + "/finspector.*")

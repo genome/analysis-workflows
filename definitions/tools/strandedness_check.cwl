@@ -27,7 +27,7 @@ requirements:
     - class: DockerRequirement
       dockerPull: "mgibio/checkstrandedness:v1"
 inputs:
-    gtf_file:
+    reference_annotation:
         type: File
         inputBinding:
             prefix: --gtf

@@ -69,6 +69,13 @@ inputs:
     unzip_fastqs:
         type: boolean?
         default: true
+    examine_coding_effect:
+        type: boolean?
+    fusioninspector_mode:
+        type:
+            - "null"
+            - type: enum
+              symbols: ["inspect", "validate"]
 outputs:
     final_bam:
         type: File
@@ -119,6 +126,12 @@ outputs:
     bamcoverage_bigwig:
         type: File
         outputSource: cgpbigwig_bamcoverage/outfile
+    coding_region_effects:
+        type: File?
+        outputSource: star_fusion_detect/coding_region_effects
+    fusioninspector_evidence:
+        type: File[]?
+        outputSource: star_fusion_detect/fusioninspector_evidence
 steps:
     sequence_to_trimmed_fastq:
         run: ../subworkflows/sequence_to_trimmed_fastq.cwl
@@ -140,7 +153,7 @@ steps:
             outsam_attrrg_line: outsam_attrrg_line
             star_genome_dir: graft_star_genome_dir
             outfile_name_prefix: graft_outfile_name_prefix
-            gtf_file: graft_gtf_file
+            reference_annotation: graft_gtf_file
             fastq:
                 source: sequence_to_trimmed_fastq/fastq1
                 linkMerge: merge_flattened
@@ -155,7 +168,7 @@ steps:
             outsam_attrrg_line: outsam_attrrg_line
             star_genome_dir: host_star_genome_dir
             outfile_name_prefix: host_outfile_name_prefix
-            gtf_file: host_gtf_file
+            reference_annotation: host_gtf_file
             fastq:
                 source: sequence_to_trimmed_fastq/fastq1
                 linkMerge: merge_flattened
@@ -193,7 +206,7 @@ steps:
             outsam_attrrg_line: outsam_attrrg_line
             star_genome_dir: graft_star_genome_dir
             outfile_name_prefix: graft_outfile_name_prefix
-            gtf_file: graft_gtf_file
+            reference_annotation: graft_gtf_file
             fastq:
                 source: graftbam_to_fastq/fastq1
                 valueFrom: ${ return [self]; }
@@ -207,8 +220,16 @@ steps:
         in:
             star_fusion_genome_dir: star_fusion_genome_dir
             junction_file: graftbam_star_align_fusion/chim_junc
+            examine_coding_effect: examine_coding_effect
+            fusioninspector_mode: fusioninspector_mode
+            fastq:
+                source: sequence_to_trimmed_fastq/fastq1
+                linkMerge: merge_flattened
+            fastq2:
+                source: sequence_to_trimmed_fastq/fastq2
+                linkMerge: merge_flattened
         out:
-            [fusion_predictions,fusion_abridged]
+            [fusion_predictions,fusion_abridged, coding_region_effects, fusioninspector_evidence]
     kallisto:
         run: ../tools/kallisto.cwl
         in:

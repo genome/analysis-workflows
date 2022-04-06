@@ -13,18 +13,43 @@ requirements:
 inputs:
     unaligned:
         type: ../types/sequence_data.yml#sequence_data[]
-    outsam_attrrg_line:
-        type: string[]
+        doc: |
+            Raw data from rna sequencing; this custom type holds both the data
+            file(s) and readgroup information. Data file(s) may be either a bam
+            file, or paired fastqs. Readgroup information should be given as a
+            series of key:value pairs, each separated by a space. This means
+            that spaces within a value must be double quoted. The first key
+            must be ID; consult the read group description in the header
+            section of the SAM file specification for other, optional keys.
+            Below is an example of an element of the input array:
+            readgroup: "ID:xxx PU:xxx SM:xxx LB:xxx PL:ILLUMINA CN:WUGSC"
+            sequence:
+                fastq1:
+                    class: File
+                    path: /path/to/reads1.fastq
+                fastq2:
+                    class: File
+                    path: /path/to/reads2.fastq
+                OR
+                bam:
+                    class: File
+                    path: /path/to/reads.bam
     star_genome_dir:
-        type: Directory
+        type:
+            - string
+            - Directory
     star_fusion_genome_dir:
-        type: Directory
+        type:
+            - string
+            - Directory
     cdna_fasta:
         type: File
     reference:
-        type: File
+        type:
+            - string
+            - File
         secondaryFiles: [.fai, ^.dict]
-    gtf_file:
+    reference_annotation:
         type: File
     trimming_adapters:
         type: File
@@ -54,6 +79,18 @@ inputs:
     unzip_fastqs:
         type: boolean?
         default: true
+    examine_coding_effect:
+        type: boolean?
+    fusioninspector_mode:
+        type:
+          - "null"
+          - type: enum
+            symbols: ["inspect", "validate"]
+    agfusion_database:
+        type: File
+    agfusion_annotate_noncanonical:
+        type: boolean?
+
 outputs:
     cram:
         type: File
@@ -104,6 +141,19 @@ outputs:
     bamcoverage_bigwig:
         type: File
         outputSource: cgpbigwig_bamcoverage/outfile
+    final_bam:
+        type: File
+        outputSource: index_bam/indexed_bam
+        secondaryFiles: [.bai]
+    annotated_fusion_predictions:
+        type: Directory
+        outputSource: agfusion/annotated_fusion_predictions
+    coding_region_effects:
+        type: File?
+        outputSource: star_fusion_detect/coding_region_effects
+    fusioninspector_evidence:
+        type: File[]?
+        outputSource: star_fusion_detect/fusioninspector_evidence
 steps:
     sequence_to_trimmed_fastq:
         
@@ -125,7 +175,7 @@ steps:
         scatter: [reads1, reads2]
         scatterMethod: dotproduct
         in:
-            gtf_file: gtf_file
+            reference_annotation: reference_annotation
             kallisto_index: kallisto_index
             cdna_fasta: cdna_fasta
             reads1: sequence_to_trimmed_fastq/fastq1
@@ -135,9 +185,11 @@ steps:
     star_align_fusion:
         run: ../tools/star_align_fusion.cwl
         in:
-            outsam_attrrg_line: outsam_attrrg_line
+            outsam_attrrg_line:
+                source: unaligned
+                valueFrom: $(self.map(seqtype => seqtype.readgroup))
             star_genome_dir: star_genome_dir
-            gtf_file: gtf_file
+            reference_annotation: reference_annotation
             fastq:
                 source: sequence_to_trimmed_fastq/fastq1
                 linkMerge: merge_flattened
@@ -151,8 +203,16 @@ steps:
         in:
             star_fusion_genome_dir: star_fusion_genome_dir
             junction_file: star_align_fusion/chim_junc
+            examine_coding_effect: examine_coding_effect
+            fusioninspector_mode: fusioninspector_mode
+            fastq:
+                source: sequence_to_trimmed_fastq/fastq1
+                linkMerge: merge_flattened
+            fastq2:
+                source: sequence_to_trimmed_fastq/fastq2
+                linkMerge: merge_flattened
         out:
-            [fusion_predictions,fusion_abridged]
+            [fusion_predictions,fusion_abridged, coding_region_effects, fusioninspector_evidence]
     kallisto:
         run: ../tools/kallisto.cwl
         in:
@@ -192,7 +252,7 @@ steps:
         run: ../tools/stringtie.cwl
         in:
             bam: mark_dup/sorted_bam
-            reference_annotation: gtf_file
+            reference_annotation: reference_annotation
             sample_name: sample_name
             strand: strand
         out:
@@ -226,3 +286,11 @@ steps:
             reference: reference
         out:
             [outfile]
+    agfusion:
+        run: ../tools/agfusion.cwl
+        in:
+            fusion_predictions: star_fusion_detect/fusion_predictions
+            agfusion_database: agfusion_database
+            annotate_noncanonical: agfusion_annotate_noncanonical
+        out:
+            [annotated_fusion_predictions]
