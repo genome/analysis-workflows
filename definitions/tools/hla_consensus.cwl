@@ -92,7 +92,8 @@ requirements:
 
                         if clinical_exists:
                             raw_clinical_i_calls = sys.argv[3].split(",") #MHC Class I clinical typing results
-                            raw_clinical_ii_calls = sys.argv[4].split(",") #MHC Class II clinical typing results
+                            #MHC Class II clinical typing results, if available
+                            raw_clinical_ii_calls = sys.argv[4].split(",") if (len(sys.argv) > 4) else []
                             #Each clinical call may be a single high confidence call,
                             #or a list of uncertain calls separated by slashes
                             hc_clinical_calls = []
