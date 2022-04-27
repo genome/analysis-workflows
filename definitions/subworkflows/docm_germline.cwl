@@ -25,7 +25,7 @@ outputs:
         outputSource: gatk_haplotypecaller/docm_raw_variants
     filtered_vcf:
         type: File
-        outputSource: index/indexed_vcf
+        outputSource: index2/indexed_vcf
         secondaryFiles: [.tbi]
 steps:
     gatk_haplotypecaller:
@@ -37,19 +37,37 @@ steps:
             interval_list: interval_list
         out:
             [docm_raw_variants]
+    bgzip:
+        run: ../tools/bgzip.cwl
+        in:
+            file: gatk_haplotypecaller/docm_raw_variants
+        out:
+            [bgzipped_file]
+    index:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: bgzip/bgzipped_file
+        out:
+            [indexed_vcf]
+    decompose:
+        run: ../tools/vt_decompose.cwl
+        in:
+            vcf: index/indexed_vcf
+        out:
+            [decomposed_vcf]
     docm_filter:
         run: ../tools/single_sample_docm_filter.cwl
         in:
-            docm_out: gatk_haplotypecaller/docm_raw_variants
+            docm_out: decompose/decomposed_vcf
         out:
             [docm_filter_out]
-    bgzip:
+    bgzip2:
         run: ../tools/bgzip.cwl
         in:
             file: docm_filter/docm_filter_out
         out:
             [bgzipped_file]
-    index:
+    index2:
         run: ../tools/index_vcf.cwl
         in:
             vcf: bgzip/bgzipped_file
