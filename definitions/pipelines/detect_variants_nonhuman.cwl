@@ -321,7 +321,6 @@ steps:
             filter_minimum_depth: filter_minimum_depth
             tumor_bam: tumor_bam
             do_cle_vcf_filter: cle_vcf_filter
-            reference: reference
             tumor_sample_name: tumor_sample_name
             normal_sample_name: normal_sample_name
         out: 

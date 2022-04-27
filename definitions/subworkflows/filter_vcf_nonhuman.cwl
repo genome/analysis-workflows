@@ -23,11 +23,6 @@ inputs:
         type: float
     filter_somatic_llr_normal_contamination_rate:
         type: float
-    reference: 
-        type:
-            - string
-            - File
-        secondaryFiles: [.fai, ^.dict]
     filter_minimum_depth:
         type: int
     tumor_sample_name:
@@ -45,7 +40,7 @@ steps:
             vcf: vcf
             tumor_bam: tumor_bam
             threshold: filter_mapq0_threshold
-            reference: reference
+            sample_name: tumor_sample_name
         out:
             [mapq0_filtered_vcf]
     filter_vcf_cle:
