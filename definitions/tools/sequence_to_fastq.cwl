@@ -49,36 +49,41 @@ requirements:
 
             if [[ "$MODE" == 'fastq' ]]; then #must be fastq input
 
+                nameroot1=$(basename $(basename "$FASTQ1" .gz) .fastq)
+                nameroot2=$(basename $(basename "$FASTQ2" .gz) .fastq)
+
                 if $UNZIP; then
                     if gzip -t $FASTQ1 2> /dev/null; then
-                        gunzip -c $FASTQ1 > $OUTDIR/read1.fastq
+                        gunzip -c $FASTQ1 > $OUTDIR/"$nameroot1".read1.fastq
                     else
-                        cp $FASTQ1 $OUTDIR/read1.fastq
+                        cp $FASTQ1 $OUTDIR/"$nameroot1".read1.fastq
                     fi
 
                     if gzip -t $FASTQ2 2> /dev/null; then
-                        gunzip -c $FASTQ2 > $OUTDIR/read2.fastq
+                        gunzip -c $FASTQ2 > $OUTDIR/"$nameroot2".read2.fastq
                     else
-                        cp $FASTQ2 $OUTDIR/read2.fastq
+                        cp $FASTQ2 $OUTDIR/"$nameroot2".read2.fastq
                     fi
                 else
                     if gzip -t $FASTQ1 2> /dev/null; then
-                        cp $FASTQ1 $OUTDIR/read1.fastq.gz
+                        cp $FASTQ1 $OUTDIR/"$nameroot1".read1.fastq.gz
                     else
-                        cp $FASTQ1 $OUTDIR/read1.fastq
+                        cp $FASTQ1 $OUTDIR/"$nameroot1".read1.fastq
                     fi
 
                     if gzip -t $FASTQ2 2> /dev/null; then
-                        cp $FASTQ2 $OUTDIR/read2.fastq.gz
+                        cp $FASTQ2 $OUTDIR/"$nameroot2".read2.fastq.gz
                     else
-                        cp $FASTQ2 $OUTDIR/read2.fastq
+                        cp $FASTQ2 $OUTDIR/"$nameroot2".read2.fastq
                     fi
                 fi
 
             else # then
                 ##run samtofastq here, dumping to the same filenames
                 ## input file is $BAM
-                /usr/bin/java -Xmx4g -jar /usr/picard/picard.jar SamToFastq I="$BAM" INCLUDE_NON_PF_READS=true F=$OUTDIR/read1.fastq F2=$OUTDIR/read2.fastq VALIDATION_STRINGENCY=SILENT
+
+                nameroot=$(basename "$BAM" .bam)
+                /usr/bin/java -Xmx4g -jar /usr/picard/picard.jar SamToFastq I="$BAM" INCLUDE_NON_PF_READS=true F=$OUTDIR/"$nameroot".read1.fastq F2=$OUTDIR/"$nameroot".read2.fastq VALIDATION_STRINGENCY=SILENT
             fi
 arguments: [
     {valueFrom: $(runtime.outdir), position: -6, prefix: '-d'}
@@ -105,10 +110,10 @@ outputs:
     fastq1:
         type: File
         outputBinding:
-            glob: "read1.fastq*"
+            glob: "*read1.fastq*"
             outputEval: $(self[0])
     fastq2:
         type: File
         outputBinding:
-            glob: "read2.fastq*"
+            glob: "*read2.fastq*"
             outputEval: $(self[0])
