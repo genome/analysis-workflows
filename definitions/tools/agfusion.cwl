@@ -8,7 +8,7 @@ requirements:
       ramMin: 32000
       coresMin: 4 
     - class: DockerRequirement
-      dockerPull: mgibio/agfusion:1.25-patch
+      dockerPull: agfusion:1.3.1-ensembl-95
 
 baseCommand: ["/usr/local/bin/agfusion", "batch"]
 arguments: ["-a", "starfusion", "--middlestar"]
