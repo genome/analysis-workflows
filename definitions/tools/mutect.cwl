@@ -16,16 +16,27 @@ requirements:
       listing:
       - entryname: 'Mutect2.sh'
         entry: |
+            #!/bin/bash
             set -o pipefail
             set -o errexit
 
             export tumor_bam="$3"
-            export normal_bam="$4"
+            export intervals="$4"
+            export normal_bam="$5"
 
-            NORMAL=`samtools view -H $normal_bam | perl -nE 'say $1 if /^\@RG.+\tSM:([ -~]+)/' | head -n 1`
             TUMOR=`samtools view -H $tumor_bam | perl -nE 'say $1 if /^\@RG.+\tSM:([ -~]+)/' | head -n 1`
+            if [ "$#" == 4 ]; then
+              # tumor only
+              /gatk/gatk Mutect2 --java-options "-Xmx20g" -O $1 -R $2 -I "$tumor_bam" -tumor "$TUMOR" -L "$intervals" #Running Mutect2.
+            elif [ "$#" == 5 ]; then
+              # tumor and normal
+              NORMAL=`samtools view -H $normal_bam | perl -nE 'say $1 if /^\@RG.+\tSM:([ -~]+)/' | head -n 1`
+              /gatk/gatk Mutect2 --java-options "-Xmx20g" -O $1 -R $2 -I "$tumor_bam" -tumor "$TUMOR" -I "$normal_bam" -normal "$NORMAL" -L "$intervals" #Running Mutect2.
+            else
+              echo "error in inputs"
+              exit 1
+            fi
 
-            /gatk/gatk Mutect2 --java-options "-Xmx20g" -O $1 -R $2 -I $3 -tumor "$TUMOR" -I $4 -normal "$NORMAL" -L $5 #Running Mutect2.
             /gatk/gatk FilterMutectCalls -R $2 -V mutect.vcf.gz -O mutect.filtered.vcf.gz #Running FilterMutectCalls on the output vcf.
 
 arguments:
@@ -48,12 +59,12 @@ inputs:
     normal_bam:
         type: File?
         inputBinding:
-            position: 4
+            position: 5
         secondaryFiles: [.bai]
     interval_list:
         type: File
         inputBinding:
-            position: 5
+            position: 4
 
 outputs:
     vcf:
