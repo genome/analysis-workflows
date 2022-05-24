@@ -49,10 +49,14 @@ requirements:
 
             if [[ "$MODE" == 'fastq' ]]; then #must be fastq input
 
+                #basename is a no-op if suffix isn't found,
+                #so it's safe to use on optional file extensions
                 unzip1=`basename "$FASTQ1" .gz`
                 unzip2=`basename "$FASTQ2" .gz`
                 nameroot1=`basename "$unzip1" .fastq`
                 nameroot2=`basename "$unzip2" .fastq`
+                nameroot1=`basename "$nameroot1" .fq`
+                nameroot2=`basename "$nameroot2" .fq`
 
                 if $UNZIP; then
                     if gzip -t $FASTQ1 2> /dev/null; then
