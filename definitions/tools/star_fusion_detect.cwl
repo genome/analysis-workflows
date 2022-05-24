@@ -95,4 +95,4 @@ outputs:
     fusioninspector_evidence:
       type: File[]?
       outputBinding:
-        glob: $(inputs.fusion_output_dir + "/FusionInspector-" + inputs.fusioninspector_mode + "/finspector.*")
+        glob: $( [inputs.fusion_output_dir + "/FusionInspector-" + inputs.fusioninspector_mode + "/finspector.*", inputs.fusion_output_dir + "/FusionInspector-" + inputs.fusioninspector_mode + "/cytoBand.*"] )
