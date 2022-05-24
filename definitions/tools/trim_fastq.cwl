@@ -5,7 +5,7 @@ class: CommandLineTool
 label: "Trim FASTQ (flexbar)"
 baseCommand: ['/opt/flexbar/flexbar']
 arguments: [
-    "--target", {valueFrom: "$(runtime.outdir)/trimmed_read"},
+    "--target", {valueFrom: "$(runtime.outdir)/$(inputs.reads1.nameroot).trimmed_read"},
     "--threads", {valueFrom: "$(runtime.cores)"}
 ]
 requirements:
@@ -55,12 +55,13 @@ outputs:
     fastq1:
         type: File
         outputBinding:
-            glob: "trimmed_read_1.fastq"
+            glob: "$(inputs.reads1.nameroot).trimmed_read_1.fastq"
     fastq2:
         type: File
         outputBinding:
-            glob: "trimmed_read_2.fastq"
+            glob: "$(inputs.reads1.nameroot).trimmed_read_2.fastq"
     fastqs:
         type: File[]
         outputBinding:
-            glob: "trimmed_read_*.fastq"
+            glob: "$(inputs.reads1.nameroot).trimmed_read_*.fastq"
+
