@@ -398,8 +398,8 @@ inputs:
             position: 1
     output_name:
         type: string?
-        default: "$(inputs.input_files[0].basename).txt"
-stdout: $(inputs.output_name)
+        default: $(inputs.input_files[0].basename)
+stdout: "$(inputs.output_name)_unaligned_metrics.txt"
 outputs:
     unaligned_stats:
         type: stdout

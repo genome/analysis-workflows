@@ -376,14 +376,18 @@ requirements:
 		}
 
 inputs:
+    reference:
+        type: File
+        inputBinding:
+            position: 1
     input_files:
         type: File[]
         inputBinding:
-            position: 1
+            position: 2
     output_name:
         type: string?
-        default: "$(inputs.input_files[0].basename).txt"
-stdout: $(inputs.output_name)
+        default: $(inputs.input_files[0].basename)
+stdout: "$(inputs.output_name)_aligned_metrics.txt"
 outputs:
     aligned_stats:
         type: stdout
