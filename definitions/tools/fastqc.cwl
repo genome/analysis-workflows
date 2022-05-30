@@ -2,7 +2,7 @@
 
 class: CommandLineTool
 cwlVersion: "v1.0"
-label: "Report metrics on bam files using fastqc"
+label: "Report metrics on bam or fastq files using fastqc"
 requirements:
     - class: ResourceRequirement
       ramMin: 32000
@@ -11,21 +11,16 @@ requirements:
       dockerPull: mgibio/fastqc:0.11.9
 
 baseCommand: ["/usr/bin/perl", "/usr/local/bin/FastQC/fastqc"]
-arguments: ["-q", "--extract", "-o", "$(runtime.outdir)"]
+arguments: ["-q", "-o", "$(runtime.outdir)"]
 
 inputs:
-  bam:
-    type: File
+  input_files:
+    type: File[]
     inputBinding:
         position: 1
 
 outputs:
     fastqc_all_data:
-      type: Directory
+      type: File[]
       outputBinding:
-        glob: "$(inputs.bam.nameroot)_fastqc"
-
-    fastqc_txt_report:
-      type: File
-      outputBinding:
-        glob: "$(inputs.bam.nameroot)_fastqc/fastqc_data.txt"
+        glob: "*.zip"
