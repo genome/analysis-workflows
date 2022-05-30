@@ -13,7 +13,7 @@ requirements:
           - $import: ../types/sequence_data.yml
 
 inputs:
-    reference_fasta:
+    reference:
         type: File
     unaligned_normal_dna:
         type: ../types/sequence_data.yml#sequence_data[]
@@ -276,7 +276,7 @@ steps:
             input_files:
                 source: aligned_normal_dna
                 valueFrom: ${ return [self]; }
-           output_name:
+            output_name:
                 default: "normal_dna"
         out:
             [aligned_stats]
@@ -286,7 +286,7 @@ steps:
             input_files:
                 source: aligned_normal_dna
                 valueFrom: ${ return [self]; }
-           output_name:
+            output_name:
                 default: "normal_dna_aligned"
         out:
             [md5sum]
@@ -307,7 +307,7 @@ steps:
             input_files:
                 source: aligned_tumor_dna
                 valueFrom: ${ return [self]; }
-           output_name:
+            output_name:
                 default: "tumor_dna"
         out:
             [aligned_stats]
@@ -317,7 +317,7 @@ steps:
             input_files:
                 source: aligned_tumor_dna
                 valueFrom: ${ return [self]; }
-           output_name:
+            output_name:
                 default: "tumor_dna_aligned"
         out:
             [md5sum]
@@ -338,7 +338,7 @@ steps:
             input_files:
                 source: aligned_tumor_rna
                 valueFrom: ${ return [self]; }
-           output_name:
+            output_name:
                 default: "tumor_rna"
         out:
             [aligned_stats]
@@ -348,7 +348,7 @@ steps:
             input_files:
                 source: aligned_tumor_rna
                 valueFrom: ${ return [self]; }
-           output_name:
+            output_name:
                 default: "tumor_rna_aligned"
         out:
             [md5sum]
