@@ -17,7 +17,7 @@ requirements:
       - entryname: 'Mutect2.sh'
         entry: |
             #!/bin/bash
-            set -eou pipefail
+            set -eo pipefail
 
             export tumor_bam="$3"
             export intervals="$4"
