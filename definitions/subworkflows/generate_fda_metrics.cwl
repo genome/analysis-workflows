@@ -98,10 +98,11 @@ steps:
                 valueFrom: |
                     ${
                         var files = [];
-                        for (const seq of self) {
-                            if (seq.sequence.hasOwnProperty('bam')) files.push(seq.sequence.bam);
-                            if (seq.sequence.hasOwnProperty('fastq1')) files.push(seq.sequence.fastq1);
-                            if (seq.sequence.hasOwnProperty('fastq2')) files.push(seq.sequence.fastq2);
+                        var i;
+                        for (i = 0; i < self.length; i = i + 1) {
+                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
+                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
+                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
                         }
                         return files;
                     }
@@ -115,10 +116,11 @@ steps:
                 valueFrom: |
                     ${
                         var files = [];
-                        for (const seq of self) {
-                            if (seq.sequence.hasOwnProperty('bam')) files.push(seq.sequence.bam);
-                            if (seq.sequence.hasOwnProperty('fastq1')) files.push(seq.sequence.fastq1);
-                            if (seq.sequence.hasOwnProperty('fastq2')) files.push(seq.sequence.fastq2);
+                        var i;
+                        for (i = 0; i < self.length; i = i + 1) {
+                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
+                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
+                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
                         }
                         return files;
                     }
@@ -134,10 +136,11 @@ steps:
                 valueFrom: |
                     ${
                         var files = [];
-                        for (const seq of self) {
-                            if (seq.sequence.hasOwnProperty('bam')) files.push(seq.sequence.bam);
-                            if (seq.sequence.hasOwnProperty('fastq1')) files.push(seq.sequence.fastq1);
-                            if (seq.sequence.hasOwnProperty('fastq2')) files.push(seq.sequence.fastq2);
+                        var i;
+                        for (i = 0; i < self.length; i = i + 1) {
+                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
+                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
+                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
                         }
                         return files;
                     }
@@ -155,10 +158,11 @@ steps:
                 valueFrom: |
                     ${
                         var files = [];
-                        for (const seq of self) {
-                            if (seq.sequence.hasOwnProperty('bam')) files.push(seq.sequence.bam);
-                            if (seq.sequence.hasOwnProperty('fastq1')) files.push(seq.sequence.fastq1);
-                            if (seq.sequence.hasOwnProperty('fastq2')) files.push(seq.sequence.fastq2);
+                        var i;
+                        for (i = 0; i < self.length; i = i + 1) {
+                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
+                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
+                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
                         }
                         return files;
                     }
@@ -172,10 +176,11 @@ steps:
                 valueFrom: |
                     ${
                         var files = [];
-                        for (const seq of self) {
-                            if (seq.sequence.hasOwnProperty('bam')) files.push(seq.sequence.bam);
-                            if (seq.sequence.hasOwnProperty('fastq1')) files.push(seq.sequence.fastq1);
-                            if (seq.sequence.hasOwnProperty('fastq2')) files.push(seq.sequence.fastq2);
+                        var i;
+                        for (i = 0; i < self.length; i = i + 1) {
+                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
+                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
+                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
                         }
                         return files;
                     }
@@ -191,10 +196,11 @@ steps:
                 valueFrom: |
                     ${
                         var files = [];
-                        for (const seq of self) {
-                            if (seq.sequence.hasOwnProperty('bam')) files.push(seq.sequence.bam);
-                            if (seq.sequence.hasOwnProperty('fastq1')) files.push(seq.sequence.fastq1);
-                            if (seq.sequence.hasOwnProperty('fastq2')) files.push(seq.sequence.fastq2);
+                        var i;
+                        for (i = 0; i < self.length; i = i + 1) {
+                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
+                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
+                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
                         }
                         return files;
                     }
@@ -210,15 +216,16 @@ steps:
             input_files:
                 source: unaligned_tumor_rna
                 valueFrom: |
-                    ${  
-                        var files = []; 
-                        for (const seq of self) {
-                            if (seq.sequence.hasOwnProperty('bam')) files.push(seq.sequence.bam);
-                            if (seq.sequence.hasOwnProperty('fastq1')) files.push(seq.sequence.fastq1);
-                            if (seq.sequence.hasOwnProperty('fastq2')) files.push(seq.sequence.fastq2);
-                        }   
+                    ${
+                        var files = [];
+                        var i;
+                        for (i = 0; i < self.length; i = i + 1) {
+                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
+                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
+                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
+                        }
                         return files;
-                    }   
+                    }
         out:
             [fastqc_all_data]
     unaligned_tumor_rna_metrics:
@@ -227,15 +234,16 @@ steps:
             input_files:
                 source: unaligned_tumor_rna
                 valueFrom: |
-                    ${  
-                        var files = []; 
-                        for (const seq of self) {
-                            if (seq.sequence.hasOwnProperty('bam')) files.push(seq.sequence.bam);
-                            if (seq.sequence.hasOwnProperty('fastq1')) files.push(seq.sequence.fastq1);
-                            if (seq.sequence.hasOwnProperty('fastq2')) files.push(seq.sequence.fastq2);
-                        }   
+                    ${
+                        var files = [];
+                        var i;
+                        for (i = 0; i < self.length; i = i + 1) {
+                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
+                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
+                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
+                        }
                         return files;
-                    }   
+                    }
             output_name:
                 default: "tumor_rna"
         out:
@@ -246,15 +254,16 @@ steps:
             input_files:
                 source: unaligned_tumor_rna
                 valueFrom: |
-                    ${  
-                        var files = []; 
-                        for (const seq of self) {
-                            if (seq.sequence.hasOwnProperty('bam')) files.push(seq.sequence.bam);
-                            if (seq.sequence.hasOwnProperty('fastq1')) files.push(seq.sequence.fastq1);
-                            if (seq.sequence.hasOwnProperty('fastq2')) files.push(seq.sequence.fastq2);
-                        }   
+                    ${
+                        var files = [];
+                        var i;
+                        for (i = 0; i < self.length; i = i + 1) {
+                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
+                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
+                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
+                        }
                         return files;
-                    }   
+                    }
             output_name:
                 default: "tumor_rna_unaligned"
         out:
