@@ -474,6 +474,48 @@ inputs:
     pvacfuse_keep_tmp_files:
         type: boolean?
 
+    #FDA metrics inputs
+    reference_genome_name:
+        type: string?
+    dna_sequencing_platform:
+        type: string?
+    dna_sequencing_instrument:
+        type: string?
+    dna_sequencing_kit:
+        type: string?
+    dna_sequencing_type:
+        type: string?
+    dna_single_or_paired_end:
+        type: string?
+    normal_dna_spike_in_error_rate:
+        type: string?
+    tumor_dna_spike_in_error_rate:
+        type: string?
+    normal_dna_total_DNA:
+        type: string?
+    tumor_dna_total_DNA:
+        type: string?
+    rna_sequencing_platform:
+        type: string?
+    rna_sequencing_instrument:
+        type: string?
+    rna_sequencing_kit:
+        type: string?
+    rna_sequencing_type:
+        type: string?
+    rna_single_or_paired_end:
+        type: string?
+    rna_spike_in_error_rate:
+        type: string?
+    rna_total_RNA:
+        type: string?
+    rna_RIN_score:
+        type: string?
+    rna_freq_normalization_method:
+        type: string?
+    rna_annotation_file:
+        type: string?
+
 outputs:
     final_bigwig:
         type: File
@@ -932,6 +974,9 @@ outputs:
     unaligned_normal_dna_md5sums:
         type: File
         outputSource: fda_metrics/unaligned_normal_dna_md5sums
+    unaligned_normal_dna_table1:
+        type: File
+        outputSource: fda_metrics/unaligned_normal_dna_table1
 
     unaligned_tumor_dna_fastqc_data:
         type: File[]
@@ -942,6 +987,9 @@ outputs:
     unaligned_tumor_dna_md5sums:
         type: File
         outputSource: fda_metrics/unaligned_tumor_dna_md5sums
+    unaligned_tumor_dna_table1:
+        type: File
+        outputSource: fda_metrics/unaligned_tumor_dna_table1
 
     unaligned_tumor_rna_fastqc_data:
         type: File[]
@@ -952,6 +1000,9 @@ outputs:
     unaligned_tumor_rna_md5sums:
         type: File
         outputSource: fda_metrics/unaligned_tumor_rna_md5sums
+    unaligned_tumor_rna_table1:
+        type: File
+        outputSource: fda_metrics/unaligned_tumor_rna_table1
 
     aligned_normal_dna_fastqc_data:
         type: File[]
@@ -962,6 +1013,9 @@ outputs:
     aligned_normal_dna_md5sums:
         type: File
         outputSource: fda_metrics/aligned_normal_dna_md5sums
+    aligned_normal_dna_table2:
+        type: File
+        outputSource: fda_metrics/aligned_normal_dna_table2
 
     aligned_tumor_dna_fastqc_data:
         type: File[]
@@ -972,6 +1026,9 @@ outputs:
     aligned_tumor_dna_md5sums:
         type: File
         outputSource: fda_metrics/aligned_tumor_dna_md5sums
+    aligned_tumor_dna_table2:
+        type: File
+        outputSource: fda_metrics/aligned_tumor_dna_table2
 
     aligned_tumor_rna_fastqc_data:
         type: File[]
@@ -982,6 +1039,9 @@ outputs:
     aligned_tumor_rna_md5sums:
         type: File
         outputSource: fda_metrics/aligned_tumor_rna_md5sums
+    aligned_tumor_rna_table3:
+        type: File
+        outputSource: fda_metrics/aligned_tumor_rna_table3
 
 steps:
     rnaseq:
@@ -1108,8 +1168,42 @@ steps:
             aligned_normal_dna: somatic/normal_cram
             aligned_tumor_dna: somatic/tumor_cram
             aligned_tumor_rna: rnaseq/final_bam
+            normal_alignment_summary_metrics: somatic/normal_alignment_summary_metrics
+            normal_duplication_metrics: somatic/normal_mark_duplicates_metrics
+            normal_insert_size_metrics: somatic/normal_insert_size_metrics
+            normal_hs_metrics: somatic/normal_hs_metrics
+            normal_flagstat: somatic/normal_flagstats
+            tumor_alignment_summary_metrics: somatic/tumor_alignment_summary_metrics
+            tumor_duplication_metrics: somatic/tumor_mark_duplicates_metrics
+            tumor_insert_size_metrics: somatic/tumor_insert_size_metrics
+            tumor_hs_metrics: somatic/tumor_hs_metrics
+            tumor_flagstat: somatic/tumor_flagstats
+            rna_metrics: rnaseq/metrics
+            reference_genome: reference_genome_name
+            dna_sequencing_platform: dna_sequencing_platform
+            dna_sequencing_instrument: dna_sequencing_instrument
+            dna_sequencing_kit: dna_sequencing_kit
+            dna_sequencing_type: dna_sequencing_type
+            dna_single_or_paired_end: dna_single_or_paired_end
+            normal_dna_spike_in_error_rate: normal_dna_spike_in_error_rate
+            tumor_dna_spike_in_error_rate: tumor_dna_spike_in_error_rate
+            normal_dna_total_DNA: normal_dna_total_DNA
+            tumor_dna_total_DNA: tumor_dna_total_DNA
+            normal_dna_sample_name: normal_sample_name
+            tumor_dna_sample_name: tumor_sample_name
+            rna_sequencing_platform: rna_sequencing_platform
+            rna_sequencing_instrument: rna_sequencing_instrument
+            rna_sequencing_kit: rna_sequencing_kit
+            rna_sequencing_type: rna_sequencing_type
+            rna_single_or_paired_end: rna_single_or_paired_end
+            rna_spike_in_error_rate: rna_spike_in_error_rate
+            rna_total_RNA: rna_total_RNA
+            rna_RIN_score: rna_RIN_score
+            rna_freq_normalization_method: rna_freq_normalization_method
+            rna_annotation_file: rna_annotation_file
+            rna_sample_name: rna_sample_name
         out:
-            [unaligned_normal_dna_fastqc_data,unaligned_normal_dna_table_metrics,unaligned_normal_dna_md5sums,unaligned_tumor_dna_fastqc_data,unaligned_tumor_dna_table_metrics,unaligned_tumor_dna_md5sums,unaligned_tumor_rna_fastqc_data,unaligned_tumor_rna_table_metrics,unaligned_tumor_rna_md5sums,aligned_normal_dna_fastqc_data,aligned_normal_dna_table_metrics,aligned_normal_dna_md5sums,aligned_tumor_dna_fastqc_data,aligned_tumor_dna_table_metrics,aligned_tumor_dna_md5sums,aligned_tumor_rna_fastqc_data,aligned_tumor_rna_table_metrics,aligned_tumor_rna_md5sums]
+            [unaligned_normal_dna_fastqc_data,unaligned_normal_dna_table_metrics,unaligned_normal_dna_md5sums,unaligned_normal_dna_table1,unaligned_tumor_dna_fastqc_data,unaligned_tumor_dna_table_metrics,unaligned_tumor_dna_md5sums,unaligned_tumor_dna_table1,unaligned_tumor_rna_fastqc_data,unaligned_tumor_rna_table_metrics,unaligned_tumor_rna_md5sums,unaligned_tumor_rna_table1,aligned_normal_dna_fastqc_data,aligned_normal_dna_table_metrics,aligned_normal_dna_md5sums,aligned_normal_dna_table2,aligned_tumor_dna_fastqc_data,aligned_tumor_dna_table_metrics,aligned_tumor_dna_md5sums,aligned_tumor_dna_table2,aligned_tumor_rna_fastqc_data,aligned_tumor_rna_table_metrics,aligned_tumor_rna_md5sums,aligned_tumor_rna_table3]
 
     phase_vcf:
         run: ../subworkflows/phase_vcf.cwl
