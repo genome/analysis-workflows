@@ -271,12 +271,24 @@ steps:
         out:
             [md5sum]
 
-
+    aligned_normal_dna_cram_index:
+        run: ../tools/index_cram.cwl
+        in:
+            cram: aligned_normal_dna
+        out:
+            [indexed_cram]
+    aligned_normal_dna_cram_to_bam:
+        run: ../tools/cram_to_bam.cwl
+        in:
+            reference: reference
+            cram: aligned_normal_dna_cram_index/indexed_cram
+        out:
+            [bam]
     aligned_normal_dna_fastqc:
         run: ../tools/fastqc.cwl
         in:
             input_files:
-                source: aligned_normal_dna
+                source: aligned_normal_dna_cram_to_bam/bam
                 valueFrom: ${ return [self]; }
         out:
             [fastqc_all_data]
@@ -285,7 +297,7 @@ steps:
         in:
             reference: reference
             input_files:
-                source: aligned_normal_dna
+                source: aligned_normal_dna_cram_to_bam/bam
                 valueFrom: ${ return [self]; }
             output_name:
                 default: "normal_dna"
@@ -295,7 +307,7 @@ steps:
         run: ../tools/md5sum.cwl
         in:
             input_files:
-                source: aligned_normal_dna
+                source: aligned_normal_dna_cram_to_bam/bam
                 valueFrom: ${ return [self]; }
             output_name:
                 default: "normal_dna_aligned"
@@ -303,11 +315,24 @@ steps:
             [md5sum]
 
 
+    aligned_tumor_dna_cram_index:
+        run: ../tools/index_cram.cwl
+        in:
+            cram: aligned_tumor_dna
+        out:
+            [indexed_cram]
+    aligned_tumor_dna_cram_to_bam:
+        run: ../tools/cram_to_bam.cwl
+        in:
+            reference: reference
+            cram: aligned_tumor_dna_cram_index/indexed_cram
+        out:
+            [bam]
     aligned_tumor_dna_fastqc:
         run: ../tools/fastqc.cwl
         in:
             input_files:
-                source: aligned_tumor_dna
+                source: aligned_tumor_dna_cram_to_bam/bam
                 valueFrom: ${ return [self]; }
         out:
             [fastqc_all_data]
@@ -316,7 +341,7 @@ steps:
         in:
             reference: reference
             input_files:
-                source: aligned_tumor_dna
+                source: aligned_tumor_dna_cram_to_bam/bam
                 valueFrom: ${ return [self]; }
             output_name:
                 default: "tumor_dna"
@@ -326,7 +351,7 @@ steps:
         run: ../tools/md5sum.cwl
         in:
             input_files:
-                source: aligned_tumor_dna
+                source: aligned_tumor_dna_cram_to_bam/bam
                 valueFrom: ${ return [self]; }
             output_name:
                 default: "tumor_dna_aligned"
