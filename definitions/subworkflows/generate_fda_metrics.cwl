@@ -14,7 +14,9 @@ requirements:
 
 inputs:
     reference:
-        type: File
+        type:
+            - string
+            - File
     unaligned_normal_dna:
         type: ../types/sequence_data.yml#sequence_data[]
     unaligned_tumor_dna:
