@@ -112,7 +112,7 @@ requirements:
                 Main();
 
                 # this program is terminated here
-                exit 1;
+                exit 0;
 
 
 
@@ -130,7 +130,7 @@ requirements:
                     }
                     
                     
-                    $format = "fastq"
+                    $format = "fastq";
 
                     # opens input files
                     my $n = 0;                  # total number of lines
@@ -146,7 +146,7 @@ requirements:
                         }
                         elsif ($path =~ /\.bam$/)
                         {
-                            $format = "bam"
+                            $format = "bam";
                             $fh = FileHandle->new("$samtools view $path |");
                         }
                         elsif ($path =~ /\.bz2$/)

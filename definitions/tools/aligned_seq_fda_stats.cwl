@@ -98,7 +98,7 @@ requirements:
                 Main();
 
                 # this program is terminated here
-                exit 1;
+                exit 0;
 
 
 
@@ -377,7 +377,9 @@ requirements:
 
 inputs:
     reference:
-        type: File
+        type:
+            - string
+            - File
         inputBinding:
             position: 1
     input_files:
