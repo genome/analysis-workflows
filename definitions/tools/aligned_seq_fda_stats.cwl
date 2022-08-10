@@ -4,7 +4,7 @@ class: CommandLineTool
 baseCommand: ['/usr/bin/perl', 'aligned_stats.pl']
 requirements:
     - class: DockerRequirement
-      dockerPull: "registry.gsc.wustl.edu/apipe-builder/genome_perl_environment:compute1-52"
+      dockerPull: "mgibio/cle:v1.4.2"
     - class: ResourceRequirement
       ramMin: 16000
     - class: StepInputExpressionRequirement
@@ -86,7 +86,7 @@ requirements:
 
                 # specifies the program paths
                 # docker(registry.gsc.wustl.edu/apipe-builder/genome_perl_environment:compute1-52)
-                $samtools = "/usr/bin/samtools";                                  # Version: 1.10 (using htslib 1.10.2-3)
+                $samtools = "/opt/samtools/bin/samtools";                                  # Version: 1.10 (using htslib 1.10.2-3)
 
 
 
