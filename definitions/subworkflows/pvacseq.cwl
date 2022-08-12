@@ -15,9 +15,6 @@ inputs:
     normal_sample_name:
         type: string?
         default: 'NORMAL'
-    rnaseq_bam:
-        type: File
-        secondaryFiles: ['.bai']
     reference_fasta:
         type:
             - string
@@ -27,10 +24,6 @@ inputs:
         type: int?
     readcount_minimum_mapping_quality:
         type: int?
-    gene_expression_file:
-        type: File
-    transcript_expression_file:
-        type: File
     expression_tool:
         type: string?
         default: 'kallisto'
@@ -113,7 +106,7 @@ inputs:
         default: [CHROM,POS,ID,REF,ALT]
     variants_to_table_genotype_fields:
         type: string[]?
-        default: [GT,AD,AF,DP,RAD,RAF,RDP,GX,TX]
+        default: [GT,AD,AF,DP]
     vep_to_table_fields:
         type: string[]?
         default: [HGVSc,HGVSp]
@@ -130,54 +123,10 @@ outputs:
         type: Directory
         outputSource: pvacseq/pvacseq_predictions
 steps:
-    tumor_rna_bam_readcount:
-        run: bam_readcount.cwl
-        in:
-            vcf: detect_variants_vcf
-            sample: sample_name
-            reference_fasta: reference_fasta
-            bam: rnaseq_bam
-            min_base_quality: readcount_minimum_base_quality
-            min_mapping_quality: readcount_minimum_mapping_quality
-        out:
-            [snv_bam_readcount_tsv, indel_bam_readcount_tsv, normalized_vcf]
-    add_tumor_rna_bam_readcount_to_vcf:
-        run: vcf_readcount_annotator.cwl
-        in:
-            vcf: tumor_rna_bam_readcount/normalized_vcf
-            snv_bam_readcount_tsv: tumor_rna_bam_readcount/snv_bam_readcount_tsv
-            indel_bam_readcount_tsv: tumor_rna_bam_readcount/indel_bam_readcount_tsv
-            data_type:
-                default: 'RNA'
-            sample_name: sample_name
-        out:
-            [annotated_bam_readcount_vcf]
-    add_gene_expression_data_to_vcf:
-        run: ../tools/vcf_expression_annotator.cwl
-        in:
-            vcf: add_tumor_rna_bam_readcount_to_vcf/annotated_bam_readcount_vcf
-            expression_file: gene_expression_file
-            expression_tool: expression_tool
-            data_type:
-                default: 'gene'
-            sample_name: sample_name
-        out:
-            [annotated_expression_vcf]
-    add_transcript_expression_data_to_vcf:
-        run: ../tools/vcf_expression_annotator.cwl
-        in:
-            vcf: add_gene_expression_data_to_vcf/annotated_expression_vcf
-            expression_file: transcript_expression_file
-            expression_tool: expression_tool
-            data_type:
-                default: 'transcript'
-            sample_name: sample_name
-        out:
-            [annotated_expression_vcf]
     index:
         run: ../tools/index_vcf.cwl
         in:
-            vcf: add_transcript_expression_data_to_vcf/annotated_expression_vcf
+            vcf: detect_variants_vcf
         out:
             [indexed_vcf]
     pvacseq:

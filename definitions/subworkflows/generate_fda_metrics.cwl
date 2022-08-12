@@ -21,13 +21,9 @@ inputs:
         type: ../types/sequence_data.yml#sequence_data[]
     unaligned_tumor_dna:
         type: ../types/sequence_data.yml#sequence_data[]
-    unaligned_tumor_rna:
-        type: ../types/sequence_data.yml#sequence_data[]
     aligned_normal_dna:
         type: File
     aligned_tumor_dna:
-        type: File
-    aligned_tumor_rna:
         type: File
 
     normal_alignment_summary_metrics:
@@ -49,8 +45,6 @@ inputs:
     tumor_hs_metrics:
         type: File
     tumor_flagstat:
-        type: File
-    rna_metrics:
         type: File
 
     reference_genome:
@@ -77,29 +71,6 @@ inputs:
         type: string?
     tumor_dna_sample_name:
         type: string?
-    rna_sequencing_platform:
-        type: string?
-    rna_sequencing_instrument:
-        type: string?
-    rna_sequencing_kit:
-        type: string?
-    rna_sequencing_type:
-        type: string?
-    rna_single_or_paired_end:
-        type: string?
-    rna_spike_in_error_rate:
-        type: string?
-    rna_total_RNA:
-        type: string?
-    rna_RIN_score:
-        type: string?
-    rna_freq_normalization_method:
-        type: string?
-    rna_annotation_file:
-        type: string?
-    rna_sample_name:
-        type: string?
-
 
 outputs:
     unaligned_normal_dna_fastqc_data:
@@ -128,19 +99,6 @@ outputs:
         type: File
         outputSource: unaligned_tumor_dna_table/table
 
-    unaligned_tumor_rna_fastqc_data:
-        type: File[]
-        outputSource: unaligned_tumor_rna_fastqc/fastqc_all_data
-    unaligned_tumor_rna_table_metrics:
-        type: File
-        outputSource: unaligned_tumor_rna_metrics/unaligned_stats
-    unaligned_tumor_rna_md5sums:
-        type: File
-        outputSource: unaligned_tumor_rna_md5/md5sum
-    unaligned_tumor_rna_table1:
-        type: File
-        outputSource: unaligned_tumor_rna_table/table
-
     aligned_normal_dna_fastqc_data:
         type: File[]
         outputSource: aligned_normal_dna_fastqc/fastqc_all_data
@@ -166,19 +124,6 @@ outputs:
     aligned_tumor_dna_table2:
         type: File
         outputSource: aligned_tumor_dna_table/table
-
-    aligned_tumor_rna_fastqc_data:
-        type: File[]
-        outputSource: aligned_tumor_rna_fastqc/fastqc_all_data
-    aligned_tumor_rna_table_metrics:
-        type: File
-        outputSource: aligned_tumor_rna_metrics/aligned_stats
-    aligned_tumor_rna_md5sums:
-        type: File
-        outputSource: aligned_tumor_rna_md5/md5sum
-    aligned_tumor_rna_table3:
-        type: File
-        outputSource: aligned_tumor_rna_table/table
 
 steps:
     unaligned_normal_dna_fastqc:
@@ -339,84 +284,6 @@ steps:
             [table]
 
 
-    unaligned_tumor_rna_fastqc:
-        run: ../tools/fastqc.cwl
-        in: 
-            input_files:
-                source: unaligned_tumor_rna
-                valueFrom: |
-                    ${
-                        var files = [];
-                        var i;
-                        for (i = 0; i < self.length; i = i + 1) {
-                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
-                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
-                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
-                        }
-                        return files;
-                    }
-        out:
-            [fastqc_all_data]
-    unaligned_tumor_rna_metrics:
-        run: ../tools/unaligned_seq_fda_stats.cwl
-        in: 
-            input_files:
-                source: unaligned_tumor_rna
-                valueFrom: |
-                    ${
-                        var files = [];
-                        var i;
-                        for (i = 0; i < self.length; i = i + 1) {
-                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
-                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
-                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
-                        }
-                        return files;
-                    }
-            output_name:
-                default: "tumor_rna"
-        out:
-            [unaligned_stats]
-    unaligned_tumor_rna_md5:
-        run: ../tools/md5sum.cwl
-        in: 
-            input_files:
-                source: unaligned_tumor_rna
-                valueFrom: |
-                    ${
-                        var files = [];
-                        var i;
-                        for (i = 0; i < self.length; i = i + 1) {
-                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
-                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
-                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
-                        }
-                        return files;
-                    }
-            output_name:
-                default: "tumor_rna_unaligned"
-        out:
-            [md5sum]
-    unaligned_tumor_rna_table:
-        run: ../tools/generate_fda_tables.cwl
-        in:
-            table_file_name:
-                default: "unaligned_tumor_rna_table1.csv"
-            table_num:
-                default: "table1"
-            md5sum_file: unaligned_tumor_rna_md5/md5sum
-            fastqc_zips: unaligned_tumor_rna_fastqc/fastqc_all_data
-            unaligned_metrics: unaligned_tumor_rna_metrics/unaligned_stats
-            sample_name: rna_sample_name
-            sequencing_platform: rna_sequencing_platform
-            sequencing_instrument: rna_sequencing_instrument
-            sequencing_kit: rna_sequencing_kit
-            single_or_paired_end: rna_single_or_paired_end
-            sequencing_type: rna_sequencing_type
-            spike_in_error_rate: rna_spike_in_error_rate
-        out:
-            [table]
-
     aligned_normal_dna_cram_index:
         run: ../tools/index_cram.cwl
         in:
@@ -552,62 +419,6 @@ steps:
             source:
                 default: "Tumor sample"
             total_DNA: tumor_dna_total_DNA
-            reference_genome: reference_genome
-        out:
-            [table]
-
-
-    aligned_tumor_rna_fastqc:
-        run: ../tools/fastqc.cwl
-        in:
-            input_files:
-                source: aligned_tumor_rna
-                valueFrom: ${ return [self]; }
-        out:
-            [fastqc_all_data]
-    aligned_tumor_rna_metrics:
-        run: ../tools/aligned_seq_fda_stats.cwl
-        in:
-            reference: reference
-            input_files:
-                source: aligned_tumor_rna
-                valueFrom: ${ return [self]; }
-            output_name:
-                default: "tumor_rna"
-        out:
-            [aligned_stats]
-    aligned_tumor_rna_md5:
-        run: ../tools/md5sum.cwl
-        in:
-            input_files:
-                source: aligned_tumor_rna
-                valueFrom: ${ return [self]; }
-            output_name:
-                default: "tumor_rna_aligned"
-        out:
-            [md5sum]
-    aligned_tumor_rna_table:
-        run: ../tools/generate_fda_tables.cwl
-        in:
-            table_file_name:
-                default: "aligned_tumor_rna_table3.csv"
-            table_num:
-                default: "table3"
-            md5sum_file: aligned_tumor_rna_md5/md5sum
-            fastqc_zips: aligned_tumor_rna_fastqc/fastqc_all_data
-            aligned_metrics: aligned_tumor_rna_metrics/aligned_stats
-            rna_metrics: rna_metrics
-            sample_name: rna_sample_name
-            sequencing_platform: rna_sequencing_platform
-            sequencing_instrument: rna_sequencing_instrument
-            sequencing_kit: rna_sequencing_kit
-            single_or_paired_end: rna_single_or_paired_end
-            source:
-                default: "Tumor sample"
-            total_RNA: rna_total_RNA
-            RIN_score: rna_RIN_score
-            freq_normalization_method: rna_freq_normalization_method
-            annotation_file: rna_annotation_file
             reference_genome: reference_genome
         out:
             [table]
