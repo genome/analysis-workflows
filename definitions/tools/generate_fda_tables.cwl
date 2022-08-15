@@ -227,7 +227,7 @@ requirements:
             def parse_duplication_metrics(duplication_metrics):
                 with open(duplication_metrics) as f:
                     raw_chunk = f.read().split('\n\n')[1]
-                pct_dup = raw_chunk.splitlines()[2].split()[8]
+                pct_dup = raw_chunk.splitlines()[2].split('\t')[8]
                 return {'PERCENT_DUPLICATION': pct_dup}
 
             def parse_insert_size_metrics(insert_size_metrics):
