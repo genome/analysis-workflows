@@ -202,7 +202,7 @@ steps:
             [fastqc_all_data]
     unaligned_normal_dna_metrics:
         run: ../tools/unaligned_seq_fda_stats.cwl
-        scatter: [unaligned_normal_dna]
+        scatter: [input_files]
         scatterMethod: dotproduct
         in:
             input_files:
@@ -280,7 +280,7 @@ steps:
             [fastqc_all_data]
     unaligned_tumor_dna_metrics:
         run: ../tools/unaligned_seq_fda_stats.cwl
-        scatter: [unaligned_tumor_dna]
+        scatter: [input_files]
         scatterMethod: dotproduct
         in:
             input_files:
@@ -358,7 +358,7 @@ steps:
             [fastqc_all_data]
     unaligned_tumor_rna_metrics:
         run: ../tools/unaligned_seq_fda_stats.cwl
-        scatter: [unaligned_tumor_rna]
+        scatter: [input_files]
         scatterMethod: dotproduct
         in: 
             input_files:
