@@ -48,15 +48,16 @@ requirements:
                 ## ------------ About the program ------------------------------------- #
 
                 # the version
-                $version = '1.7';
+                $version = '2.0';
 
                 $about = qq!
                 FASTQ statistics $version
-                Usage: $scriptname [FILE1] [FILE2] [FILE3] ...
+                Usage: $scriptname [FORMAT] [FILE1] [FILE2] [FILE3] ...
                 Print out statistics calculated from FILE(s).
+                FORMAT is required, either "fastq" or "bam" for FILE(s).
 
                 Example:
-                  \$ $scriptname read1.fastq.gz read2.fastq.gz
+                  \$ $scriptname fastq read1.fastq.gz read2.fastq.gz
                 !;
 
 
@@ -68,17 +69,12 @@ requirements:
 
                 # defines the format of input files
                 # (required, "fastq" or "bam")
-                #$format = "fastq";
+                $format = "fastq";
                 #$format = "bam";
 
                 # lists the full paths of fastq or BAM files
                 @paths = (
                     # H_NJ-HCC1395-HCC1395_BL
-                    #"/storage1/fs1/bga/Active/gchang/work/14_BGA-WALKER/211012-immuno2cwl-fastq/2.fastq/H_NJ-HCC1395-HCC1395_BL-H7HY2CCXX.3.R1.fastq.gz",
-                    #"/storage1/fs1/bga/Active/gchang/work/14_BGA-WALKER/211012-immuno2cwl-fastq/2.fastq/H_NJ-HCC1395-HCC1395_BL-H7HY2CCXX.3.R2.fastq.gz",
-                    #"/storage1/fs1/bga/Active/gchang/work/14_BGA-WALKER/211012-immuno2cwl-fastq/2.fastq/H_NJ-HCC1395-HCC1395_BL-H7HY2CCXX.4.R1.fastq.gz",
-                    #"/storage1/fs1/bga/Active/gchang/work/14_BGA-WALKER/211012-immuno2cwl-fastq/2.fastq/H_NJ-HCC1395-HCC1395_BL-H7HY2CCXX.4.R2.fastq.gz",
-                    
                     #"/gscmnt/gc2560/core/instrument_data/2895499331/csf_150397221/gerald_H7HY2CCXX_3_TGACCACG.bam",
                     #"/gscmnt/gc2560/core/instrument_data/2895499399/csf_150397349/gerald_H7HY2CCXX_4_TGACCACG.bam",
                 );
@@ -89,10 +85,10 @@ requirements:
 
 
                 # specifies the program paths
-                # docker(registry.gsc.wustl.edu/apipe-builder/genome_perl_environment:compute1-52)
-                $bzcat = "/usr/bin/bzcat";                                             # Version 1.0.8
-                $zcat = "/usr/bin/zcat";                                                # zcat (gzip) 1.10
-                $samtools = "/opt/samtools/bin/samtools";                                  # Version: 1.10 (using htslib 1.10.2-3)
+                # docker(mgibio/cle:v1.4.2)
+                $bzcat = "/bin/bzcat";                                             # Version 1.0.6
+                $zcat = "/bin/zcat";                                                # zcat (gzip) 1.6
+                $samtools = "/opt/samtools/bin/samtools";              # samtools 1.3.1 using htslib 1.3.2
 
                 # specifies the N letter to count
                 # (default: "N")
@@ -121,6 +117,22 @@ requirements:
                 sub Main {
                     # local variables
                     
+                    
+                    # gets the input file format
+                    unless (defined $format)
+                    {
+                        if (@ARGV > 0)
+                        {
+                            $format = shift @ARGV;
+                        }
+                        else
+                        {
+                            croak "FORMAT required: fastq or bam"
+                        }
+                        
+                        croak "Invalid input file format: $format" unless $format eq "fastq" || $format eq "bam";
+                    }
+                    
                     # gets the full input paths
                     unless (@paths > 0)
                     {
@@ -130,8 +142,6 @@ requirements:
                     }
                     
                     
-                    $format = "fastq";
-
                     # opens input files
                     my $n = 0;                  # total number of lines
                     my $nbase = 0;
@@ -147,6 +157,7 @@ requirements:
                         elsif ($path =~ /\.bam$/)
                         {
                             $format = "bam";
+                            
                             $fh = FileHandle->new("$samtools view $path |");
                         }
                         elsif ($path =~ /\.bz2$/)
@@ -248,6 +259,15 @@ requirements:
                         {
                             $nfilter += $freq{$score};
                         }
+                    }
+                    
+                    
+                    # prints out the source file information
+                    printf "\n\n[Input file information]";
+                    foreach my $path (@paths)
+                    {
+                        my ($name, $dir, $ext) = fileparse($path, qr/\.[^.]*/);
+                        printf "\n%s\t%s", $name . $ext, $dir;
                     }
                     
                     

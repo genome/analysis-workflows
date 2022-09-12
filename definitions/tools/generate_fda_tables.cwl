@@ -20,7 +20,7 @@ requirements:
             parser.add_argument('--md5sum_file', required=True)
             parser.add_argument('--fastqc_zips', nargs='*', required=True)
             parser.add_argument('--aligned_metrics')
-            parser.add_argument('--unaligned_metrics')
+            parser.add_argument('--unaligned_metrics', nargs='*')
             parser.add_argument('--alignment_summary_metrics')
             parser.add_argument('--duplication_metrics')
             parser.add_argument('--insert_size_metrics')
@@ -179,24 +179,31 @@ requirements:
 
                 return extracted_data
 
-            def parse_unaligned_metrics(metrics_file):
+            def parse_unaligned_metrics(metrics_files):
 
                 field_map = {
                     "Median Basecall Quality Score": "Median Phred Score",
                     "Bases with N": "Bases with N (%)",
                     "Bases with >= Q30": "Bases with >= Q30 (%)"
                 }
-
-                with open(metrics_file) as f:
-                    parsed_data = [line.split('\t') for line in f.read().splitlines()]
                 extracted_data = {}
-                for parsed_line in parsed_data:
-                    if len(parsed_line) < 2:
-                        continue
-                    field_name = parsed_line[0]
-                    field_data = parsed_line[-1]
-                    if field_name in field_map:
-                        extracted_data[ field_map[field_name] ] = field_data
+                for metrics_file in metrics_files:
+                    with open(metrics_file) as f:
+                        parsed_data = [line.split('\t') for line in f.read().splitlines()]
+                    file_data = {}
+                    filenames = []
+                    for parsed_line in parsed_data:
+                        if 'cumulative' in parsed_line[0]:
+                            filenames.append(os.path.basename(parsed_line[0].split()[-1]))
+
+                        if len(parsed_line) < 2:
+                            continue
+                        field_name = parsed_line[0]
+                        field_data = parsed_line[-1]
+                        if field_name in field_map:
+                            file_data[ field_map[field_name] ] = field_data
+                    for fname in filenames:
+                        extracted_data[fname] = file_data
 
                 return extracted_data
 
@@ -268,11 +275,13 @@ requirements:
                 with open(flagstat) as f:
                     return {'Filtered Read Count': f.readlines()[0].split()[2]}
 
-            def aggregate_dicts(md5_dict, fastqc_dict, *flat_dicts):
+            def aggregate_dicts(md5_dict, fastqc_dict, unaligned_dict=None, *flat_dicts):
                 final_dict = md5_dict.copy()
                 for key in final_dict:
-                    # merge the 2 nested dicts, both in the form {filename: {table_field: val, ...}}
+                    # merge the nested dicts, which are in the form {filename: {table_field: val, ...}}
                     final_dict[key].update(fastqc_dict[key])
+                    if unaligned_dict:
+                        final_dict[key].update(unaligned_dict[key])
                     # copy in any given flat dicts, in the form {table_field: val, ...}
                     # vals in flat dicts not keyed to filename are assumed to apply across all files
                     for flat_dict in flat_dicts:
@@ -298,7 +307,7 @@ requirements:
                 fastqc_dict = parse_fastqc_zips(file_args.fastqc_zips, file_args.table)
                 unaligned_dict = parse_unaligned_metrics(file_args.unaligned_metrics)
 
-                table_dict = aggregate_dicts(md5_dict, fastqc_dict, string_arg_dict, unaligned_dict)
+                table_dict = aggregate_dicts(md5_dict, fastqc_dict, unaligned_dict=unaligned_dict, string_arg_dict)
 
                 table = generate_table(table_rows, table_dict)
                 return table
@@ -380,7 +389,7 @@ inputs:
         inputBinding:
             prefix: "--aligned_metrics"
     unaligned_metrics:
-        type: File?
+        type: File[]?
         inputBinding:
             prefix: "--unaligned_metrics"
     alignment_summary_metrics:

@@ -48,14 +48,14 @@ requirements:
                 ## ------------ About the program ------------------------------------- #
 
                 # the version
-                $version = '1.6';
+                $version = '1.8';
 
                 $about = qq!
                 BAM flag statistics $version
                 Usage: $scriptname [FASTA] [FILE1] [FILE2] [FILE3] ...
                 Print out flag statistics calculated from FILE(s).
-                FASTA is the reference sequence fastq file.
-                FILE(s) format can be SAM, BAM, and CRAM.
+                FASTA is required as a reference sequence fasta file.
+                SAM, BAM, and CRAM formats are allowed for FILE(s).
 
                 Example:
                   \$ $scriptname all_sequences.fa normal.bam tumor.cram
@@ -72,9 +72,6 @@ requirements:
                 # (default: empty from @ARGV)
                 @paths = (
                     # H_NJ-HCC1395-HCC1395_BL
-                    #'/storage1/fs1/bga/Active/johnegarza/fastqc_hcc1395/DNA_normal/aligned/normal.bam',
-                    #'/storage1/fs1/bga/Active/shared/gmsroot/model_data/80beed84e3104595862e7a2c7b7f896e/build8b9e77b87b0144b8a025288e92434686/tmp/cromwell-executions/immuno.cwl/58c62cbc-026b-4c9b-8d21-04b0aa4a20e8/call-somatic/somatic_exome.cwl/b24174a4-a185-4fe4-a222-50cfb2ffb305/call-normal_index_cram/inputs/1389193938/normal.bam.cram',
-                    
                     #'/storage1/fs1/bga/Active/shared/gmsroot/model_data/80beed84e3104595862e7a2c7b7f896e/build191d8f37d22a4d79b2591c01cb80948e/results/normal.bam.cram'
                 );
 
@@ -86,7 +83,7 @@ requirements:
 
                 # specifies the program paths
                 # docker(registry.gsc.wustl.edu/apipe-builder/genome_perl_environment:compute1-52)
-                $samtools = "/opt/samtools/bin/samtools";                                  # Version: 1.10 (using htslib 1.10.2-3)
+                $samtools = "/opt/samtools/bin/samtools";                # samtools 1.3.1 using htslib 1.3.2
 
 
 
@@ -116,7 +113,14 @@ requirements:
                     }
                     else
                     {
-                        $pathfasta = shift @ARGV if (@ARGV > 0);
+                        if (@ARGV > 0)
+                        {
+                            $pathfasta = shift @ARGV;
+                        }
+                        else
+                        {
+                            croak "reference sequence FASTA required";
+                        }
                         
                         croak "Invalid reference sequence path: $pathfasta" unless -e $pathfasta;
                     }
@@ -337,6 +341,15 @@ requirements:
                     # for missing values
                     $count{"duplicate\tunmapped"} = $default_zero unless exists $count{"duplicate\tunmapped"};
                     $count{failed} = $default_zero unless exists $count{failed};
+                    
+                    
+                    # prints out the source file information
+                    printf "\n\n[Input file information]";
+                    foreach my $path (@paths)
+                    {
+                        my ($name, $dir, $ext) = fileparse($path, qr/\.[^.]*/);
+                        printf "\n%s\t%s", $name . $ext, $dir;
+                    }
                     
                     
                     # prints out the summary

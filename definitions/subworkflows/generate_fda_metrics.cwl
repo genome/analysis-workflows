@@ -8,6 +8,7 @@ requirements:
     - class: SubworkflowFeatureRequirement
     - class: InlineJavascriptRequirement
     - class: StepInputExpressionRequirement
+    - class: ScatterFeatureRequirement
     - class: SchemaDefRequirement
       types:
           - $import: ../types/sequence_data.yml
@@ -106,7 +107,7 @@ outputs:
         type: File[]
         outputSource: unaligned_normal_dna_fastqc/fastqc_all_data
     unaligned_normal_dna_table_metrics:
-        type: File
+        type: File[]
         outputSource: unaligned_normal_dna_metrics/unaligned_stats
     unaligned_normal_dna_md5sums:
         type: File
@@ -119,7 +120,7 @@ outputs:
         type: File[]
         outputSource: unaligned_tumor_dna_fastqc/fastqc_all_data
     unaligned_tumor_dna_table_metrics:
-        type: File
+        type: File[]
         outputSource: unaligned_tumor_dna_metrics/unaligned_stats
     unaligned_tumor_dna_md5sums:
         type: File
@@ -132,7 +133,7 @@ outputs:
         type: File[]
         outputSource: unaligned_tumor_rna_fastqc/fastqc_all_data
     unaligned_tumor_rna_table_metrics:
-        type: File
+        type: File[]
         outputSource: unaligned_tumor_rna_metrics/unaligned_stats
     unaligned_tumor_rna_md5sums:
         type: File
@@ -201,18 +202,17 @@ steps:
             [fastqc_all_data]
     unaligned_normal_dna_metrics:
         run: ../tools/unaligned_seq_fda_stats.cwl
+        scatter: [unaligned_normal_dna]
+        scatterMethod: dotproduct
         in:
             input_files:
                 source: unaligned_normal_dna
                 valueFrom: |
                     ${
                         var files = [];
-                        var i;
-                        for (i = 0; i < self.length; i = i + 1) {
-                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
-                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
-                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
-                        }
+                        if (self.sequence.hasOwnProperty('bam')) { files.push(self.sequence.bam); }
+                        if (self.sequence.hasOwnProperty('fastq1')) { files.push(self.sequence.fastq1); }
+                        if (self.sequence.hasOwnProperty('fastq2')) { files.push(self.sequence.fastq2); }
                         return files;
                     }
             output_name:
@@ -280,18 +280,17 @@ steps:
             [fastqc_all_data]
     unaligned_tumor_dna_metrics:
         run: ../tools/unaligned_seq_fda_stats.cwl
+        scatter: [unaligned_tumor_dna]
+        scatterMethod: dotproduct
         in:
             input_files:
                 source: unaligned_tumor_dna
                 valueFrom: |
                     ${
                         var files = [];
-                        var i;
-                        for (i = 0; i < self.length; i = i + 1) {
-                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
-                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
-                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
-                        }
+                        if (self.sequence.hasOwnProperty('bam')) { files.push(self.sequence.bam); }
+                        if (self.sequence.hasOwnProperty('fastq1')) { files.push(self.sequence.fastq1); }
+                        if (self.sequence.hasOwnProperty('fastq2')) { files.push(self.sequence.fastq2); }
                         return files;
                     }
             output_name:
@@ -359,18 +358,17 @@ steps:
             [fastqc_all_data]
     unaligned_tumor_rna_metrics:
         run: ../tools/unaligned_seq_fda_stats.cwl
+        scatter: [unaligned_tumor_rna]
+        scatterMethod: dotproduct
         in: 
             input_files:
                 source: unaligned_tumor_rna
                 valueFrom: |
                     ${
                         var files = [];
-                        var i;
-                        for (i = 0; i < self.length; i = i + 1) {
-                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
-                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
-                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
-                        }
+                        if (self.sequence.hasOwnProperty('bam')) { files.push(self.sequence.bam); }
+                        if (self.sequence.hasOwnProperty('fastq1')) { files.push(self.sequence.fastq1); }
+                        if (self.sequence.hasOwnProperty('fastq2')) { files.push(self.sequence.fastq2); }
                         return files;
                     }
             output_name:
