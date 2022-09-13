@@ -90,8 +90,8 @@ requirements:
 
                 # specifies the program paths
                 # docker(registry.gsc.wustl.edu/apipe-builder/genome_perl_environment:compute1-52)
-                $bzcat = "/usr/bin/bzcat";                                             # Version 1.0.8
-                $zcat = "/usr/bin/zcat";                                                # zcat (gzip) 1.10
+                $bzcat = "/bin/bzcat";                                             # Version 1.0.8
+                $zcat = "/bin/zcat";                                                # zcat (gzip) 1.10
                 $samtools = "/opt/samtools/bin/samtools";                                  # Version: 1.10 (using htslib 1.10.2-3)
 
                 # specifies the N letter to count
