@@ -275,7 +275,7 @@ requirements:
                 with open(flagstat) as f:
                     return {'Filtered Read Count': f.readlines()[0].split()[2]}
 
-            def aggregate_dicts(md5_dict, fastqc_dict, unaligned_dict=None, *flat_dicts):
+            def aggregate_dicts(md5_dict, fastqc_dict, *flat_dicts, unaligned_dict=None):
                 final_dict = md5_dict.copy()
                 for key in final_dict:
                     # merge the nested dicts, which are in the form {filename: {table_field: val, ...}}
@@ -307,7 +307,7 @@ requirements:
                 fastqc_dict = parse_fastqc_zips(file_args.fastqc_zips, file_args.table)
                 unaligned_dict = parse_unaligned_metrics(file_args.unaligned_metrics)
 
-                table_dict = aggregate_dicts(md5_dict, fastqc_dict, unaligned_dict=unaligned_dict, string_arg_dict)
+                table_dict = aggregate_dicts(md5_dict, fastqc_dict, string_arg_dict, unaligned_dict=unaligned_dict)
 
                 table = generate_table(table_rows, table_dict)
                 return table
