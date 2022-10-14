@@ -12,7 +12,18 @@ requirements:
       ramMin: 18000
     - class: DockerRequirement
       dockerPull: "broadinstitute/picard:2.23.6"
+    - class: InitialWorkDirRequirement
+      listing:
+      - $(inputs.ref_fai)
+      - $(inputs.ref_dict)
+      - $(inputs.reference)
+
 inputs:
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
+
     bam:
         type: File
         inputBinding:
@@ -24,6 +35,7 @@ inputs:
             - File
         secondaryFiles: [.fai, ^.dict]
         inputBinding:
+            valueFrom: $(self.basename)
             prefix: "REFERENCE_SEQUENCE="
     metric_accumulation_level:
         type: string

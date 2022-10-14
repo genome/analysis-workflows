@@ -1,5 +1,6 @@
 #!/usr/bin/env cwl-runner
 
+
 cwlVersion: v1.0
 class: Workflow
 label: "exome alignment with qc"
@@ -16,6 +17,20 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict, .amb, .ann, .bwt, .pac, .sa]
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
+    ref_amb:
+        type: File
+    ref_ann:
+        type: File
+    ref_bwt:
+        type: File
+    ref_pac:
+        type: File
+    ref_sa:
+        type: File
     sequence:
         type: ../types/sequence_data.yml#sequence_data[]
         label: "sequence: sequencing data and readgroup information"
@@ -107,12 +122,21 @@ steps:
             bqsr_known_sites: bqsr_known_sites
             bqsr_intervals: bqsr_intervals
             final_name: final_name
+            ref_fai: ref_fai
+            ref_dict: ref_dict
+            ref_amb: ref_amb
+            ref_ann: ref_ann
+            ref_bwt: ref_bwt
+            ref_pac: ref_pac
+            ref_sa: ref_sa
         out: [final_bam,mark_duplicates_metrics_file]
     qc:
         run: ../subworkflows/qc_exome.cwl
         in:
             bam: alignment/final_bam
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             bait_intervals: bait_intervals
             target_intervals: target_intervals
             per_base_intervals: per_base_intervals

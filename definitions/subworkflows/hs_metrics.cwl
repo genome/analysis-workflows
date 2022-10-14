@@ -11,6 +11,11 @@ requirements:
     - class: StepInputExpressionRequirement
     - class: SubworkflowFeatureRequirement
 inputs:
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
+
     bam:
         type: File
         secondaryFiles: [^.bai]
@@ -53,6 +58,8 @@ steps:
         in:
             bam: bam
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             metric_accumulation_level:
                 valueFrom: "ALL_READS"
             bait_intervals:
@@ -79,6 +86,8 @@ steps:
         in:
             bam: bam
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             metric_accumulation_level:
                 valueFrom: "ALL_READS"
             bait_intervals:
@@ -105,6 +114,8 @@ steps:
         in:
             bam: bam
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             metric_accumulation_level:
                 valueFrom: "ALL_READS"
             bait_intervals:

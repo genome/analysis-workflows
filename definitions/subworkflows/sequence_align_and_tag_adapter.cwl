@@ -26,6 +26,21 @@ inputs:
         type:
             - ../types/trimming_options.yml#trimming_options
             - "null"
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
+    ref_amb:
+        type: File
+    ref_ann:
+        type: File
+    ref_bwt:
+        type: File
+    ref_pac:
+        type: File
+    ref_sa:
+        type: File
+
 outputs:
     aligned_bam:
         type: File
@@ -48,5 +63,13 @@ steps:
                 source: unaligned
                 valueFrom: $(self.readgroup)
             trimming: trimming
+            ref_fai: ref_fai
+            ref_dict: ref_dict
+            ref_amb: ref_amb
+            ref_ann: ref_ann
+            ref_bwt: ref_bwt
+            ref_pac: ref_pac
+            ref_sa: ref_sa
+
         out:
             [aligned_bam]

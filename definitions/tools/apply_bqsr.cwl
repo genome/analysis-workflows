@@ -15,13 +15,25 @@ requirements:
       ramMin: 18000
     - class: DockerRequirement
       dockerPull: "broadinstitute/gatk:4.1.8.1"
+    - class: InitialWorkDirRequirement
+      listing:
+      - $(inputs.ref_fai)
+      - $(inputs.ref_dict)
+      - $(inputs.reference)
+
 inputs:
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
+
     reference:
         type:
             - string
             - File
         secondaryFiles: [.fai, ^.dict]
         inputBinding:
+            valueFrom: $(self.basename)
             prefix: "-R"
             position: 1
     bam:
