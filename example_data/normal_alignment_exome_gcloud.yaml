@@ -47,7 +47,6 @@ ref_pac:
 ref_sa:
   class: File
   path: gs://analysis-workflows-example-data/somatic_inputs/hla_and_brca_genes.fa.sa
-
 final_name: H_NJ-HCC1395-HCC1395_BL
 sequence:
   - sequence:
