@@ -18,11 +18,6 @@ requirements:
 arguments:
     ["-O", { valueFrom: $(runtime.outdir)/$(inputs.output_vcf_basename).vcf.gz }]
 inputs:
-    ref_fai:
-        type: File
-    ref_dict:
-        type: File
-
     reference:
         type:
             - string
