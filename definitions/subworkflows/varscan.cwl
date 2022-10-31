@@ -9,6 +9,10 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict]
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
     tumor_bam:
         type: File
         secondaryFiles: [^.bai]
@@ -75,6 +79,8 @@ steps:
         run: ../tools/varscan_somatic.cwl
         in:
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             normal_bam: normal_bam
             tumor_bam: tumor_bam
             roi_bed: roi_bed

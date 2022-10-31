@@ -58,7 +58,9 @@ requirements:
                     --mpileup 1 \
                     --output-vcf
             fi
-
+      - $(inputs.ref_fai)
+      - $(inputs.ref_dict)
+      - $(inputs.reference)
 inputs:
     tumor_bam:
         type: File
@@ -77,6 +79,10 @@ inputs:
         secondaryFiles: [.fai, ^.dict]
         inputBinding:
             position: 3
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
     strand_filter:
         type: int?
         default: 0

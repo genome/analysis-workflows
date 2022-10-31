@@ -10,12 +10,18 @@ requirements:
     - class: InlineJavascriptRequirement
     - class: DockerRequirement
       dockerPull: "broadinstitute/gatk:4.1.8.1"
+    - class: InitialWorkDirRequirement
+      listing:
+      - $(inputs.ref_dict)
+
 arguments:
     ["-O", "$(inputs.merged_vcf_basename).vcf.gz"]
 inputs:
     merged_vcf_basename:
         type: string?
         default: "merged"
+    ref_dict:
+        type: File
     sequence_dictionary:
         type:
             - string

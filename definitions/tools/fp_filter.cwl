@@ -10,6 +10,11 @@ requirements:
       tmpdirMin: 25000
     - class: DockerRequirement
       dockerPull: "mgibio/fp_filter-cwl:1.0.1"
+    - class: InitialWorkDirRequirement
+      listing:
+      - $(inputs.ref_fai)
+      - $(inputs.ref_dict)
+      - $(inputs.reference)
 arguments:
     ["--bam-readcount", "/usr/bin/bam-readcount",
     "--samtools", "/opt/samtools/bin/samtools",
@@ -23,6 +28,10 @@ inputs:
         inputBinding:
             prefix: "--reference"
             position: 1
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
     bam:
         type: File
         inputBinding:

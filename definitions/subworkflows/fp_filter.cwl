@@ -15,6 +15,10 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict]
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
     vcf:
         type: File
         secondaryFiles: [.tbi]
@@ -44,6 +48,8 @@ steps:
         run: ../tools/normalize_variants.cwl
         in:
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             vcf: sanitize_vcf/sanitized_vcf
         out:
             [normalized_vcf]
@@ -63,6 +69,8 @@ steps:
         run: ../tools/fp_filter.cwl
         in:
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             bam: bam
             vcf: index/indexed_vcf
             sample_name: sample_name
@@ -88,6 +96,8 @@ steps:
         run: ../tools/select_variants.cwl
         in:
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             vcf: fp_index/indexed_vcf
             exclude_filtered: 
                 default: true

@@ -10,6 +10,11 @@ requirements:
       tmpdirMin: 25000
     - class: DockerRequirement
       dockerPull: "mgibio/gatk-cwl:3.6.0"
+    - class: InitialWorkDirRequirement
+      listing:
+      - $(inputs.ref_fai)
+      - $(inputs.ref_dict)
+      - $(inputs.reference)
 arguments:
     ["--maskName", "processSomatic",
     "--filterNotInMask",
@@ -35,6 +40,11 @@ inputs:
         inputBinding:
             prefix: "-R"
             position: 1
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
+
 outputs:
     merged_vcf:
         type: File

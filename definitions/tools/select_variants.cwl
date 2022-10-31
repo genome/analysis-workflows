@@ -10,6 +10,11 @@ requirements:
       tmpdirMin: 25000
     - class: DockerRequirement
       dockerPull: "broadinstitute/gatk:4.1.8.1"
+    - class: InitialWorkDirRequirement
+      listing:
+      - $(inputs.ref_fai)
+      - $(inputs.ref_dict)
+      - $(inputs.reference)
 arguments:
     ["-O", { valueFrom: $(runtime.outdir)/$(inputs.output_vcf_basename).vcf.gz }]
 inputs:
@@ -21,6 +26,10 @@ inputs:
         inputBinding:
             prefix: "-R"
             position: 1
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
     vcf:
         type: File
         inputBinding:

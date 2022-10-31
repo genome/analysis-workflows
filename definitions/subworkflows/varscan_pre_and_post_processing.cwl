@@ -15,6 +15,10 @@ inputs:
             - string
             - File
         secondaryFiles: [.fai, ^.dict]
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
     tumor_bam:
         type: File
         secondaryFiles: [^.bai, .bai]
@@ -72,6 +76,8 @@ steps:
         run: varscan.cwl
         in:
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             tumor_bam: tumor_bam
             normal_bam: normal_bam
             roi_bed: intervals_to_bed/interval_bed
@@ -86,6 +92,7 @@ steps:
         run: ../tools/picard_merge_vcfs.cwl
         in:
             vcfs: varscan/somatic_snvs
+            ref_dict: ref_dict
             sequence_dictionary:
                 source: reference
                 valueFrom: '$( (self.secondaryFiles !== undefined) ? self.secondaryFiles.find(function(x) { return x.nameext === ".dict" }) : self.replace(/.fa$/,".dict") )'
@@ -97,6 +104,7 @@ steps:
         run: ../tools/picard_merge_vcfs.cwl
         in:
             vcfs: varscan/somatic_indels
+            ref_dict: ref_dict
             sequence_dictionary:
                 source: reference
                 valueFrom: '$((self.secondaryFiles !== undefined) ? self.secondaryFiles.find(function(x) { return x.nameext === ".dict" }) : self.replace(/.fa$/,".dict") )'
@@ -108,6 +116,7 @@ steps:
         run: ../tools/picard_merge_vcfs.cwl
         in:
             vcfs: varscan/somatic_hc_snvs
+            ref_dict: ref_dict
             sequence_dictionary:
                 source: reference
                 valueFrom: '$((self.secondaryFiles !== undefined) ? self.secondaryFiles.find(function(x) { return x.nameext === ".dict" }) : self.replace(/.fa$/,".dict") )'
@@ -119,6 +128,7 @@ steps:
         run: ../tools/picard_merge_vcfs.cwl
         in:
             vcfs: varscan/somatic_hc_indels
+            ref_dict: ref_dict
             sequence_dictionary:
                 source: reference
                 valueFrom: '$((self.secondaryFiles !== undefined) ? self.secondaryFiles.find(function(x) { return x.nameext === ".dict" }) : self.replace(/.fa$/,".dict") )'
@@ -132,6 +142,8 @@ steps:
             vcf: merge_scattered_somatic_snvs/merged_vcf
             filtered_vcf: merge_scattered_somatic_hc_snvs/merged_vcf
             reference: reference
+            ref_dict: ref_dict
+            ref_fai: ref_fai
         out:
             [merged_vcf]
     index_merged_snvs:
@@ -146,6 +158,8 @@ steps:
             vcf: merge_scattered_somatic_indels/merged_vcf
             filtered_vcf: merge_scattered_somatic_hc_indels/merged_vcf
             reference: reference
+            ref_dict: ref_dict
+            ref_fai: ref_fai
         out:
             [merged_vcf]
     index_merged_indels:
@@ -188,6 +202,8 @@ steps:
         run: fp_filter.cwl
         in:
             reference: reference
+            ref_dict: ref_dict
+            ref_fai: ref_fai
             bam: tumor_bam
             vcf: index/indexed_vcf
             min_var_freq: min_var_freq
