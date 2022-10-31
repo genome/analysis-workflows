@@ -33,6 +33,21 @@ inputs:
     final_name:
         type: string
         default: 'final'
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
+    ref_amb:
+        type: File
+    ref_ann:
+        type: File
+    ref_bwt:
+        type: File
+    ref_pac:
+        type: File
+    ref_sa:
+        type: File
+
 outputs:
     final_bam:
         type: File
@@ -50,6 +65,13 @@ steps:
             unaligned: unaligned
             reference: reference
             trimming: trimming
+            ref_fai: ref_fai
+            ref_dict: ref_dict
+            ref_amb: ref_amb
+            ref_ann: ref_ann
+            ref_bwt: ref_bwt
+            ref_pac: ref_pac
+            ref_sa: ref_sa
         out:
             [aligned_bam]
     merge:
@@ -75,6 +97,8 @@ steps:
         run: ../tools/bqsr.cwl
         in:
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             bam: mark_duplicates_and_sort/sorted_bam
             intervals: bqsr_intervals
             known_sites: bqsr_known_sites
@@ -84,6 +108,8 @@ steps:
         run: ../tools/apply_bqsr.cwl
         in:
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             bam: mark_duplicates_and_sort/sorted_bam
             bqsr_table: bqsr/bqsr_table
             output_name: final_name

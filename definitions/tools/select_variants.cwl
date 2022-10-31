@@ -18,12 +18,18 @@ requirements:
 arguments:
     ["-O", { valueFrom: $(runtime.outdir)/$(inputs.output_vcf_basename).vcf.gz }]
 inputs:
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
+
     reference:
         type:
             - string
             - File
         secondaryFiles: [.fai, ^.dict]
         inputBinding:
+            valueFrom: $(self.basename)
             prefix: "-R"
             position: 1
     ref_fai:

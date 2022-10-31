@@ -18,6 +18,14 @@ requirements:
       dockerPull: "mgibio/alignment_helper-cwl:1.1.0"
     - class: InitialWorkDirRequirement
       listing:
+      - $(inputs.ref_fai)
+      - $(inputs.ref_dict)
+      - $(inputs.ref_amb)
+      - $(inputs.ref_ann)
+      - $(inputs.ref_bwt)
+      - $(inputs.ref_pac)
+      - $(inputs.ref_sa)
+      - $(inputs.reference)
       - entryname: 'sequence_alignment_helper.sh'
         entry: |
             set -o pipefail
@@ -70,7 +78,7 @@ requirements:
             fi
             if [[ "$MODE" == 'bam' ]]; then
                 if [[ "$RUN_TRIMMING" == 'false' ]]; then
-                    /usr/bin/java -Xmx4g -jar /opt/picard/picard.jar SamToFastq I="$BAM" INTERLEAVE=true INCLUDE_NON_PF_READS=true FASTQ=/dev/stdout | /usr/local/bin/bwa mem -K 100000000 -t "$NTHREADS" -Y -p -R "$READGROUP" "$REFERENCE" /dev/stdin | /usr/local/bin/samblaster -a --addMateTags | /opt/samtools/bin/samtools view -b -S /dev/stdin
+                    /usr/bin/java -Xmx4g -jar /opt/picard/picard.jar SamToFastq I="$BAM" INTERLEAVE=true INCLUDE_NON_PF_READS=true FASTQ=temp.fq; /usr/local/bin/bwa mem -K 100000000 -t "$NTHREADS" -Y -p -R "$READGROUP" "$REFERENCE" temp.fq | /usr/local/bin/samblaster -a --addMateTags | /opt/samtools/bin/samtools view -b -S /dev/stdin
                 else
                    /usr/bin/java -Xmx4g -jar /opt/picard/picard.jar SamToFastq I="$BAM" INTERLEAVE=true INCLUDE_NON_PF_READS=true FASTQ=/dev/stdout \
                      | /opt/flexbar/flexbar --adapters "$TRIMMING_ADAPTERS" --reads - --interleaved --adapter-trim-end LTAIL --adapter-min-overlap "$TRIMMING_ADAPTER_MIN_OVERLAP" --adapter-error-rate 0.1 --max-uncalled 300 --stdout-reads \
@@ -105,6 +113,7 @@ inputs:
             - File
         secondaryFiles: [.amb, .ann, .bwt, .pac, .sa]
         inputBinding:
+            valueFrom: $(self.basename)
             position: 4
             prefix: '-r'
         doc: 'bwa-indexed reference file'
@@ -114,6 +123,21 @@ inputs:
           - "null"
         inputBinding:
             valueFrom: $( ['-t', self.adapters.path, '-o', self.min_overlap] )
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
+    ref_amb:
+        type: File
+    ref_ann:
+        type: File
+    ref_bwt:
+        type: File
+    ref_pac:
+        type: File
+    ref_sa:
+        type: File
+
 outputs:
     aligned_bam:
         type: stdout

@@ -10,6 +10,11 @@ requirements:
     - class: StepInputExpressionRequirement
     - class: SubworkflowFeatureRequirement
 inputs:
+    ref_fai:
+        type: File
+    ref_dict:
+        type: File
+
     bam:
         type: File
         secondaryFiles: [^.bai]
@@ -81,6 +86,8 @@ steps:
         in:
             bam: bam
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             metric_accumulation_level: picard_metric_accumulation_level
         out:
             [insert_size_metrics, insert_size_histogram]
@@ -89,6 +96,8 @@ steps:
         in:
             bam: bam
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             metric_accumulation_level: picard_metric_accumulation_level
         out:
             [alignment_summary_metrics]
@@ -97,6 +106,8 @@ steps:
         in:
             bam: bam
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             metric_accumulation_level:
                 valueFrom: "ALL_READS"
             bait_intervals: bait_intervals
@@ -120,6 +131,8 @@ steps:
             per_base_intervals: per_base_intervals
             per_target_intervals: per_target_intervals
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             summary_intervals: summary_intervals
         out:
             [per_base_coverage_metrics, per_base_hs_metrics, per_target_coverage_metrics, per_target_hs_metrics, summary_hs_metrics]
@@ -132,6 +145,8 @@ steps:
         run: ../tools/select_variants.cwl
         in:
             reference: reference
+            ref_fai: ref_fai
+            ref_dict: ref_dict
             vcf: omni_vcf
             interval_list: target_intervals
         out:
