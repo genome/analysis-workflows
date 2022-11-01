@@ -14,18 +14,6 @@ requirements:
         entry: |
                 #!/usr/bin/perl
 
-                # It is free software; you can redistribute it and/or modify it under the terms of
-                # the GNU General Public License (GPLv3) as published by the Free Software Foundation.
-                #
-                # McDonnell Genome Institute
-                # Washington University School of Medicine
-                # 4444 Forest Park Ave
-                # St. Louis, Missouri 63108
-                # 
-                # http://genome.wustl.edu
-
-
-                # includes perl modules
                 use strict;
                 use warnings;
                 use Carp;
@@ -33,64 +21,16 @@ requirements:
                 use FileHandle;
                 use File::Basename;
                 use File::Spec::Functions; 
-                use Cwd;
 
 
-                # predeclares global variable names
-                use vars qw/$version $about $is_windows $scriptname $scriptdir/;
-
-                # finds the perl script name and path
-                $scriptname = basename($0, '.pl') . '.pl';
-                $scriptdir = getcwd;       # dirname($0);
-
-
-
-                ## ------------ About the program ------------------------------------- #
-
-                # the version
-                $version = '2.0';
-
-                $about = qq!
-                FASTQ statistics $version
-                Usage: $scriptname [FORMAT] [FILE1] [FILE2] [FILE3] ...
-                Print out statistics calculated from FILE(s).
-                FORMAT is required, either "fastq" or "bam" for FILE(s).
-
-                Example:
-                  \$ $scriptname fastq read1.fastq.gz read2.fastq.gz
-                !;
-
-
-
-                ## ------------ Setting global variables ------------------------------------- #
-
-                # predeclares global variable names
-                use vars qw/$format @paths $filter $bzcat $zcat $samtools $base $offset/;
-
-                # defines the format of input files
-                # (required, "fastq" or "bam")
-                $format = "fastq";
-                #$format = "bam";
-
-                # lists the full paths of fastq or BAM files
-                @paths = (
-                    # H_NJ-HCC1395-HCC1395_BL
-                    #"/gscmnt/gc2560/core/instrument_data/2895499331/csf_150397221/gerald_H7HY2CCXX_3_TGACCACG.bam",
-                    #"/gscmnt/gc2560/core/instrument_data/2895499399/csf_150397349/gerald_H7HY2CCXX_4_TGACCACG.bam",
-                );
+                # sets global variables with the default
+                use vars qw/$filter $base $offset $bzcat $zcat $samtools/;
 
                 # defines the minimum base call quality score to filter
                 # inclusive, for example, Bases with >= Q30
                 $filter = 30;
 
-
-                # specifies the program paths
-                # docker(mgibio/cle:v1.4.2)
-                $bzcat = "/bin/bzcat";                                             # Version 1.0.6
-                $zcat = "/bin/zcat";                                                # zcat (gzip) 1.6
-                $samtools = "/opt/samtools/bin/samtools";              # samtools 1.3.1 using htslib 1.3.2
-
-                # specifies the N letter to count
+                # defines the basecalling letter to count
                 # (default: "N")
                 $base = 'N';
 
@@ -98,57 +38,32 @@ requirements:
                 # For example, 33 = 63.06707094 - 30.06707094 (see below)
                 $offset = 33;
 
+                # specifies the program paths in docker(mgibio/cle:v1.4.2)
+                $bzcat = "/bin/bzcat";                                             # Version 1.0.6
+                $zcat = "/bin/zcat";                                                # zcat (gzip) 1.6
+                $samtools = "/opt/samtools/bin/samtools";              # samtools 1.3.1 using htslib 1.3.2
 
-
-                ## ------------ Main subroutine ---------------------------------------------- #
-                # prints the program information
-                print($about);
 
                 # main subroutine
                 Main();
 
-                # this program is terminated here
+                # program exits here
                 exit 0;
 
 
-
-                ## ------------ Library of the main subroutine ----------------------------- #
-
                 sub Main {
-                    # local variables
+                    # gets the paths of input files
+                    my @paths = @ARGV if @ARGV > 0;
+                    croak "input file path required" unless @paths > 0;
                     
                     
-                    # gets the input file format
-                    unless (defined $format)
-                    {
-                        if (@ARGV > 0)
-                        {
-                            $format = shift @ARGV;
-                        }
-                        else
-                        {
-                            croak "FORMAT required: fastq or bam"
-                        }
-                        
-                        croak "Invalid input file format: $format" unless $format eq "fastq" || $format eq "bam";
-                    }
-                    
-                    # gets the full input paths
-                    unless (@paths > 0)
-                    {
-                        @paths = @ARGV if (@ARGV > 0);
-                        
-                        croak "paths required" unless @paths > 0;
-                    }
-                    
-                    
-                    # opens input files
+                    # opens the input files
+                    my (%freq, %count);
+                    my $format = "fastq";
                     my $n = 0;                  # total number of lines
                     my $nbase = 0;
-                    my (%freq, %count);
                     foreach my $path (@paths)
                     {
-                        # creates a file handler
                         my $fh;
                         if ($path =~ /\.gz$/)
                         {
@@ -171,7 +86,7 @@ requirements:
                         }
                         
                         
-                        # reads a file
+                        # reads an input file
                         croak "Cannot find a file: $path" unless -e $path;
                         croak "Cannot open a file: $path" unless defined $fh;
                         if ($format eq "fastq")
@@ -202,13 +117,9 @@ requirements:
                             while (my $i = $fh->getline)
                             {
                                 next if substr($i, 0, 1) eq '@';
-                                
                                 chomp $i;
                                 
                                 my @fields = split /\t/, $i;
-                                
-                                # gets a QUAL value
-                                # my $qual = $fields[10];
                                 
                                 # updates the frequency/count hashes
                                 update_hash($fields[10], \%freq, \%count, $offset);
@@ -225,12 +136,8 @@ requirements:
                             croak "Invalid input file format: $format";
                         }
                         
-                        
-                        #
-                        printf "\n  %d lines (cumulative) read from %s", $n, $path;
-                        
-                        
                         # closes the file handler
+                        printf "\n%d lines (cumulative) read from %s", $n, $path;
                         $fh->close;
                     }
                     
@@ -245,13 +152,12 @@ requirements:
                     
                     croak "Exception: Invalid total number of sequences, $nseq" unless $nseq == ($format eq "fastq") ? $n / 4 : $n;
                     
-                    
 
                     # calculates the median and mean from a frequency hash
                     my ($median, $mean, $ncall2) = stat_freq(%freq);
                     croak "Exception: invalid count number of base calls" unless $ncall == $ncall2;
                     
-                    # filters with the minimum base call quality score
+                    # counts by the minimum base call quality score
                     my $nfilter = 0;
                     foreach my $score (keys %freq)
                     {
@@ -263,13 +169,13 @@ requirements:
                     
                     
                     # prints out the source file information
-                    printf "\n\n[Input file information]";
+                    printf "\n\n[Input file information: %d file(s)]", scalar(@paths);
+                    print "\nfile\tdir";
                     foreach my $path (@paths)
                     {
-                        my ($name, $dir, $ext) = fileparse($path, qr/\.[^.]*/);
-                        printf "\n%s\t%s", $name . $ext, $dir;
+                        my ($name, $dir) = fileparse($path);
+                        printf "\n%s\t%s", $name, $dir;
                     }
-                    
                     
                     # prints out the summary
                     printf "\n\n[Quality score summary]";
@@ -279,50 +185,26 @@ requirements:
                     printf "\nMedian Basecall Quality Score\t%s", $median;
                     printf "\nMean Basecall Quality Score\t%s", $mean;
                     printf "\nBases with >= Q%s\t%d\t%s (%%)", $filter, $nfilter, $nfilter / $ncall * 100;
-                    
-                    
-                    # Base call score frequency
-                    printf "\n\n[Base call score frequency: %d sequences from %d file(s)]\n", $nseq, scalar(@paths);
-                    printhash(%freq);
-                    
-                    # Sequence length statistics
-                    printf "\n\n[Sequence length statistics]\n";
-                    printhash(%count);
-                    
-                    
-                    # the end of the main subroutine
+                    print "\n\n";
                 }
 
 
-
-                ## ------------ Library of subroutines --------------------------------------- #
-
-
                 sub update_hash {
-                    # updates the frequency/count hashes
                     my ($qual, $freq, $count, $offset) = @_;
-
-                    # local variables
-                    
                     
                     # converts characters to ASCII numbers
                     my @scores = map { unpack("C*", $_ ) - $offset } split("", $qual);
                     
-                    
                     # updates the hashes
                     map { $freq->{$_} ++ } @scores;
                     
-                    #map { $count{$_} ++ }  split("", $i);
-                    $count->{$#scores + 1} ++;                 # for the sequence length
+                    # counts the sequence length
+                    $count->{$#scores + 1} ++;
                 }
 
 
                 sub count_base {
-                    # counts the frequency of a letter
                     my ($str, $base) = @_;
-                    
-                    # local variables
-                    
                     
                     # calculates the frequency of a letter
                     my $count = 0;
@@ -331,21 +213,15 @@ requirements:
                         $count = $str =~ s/$base//g;
                     }
                     
-                    
                     return $count;
                 }
 
 
                 sub stat_freq {
-                    # calculates the median and mean from a frequency hash
                     my (%hash) = @_;
                     
-                    # local variables
-                    
-                    # as default
                     # frequency hash: {key => data value, value => data count}
                     croak "empty frequency hash" unless keys(%hash) > 0;
-                    
                     
                     # sorts the data values
                     my @sort = sort {$a <=> $b} keys %hash;
@@ -366,7 +242,7 @@ requirements:
                         my $score = $sort[$i];
                         $idx += $hash{$score};
                         
-                        # calculates the mean and mode
+                        # to calculate the mean
                         $mean += $score * $hash{$score};
                         
                         # calculates the median
@@ -394,21 +270,7 @@ requirements:
                         }
                     }
                     
-                    
                     return ($median, $mean / $n, $n);
-                }
-
-
-                sub printhash {
-                    # prints a hash
-                    my (%hash) = @_;
-
-                    # local variables
-                    
-                    foreach my $key (sort {$a <=> $b} keys %hash)
-                    {
-                        printf "%s\t%s\n", $key, $hash{$key};
-                    }
                 }
 
 inputs:

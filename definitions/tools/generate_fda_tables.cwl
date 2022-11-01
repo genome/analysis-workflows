@@ -143,7 +143,7 @@ requirements:
             def parse_aligned_metrics(metrics_file, table_num):
                 fieldname_to_t2_label = {
                     "Total Read Count (R1 + R2)": "Total Read Count",
-                    "Unique Read Pairs": "Unique Read Pairs",
+                    "Unique Read Pairs": "Unique Read Pairs (%)",
                     "Total Mapped Reads": "Total Mapped Reads (%)",
                     "Non-Mapped Reads": "Non-Mapped Reads (%)",
                     "Unique Mapped Reads": "Unique Mapped Reads (%)",
@@ -315,7 +315,7 @@ requirements:
             def generate_table2(file_args, string_arg_dict):
                 table_rows = ('Sample Name', 'File', 'MD5 File Checksum', 'Sequencing Platform',
                     'Sequencing Instrument', 'Sequencing Kit', 'Single or Paired End', 'Source', 'Total DNA(ng)',
-                    'Read Length', 'Total Read Count', 'Filtered Read Count', 'Unique Read Pairs', 'Total Mapped Reads (%)',
+                    'Read Length', 'Total Read Count', 'Filtered Read Count', 'Unique Read Pairs (%)', 'Total Mapped Reads (%)',
                     'Non-Mapped Reads (%)', 'Unique Mapped Reads (%)', 'Mapped Read Duplication (%)', 'Strand Specificity (%)',
                     'Reference Genome', 'PCT_USABLE_BASES_ON_TARGET', 'PCT_EXC_OFF_TARGET', 'PERCENT_DUPLICATION',
                     'MEAN_TARGET_COVERAGE', 'PCT_TARGET_BASES_20X', 'PCT_READS_ALIGNED_IN_PAIRS', 'MEAN_INSERT_SIZE',

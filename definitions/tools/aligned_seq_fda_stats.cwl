@@ -14,18 +14,6 @@ requirements:
         entry: |
                 #!/usr/bin/perl
 
-                # It is free software; you can redistribute it and/or modify it under the terms of
-                # the GNU General Public License (GPLv3) as published by the Free Software Foundation.
-                #
-                # McDonnell Genome Institute
-                # Washington University School of Medicine
-                # 4444 Forest Park Ave
-                # St. Louis, Missouri 63108
-                # 
-                # http://genome.wustl.edu
-
-
-                # includes perl modules
                 use strict;
                 use warnings;
                 use Carp;
@@ -33,113 +21,39 @@ requirements:
                 use FileHandle;
                 use File::Basename;
                 use File::Spec::Functions; 
-                use Cwd;
 
 
-                # predeclares global variable names
-                use vars qw/$version $about $is_windows $scriptname $scriptdir/;
+                # sets global variables with the default
+                use vars qw/$samtools/;
 
-                # finds the perl script name and path
-                $scriptname = basename($0, '.pl') . '.pl';
-                $scriptdir = getcwd;       # dirname($0);
-
-
-
-                ## ------------ About the program ------------------------------------- #
-
-                # the version
-                $version = '1.8';
-
-                $about = qq!
-                BAM flag statistics $version
-                Usage: $scriptname [FASTA] [FILE1] [FILE2] [FILE3] ...
-                Print out flag statistics calculated from FILE(s).
-                FASTA is required as a reference sequence fasta file.
-                SAM, BAM, and CRAM formats are allowed for FILE(s).
-
-                Example:
-                  \$ $scriptname all_sequences.fa normal.bam tumor.cram
-                !;
-
-
-
-                ## ------------ Setting global variables ------------------------------------- #
-
-                # predeclares global variable names
-                use vars qw/@paths $samtools $pathfasta/;
-
-                # lists the full paths of fastq or BAM files
-                # (default: empty from @ARGV)
-                @paths = (
-                    # H_NJ-HCC1395-HCC1395_BL
-                    #'/storage1/fs1/bga/Active/shared/gmsroot/model_data/80beed84e3104595862e7a2c7b7f896e/build191d8f37d22a4d79b2591c01cb80948e/results/normal.bam.cram'
-                );
-
-
-                # specifies the reference sequence FASTA file
-                # (default: undef from @ARGV)
-                $pathfasta = undef;
-                #$pathfasta = '/gscmnt/gc2560/core/model_data/2887491634/build21f22873ebe0486c8e6f69c15435aa96/all_sequences.fa';
-
-                # specifies the program paths
-                # docker(registry.gsc.wustl.edu/apipe-builder/genome_perl_environment:compute1-52)
+                # specifies the program paths in docker(mgibio/cle:v1.4.2)
                 $samtools = "/opt/samtools/bin/samtools";                # samtools 1.3.1 using htslib 1.3.2
 
-
-
-                ## ------------ Main subroutine ---------------------------------------------- #
-                # prints the program information
-                print($about);
 
                 # main subroutine
                 Main();
 
-                # this program is terminated here
+                # program exits here
                 exit 0;
 
 
-
-                ## ------------ Library of the main subroutine ----------------------------- #
-
                 sub Main {
-                    # local variables
-                    my $default_zero = 0;
+                    # gets the reference sequence FASTA file
+                    my $pathfasta = shift @ARGV if @ARGV > 0;
+                    croak "reference sequence FASTA required" unless defined $pathfasta && -e $pathfasta;
+                    
+                    # gets the paths of input files
+                    my @paths = @ARGV if @ARGV > 0;
+                    croak "input file path required" unless @paths > 0;
                     
                     
-                    # gets the input file format
-                    if (defined $pathfasta)
-                    {
-                        croak "Invalid reference sequence path: $pathfasta" unless -e $pathfasta;
-                    }
-                    else
-                    {
-                        if (@ARGV > 0)
-                        {
-                            $pathfasta = shift @ARGV;
-                        }
-                        else
-                        {
-                            croak "reference sequence FASTA required";
-                        }
-                        
-                        croak "Invalid reference sequence path: $pathfasta" unless -e $pathfasta;
-                    }
-                    
-                    # gets the full input paths
-                    unless (@paths > 0)
-                    {
-                        @paths = @ARGV if (@ARGV > 0);
-                        
-                        croak "paths required" unless @paths > 0;
-                    }
-                    
-                    
-                    #
-                    my $n = 0;                  # total number of lines
+                    # opens the input files
                     my (%count);
+                    my $n = 0;                  # total number of lines
                     foreach my $path (@paths)
                     {
-                        # creates a file handler
+                        croak "Invalid file path: $path" unless -e $path;
+                        
                         my $fh;
                         if ($path =~ /\.bam$/)
                         {
@@ -155,74 +69,70 @@ requirements:
                             $fh = FileHandle->new($path, "r");
                         }
                         
-                        
                         # reads a file
-                        croak "Cannot find a file: $path" unless -e $path;
                         croak "Cannot open a file: $path" unless defined $fh;
                         while (my $i = $fh->getline)
                         {
                             next if substr($i, 0, 1) eq '@';
-                            
                             chomp $i;
                             
                             my @fields = split /\t/, $i;
                             
                             # gets a FLAG value
-                            #my $qname = $fields[0];
                             my $flag = $fields[1];
                             
                             # parses the flag
                             my ($unmapped, $reverse, $first, $last, $secondary, $failed, $duplicate, $supplementary);
                             if ($flag & 0x4)
                             {
-                               # print "segment unmapped\n";
+                               # "segment unmapped"
                                $unmapped = 1;
                             }
                             
                             if ($flag & 0x10)
                             {
-                               #print "SEQ being reverse complemented\n";
+                               # "being reverse complemented"
                                $reverse = 1;
                             }
                             
                             if ($flag & 0x40)
                             {
-                                #print "first in pair\n";
+                                # "first in pair"
                                 $first = 1;
                             }
                             
                             if ($flag & 0x80)
                             {
-                                #print "the last segment in the template\n";
+                                # "the last segment in the template"
                                 $last = 1;
                             }
                             
                             if ($flag & 0x100)
                             {
-                               #print "secondary alignment\n";
+                               # "secondary alignment"
                                $secondary = 1;
                             }
                             
                             if ($flag & 0x200)
                             {
-                               #print "not passing quality controls\n";
+                               # "not passing quality controls"
                                $failed = 1;
                             }
                             
                             if ($flag & 0x400)
                             {
-                               #print "PCR or optical duplicate\n";
+                               # "PCR or optical duplicate"
                                $duplicate = 1;
                             }
                             
                             if ($flag & 0x800)
                             {
-                               #print "supplementary alignment\n";
+                               # "supplementary alignment"
                                $supplementary = 1;
                             }
                             
                             
-                            # sorts reads
+                            # sorts reads by their flag
                             if ($failed)
                             {
                                 $count{failed} ++;
@@ -230,7 +140,6 @@ requirements:
                             elsif ($duplicate)
                             {
                                 $count{duplicate} ++;
-                                
                                 
                                 if ($unmapped)
                                 {
@@ -241,13 +150,11 @@ requirements:
                                     # counts only the primary non-duplicate alignment 
                                     if ($secondary || $supplementary)
                                     {
-                                        # skipped
                                         $count{"duplicate\tfiltered"} ++;
                                     }
                                     else
                                     {
                                         $count{"duplicate\tprimary"} ++;
-                                        
                                         
                                         if ($reverse)
                                         {
@@ -264,11 +171,9 @@ requirements:
                             {
                                 $count{unique} ++;
                                 
-                                
                                 if ($unmapped)
                                 {
                                     $count{"unique\tunmapped"} ++;
-                                    
                                     
                                     if ($first)
                                     {
@@ -288,13 +193,11 @@ requirements:
                                     # counts only the primary non-duplicate alignment 
                                     if ($secondary || $supplementary)
                                     {
-                                        # skipped
                                         $count{"unique\tfiltered"} ++;
                                     }
                                     else
                                     {
                                         $count{"unique\tprimary"} ++;
-                                        
                                         
                                         if ($reverse)
                                         {
@@ -321,36 +224,32 @@ requirements:
                                 }
                             }
                             
-                            
                             unless ($secondary || $supplementary)
                             {
                                 $n ++;        # total sequencing read number matching that from fastq files
                             }
                         }
                         
-                        
-                        # prints out a progress message
-                        printf "\n  %d reads (cumulative) from %s", $n, $path;
-                        
-                        
                         # closes the file handler
+                        printf "\n%d reads (cumulative) from %s", $n, $path;
                         $fh->close;
                     }
                     
                     
                     # for missing values
+                    my $default_zero = 0;
                     $count{"duplicate\tunmapped"} = $default_zero unless exists $count{"duplicate\tunmapped"};
                     $count{failed} = $default_zero unless exists $count{failed};
                     
                     
                     # prints out the source file information
-                    printf "\n\n[Input file information]";
+                    printf "\n\n[Input file information: %d file(s)]", scalar(@paths);
+                    print "\nfile\tdir";
                     foreach my $path (@paths)
                     {
                         my ($name, $dir, $ext) = fileparse($path, qr/\.[^.]*/);
                         printf "\n%s\t%s", $name . $ext, $dir;
                     }
-                    
                     
                     # prints out the summary
                     printf "\n\n[Flag summary from %d file(s)]", scalar(@paths);
@@ -362,30 +261,7 @@ requirements:
                     printf "\nUnique Mapped Reads\t%s\t%s (%%)", $count{"unique\tprimary"}, $count{"unique\tprimary"} / $n * 100;
                     printf "\nMapped Read Duplication\t%s\t%s (%%)", $count{"duplicate\tprimary"}, $count{"duplicate\tprimary"} / $n * 100;
                     printf "\nStrand ratio (forward, reverse, reverse/forward of unique mapped)\t%s\t%s\t%s", $count{"unique\tprimary\tforward"}, $count{"unique\tprimary\treverse"}, $count{"unique\tprimary\treverse"} / $count{"unique\tprimary\tforward"};
-                    
-                    # Sequence length statistics
-                    printf "\n\n\n[Sequencing read alignment statistics]\n";
-                    printhash2(%count);
-                    
-                    
-                    # the end of the main subroutine
-                }
-
-
-
-                ## ------------ Library of subroutines --------------------------------------- #
-
-
-                sub printhash2 {
-                    # prints a hash
-                    my (%hash) = @_;
-
-                    # local variables
-                    
-                    foreach my $key (sort keys %hash)
-                    {
-                        printf "%s\t%s\n", $key, $hash{$key};
-                    }
+                    print "\n\n";
                 }
 
 inputs:
