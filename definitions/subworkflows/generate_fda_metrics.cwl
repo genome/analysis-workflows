@@ -108,7 +108,7 @@ outputs:
         outputSource: unaligned_normal_dna_fastqc/fastqc_all_data
     unaligned_normal_dna_table_metrics:
         type: File[]
-        outputSource: unaligned_normal_dna_metrics/unaligned_stats
+        outputSource: rename_unaligned_normal_dna_metrics/unique_files
     unaligned_normal_dna_md5sums:
         type: File
         outputSource: unaligned_normal_dna_md5/md5sum
@@ -121,7 +121,7 @@ outputs:
         outputSource: unaligned_tumor_dna_fastqc/fastqc_all_data
     unaligned_tumor_dna_table_metrics:
         type: File[]
-        outputSource: unaligned_tumor_dna_metrics/unaligned_stats
+        outputSource: rename_unaligned_tumor_dna_metrics/unique_files
     unaligned_tumor_dna_md5sums:
         type: File
         outputSource: unaligned_tumor_dna_md5/md5sum
@@ -134,7 +134,7 @@ outputs:
         outputSource: unaligned_tumor_rna_fastqc/fastqc_all_data
     unaligned_tumor_rna_table_metrics:
         type: File[]
-        outputSource: unaligned_tumor_rna_metrics/unaligned_stats
+        outputSource: rename_unaligned_tumor_rna_metrics/unique_files
     unaligned_tumor_rna_md5sums:
         type: File
         outputSource: unaligned_tumor_rna_md5/md5sum
@@ -219,6 +219,12 @@ steps:
                 default: "normal_dna"
         out:
             [unaligned_stats]
+    rename_unaligned_normal_dna_metrics:
+        run: ../tools/rename_for_staging.cwl
+        in:
+            scatter_files: unaligned_normal_dna_metrics/unaligned_stats
+        out:
+            [unique_files]
     unaligned_normal_dna_md5:
         run: ../tools/md5sum.cwl
         in:
@@ -297,6 +303,12 @@ steps:
                 default: "tumor_dna"
         out:
             [unaligned_stats]
+    rename_unaligned_tumor_dna_metrics:
+        run: ../tools/rename_for_staging.cwl
+        in:
+            scatter_files: unaligned_tumor_dna_metrics/unaligned_stats
+        out:
+            [unique_files]
     unaligned_tumor_dna_md5:
         run: ../tools/md5sum.cwl
         in:
@@ -375,6 +387,12 @@ steps:
                 default: "tumor_rna"
         out:
             [unaligned_stats]
+    rename_unaligned_tumor_rna_metrics:
+        run: ../tools/rename_for_staging.cwl
+        in:
+            scatter_files: unaligned_tumor_rna_metrics/unaligned_stats
+        out:
+            [unique_files]
     unaligned_tumor_rna_md5:
         run: ../tools/md5sum.cwl
         in: 
