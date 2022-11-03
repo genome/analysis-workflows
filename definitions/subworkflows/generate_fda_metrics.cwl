@@ -459,7 +459,7 @@ steps:
         in:
             reference: reference
             input_files:
-                source: aligned_normal_dna_cram_to_bam/bam
+                source: aligned_normal_dna
                 valueFrom: ${ return [self]; }
             output_name:
                 default: "normal_dna"
@@ -469,7 +469,7 @@ steps:
         run: ../tools/md5sum.cwl
         in:
             input_files:
-                source: aligned_normal_dna_cram_to_bam/bam
+                source: aligned_normal_dna
                 valueFrom: ${ return [self]; }
             output_name:
                 default: "normal_dna_aligned"
@@ -529,7 +529,7 @@ steps:
         in:
             reference: reference
             input_files:
-                source: aligned_tumor_dna_cram_to_bam/bam
+                source: aligned_tumor_dna
                 valueFrom: ${ return [self]; }
             output_name:
                 default: "tumor_dna"
@@ -539,7 +539,7 @@ steps:
         run: ../tools/md5sum.cwl
         in:
             input_files:
-                source: aligned_tumor_dna_cram_to_bam/bam
+                source: aligned_tumor_dna
                 valueFrom: ${ return [self]; }
             output_name:
                 default: "tumor_dna_aligned"

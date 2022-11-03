@@ -275,11 +275,16 @@ requirements:
                 with open(flagstat) as f:
                     return {'Filtered Read Count': f.readlines()[0].split()[2]}
 
-            def aggregate_dicts(md5_dict, fastqc_dict, *flat_dicts, unaligned_dict=None):
+            def aggregate_dicts(md5_dict, fastqc_dict, *flat_dicts, unaligned_dict=None, rename_key=False):
                 final_dict = md5_dict.copy()
                 for key in final_dict:
+                    alternate_key = key
+                    if rename_key:
+                        nameroot, nameext = os.path.splitext(key)
+                        if nameext == '.cram':
+                            alternate_key = nameroot + '.bam'
                     # merge the nested dicts, which are in the form {filename: {table_field: val, ...}}
-                    final_dict[key].update(fastqc_dict[key])
+                    final_dict[key].update(fastqc_dict[alternate_key])
                     if unaligned_dict:
                         final_dict[key].update(unaligned_dict[key])
                     # copy in any given flat dicts, in the form {table_field: val, ...}
@@ -331,7 +336,7 @@ requirements:
                 flagstat_dict = parse_flagstat(args.flagstat)
 
                 table_dict = aggregate_dicts(md5_dict, fastqc_dict, string_arg_dict, aligned_dict,
-                    alignment_summary_dict, duplication_dict, insert_size_dict, hs_dict, flagstat_dict)
+                    alignment_summary_dict, duplication_dict, insert_size_dict, hs_dict, flagstat_dict, rename_key=True)
 
                 table = generate_table(table_rows, table_dict)
                 return table
