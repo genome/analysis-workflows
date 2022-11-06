@@ -27,6 +27,7 @@ requirements:
             parser.add_argument('--hs_metrics')
             parser.add_argument('--rna_metrics')
             parser.add_argument('--flagstat')
+            parser.add_argument('--unaligned_rna_table')
 
             #inputs to immuno pipeline
             parser.add_argument('--sequencing_platform', default='NOT_PROVIDED')
@@ -95,7 +96,6 @@ requirements:
 
                 fieldname_to_t3_label = {
                     "Sequence length": "Read Length (nt)", 
-                    "Total Sequences": "Total read (read count)"
                 }
 
                 #helper to choose proper mapping dict for requested table
@@ -275,6 +275,14 @@ requirements:
                 with open(flagstat) as f:
                     return {'Filtered Read Count': f.readlines()[0].split()[2]}
 
+            def parse_unaligned_rna_table(table_file):
+                with open(table_file) as f:
+                    parsed_data = [line.split(',') for line in f.read().splitlines()]
+                for parsed_line in parsed_data:
+                    if parsed_line[0] == 'Total Number of Reads':
+                        total_reads = sum([int(num) for num in parsed_line[1:]])
+                        return {'Total read (read count)': total_reads}
+
             def aggregate_dicts(md5_dict, fastqc_dict, *flat_dicts, unaligned_dict=None, rename_key=False):
                 final_dict = md5_dict.copy()
                 for key in final_dict:
@@ -303,6 +311,8 @@ requirements:
                 return table_list
 
             def generate_table1(file_args, string_arg_dict):
+                # NOTE: 'Total Number of Reads' is used as a key in function parse_unaligned_rna_table
+                # make sure to update that function if the name is changed below
                 table_rows = ('Sample Name', 'File', 'MD5 File Checksum', 'Sequencing Platform',
                     'Sequencing Instrument', 'Sequencing Kit', 'Single or Paired End', 'Sequencing Type',
                     'Total Number of Reads', 'Median Phred Score', 'GC Content (%)', 'Bases with N (%)',
@@ -353,8 +363,9 @@ requirements:
                 fastqc_dict = parse_fastqc_zips(file_args.fastqc_zips, file_args.table)
                 aligned_dict = parse_aligned_metrics(file_args.aligned_metrics, file_args.table)
                 rna_dict = parse_rna_metrics(args.rna_metrics)
+                upstream_readcount_dict = parse_unaligned_rna_table(args.unaligned_rna_table)
 
-                table_dict = aggregate_dicts(md5_dict, fastqc_dict, string_arg_dict, aligned_dict, rna_dict)
+                table_dict = aggregate_dicts(md5_dict, fastqc_dict, string_arg_dict, aligned_dict, rna_dict, upstream_readcount_dict)
 
                 table = generate_table(table_rows, table_dict)
                 return table
@@ -421,6 +432,10 @@ inputs:
         type: File?
         inputBinding:
             prefix: "--flagstat"
+    unaligned_rna_table:
+        type: File?
+        inputBinding:
+            prefix: "--unaligned_rna_table"
 
     sequencing_platform:
         type: string?

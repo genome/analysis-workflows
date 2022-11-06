@@ -625,5 +625,6 @@ steps:
             freq_normalization_method: rna_freq_normalization_method
             annotation_file: rna_annotation_file
             reference_genome: reference_genome
+            unaligned_rna_table: unaligned_tumor_rna_table/table
         out:
             [table]
