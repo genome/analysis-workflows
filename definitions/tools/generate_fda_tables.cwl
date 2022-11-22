@@ -379,7 +379,7 @@ requirements:
 
             with open(args.table_file_name, 'w+') as f:
                 for line in table:
-                    f.write(','.join(line) + '\n')
+                    f.write(','.join([str(e) for e in line]) + '\n')
 
 
 baseCommand: ['python', 'generate_tables.py']
