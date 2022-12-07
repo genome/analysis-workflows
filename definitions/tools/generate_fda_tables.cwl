@@ -188,22 +188,21 @@ requirements:
                 }
                 extracted_data = {}
                 for metrics_file in metrics_files:
-                    with open(metrics_file) as f:
-                        parsed_data = [line.split('\t') for line in f.read().splitlines()]
-                    file_data = {}
-                    filenames = []
-                    for parsed_line in parsed_data:
-                        if 'cumulative' in parsed_line[0]:
-                            filenames.append(os.path.basename(parsed_line[0].split()[-1]))
 
-                        if len(parsed_line) < 2:
-                            continue
-                        field_name = parsed_line[0]
-                        field_data = parsed_line[-1]
-                        if field_name in field_map:
-                            file_data[ field_map[field_name] ] = field_data
-                    for fname in filenames:
-                        extracted_data[fname] = file_data
+                    with open(metrics_file) as f:
+                        raw_per_file_data = f.read().split('\n\n\n')[1:]
+                    for raw_file_data in raw_per_file_data:
+                        parsed_data = [line.split('\t') for line in raw_file_data.splitlines()]
+                        file_data = {}
+                        filename = ""
+                        for parsed_line in parsed_data:
+                            if 'summary' in parsed_line[0]:
+                                filename = os.path.basename(parsed_line[0].split()[-1][:-1])
+                            field_name = parsed_line[0]
+                            field_data = parsed_line[-1]
+                            if field_name in field_map:
+                                file_data[ field_map[field_name] ] = field_data
+                        extracted_data[filename] = file_data
 
                 return extracted_data
 
