@@ -13,43 +13,43 @@ requirements:
       - entryname: 'aligned_stats.pl'
         entry: |
                 #!/usr/bin/perl
-
+                
                 use strict;
                 use warnings;
                 use Carp;
-
+                
                 use FileHandle;
                 use File::Basename;
                 use File::Spec::Functions; 
-
-
+                
+                
                 # sets global variables with the default
                 use vars qw/$samtools/;
-
+                
                 # specifies the program paths in docker(mgibio/cle:v1.4.2)
                 $samtools = "/opt/samtools/bin/samtools";                # samtools 1.3.1 using htslib 1.3.2
-
-
+                
+                
                 # main subroutine
                 Main();
-
+                
                 # program exits here
                 exit 0;
-
-
+                
+                
                 sub Main {
-                    # gets the reference sequence FASTA file
+                    # for the reference sequence FASTA file
                     my $pathfasta = shift @ARGV if @ARGV > 0;
                     croak "reference sequence FASTA required" unless defined $pathfasta && -e $pathfasta;
                     
-                    # gets the paths of input files
+                    # for the paths of input files
                     my @paths = @ARGV if @ARGV > 0;
                     croak "input file path required" unless @paths > 0;
                     
                     
-                    # opens the input files
+                    # reads input files
                     my (%count);
-                    my $n = 0;                  # total number of lines
+                    my $n = 0;
                     foreach my $path (@paths)
                     {
                         croak "Invalid file path: $path" unless -e $path;
@@ -65,7 +65,6 @@ requirements:
                         }
                         else
                         {
-                            # from a .sam or .fastq text file
                             $fh = FileHandle->new($path, "r");
                         }
                         
@@ -73,7 +72,7 @@ requirements:
                         croak "Cannot open a file: $path" unless defined $fh;
                         while (my $i = $fh->getline)
                         {
-                            next if substr($i, 0, 1) eq '@';
+                            next if index($i, '@') == 0;
                             chomp $i;
                             
                             my @fields = split /\t/, $i;
@@ -132,7 +131,7 @@ requirements:
                             }
                             
                             
-                            # sorts reads by their flag
+                            # sorts reads by the flag information
                             if ($failed)
                             {
                                 $count{failed} ++;
@@ -147,7 +146,6 @@ requirements:
                                 }
                                 else
                                 {
-                                    # counts only the primary non-duplicate alignment 
                                     if ($secondary || $supplementary)
                                     {
                                         $count{"duplicate\tfiltered"} ++;
@@ -190,7 +188,6 @@ requirements:
                                 }
                                 else
                                 {
-                                    # counts only the primary non-duplicate alignment 
                                     if ($secondary || $supplementary)
                                     {
                                         $count{"unique\tfiltered"} ++;
@@ -226,7 +223,8 @@ requirements:
                             
                             unless ($secondary || $supplementary)
                             {
-                                $n ++;        # total sequencing read number matching that from fastq files
+                                # total sequencing read number matching with that from raw fastq files if there are no reads filtered out by the aligner
+                                $n ++;
                             }
                         }
                         
@@ -253,8 +251,8 @@ requirements:
                     
                     # prints out the summary
                     printf "\n\n[Flag summary from %d file(s)]", scalar(@paths);
-                    printf "\nTotal Read Count (R1 + R2)\t%s", $n;                                                                                # total sequencing read number
-                    printf "\nQC-failed Read Count\t%s", $count{failed};                  # QC-failed reads in flagstat
+                    printf "\nTotal Read Count (R1 + R2)\t%s", $n;
+                    printf "\nQC-failed Read Count\t%s", $count{failed};
                     printf "\nUnique Read Pairs\t%s\t%s (%%)", $count{"unique\tprimary\tfirst"} + $count{"unique\tunmapped\tfirst"}, ($count{"unique\tprimary\tfirst"} + $count{"unique\tunmapped\tfirst"}) / $n * 100 * 2;
                     printf "\nTotal Mapped Reads\t%s\t%s (%%)", $count{"duplicate\tprimary"} + $count{"unique\tprimary"}, ($count{"duplicate\tprimary"} + $count{"unique\tprimary"}) / $n * 100;
                     printf "\nNon-Mapped Reads\t%s\t%s (%%)", $count{"duplicate\tunmapped"} + $count{"unique\tunmapped"}, ($count{"duplicate\tunmapped"} + $count{"unique\tunmapped"}) / $n * 100;
