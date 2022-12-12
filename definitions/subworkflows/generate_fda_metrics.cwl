@@ -8,6 +8,7 @@ requirements:
     - class: SubworkflowFeatureRequirement
     - class: InlineJavascriptRequirement
     - class: StepInputExpressionRequirement
+    - class: ScatterFeatureRequirement
     - class: SchemaDefRequirement
       types:
           - $import: ../types/sequence_data.yml
@@ -106,8 +107,8 @@ outputs:
         type: File[]
         outputSource: unaligned_normal_dna_fastqc/fastqc_all_data
     unaligned_normal_dna_table_metrics:
-        type: File
-        outputSource: unaligned_normal_dna_metrics/unaligned_stats
+        type: File[]
+        outputSource: rename_unaligned_normal_dna_metrics/unique_files
     unaligned_normal_dna_md5sums:
         type: File
         outputSource: unaligned_normal_dna_md5/md5sum
@@ -119,8 +120,8 @@ outputs:
         type: File[]
         outputSource: unaligned_tumor_dna_fastqc/fastqc_all_data
     unaligned_tumor_dna_table_metrics:
-        type: File
-        outputSource: unaligned_tumor_dna_metrics/unaligned_stats
+        type: File[]
+        outputSource: rename_unaligned_tumor_dna_metrics/unique_files
     unaligned_tumor_dna_md5sums:
         type: File
         outputSource: unaligned_tumor_dna_md5/md5sum
@@ -132,8 +133,8 @@ outputs:
         type: File[]
         outputSource: unaligned_tumor_rna_fastqc/fastqc_all_data
     unaligned_tumor_rna_table_metrics:
-        type: File
-        outputSource: unaligned_tumor_rna_metrics/unaligned_stats
+        type: File[]
+        outputSource: rename_unaligned_tumor_rna_metrics/unique_files
     unaligned_tumor_rna_md5sums:
         type: File
         outputSource: unaligned_tumor_rna_md5/md5sum
@@ -201,24 +202,29 @@ steps:
             [fastqc_all_data]
     unaligned_normal_dna_metrics:
         run: ../tools/unaligned_seq_fda_stats.cwl
+        scatter: [input_files]
+        scatterMethod: dotproduct
         in:
             input_files:
                 source: unaligned_normal_dna
                 valueFrom: |
                     ${
                         var files = [];
-                        var i;
-                        for (i = 0; i < self.length; i = i + 1) {
-                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
-                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
-                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
-                        }
+                        if (self.sequence.hasOwnProperty('bam')) { files.push(self.sequence.bam); }
+                        if (self.sequence.hasOwnProperty('fastq1')) { files.push(self.sequence.fastq1); }
+                        if (self.sequence.hasOwnProperty('fastq2')) { files.push(self.sequence.fastq2); }
                         return files;
                     }
             output_name:
                 default: "normal_dna"
         out:
             [unaligned_stats]
+    rename_unaligned_normal_dna_metrics:
+        run: ../tools/rename_for_staging.cwl
+        in:
+            scatter_files: unaligned_normal_dna_metrics/unaligned_stats
+        out:
+            [unique_files]
     unaligned_normal_dna_md5:
         run: ../tools/md5sum.cwl
         in:
@@ -280,24 +286,29 @@ steps:
             [fastqc_all_data]
     unaligned_tumor_dna_metrics:
         run: ../tools/unaligned_seq_fda_stats.cwl
+        scatter: [input_files]
+        scatterMethod: dotproduct
         in:
             input_files:
                 source: unaligned_tumor_dna
                 valueFrom: |
                     ${
                         var files = [];
-                        var i;
-                        for (i = 0; i < self.length; i = i + 1) {
-                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
-                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
-                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
-                        }
+                        if (self.sequence.hasOwnProperty('bam')) { files.push(self.sequence.bam); }
+                        if (self.sequence.hasOwnProperty('fastq1')) { files.push(self.sequence.fastq1); }
+                        if (self.sequence.hasOwnProperty('fastq2')) { files.push(self.sequence.fastq2); }
                         return files;
                     }
             output_name:
                 default: "tumor_dna"
         out:
             [unaligned_stats]
+    rename_unaligned_tumor_dna_metrics:
+        run: ../tools/rename_for_staging.cwl
+        in:
+            scatter_files: unaligned_tumor_dna_metrics/unaligned_stats
+        out:
+            [unique_files]
     unaligned_tumor_dna_md5:
         run: ../tools/md5sum.cwl
         in:
@@ -359,24 +370,29 @@ steps:
             [fastqc_all_data]
     unaligned_tumor_rna_metrics:
         run: ../tools/unaligned_seq_fda_stats.cwl
+        scatter: [input_files]
+        scatterMethod: dotproduct
         in: 
             input_files:
                 source: unaligned_tumor_rna
                 valueFrom: |
                     ${
                         var files = [];
-                        var i;
-                        for (i = 0; i < self.length; i = i + 1) {
-                            if (self[i].sequence.hasOwnProperty('bam')) { files.push(self[i].sequence.bam); }
-                            if (self[i].sequence.hasOwnProperty('fastq1')) { files.push(self[i].sequence.fastq1); }
-                            if (self[i].sequence.hasOwnProperty('fastq2')) { files.push(self[i].sequence.fastq2); }
-                        }
+                        if (self.sequence.hasOwnProperty('bam')) { files.push(self.sequence.bam); }
+                        if (self.sequence.hasOwnProperty('fastq1')) { files.push(self.sequence.fastq1); }
+                        if (self.sequence.hasOwnProperty('fastq2')) { files.push(self.sequence.fastq2); }
                         return files;
                     }
             output_name:
                 default: "tumor_rna"
         out:
             [unaligned_stats]
+    rename_unaligned_tumor_rna_metrics:
+        run: ../tools/rename_for_staging.cwl
+        in:
+            scatter_files: unaligned_tumor_rna_metrics/unaligned_stats
+        out:
+            [unique_files]
     unaligned_tumor_rna_md5:
         run: ../tools/md5sum.cwl
         in: 
@@ -443,7 +459,7 @@ steps:
         in:
             reference: reference
             input_files:
-                source: aligned_normal_dna_cram_to_bam/bam
+                source: aligned_normal_dna
                 valueFrom: ${ return [self]; }
             output_name:
                 default: "normal_dna"
@@ -453,7 +469,7 @@ steps:
         run: ../tools/md5sum.cwl
         in:
             input_files:
-                source: aligned_normal_dna_cram_to_bam/bam
+                source: aligned_normal_dna
                 valueFrom: ${ return [self]; }
             output_name:
                 default: "normal_dna_aligned"
@@ -513,7 +529,7 @@ steps:
         in:
             reference: reference
             input_files:
-                source: aligned_tumor_dna_cram_to_bam/bam
+                source: aligned_tumor_dna
                 valueFrom: ${ return [self]; }
             output_name:
                 default: "tumor_dna"
@@ -523,7 +539,7 @@ steps:
         run: ../tools/md5sum.cwl
         in:
             input_files:
-                source: aligned_tumor_dna_cram_to_bam/bam
+                source: aligned_tumor_dna
                 valueFrom: ${ return [self]; }
             output_name:
                 default: "tumor_dna_aligned"
@@ -609,5 +625,6 @@ steps:
             freq_normalization_method: rna_freq_normalization_method
             annotation_file: rna_annotation_file
             reference_genome: reference_genome
+            unaligned_rna_table: unaligned_tumor_rna_table/table
         out:
             [table]

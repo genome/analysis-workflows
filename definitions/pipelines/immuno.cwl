@@ -969,7 +969,7 @@ outputs:
         type: File[]
         outputSource: fda_metrics/unaligned_normal_dna_fastqc_data
     unaligned_normal_dna_table_metrics:
-        type: File
+        type: File[]
         outputSource: fda_metrics/unaligned_normal_dna_table_metrics
     unaligned_normal_dna_md5sums:
         type: File
@@ -982,7 +982,7 @@ outputs:
         type: File[]
         outputSource: fda_metrics/unaligned_tumor_dna_fastqc_data
     unaligned_tumor_dna_table_metrics:
-        type: File
+        type: File[]
         outputSource: fda_metrics/unaligned_tumor_dna_table_metrics
     unaligned_tumor_dna_md5sums:
         type: File
@@ -995,7 +995,7 @@ outputs:
         type: File[]
         outputSource: fda_metrics/unaligned_tumor_rna_fastqc_data
     unaligned_tumor_rna_table_metrics:
-        type: File
+        type: File[]
         outputSource: fda_metrics/unaligned_tumor_rna_table_metrics
     unaligned_tumor_rna_md5sums:
         type: File

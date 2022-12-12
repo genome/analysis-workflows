@@ -20,13 +20,14 @@ requirements:
             parser.add_argument('--md5sum_file', required=True)
             parser.add_argument('--fastqc_zips', nargs='*', required=True)
             parser.add_argument('--aligned_metrics')
-            parser.add_argument('--unaligned_metrics')
+            parser.add_argument('--unaligned_metrics', nargs='*')
             parser.add_argument('--alignment_summary_metrics')
             parser.add_argument('--duplication_metrics')
             parser.add_argument('--insert_size_metrics')
             parser.add_argument('--hs_metrics')
             parser.add_argument('--rna_metrics')
             parser.add_argument('--flagstat')
+            parser.add_argument('--unaligned_rna_table')
 
             #inputs to immuno pipeline
             parser.add_argument('--sequencing_platform', default='NOT_PROVIDED')
@@ -95,7 +96,6 @@ requirements:
 
                 fieldname_to_t3_label = {
                     "Sequence length": "Read Length (nt)", 
-                    "Total Sequences": "Total read (read count)"
                 }
 
                 #helper to choose proper mapping dict for requested table
@@ -143,7 +143,7 @@ requirements:
             def parse_aligned_metrics(metrics_file, table_num):
                 fieldname_to_t2_label = {
                     "Total Read Count (R1 + R2)": "Total Read Count",
-                    "Unique Read Pairs": "Unique Read Pairs",
+                    "Unique Read Pairs": "Unique Read Pairs (%)",
                     "Total Mapped Reads": "Total Mapped Reads (%)",
                     "Non-Mapped Reads": "Non-Mapped Reads (%)",
                     "Unique Mapped Reads": "Unique Mapped Reads (%)",
@@ -179,24 +179,30 @@ requirements:
 
                 return extracted_data
 
-            def parse_unaligned_metrics(metrics_file):
+            def parse_unaligned_metrics(metrics_files):
 
                 field_map = {
                     "Median Basecall Quality Score": "Median Phred Score",
                     "Bases with N": "Bases with N (%)",
                     "Bases with >= Q30": "Bases with >= Q30 (%)"
                 }
-
-                with open(metrics_file) as f:
-                    parsed_data = [line.split('\t') for line in f.read().splitlines()]
                 extracted_data = {}
-                for parsed_line in parsed_data:
-                    if len(parsed_line) < 2:
-                        continue
-                    field_name = parsed_line[0]
-                    field_data = parsed_line[-1]
-                    if field_name in field_map:
-                        extracted_data[ field_map[field_name] ] = field_data
+                for metrics_file in metrics_files:
+
+                    with open(metrics_file) as f:
+                        raw_per_file_data = f.read().split('\n\n\n')[1:]
+                    for raw_file_data in raw_per_file_data:
+                        parsed_data = [line.split('\t') for line in raw_file_data.splitlines()]
+                        file_data = {}
+                        filename = ""
+                        for parsed_line in parsed_data:
+                            if 'summary' in parsed_line[0]:
+                                filename = os.path.basename(parsed_line[0].split()[-1][:-1])
+                            field_name = parsed_line[0]
+                            field_data = parsed_line[-1]
+                            if field_name in field_map:
+                                file_data[ field_map[field_name] ] = field_data
+                        extracted_data[filename] = file_data
 
                 return extracted_data
 
@@ -268,11 +274,26 @@ requirements:
                 with open(flagstat) as f:
                     return {'Filtered Read Count': f.readlines()[0].split()[2]}
 
-            def aggregate_dicts(md5_dict, fastqc_dict, *flat_dicts):
+            def parse_unaligned_rna_table(table_file):
+                with open(table_file) as f:
+                    parsed_data = [line.split(',') for line in f.read().splitlines()]
+                for parsed_line in parsed_data:
+                    if parsed_line[0] == 'Total Number of Reads':
+                        total_reads = sum([int(num) for num in parsed_line[1:]])
+                        return {'Total read (read count)': total_reads}
+
+            def aggregate_dicts(md5_dict, fastqc_dict, *flat_dicts, unaligned_dict=None, rename_key=False):
                 final_dict = md5_dict.copy()
                 for key in final_dict:
-                    # merge the 2 nested dicts, both in the form {filename: {table_field: val, ...}}
-                    final_dict[key].update(fastqc_dict[key])
+                    alternate_key = key
+                    if rename_key:
+                        nameroot, nameext = os.path.splitext(key)
+                        if nameext == '.cram':
+                            alternate_key = nameroot + '.bam'
+                    # merge the nested dicts, which are in the form {filename: {table_field: val, ...}}
+                    final_dict[key].update(fastqc_dict[alternate_key])
+                    if unaligned_dict:
+                        final_dict[key].update(unaligned_dict[key])
                     # copy in any given flat dicts, in the form {table_field: val, ...}
                     # vals in flat dicts not keyed to filename are assumed to apply across all files
                     for flat_dict in flat_dicts:
@@ -289,6 +310,8 @@ requirements:
                 return table_list
 
             def generate_table1(file_args, string_arg_dict):
+                # NOTE: 'Total Number of Reads' is used as a key in function parse_unaligned_rna_table
+                # make sure to update that function if the name is changed below
                 table_rows = ('Sample Name', 'File', 'MD5 File Checksum', 'Sequencing Platform',
                     'Sequencing Instrument', 'Sequencing Kit', 'Single or Paired End', 'Sequencing Type',
                     'Total Number of Reads', 'Median Phred Score', 'GC Content (%)', 'Bases with N (%)',
@@ -298,7 +321,7 @@ requirements:
                 fastqc_dict = parse_fastqc_zips(file_args.fastqc_zips, file_args.table)
                 unaligned_dict = parse_unaligned_metrics(file_args.unaligned_metrics)
 
-                table_dict = aggregate_dicts(md5_dict, fastqc_dict, string_arg_dict, unaligned_dict)
+                table_dict = aggregate_dicts(md5_dict, fastqc_dict, string_arg_dict, unaligned_dict=unaligned_dict)
 
                 table = generate_table(table_rows, table_dict)
                 return table
@@ -306,7 +329,7 @@ requirements:
             def generate_table2(file_args, string_arg_dict):
                 table_rows = ('Sample Name', 'File', 'MD5 File Checksum', 'Sequencing Platform',
                     'Sequencing Instrument', 'Sequencing Kit', 'Single or Paired End', 'Source', 'Total DNA(ng)',
-                    'Read Length', 'Total Read Count', 'Filtered Read Count', 'Unique Read Pairs', 'Total Mapped Reads (%)',
+                    'Read Length', 'Total Read Count', 'Filtered Read Count', 'Unique Read Pairs (%)', 'Total Mapped Reads (%)',
                     'Non-Mapped Reads (%)', 'Unique Mapped Reads (%)', 'Mapped Read Duplication (%)', 'Strand Specificity (%)',
                     'Reference Genome', 'PCT_USABLE_BASES_ON_TARGET', 'PCT_EXC_OFF_TARGET', 'PERCENT_DUPLICATION',
                     'MEAN_TARGET_COVERAGE', 'PCT_TARGET_BASES_20X', 'PCT_READS_ALIGNED_IN_PAIRS', 'MEAN_INSERT_SIZE',
@@ -322,7 +345,7 @@ requirements:
                 flagstat_dict = parse_flagstat(args.flagstat)
 
                 table_dict = aggregate_dicts(md5_dict, fastqc_dict, string_arg_dict, aligned_dict,
-                    alignment_summary_dict, duplication_dict, insert_size_dict, hs_dict, flagstat_dict)
+                    alignment_summary_dict, duplication_dict, insert_size_dict, hs_dict, flagstat_dict, rename_key=True)
 
                 table = generate_table(table_rows, table_dict)
                 return table
@@ -339,8 +362,9 @@ requirements:
                 fastqc_dict = parse_fastqc_zips(file_args.fastqc_zips, file_args.table)
                 aligned_dict = parse_aligned_metrics(file_args.aligned_metrics, file_args.table)
                 rna_dict = parse_rna_metrics(args.rna_metrics)
+                upstream_readcount_dict = parse_unaligned_rna_table(args.unaligned_rna_table)
 
-                table_dict = aggregate_dicts(md5_dict, fastqc_dict, string_arg_dict, aligned_dict, rna_dict)
+                table_dict = aggregate_dicts(md5_dict, fastqc_dict, string_arg_dict, aligned_dict, rna_dict, upstream_readcount_dict)
 
                 table = generate_table(table_rows, table_dict)
                 return table
@@ -354,7 +378,7 @@ requirements:
 
             with open(args.table_file_name, 'w+') as f:
                 for line in table:
-                    f.write(','.join(line) + '\n')
+                    f.write(','.join([str(e) for e in line]) + '\n')
 
 
 baseCommand: ['python', 'generate_tables.py']
@@ -380,7 +404,7 @@ inputs:
         inputBinding:
             prefix: "--aligned_metrics"
     unaligned_metrics:
-        type: File?
+        type: File[]?
         inputBinding:
             prefix: "--unaligned_metrics"
     alignment_summary_metrics:
@@ -407,6 +431,10 @@ inputs:
         type: File?
         inputBinding:
             prefix: "--flagstat"
+    unaligned_rna_table:
+        type: File?
+        inputBinding:
+            prefix: "--unaligned_rna_table"
 
     sequencing_platform:
         type: string?

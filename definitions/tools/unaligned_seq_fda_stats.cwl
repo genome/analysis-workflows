@@ -13,154 +13,75 @@ requirements:
       - entryname: 'unaligned_stats.pl'
         entry: |
                 #!/usr/bin/perl
-
-                # It is free software; you can redistribute it and/or modify it under the terms of
-                # the GNU General Public License (GPLv3) as published by the Free Software Foundation.
-                #
-                # McDonnell Genome Institute
-                # Washington University School of Medicine
-                # 4444 Forest Park Ave
-                # St. Louis, Missouri 63108
-                # 
-                # http://genome.wustl.edu
-
-
-                # includes perl modules
+                
                 use strict;
                 use warnings;
                 use Carp;
-
+                
                 use FileHandle;
                 use File::Basename;
                 use File::Spec::Functions; 
-                use Cwd;
-
-
-                # predeclares global variable names
-                use vars qw/$version $about $is_windows $scriptname $scriptdir/;
-
-                # finds the perl script name and path
-                $scriptname = basename($0, '.pl') . '.pl';
-                $scriptdir = getcwd;       # dirname($0);
-
-
-
-                ## ------------ About the program ------------------------------------- #
-
-                # the version
-                $version = '1.7';
-
-                $about = qq!
-                FASTQ statistics $version
-                Usage: $scriptname [FILE1] [FILE2] [FILE3] ...
-                Print out statistics calculated from FILE(s).
-
-                Example:
-                  \$ $scriptname read1.fastq.gz read2.fastq.gz
-                !;
-
-
-
-                ## ------------ Setting global variables ------------------------------------- #
-
-                # predeclares global variable names
-                use vars qw/$format @paths $filter $bzcat $zcat $samtools $base $offset/;
-
-                # defines the format of input files
-                # (required, "fastq" or "bam")
-                #$format = "fastq";
-                #$format = "bam";
-
-                # lists the full paths of fastq or BAM files
-                @paths = (
-                    # H_NJ-HCC1395-HCC1395_BL
-                    #"/storage1/fs1/bga/Active/gchang/work/14_BGA-WALKER/211012-immuno2cwl-fastq/2.fastq/H_NJ-HCC1395-HCC1395_BL-H7HY2CCXX.3.R1.fastq.gz",
-                    #"/storage1/fs1/bga/Active/gchang/work/14_BGA-WALKER/211012-immuno2cwl-fastq/2.fastq/H_NJ-HCC1395-HCC1395_BL-H7HY2CCXX.3.R2.fastq.gz",
-                    #"/storage1/fs1/bga/Active/gchang/work/14_BGA-WALKER/211012-immuno2cwl-fastq/2.fastq/H_NJ-HCC1395-HCC1395_BL-H7HY2CCXX.4.R1.fastq.gz",
-                    #"/storage1/fs1/bga/Active/gchang/work/14_BGA-WALKER/211012-immuno2cwl-fastq/2.fastq/H_NJ-HCC1395-HCC1395_BL-H7HY2CCXX.4.R2.fastq.gz",
-                    
-                    #"/gscmnt/gc2560/core/instrument_data/2895499331/csf_150397221/gerald_H7HY2CCXX_3_TGACCACG.bam",
-                    #"/gscmnt/gc2560/core/instrument_data/2895499399/csf_150397349/gerald_H7HY2CCXX_4_TGACCACG.bam",
-                );
-
+                use IO::Uncompress::AnyUncompress;
+                
+                
+                # sets global variables with the default
+                use vars qw/$filter $base $offset $samtools/;
+                
                 # defines the minimum base call quality score to filter
                 # inclusive, for example, Bases with >= Q30
                 $filter = 30;
-
-
-                # specifies the program paths
-                # docker(registry.gsc.wustl.edu/apipe-builder/genome_perl_environment:compute1-52)
-                $bzcat = "/bin/bzcat";                                             # Version 1.0.8
-                $zcat = "/bin/zcat";                                                # zcat (gzip) 1.10
-                $samtools = "/opt/samtools/bin/samtools";                                  # Version: 1.10 (using htslib 1.10.2-3)
-
-                # specifies the N letter to count
-                # (default: "N")
-                $base = 'N';
-
+                
                 # defines the offset to calculate the base call quality score from the Phred +33 encoded by ASCII characters
                 # For example, 33 = 63.06707094 - 30.06707094 (see below)
                 $offset = 33;
-
-
-
-                ## ------------ Main subroutine ---------------------------------------------- #
-                # prints the program information
-                print($about);
-
+                
+                # Please replace count_N() with count_base() below to enable this option.
+                # defines a basecalling letter to count
+                # (default: "N")
+                $base = 'N';        # now inactivated, don't change this.
+                
+                # specifies the program paths in docker(mgibio/cle:v1.4.2)
+                $samtools = "/opt/samtools/bin/samtools";              # samtools 1.3.1 using htslib 1.3.2
+                
+                
                 # main subroutine
                 Main();
-
-                # this program is terminated here
+                
+                # program exits here
                 exit 0;
-
-
-
-                ## ------------ Library of the main subroutine ----------------------------- #
-
+                
+                
                 sub Main {
-                    # local variables
-                    
-                    # gets the full input paths
-                    unless (@paths > 0)
-                    {
-                        @paths = @ARGV if (@ARGV > 0);
-                        
-                        croak "paths required" unless @paths > 0;
-                    }
+                    # for the paths of input files
+                    my @paths = @ARGV if @ARGV > 0;
+                    croak "input file path required" unless @paths > 0;
                     
                     
-                    $format = "fastq";
-
-                    # opens input files
-                    my $n = 0;                  # total number of lines
-                    my $nbase = 0;
-                    my (%freq, %count);
+                    # reads input files
+                    my (%freq, %count, %base);
+                    my $format = "fastq";
+                    my $n = 0;
                     foreach my $path (@paths)
                     {
-                        # creates a file handler
                         my $fh;
-                        if ($path =~ /\.gz$/)
+                        if ($path =~ /\.gz$/ || $path =~ /\.bz2$/)
                         {
-                            $fh = FileHandle->new("$zcat $path |");
+                            $fh = IO::Uncompress::AnyUncompress->new($path, MultiStream => 1);
                         }
                         elsif ($path =~ /\.bam$/)
                         {
+                            # for MGI legacy instrument data
                             $format = "bam";
+                            
                             $fh = FileHandle->new("$samtools view $path |");
-                        }
-                        elsif ($path =~ /\.bz2$/)
-                        {
-                            $fh = FileHandle->new("$bzcat $path |");
                         }
                         else
                         {
-                            # from a .sam or .fastq text file
                             $fh = FileHandle->new($path, "r");
                         }
                         
                         
-                        # reads a file
+                        # reads an input file
                         croak "Cannot find a file: $path" unless -e $path;
                         croak "Cannot open a file: $path" unless defined $fh;
                         if ($format eq "fastq")
@@ -171,15 +92,17 @@ requirements:
                                 {
                                     chomp $i;
                                     
-                                    # updates the frequency/count hashes
-                                    update_hash($i, \%freq, \%count, $offset);
+                                    update_hash($i, \%freq, \%count, $offset, $path);
                                 }
                                 elsif ($n % 4 == 1)
                                 {
                                     chomp $i;
                                     
-                                    # counts the frequency of a letter
-                                    $nbase += count_base($i, $base);
+                                    # instead of count_base($i, $base);
+                                    my $nbase = count_N($i);
+                                    
+                                    $base{sum} += $nbase;
+                                    $base{$path} += $nbase;
                                 }
                                 
                                 
@@ -190,21 +113,18 @@ requirements:
                         {
                             while (my $i = $fh->getline)
                             {
-                                next if substr($i, 0, 1) eq '@';
-                                
+                                next if index($i, '@') == 0;
                                 chomp $i;
                                 
                                 my @fields = split /\t/, $i;
                                 
-                                # gets a QUAL value
-                                # my $qual = $fields[10];
+                                update_hash($fields[10], \%freq, \%count, $offset, $path);
                                 
-                                # updates the frequency/count hashes
-                                update_hash($fields[10], \%freq, \%count, $offset);
+                                # instead of count_base($fields[9], $base);
+                                my $nbase = count_N($fields[9]);
                                 
-                                # counts the frequency of a letter
-                                $nbase += count_base($fields[9], $base);
-                                
+                                $base{sum} += $nbase;
+                                $base{$path} += $nbase;
                                 
                                 $n ++;
                             }
@@ -214,95 +134,96 @@ requirements:
                             croak "Invalid input file format: $format";
                         }
                         
-                        
-                        #
-                        printf "\n  %d lines (cumulative) read from %s", $n, $path;
-                        
-                        
                         # closes the file handler
+                        printf "\n%d lines (cumulative) read from %s", $n, $path;
                         $fh->close;
                     }
                     
                     
-                    # calculates the total number of base calls and sequences
-                    my ($nseq, $ncall) = (0, 0);
-                    foreach my $len (sort {$a <=> $b} keys %count)
+                    # prints out the source file information
+                    printf "\n\n[Input file information: %d file(s)]", scalar(@paths);
+                    print "\nfile\tdir";
+                    foreach my $path (@paths)
                     {
-                        $ncall += $len * $count{$len};
-                        $nseq += $count{$len};
+                        my ($name, $dir) = fileparse($path);
+                        printf "\n%s\t%s", $name, $dir;
                     }
                     
-                    croak "Exception: Invalid total number of sequences, $nseq" unless $nseq == ($format eq "fastq") ? $n / 4 : $n;
-                    
-                    
-
-                    # calculates the median and mean from a frequency hash
-                    my ($median, $mean, $ncall2) = stat_freq(%freq);
-                    croak "Exception: invalid count number of base calls" unless $ncall == $ncall2;
-                    
-                    # filters with the minimum base call quality score
-                    my $nfilter = 0;
-                    foreach my $score (keys %freq)
+                    foreach my $key ("sum", @paths)
                     {
-                        if ($filter <= $score)
+                        # calculates the total number of base calls and sequences
+                        my ($nseq, $ncall) = (0, 0);
+                        foreach my $len (sort {$a <=> $b} keys %{$count{$key}})
                         {
-                            $nfilter += $freq{$score};
+                            $ncall += $len * $count{$key}->{$len};
+                            $nseq += $count{$key}->{$len};
                         }
+                        
+                        croak "Exception: Invalid number of sequences, $nseq" unless $nseq == ($format eq "fastq") ? $n / 4 : $n;
+                        
+                    
+                        # calculates the median and mean from a frequency hash
+                        my ($median, $mean, $ncall2) = stat_freq($freq{$key});
+                        croak "Exception: invalid count number of base calls" unless $ncall == $ncall2;
+                        
+                        # counts by the minimum base call quality score
+                        my $nfilter = 0;
+                        foreach my $score (keys %{$freq{$key}})
+                        {
+                            if ($filter <= $score)
+                            {
+                                $nfilter += $freq{$key}->{$score};
+                            }
+                        }
+                        
+                        # prints out the summary
+                        printf "\n\n[Quality score summary from %s]", $key eq "sum" ? sprintf("%d file(s)", scalar(@paths)) : $key;
+                        printf "\nTotal Number of Reads\t%s", $nseq;                                                                    # total sequence number
+                        printf "\nTotal Number of basecalls\t%s", $ncall;
+                        printf "\nBases with %s\t%s\t%s (%%)", $base, $base{$key}, $base{$key} / $ncall * 100;
+                        printf "\nMedian Basecall Quality Score\t%s", $median;
+                        printf "\nMean Basecall Quality Score\t%s", $mean;
+                        printf "\nBases with >= Q%s\t%d\t%s (%%)", $filter, $nfilter, $nfilter / $ncall * 100;
+                        print "\n";
                     }
-                    
-                    
-                    # prints out the summary
-                    printf "\n\n[Quality score summary]";
-                    printf "\nTotal Number of Reads\t%s", $nseq;                                                                    # total sequence number
-                    printf "\nTotal Number of basecalls\t%s", $ncall;
-                    printf "\nBases with %s\t%s\t%s (%%)", $base, $nbase, $nbase / $ncall * 100;
-                    printf "\nMedian Basecall Quality Score\t%s", $median;
-                    printf "\nMean Basecall Quality Score\t%s", $mean;
-                    printf "\nBases with >= Q%s\t%d\t%s (%%)", $filter, $nfilter, $nfilter / $ncall * 100;
-                    
-                    
-                    # Base call score frequency
-                    printf "\n\n[Base call score frequency: %d sequences from %d file(s)]\n", $nseq, scalar(@paths);
-                    printhash(%freq);
-                    
-                    # Sequence length statistics
-                    printf "\n\n[Sequence length statistics]\n";
-                    printhash(%count);
-                    
-                    
-                    # the end of the main subroutine
                 }
-
-
-
-                ## ------------ Library of subroutines --------------------------------------- #
-
-
+                
+                
                 sub update_hash {
-                    # updates the frequency/count hashes
-                    my ($qual, $freq, $count, $offset) = @_;
-
-                    # local variables
-                    
+                    my ($qual, $freq, $count, $offset, $path) = @_;
                     
                     # converts characters to ASCII numbers
-                    my @scores = map { unpack("C*", $_ ) - $offset } split("", $qual);
+                    my @scores = map { unpack("C*", $_ ) - $offset } unpack('(a)*', $qual);
                     
+                    # updates the frequency of basecalling score
+                    foreach (@scores)
+                    {
+                        $freq->{sum}->{$_} ++;
+                        $freq->{$path}->{$_} ++;
+                    }
                     
-                    # updates the hashes
-                    map { $freq->{$_} ++ } @scores;
-                    
-                    #map { $count{$_} ++ }  split("", $i);
-                    $count->{$#scores + 1} ++;                 # for the sequence length
+                    # counts the sequence length
+                    $count->{sum}->{$#scores + 1} ++;
+                    $count->{$path}->{$#scores + 1} ++;
                 }
-
-
+                
+                
+                sub count_N {
+                    my ($str) = @_;
+                    
+                    # calculates the frequency of "N"
+                    my $count = 0;
+                    if (index($str, 'N') > -1)
+                    {
+                        $count = $str =~ tr/N//;
+                    }
+                    
+                    return $count;
+                }
+                
+                
                 sub count_base {
-                    # counts the frequency of a letter
                     my ($str, $base) = @_;
-                    
-                    # local variables
-                    
                     
                     # calculates the frequency of a letter
                     my $count = 0;
@@ -311,28 +232,22 @@ requirements:
                         $count = $str =~ s/$base//g;
                     }
                     
-                    
                     return $count;
                 }
-
-
+                
+                
                 sub stat_freq {
-                    # calculates the median and mean from a frequency hash
-                    my (%hash) = @_;
+                    my ($hash) = @_;
                     
-                    # local variables
-                    
-                    # as default
                     # frequency hash: {key => data value, value => data count}
-                    croak "empty frequency hash" unless keys(%hash) > 0;
-                    
+                    croak "empty frequency hash" unless keys(%$hash) > 0;
                     
                     # sorts the data values
-                    my @sort = sort {$a <=> $b} keys %hash;
+                    my @sort = sort {$a <=> $b} keys %$hash;
                     
                     # counts the total number of data
                     my $n = 0;
-                    map { $n += $hash{$_} } @sort;
+                    map { $n += $hash->{$_} } @sort;
                     
                     # calculates the median index (0-based index)
                     my @midx = ($n % 2 == 1) ? ((1 + $n) / 2) - 1 : ((1 + $n) / 2 - 1.5, (1 + $n) / 2 - 0.5);
@@ -344,10 +259,10 @@ requirements:
                     {
                         # gets the last index of the given score in the array (1-based)
                         my $score = $sort[$i];
-                        $idx += $hash{$score};
+                        $idx += $hash->{$score};
                         
-                        # calculates the mean and mode
-                        $mean += $score * $hash{$score};
+                        # to calculate the mean
+                        $mean += $score * $hash->{$score};
                         
                         # calculates the median
                         unless (defined $median)
@@ -358,7 +273,6 @@ requirements:
                                 {
                                     if ($midx[1] <= $idx - 1)
                                     {
-                                        # same as ($score + $score) / 2
                                         $median = $score;
                                     }
                                     else
@@ -374,21 +288,7 @@ requirements:
                         }
                     }
                     
-                    
                     return ($median, $mean / $n, $n);
-                }
-
-
-                sub printhash {
-                    # prints a hash
-                    my (%hash) = @_;
-
-                    # local variables
-                    
-                    foreach my $key (sort {$a <=> $b} keys %hash)
-                    {
-                        printf "%s\t%s\n", $key, $hash{$key};
-                    }
                 }
 
 inputs:
