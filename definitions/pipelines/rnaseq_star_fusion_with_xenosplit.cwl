@@ -257,8 +257,6 @@ steps:
         run: ../tools/mark_duplicates_and_sort.cwl
         in:
             bam: sort_bam/sorted_bam
-            input_sort_order:
-                default: "coordinate"
         out:
             [sorted_bam, metrics_file]
     index_bam:
