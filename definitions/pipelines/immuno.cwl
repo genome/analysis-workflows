@@ -473,6 +473,10 @@ inputs:
         type: int?
     pvacfuse_keep_tmp_files:
         type: boolean?
+    pvacfuse_read_support:
+        type: int?
+    pvacfuse_expn_val:
+        type: float?
 
     #FDA metrics inputs
     reference_genome_name:
@@ -1308,11 +1312,16 @@ steps:
             top_score_metric: top_score_metric
             net_chop_threshold: net_chop_threshold
             run_reference_proteome_similarity: run_reference_proteome_similarity
-            blastp_db: blastp_db
             additional_report_columns: additional_report_columns
             fasta_size: fasta_size
             downstream_sequence_length: downstream_sequence_length
             exclude_nas: exclude_nas
             n_threads: pvacseq_threads
+            star_fusion_file: rnaseq/star_fusion_abridge
+            read_support: pvacfuse_read_support
+            expn_val: pvacfuse_expn_val
+            allele_specific_binding_threshold: allele_specific_binding_threshold
+            aggregate_inclusion_binding_threshold: aggregate_inclusion_binding_threshold
+            problematic_amino_acids: problematic_amino_acids
         out:
             [pvacfuse_predictions]
