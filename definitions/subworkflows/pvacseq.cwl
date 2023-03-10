@@ -38,11 +38,6 @@ inputs:
         type: string[]
     prediction_algorithms:
         type: string[]
-    blastp_db:
-        type:
-            - "null"
-            - type: enum
-              symbols: ["refseq_select_prot", "refseq_protein"]
     epitope_lengths_class_i:
         type: int[]?
     epitope_lengths_class_ii:
@@ -53,6 +48,8 @@ inputs:
         type: int?
     allele_specific_binding_thresholds:
         type: boolean?
+    aggregate_inclusion_binding_threshold:
+        type: int?
     minimum_fold_change:
         type: float?
     peptide_sequence_length:
@@ -62,6 +59,8 @@ inputs:
             - "null"
             - type: enum
               symbols: ["lowest", "median"]
+    problematic_amino_acids:
+        type: string?
     additional_report_columns:
         type:
             - "null"
@@ -81,6 +80,10 @@ inputs:
             - "null"
             - type: enum
               symbols: ["1", "2", "3", "4", "5"]
+    allele_specific_anchors:
+        type: boolean?
+    anchor_contribution_threshold:
+        type: float?
     normal_cov:
         type: int?
     tdna_cov:
@@ -211,9 +214,12 @@ steps:
             net_chop_threshold: net_chop_threshold
             netmhc_stab: netmhc_stab
             run_reference_proteome_similarity: run_reference_proteome_similarity
-            blastp_db: blastp_db
             n_threads: n_threads
             tumor_purity: tumor_purity
+            aggregate_inclusion_binding_threshold: aggregate_inclusion_binding_threshold
+            problematic_amino_acids: problematic_amino_acids
+            allele_specific_anchors: allele_specific_anchors
+            anchor_contribution_threshold: anchor_contribution_threshold
         out:
             [pvacseq_predictions]
     variants_to_table:
