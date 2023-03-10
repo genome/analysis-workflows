@@ -1320,7 +1320,7 @@ steps:
             star_fusion_file: rnaseq/star_fusion_abridge
             read_support: pvacfuse_read_support
             expn_val: pvacfuse_expn_val
-            allele_specific_binding_threshold: allele_specific_binding_threshold
+            allele_specific_binding_thresholds: allele_specific_binding_thresholds
             aggregate_inclusion_binding_threshold: aggregate_inclusion_binding_threshold
             problematic_amino_acids: problematic_amino_acids
         out:
