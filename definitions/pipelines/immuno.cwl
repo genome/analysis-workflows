@@ -384,7 +384,7 @@ inputs:
             - type: enum
               symbols: ["lowest", "median"]
     problematic_amino_acids:
-        type: string?
+        type: string[]?
     additional_report_columns:
         type:
             - "null"

@@ -101,9 +101,10 @@ inputs:
         inputBinding:
             prefix: "-m"
     problematic_amino_acids:
-        type: string?
+        type: string[]?
         inputBinding:
             prefix: "--problematic-amino-acids"
+            itemSeparator: ','
     net_chop_threshold:
         type: float?
         inputBinding:
