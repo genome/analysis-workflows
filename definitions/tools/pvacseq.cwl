@@ -22,7 +22,7 @@ arguments: [
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "susannakiwala/pvactools:4.0.0_rc_pvacview_v4" #TODO: replace with final release version
+      dockerPull: "susannakiwala/pvactools:4.0.0_rc_pvacview_v5" #TODO: replace with final release version
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: $(inputs.n_threads)
