@@ -15,13 +15,13 @@ arguments: [
     { valueFrom: " && ", shellQuote: false },
     "/usr/local/bin/pvacbind", "run",
     "--iedb-install-directory", "/opt/iedb",
-    "--peptide-fasta", "/opt/reference_fasta/Homo_sapiens.GRCh38.pep.all.fa.gz",
+    "--peptide-fasta", "/opt/reference_fasta/Homo_sapiens.GRCh38.101.pep.all.fa.gz",
     { position: 5, valueFrom: $(runtime.outdir) },
 ]
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "susannakiwala/pvactools:4.0.0_rc_pvacview_v5"
+      dockerPull: "susannakiwala/pvactools:4.0.0_rc_pvacview_v12"
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: $(inputs.n_threads)

@@ -16,13 +16,13 @@ arguments: [
     "/usr/local/bin/pvacfuse",
     "run",
     "--iedb-install-directory", "/opt/iedb",
-    "--peptide-fasta", "/opt/reference_fasta/Homo_sapiens.GRCh38.pep.all.fa.gz",
+    "--peptide-fasta", "/opt/reference_fasta/Homo_sapiens.GRCh38.101.pep.all.fa.gz",
     { position: 5, valueFrom: "pvacfuse_predictions" },
 ]
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "susannakiwala/pvactools:4.0.0_rc_pvacview_v5" #TODO: replace with final release version
+      dockerPull: "susannakiwala/pvactools:4.0.0_rc_pvacview_v12" #TODO: replace with final release version
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: $(inputs.n_threads)

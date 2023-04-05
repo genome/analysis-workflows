@@ -15,14 +15,14 @@ arguments: [
     { valueFrom: " && ", shellQuote: false },
     "/usr/local/bin/pvacseq", "run",
     "--iedb-install-directory", "/opt/iedb",
-    "--peptide-fasta", "/opt/reference_fasta/Homo_sapiens.GRCh38.pep.all.fa.gz",
+    "--peptide-fasta", "/opt/reference_fasta/Homo_sapiens.GRCh38.101.pep.all.fa.gz",
     "--pass-only",
     { position: 5, valueFrom: "pvacseq_predictions" },
 ]
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "susannakiwala/pvactools:4.0.0_rc_pvacview_v5" #TODO: replace with final release version
+      dockerPull: "susannakiwala/pvactools:4.0.0_rc_pvacview_v12" #TODO: replace with final release version
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: $(inputs.n_threads)
