@@ -16,7 +16,6 @@ arguments: [
     "/usr/local/bin/pvacfuse",
     "run",
     "--iedb-install-directory", "/opt/iedb",
-    "--peptide-fasta", "/opt/reference_fasta/Homo_sapiens.GRCh38.101.pep.all.fa.gz",
     { position: 5, valueFrom: "pvacfuse_predictions" },
 ]
 requirements:
@@ -113,6 +112,10 @@ inputs:
         type: boolean?
         inputBinding:
             prefix: "--run-reference-proteome-similarity"
+    peptide_fasta:
+        type: File?
+        inputBinding:
+            prefix: "--peptide-fasta"
     additional_report_columns:
         type:
             - "null"

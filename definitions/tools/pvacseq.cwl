@@ -15,7 +15,6 @@ arguments: [
     { valueFrom: " && ", shellQuote: false },
     "/usr/local/bin/pvacseq", "run",
     "--iedb-install-directory", "/opt/iedb",
-    "--peptide-fasta", "/opt/reference_fasta/Homo_sapiens.GRCh38.101.pep.all.fa.gz",
     "--pass-only",
     { position: 5, valueFrom: "pvacseq_predictions" },
 ]
@@ -100,6 +99,10 @@ inputs:
         type: boolean?
         inputBinding:
             prefix: "--run-reference-proteome-similarity"
+    peptide_fasta:
+        type: File?
+        inputBinding:
+            prefix: "--peptide-fasta"
     top_score_metric:
         type:
             - "null"

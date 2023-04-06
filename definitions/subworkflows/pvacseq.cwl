@@ -109,6 +109,8 @@ inputs:
         type: boolean?
     run_reference_proteome_similarity:
         type: boolean?
+    peptide_fasta:
+        type: File?
     n_threads:
         type: int?
     variants_to_table_fields:
@@ -214,6 +216,7 @@ steps:
             net_chop_threshold: net_chop_threshold
             netmhc_stab: netmhc_stab
             run_reference_proteome_similarity: run_reference_proteome_similarity
+            peptide_fasta: peptide_fasta
             n_threads: n_threads
             tumor_purity: tumor_purity
             aggregate_inclusion_binding_threshold: aggregate_inclusion_binding_threshold

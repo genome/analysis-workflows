@@ -450,6 +450,11 @@ inputs:
         label: "run_reference_proteome_similarity: sets an option whether to run reference proteome similarity or not"
         doc: |
           run_reference_proteome_similarity sets an option that decides whether it will run reference proteome similarity after all filtering and BLAST peptide sequences against the reference proteome to see if they appear elsewhere in the proteome.
+    peptide_fasta:
+        type: File?
+        label: "run_reference_proteome_similarity: sets an option whether to run reference proteome similarity or not"
+        doc: |
+          peptide_fasta is a path to a reference proteome fasta file to use when running reference proteome similarity.
     pvacseq_threads:
         type: int?
         label: "pvacseq_threads: Number of threads to use for parallelizing pvacseq prediction"
@@ -1282,6 +1287,7 @@ steps:
             net_chop_threshold: net_chop_threshold
             netmhc_stab: netmhc_stab
             run_reference_proteome_similarity: run_reference_proteome_similarity
+            peptide_fasta: peptide_fasta
             n_threads: pvacseq_threads
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
@@ -1312,6 +1318,7 @@ steps:
             top_score_metric: top_score_metric
             net_chop_threshold: net_chop_threshold
             run_reference_proteome_similarity: run_reference_proteome_similarity
+            peptide_fasta: peptide_fasta
             additional_report_columns: additional_report_columns
             fasta_size: fasta_size
             downstream_sequence_length: downstream_sequence_length
