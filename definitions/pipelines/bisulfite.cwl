@@ -7,27 +7,26 @@ requirements:
     - class: MultipleInputFeatureRequirement
     - class: SubworkflowFeatureRequirement
     - class: ScatterFeatureRequirement
+    - class: SchemaDefRequirement
+      types:
+          - $import: ../types/sequence_data.yml
+          - $import: ../types/trimming_options.yml
 inputs:
     reference_index:
         type: string
     reference_sizes:
         type: File
-    instrument_data_bams:
-        type: File[]
-    read_group_id:
-        type: string[]
+    sequence:
+        type: ../types/sequence_data.yml#sequence_data[]
+        doc: |
+          sequence represents the sequencing data as either FASTQs or BAMs with accompanying
+          readgroup information. Note that in the @RG field ID and SM are required.
     sample_name:
         type: string
-    trimming_adapters:
-        type: File
-    trimming_adapter_trim_end:
-        type: string
-    trimming_adapter_min_overlap:
-        type: int
-    trimming_max_uncalled:
-        type: int
-    trimming_min_readlength:
-        type: int
+    trimming_options:
+        type:
+            - ../types/trimming_options.yml#trimming_options
+            - "null"
     QCannotation:
         type: File
     assay_non_cpg_sites:
@@ -54,31 +53,19 @@ outputs:
         type: Directory
         outputSource: bisulfite_qc/QC_directory
 steps:
-    bam_to_trimmed_fastq_and_biscuit_alignments:
-        run: ../subworkflows/bam_to_trimmed_fastq_and_biscuit_alignments.cwl
-        scatter: [bam, read_group_id]
-        scatterMethod: dotproduct
+    bisulfite_alignment:
+        run: ../subworkflows/sequence_to_bisulfite_alignment.cwl
         in:
-            bam: instrument_data_bams
-            read_group_id: read_group_id
-            adapters: trimming_adapters
-            adapter_trim_end: trimming_adapter_trim_end
-            adapter_min_overlap: trimming_adapter_min_overlap
-            max_uncalled: trimming_max_uncalled
-            min_readlength: trimming_min_readlength
+            sequence: sequence
+            trimming_options: trimming_options
             reference_index: reference_index
+            sample_name: sample_name
         out:
             [aligned_bam]
-    merge:
-        run: ../tools/merge_bams.cwl
-        in:
-            bams: bam_to_trimmed_fastq_and_biscuit_alignments/aligned_bam
-        out:
-            [merged_bam]
     pileup:
         run: ../tools/biscuit_pileup.cwl
         in:
-            bam: merge/merged_bam
+            bam: bisulfite_alignment/aligned_bam
             reference: reference_index
         out:
             [vcf]
@@ -86,7 +73,7 @@ steps:
         run: ../subworkflows/bisulfite_qc.cwl
         in:
             vcf: pileup/vcf
-            bam: merge/merged_bam
+            bam: bisulfite_alignment/aligned_bam
             reference: reference_index
             QCannotation: QCannotation
         out:
@@ -110,7 +97,7 @@ steps:
         run: ../tools/bam_to_cram.cwl
         in:
             reference: reference_index
-            bam: merge/merged_bam
+            bam: bisulfite_alignment/aligned_bam
         out:
             [cram]
     index_cram:
