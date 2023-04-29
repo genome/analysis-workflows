@@ -38,10 +38,18 @@ inputs:
     summary_intervals:
         type: ../types/labelled_file.yml#labelled_file[]
 outputs:
-    aligned_bam:
+    umi_aligned_bam:
         type: File
         secondaryFiles: [.bai, ^.bai]
-        outputSource: alignment/aligned_bam
+        outputSource: alignment/umi_aligned_bam
+    grouped_aligned_bam:
+        type: File
+        secondaryFiles: [.bai, ^.bai]
+        outputSource: alignment/grouped_aligned_bam
+    consensus_aligned_bam:
+        type: File
+        secondaryFiles: [.bai, ^.bai]
+        outputSource: alignment/consensus_aligned_bam
     adapter_histogram:
         type: File[]
         outputSource: alignment/adapter_histogram
@@ -94,11 +102,11 @@ steps:
             reference: reference
             target_intervals: target_intervals
         out:
-            [aligned_bam, adapter_histogram, duplex_seq_metrics]
+            [umi_aligned_bam, grouped_aligned_bam, consensus_aligned_bam, adapter_histogram, duplex_seq_metrics]
     qc:
         run: qc_exome.cwl
         in:
-            bam: alignment/aligned_bam
+            bam: alignment/umi_aligned_bam
             reference: reference
             bait_intervals: bait_intervals
             target_intervals: target_intervals
