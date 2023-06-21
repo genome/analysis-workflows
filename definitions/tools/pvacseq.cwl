@@ -21,7 +21,7 @@ arguments: [
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "susannakiwala/pvactools:4.0.0_rc_pvacview_v19" #TODO: replace with final release version
+      dockerPull: "griffithlab/pvactools:4.0.0"
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: $(inputs.n_threads)
