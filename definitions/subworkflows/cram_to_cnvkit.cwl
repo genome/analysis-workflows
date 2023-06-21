@@ -17,7 +17,10 @@ inputs:
     access:
         type: File?
     method:
-        type: string?
+        type:
+            - "null"
+            - type: enum
+              symbols: ["hybrid", "amplicon", "wgs"]
     diagram:
         type: boolean?
     scatter_plot:
