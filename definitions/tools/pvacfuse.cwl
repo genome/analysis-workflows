@@ -16,13 +16,12 @@ arguments: [
     "/usr/local/bin/pvacfuse",
     "run",
     "--iedb-install-directory", "/opt/iedb",
-    "--blastp-path", "/opt/ncbi-blast-2.12.0+/bin/blastp",
     { position: 5, valueFrom: "pvacfuse_predictions" },
 ]
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:3.1.1"
+      dockerPull: "griffithlab/pvactools:4.0.0"
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: $(inputs.n_threads)
@@ -66,6 +65,14 @@ inputs:
         type: int?
         inputBinding:
             prefix: "--percentile-threshold"
+    allele_specific_binding_threshold:
+        type: boolean?
+        inputBinding:
+            prefix: "--allele-specific-binding-thresholds"
+    aggregate_inclusion_binding_threshold:
+        type: int?
+        inputBinding:
+            prefix: "--aggregate-inclusion-binding-threshold"
     iedb_retries:
         type: int?
         inputBinding:
@@ -92,6 +99,11 @@ inputs:
               symbols: ["lowest", "median"]
         inputBinding:
             prefix: "-m"
+    problematic_amino_acids:
+        type: string[]?
+        inputBinding:
+            prefix: "--problematic-amino-acids"
+            itemSeparator: ','
     net_chop_threshold:
         type: float?
         inputBinding:
@@ -100,11 +112,10 @@ inputs:
         type: boolean?
         inputBinding:
             prefix: "--run-reference-proteome-similarity"
-    blastp_db:
-        type:
-            - "null"
-            - type: enum
-              symbols: ["refseq_select_prot", "refseq_protein"]
+    peptide_fasta:
+        type: File?
+        inputBinding:
+            prefix: "--peptide-fasta"
     additional_report_columns:
         type:
             - "null"
@@ -129,6 +140,18 @@ inputs:
         inputBinding:
             prefix: "--n-threads"
         default: 8
+    star_fusion_file:
+        type: File?
+        inputBinding:
+            prefix: "--starfusion-file"
+    read_support:
+        type: int?
+        inputBinding:
+            prefix: "--read-support"
+    expn_val:
+        type: float?
+        inputBinding:
+            prefix: "--expn-val"
 outputs:
     mhc_i_all_epitopes:
         type: File?
