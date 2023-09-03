@@ -43,7 +43,7 @@ inputs:
         inputBinding:
             position: 4
             prefix: "--output-type"
-        doc: "output file format"
+        doc: "output file format, b: compressed BCF, u: uncompressed BCF, z: compressed VCF, v: uncompressed VCF"
     output_vcf_name:
         type: string?
         default: "bcftools_merged.vcf.gz"
@@ -58,7 +58,7 @@ inputs:
         doc: "input bgzipped tabix indexed vcfs to merge"
 
 outputs:
-    merged_sv_vcf:
+    merged_vcf:
         type: File
         outputBinding:
             glob: $(inputs.output_vcf_name)
