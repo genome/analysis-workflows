@@ -28,27 +28,10 @@ inputs:
         type: string
         inputBinding:
             position: 1
-    files:
-        type: File[]
-        inputBinding:
-            position: 2
-            valueFrom: |
-              ${
-                var results = []
-                for(var i=0; i<self.length; i++){
-                  results.push(self[i])
-                  if(self[i].hasOwnProperty('secondaryFiles')){
-                    for(var j=0; j<self[i].secondaryFiles.length; j++){
-                      results.push(self[i].secondaryFiles[j])
-                    }
-                  }
-                }
-                return results
-              }
-    directory:
-         type: Directory?
+    directories:
+         type: Directory[]
          inputBinding:
-            position: 3
+            position: 2
 outputs:
     gathered_directory:
         type: Directory

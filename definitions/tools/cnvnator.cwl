@@ -45,10 +45,10 @@ requirements:
           # read depth signal partitioning
           cnvnator -root "$SAMPLE.root" -partition "$BIN_SIZE" -chrom $CHROMOSOMES
           # cnv calling
-          cnvnator -root "$SAMPLE.root" -call "$BIN_SIZE" -chrom $CHROMOSOMES > "$SAMPLE.CNVnator.cn"
+          cnvnator -root "$SAMPLE.root" -call "$BIN_SIZE" -chrom $CHROMOSOMES > "$SAMPLE.cnvnator.cn"
 
           # convert to vcf
-          cnvnator2VCF.pl -reference "$REFERENCE" "$SAMPLE.CNVnator.cn" FASTA_CHRS/ >  "$SAMPLE.CNVnator.vcf"
+          cnvnator2VCF.pl -reference "$REFERENCE" "$SAMPLE.cnvnator.cn" FASTA_CHRS/ >  "$SAMPLE.cnvnator.vcf"
           exit 0
 inputs:
     bam:
@@ -87,7 +87,7 @@ outputs:
     vcf:
         type: File
         outputBinding:
-            glob: "$(inputs.sample_name).CNVnator.vcf"
+            glob: "$(inputs.sample_name).cnvnator.vcf"
     root_file:
         type: File
         outputBinding:
@@ -95,4 +95,4 @@ outputs:
     cn_file:
         type: File
         outputBinding:
-            glob: "$(inputs.sample_name).CNVnator.cn"
+            glob: "$(inputs.sample_name).cnvnator.cn"

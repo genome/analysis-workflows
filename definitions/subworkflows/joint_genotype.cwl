@@ -64,13 +64,19 @@ inputs:
     final_tsv_prefix:
         type: string?
         default: 'variants'
-    filter_gnomAD_maximum_population_allele_frequency:
+    gnomad_max_pop_af:
         type: float
         default: 0.05
+    min_conf_call:
+        type: float?
 outputs:
     raw_vcf:
         type: File
-        outputSource: merge_vcfs/merged_vcf
+        outputSource: normalize_index/indexed_vcf
+        secondaryFiles: [.tbi]
+    annotated_vcf:
+        type: File
+        outputSource: soft_filter/filtered_vcf
         secondaryFiles: [.tbi]
     final_vcf:
         type: File
@@ -106,6 +112,7 @@ steps:
                 source: [combine_gvcfs/gvcf]
                 linkMerge: merge_flattened
             intervals: intervals
+            min_conf_call: min_conf_call
         out:
             [genotype_vcf]
     merge_vcfs:
@@ -114,11 +121,35 @@ steps:
             vcfs: genotype_gvcf/genotype_vcf
         out:
             [merged_vcf]
-
+    decompose:
+        run: ../tools/vt_decompose.cwl
+        in:
+            vcf: merge_vcfs/merged_vcf
+        out:
+            [decomposed_vcf]
+    decompose_index:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: decompose/decomposed_vcf
+        out:
+            [indexed_vcf]
+    normalize:
+        run: ../tools/vt_normalize.cwl
+        in:
+            vcf: decompose_index/indexed_vcf
+            reference: reference
+        out:
+            [normalized_vcf]
+    normalize_index:
+        run: ../tools/index_vcf.cwl
+        in:
+            vcf: normalize/normalized_vcf
+        out:
+            [indexed_vcf]
     annotate_variants:
         run: ../tools/vep.cwl
         in:
-            vcf: merge_vcfs/merged_vcf
+            vcf: normalize_index/indexed_vcf
             cache_dir: vep_cache_dir
             ensembl_assembly: vep_ensembl_assembly
             ensembl_version: vep_ensembl_version
@@ -136,11 +167,20 @@ steps:
             vcf: annotate_variants/annotated_vcf
         out:
             [indexed_vcf]
+    soft_filter:
+        run: gatk_soft_filter.cwl
+        in:
+            reference: reference
+            vcf: bgzip_index_annotated_vcf/indexed_vcf
+            output_basename:
+                default: "annotated"
+        out:
+            [filtered_vcf]
     filter_vcf:
         run: germline_filter_vcf.cwl
         in:
-            annotated_vcf: annotate_variants/annotated_vcf
-            filter_gnomAD_maximum_population_allele_frequency: filter_gnomAD_maximum_population_allele_frequency
+            annotated_vcf: soft_filter/filtered_vcf
+            filter_gnomAD_maximum_population_allele_frequency: gnomad_max_pop_af
             gnomad_field_name:
                source: vep_custom_annotations
                valueFrom: |

@@ -77,6 +77,11 @@ inputs:
         type: int?
     blocklist_bedpe:
         type: File?
+    annotsv_annotations:
+        type:
+            - string
+            - Directory
+        doc: "directory/path of the annotsv annotations directory"
 outputs:
     cn_diagram:
         type: File?
@@ -300,5 +305,6 @@ steps:
             sv_vcfs:
                 source: [run_cnvkit_filter/filtered_vcf, run_cnvnator_filter/filtered_vcf, run_manta_filter/filtered_vcf, run_smoove_filter/filtered_vcf]
                 linkMerge: merge_flattened
+            annotsv_annotations: annotsv_annotations
         out:
             [bcftools_merged_sv_vcf, bcftools_merged_annotated_tsv, bcftools_merged_filtered_annotated_tsv, survivor_merged_sv_vcf, survivor_merged_annotated_tsv]
