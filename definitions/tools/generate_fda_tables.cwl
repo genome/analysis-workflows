@@ -384,7 +384,7 @@ requirements:
 baseCommand: ['python', 'generate_tables.py']
 inputs:
     table_file_name:
-        type: string?
+        type: string
         inputBinding:
             prefix: "--table_file_name"
     table_num:
