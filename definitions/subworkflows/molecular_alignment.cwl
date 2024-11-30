@@ -36,10 +36,18 @@ inputs:
        type: float
        default: 0.5
 outputs:
-    aligned_bam:
+    umi_aligned_bam:
         type: File
         secondaryFiles: [.bai, ^.bai]
-        outputSource: index_bam/indexed_bam
+        outputSource: umi_index_bam/indexed_bam
+    grouped_aligned_bam:
+        type: File
+        secondaryFiles: [.bai, ^.bai]
+        outputSource: grouped_index_bam/indexed_bam
+    consensus_aligned_bam:
+        type: File
+        secondaryFiles: [.bai, ^.bai]
+        outputSource: consensus_index_bam/indexed_bam
     adapter_histogram:
         type: File[]
         outputSource: align/adapter_metrics
@@ -68,6 +76,13 @@ steps:
             bam: merge/merged_bam
         out:
             [grouped_bam]
+    grouped_clip_overlap:
+        run: ../tools/clip_overlap.cwl
+        in:
+            bam: group_reads_by_umi/grouped_bam
+            reference: reference
+        out:
+            [clipped_bam]
     call_molecular_consensus:
         run: ../tools/call_molecular_consensus.cwl
         in:
@@ -93,7 +108,7 @@ steps:
             max_no_call_fraction: max_no_call_fraction
         out:
             [filtered_bam]
-    clip_overlap:
+    consensus_clip_overlap:
         run: ../tools/clip_overlap.cwl
         in:
             bam: filter_consensus/filtered_bam
@@ -108,9 +123,21 @@ steps:
             description: sample_name
        out:
             [duplex_seq_metrics]
-    index_bam:
+    umi_index_bam:
         run: ../tools/index_bam.cwl
         in:
-            bam: clip_overlap/clipped_bam
+            bam: merge/merged_bam
+        out:
+            [indexed_bam]
+    grouped_index_bam:
+        run: ../tools/index_bam.cwl
+        in:
+            bam: grouped_clip_overlap/clipped_bam
+        out:
+            [indexed_bam]
+    consensus_index_bam:
+        run: ../tools/index_bam.cwl
+        in:
+            bam: consensus_clip_overlap/clipped_bam
         out:
             [indexed_bam]
