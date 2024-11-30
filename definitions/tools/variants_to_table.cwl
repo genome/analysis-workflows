@@ -33,7 +33,7 @@ inputs:
         items: string
         inputBinding:
             prefix: "-F"
-      default: ['CHROM','POS','ID','REF','ALT','set']
+      default: ['CHROM','POS','ID','REF','ALT','set','LLR', 'MQ0']
       inputBinding:
         position: 3
     genotype_fields:
