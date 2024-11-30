@@ -7,10 +7,10 @@ label: "Mark duplicates and Sort"
 baseCommand: ["/bin/bash", "markduplicates_helper.sh"]
 requirements:
     - class: ResourceRequirement
-      coresMin: 8
+      coresMin: 16
       ramMin: 40000
     - class: DockerRequirement
-      dockerPull: "mgibio/mark_duplicates-cwl:1.0.1"
+      dockerPull: "quay.io/biocontainers/sambamba:0.8.2--h98b6b92_2"
     - class: InitialWorkDirRequirement
       listing:
       - entryname: 'markduplicates_helper.sh'
@@ -18,13 +18,11 @@ requirements:
             set -o pipefail
             set -o errexit
 
-            declare MD_BARCODE_TAG
-            if [ ! -z "$6" ]; then
-              MD_BARCODE_TAG="BARCODE_TAG=$6"
-            /usr/bin/java -Xmx16g -jar /opt/picard/picard.jar MarkDuplicates I=$1 O=/dev/stdout ASSUME_SORT_ORDER=$5 METRICS_FILE=$4 QUIET=true COMPRESSION_LEVEL=0 VALIDATION_STRINGENCY=LENIENT "$MD_BARCODE_TAG" | /usr/bin/sambamba sort -t $2 -m 18G -o $3 /dev/stdin
-            else
-              /usr/bin/java -Xmx16g -jar /opt/picard/picard.jar MarkDuplicates I=$1 O=/dev/stdout ASSUME_SORT_ORDER=$5 METRICS_FILE=$4 QUIET=true COMPRESSION_LEVEL=0 VALIDATION_STRINGENCY=LENIENT | /usr/bin/sambamba sort -t $2 -m 18G -o $3 /dev/stdin
-            fi
+            CORES="$2"
+            CORES_PER_JOB=`perl -E 'my $x = int($ARGV[0]/2); say($x < 1? 1 : $x)'` $CORES
+
+            sambamba markdup -l 0 -t $CORES_PER_JOB "$1" /dev/stdout 2> "$4" \
+              | sambamba sort -t $CORES_PER_JOB -m 16G -o "$3" /dev/stdin
 arguments:
     - position: 2
       valueFrom: "$(runtime.cores)"
@@ -35,11 +33,6 @@ inputs:
         type: File
         inputBinding:
             position: 1
-    input_sort_order:
-        type: string
-        default: "queryname"
-        inputBinding:
-            position: 5
     output_name:
         type: string?
         default: 'MarkedSorted.bam'

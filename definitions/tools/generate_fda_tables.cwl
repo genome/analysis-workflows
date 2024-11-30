@@ -4,7 +4,7 @@ class: CommandLineTool
 label: "Script to create FDA-requested summary tables"
 requirements:
     - class: DockerRequirement
-      dockerPull: "python:3.7.4-slim-buster"
+      dockerPull: "python:3.10.8-slim-buster"
     - class: ResourceRequirement
       ramMin: 8000
     - class: InitialWorkDirRequirement
@@ -232,9 +232,25 @@ requirements:
 
             def parse_duplication_metrics(duplication_metrics):
                 with open(duplication_metrics) as f:
-                    raw_chunk = f.read().split('\n\n')[1]
-                pct_dup = raw_chunk.splitlines()[2].split('\t')[8]
-                return {'PERCENT_DUPLICATION': pct_dup}
+                    pairs = None
+                    singles = None
+                    duplicates = None
+                    lines = f.read().splitlines()
+                    for line in lines:
+                        if match_pairs := re.search(r'sorted (\d+) end pairs', line):
+                            pairs = match_pairs.group(1)
+                        elif match_singles := re.search(r'and (\d+) single ends', line):
+                            singles = match_singles.group(1)
+                        elif match_duplicates := re.search(r'found (\d+) duplicates', line):
+                            duplicates = match_duplicates.group(1)
+                    if pairs is None:
+                        raise ValueError('Failed to parse number of end pairs')
+                    if singles is None:
+                        raise ValueError('Failed to parse number of single ends')
+                    if duplicates is None:
+                        raise ValueError('Failed to parse number of duplicates')
+
+                    return {'PERCENT_DUPLICATION': str(float(duplicates)/(2.0*float(pairs) + float(singles))*100.0)}
 
             def parse_insert_size_metrics(insert_size_metrics):
                 with open(insert_size_metrics) as f:

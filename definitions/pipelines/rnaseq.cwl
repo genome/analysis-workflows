@@ -150,8 +150,6 @@ steps:
         run: ../tools/mark_duplicates_and_sort.cwl
         in:
             bam: index_bam/indexed_bam
-            input_sort_order: 
-                default: "coordinate"
         out:
             [sorted_bam, metrics_file]
     stringtie:
