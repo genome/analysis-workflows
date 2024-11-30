@@ -374,6 +374,8 @@ inputs:
         type: int?
     allele_specific_binding_thresholds:
         type: boolean?
+    aggregate_inclusion_binding_threshold:
+        type: int?
     minimum_fold_change:
         type: float?
     top_score_metric:
@@ -381,6 +383,8 @@ inputs:
             - "null"
             - type: enum
               symbols: ["lowest", "median"]
+    problematic_amino_acids:
+        type: string[]?
     additional_report_columns:
         type:
             - "null"
@@ -403,6 +407,10 @@ inputs:
             - "null"
             - type: enum
               symbols: ["1", "2", "3", "4", "5"]
+    allele_specific_anchors:
+        type: boolean?
+    anchor_contribution_threshold:
+        type: float?
     normal_cov:
         type: int?
     tdna_cov:
@@ -442,14 +450,11 @@ inputs:
         label: "run_reference_proteome_similarity: sets an option whether to run reference proteome similarity or not"
         doc: |
           run_reference_proteome_similarity sets an option that decides whether it will run reference proteome similarity after all filtering and BLAST peptide sequences against the reference proteome to see if they appear elsewhere in the proteome.
-    blastp_db:
-        type:
-            - "null"
-            - type: enum
-              symbols: ["refseq_select_prot", "refseq_protein"]
-        label: "blastp_db: sets the reference proteome database to use with BLASTp"
+    peptide_fasta:
+        type: File?
+        label: "run_reference_proteome_similarity: sets an option whether to run reference proteome similarity or not"
         doc: |
-          blastp_db sets the reference proteome database to use with BLASTp when enabling run_reference_proteome_similarity
+          peptide_fasta is a path to a reference proteome fasta file to use when running reference proteome similarity.
     pvacseq_threads:
         type: int?
         label: "pvacseq_threads: Number of threads to use for parallelizing pvacseq prediction"
@@ -473,6 +478,10 @@ inputs:
         type: int?
     pvacfuse_keep_tmp_files:
         type: boolean?
+    pvacfuse_read_support:
+        type: int?
+    pvacfuse_expn_val:
+        type: float?
 
     #FDA metrics inputs
     reference_genome_name:
@@ -1278,12 +1287,16 @@ steps:
             net_chop_threshold: net_chop_threshold
             netmhc_stab: netmhc_stab
             run_reference_proteome_similarity: run_reference_proteome_similarity
-            blastp_db: blastp_db
+            peptide_fasta: peptide_fasta
             n_threads: pvacseq_threads
             variants_to_table_fields: variants_to_table_fields
             variants_to_table_genotype_fields: variants_to_table_genotype_fields
             vep_to_table_fields: vep_to_table_fields
             tumor_purity: tumor_purity
+            aggregate_inclusion_binding_threshold: aggregate_inclusion_binding_threshold
+            problematic_amino_acids: problematic_amino_acids
+            allele_specific_anchors: allele_specific_anchors
+            anchor_contribution_threshold: anchor_contribution_threshold
         out:
             [annotated_vcf, annotated_tsv, pvacseq_predictions]
 
@@ -1305,11 +1318,17 @@ steps:
             top_score_metric: top_score_metric
             net_chop_threshold: net_chop_threshold
             run_reference_proteome_similarity: run_reference_proteome_similarity
-            blastp_db: blastp_db
+            peptide_fasta: peptide_fasta
             additional_report_columns: additional_report_columns
             fasta_size: fasta_size
             downstream_sequence_length: downstream_sequence_length
             exclude_nas: exclude_nas
             n_threads: pvacseq_threads
+            star_fusion_file: rnaseq/star_fusion_abridge
+            read_support: pvacfuse_read_support
+            expn_val: pvacfuse_expn_val
+            allele_specific_binding_thresholds: allele_specific_binding_thresholds
+            aggregate_inclusion_binding_threshold: aggregate_inclusion_binding_threshold
+            problematic_amino_acids: problematic_amino_acids
         out:
             [pvacfuse_predictions]

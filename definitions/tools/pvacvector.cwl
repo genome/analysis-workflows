@@ -16,13 +16,12 @@ arguments: [
     "/usr/local/bin/pvacvector",
     "run",
     "--iedb-install-directory", "/opt/iedb",
-    "--blastp-path", "/opt/ncbi-blast-2.12.0+/bin/blastp",
     { position: 5, valueFrom: $(runtime.outdir) },
 ]
 requirements:
     - class: ShellCommandRequirement
     - class: DockerRequirement
-      dockerPull: "griffithlab/pvactools:3.1.1"
+      dockerPull: "griffithlab/pvactools:4.0.0"
     - class: ResourceRequirement
       ramMin: 16000
       coresMin: $(inputs.n_threads)
