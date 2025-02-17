@@ -3,19 +3,19 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: "vcf merge"
-baseCommand: ["/opt/bcftools/bin/bcftools", "concat"]
+baseCommand: ["/opt/bcftools/bin/bcftools", "merge"]
 requirements:
     - class: DockerRequirement
       dockerPull: mgibio/bcftools-cwl:1.12
     - class: ResourceRequirement
       ramMin: 4000
 arguments:
-    - "--allow-overlaps"
-    - "--remove-duplicates"
-    - "--output-type"
-    - "z"
-    - "-o"
-    - { valueFrom: $(runtime.outdir)/$(inputs.merged_vcf_basename).vcf.gz }
+    - "--filter-logic"
+    - "x"
+    - "--merge"
+    - "none"
+    - "--output"
+    - { valueFrom: $(runtime.outdir)/$(inputs.merged_vcf_basename).vcf }
 inputs:
     vcfs:
         type: File[]
@@ -29,4 +29,4 @@ outputs:
     merged_vcf:
         type: File
         outputBinding:
-            glob: $(inputs.merged_vcf_basename).vcf.gz
+            glob: $(inputs.merged_vcf_basename).vcf
