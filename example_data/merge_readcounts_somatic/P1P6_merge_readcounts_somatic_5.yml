@@ -1,0 +1,23 @@
+vcfs: [/storage1/fs1/tfehnige/Active/fehniger_lymphoma/SPORE/P1P6/clonality_analysis/merge_readcounts_somatic/input_vcfs/P1-LUC-WCMC.vcf.gz, /storage1/fs1/tfehnige/Active/fehniger_lymphoma/SPORE/P1P6/clonality_analysis/merge_readcounts_somatic/input_vcfs/P1-WCMC.vcf.gz, /storage1/fs1/tfehnige/Active/fehniger_lymphoma/SPORE/P1P6/clonality_analysis/merge_readcounts_somatic/input_vcfs/P6-LUC-WCMC.vcf.gz, /storage1/fs1/tfehnige/Active/fehniger_lymphoma/SPORE/P1P6/clonality_analysis/merge_readcounts_somatic/input_vcfs/P6-WCMC.vcf.gz]
+
+tumor_bams: [/storage1/fs1/tfehnige/Active/fehniger_lymphoma/SPORE/P1P6/wdl_runs/P1-LUC-WCMC/somatic_exome/cramtobam/tumor.bam, /storage1/fs1/tfehnige/Active/fehniger_lymphoma/SPORE/P1P6/wdl_runs/P1-WCMC/somatic_exome/cramtobam/tumor.bam, /storage1/fs1/tfehnige/Active/fehniger_lymphoma/SPORE/P1P6/wdl_runs/P6-LUC-WCMC/somatic_exome/cramtobam/tumor.bam, /storage1/fs1/tfehnige/Active/fehniger_lymphoma/SPORE/P1P6/wdl_runs/P6-WCMC/somatic_exome/cramtobam/tumor.bam] 
+
+tumor_sample_names: [P1-LUC-WCMC, P1-WCMC, P6-LUC-WCMC, P6-WCMC]
+
+normal_bam: /storage1/fs1/tfehnige/Active/fehniger_lymphoma/SPORE/P1P6/wdl_runs/P1-LUC-WCMC/somatic_exome/cramtobam/normal.bam
+
+normal_sample_name: WT-B6-SPLEEN
+
+reference_fasta: /storage1/fs1/mgriffit/Active/griffithlab/common/reference_files/mouse_GRCm39_ens113/reference_genome/Mus_musculus.GRCm39.dna.primary_assembly.fa
+
+min_base_quality: 20
+
+min_mapping_quality: 20
+
+data_type: "DNA"
+
+variants_to_table_fields: [CHROM, POS, ID, REF, ALT, set, AC]
+
+variants_to_table_genotype_fields: [GT, AD, AF, DP]
+
+vep_to_table_fields: [Consequence, SYMBOL, Feature_type, Feature, HGVSc, HGVSp, cDNA_position, CDS_position, Protein_position, Amino_acids, Codons, HGNC_ID, Existing_variation]
